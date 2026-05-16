@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://butkj3sd3l5ae"]
+
+[ext_resource type="Script" uid="uid://cf0ogfgxx0a1i" path="res://card/card_ui.gd" id="1_fo41u"]
+
+[node name="CardUi" type="TextureButton" unique_id=1069000652]
+script = ExtResource("1_fo41u")
