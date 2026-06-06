@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://duwa2rq4fgcsj"]
+
+[ext_resource type="Script" uid="uid://bjsm28yyguoga" path="res://map/map_node.gd" id="1_thdk5"]
+[ext_resource type="Texture2D" uid="uid://dwhejslhcg07g" path="res://assets/asa.jpeg" id="2_hlve0"]
+[ext_resource type="Texture2D" uid="uid://c06a7ktpm8gv8" path="res://assets/normal.jpeg" id="3_wenc3"]
+[ext_resource type="Texture2D" uid="uid://c6lhgs7oictaq" path="res://assets/strong.jpeg" id="4_dix6y"]
+[ext_resource type="Texture2D" uid="uid://bpuh2bs22puvk" path="res://assets/shop.jpeg" id="5_c1dec"]
+[ext_resource type="Texture2D" uid="uid://ckufyfnu7788r" path="res://assets/sleep.jpeg" id="6_tdrfg"]
+[ext_resource type="Texture2D" uid="uid://do5vysx2ext6m" path="res://assets/boss.jpeg" id="7_dix6y"]
+
+[node name="MapNode" type="TextureButton" unique_id=216622706]
+custom_minimum_size = Vector2(10, 10)
+anchors_preset = -1
+anchor_right = 0.0050000004
+anchor_bottom = 0.009000001
+offset_right = 0.39999962
+offset_bottom = 0.27999973
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("2_hlve0")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("1_thdk5")
+tex_battle_normal = ExtResource("3_wenc3")
+tex_battle_hard = ExtResource("4_dix6y")
+tex_shop = ExtResource("5_c1dec")
+tex_rest = ExtResource("6_tdrfg")
+tex_boss = ExtResource("7_dix6y")

@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://c4bqe5xfv3dhv"]
+
+[ext_resource type="Script" uid="uid://ccrl2qrkcpt5v" path="res://shop/shop_manager.gd" id="1_n6cst"]
+[ext_resource type="Texture2D" uid="uid://dqx2k3caf8ivr" path="res://assets/backgrounds/layer_paling_bawah_the_lab.png" id="1_wdt34"]
+[ext_resource type="Texture2D" uid="uid://do8ifaisydr4q" path="res://assets/shop/Gelas_Labb.png" id="2_cf2ep"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6cst"]
+atlas = ExtResource("2_cf2ep")
+region = Rect2(73.38507, 352.72754, 769.9014, 732.6255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cf2ep"]
+atlas = ExtResource("2_cf2ep")
+region = Rect2(933.6311, 700.60657, 271.34668, 379.39343)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gqer"]
+atlas = ExtResource("2_cf2ep")
+region = Rect2(1320.2819, 364.69305, 599.71814, 714.6606)
+
+[node name="ShopScene" type="Control" unique_id=54156396]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n6cst")
+
+[node name="Background" type="TextureRect" parent="." unique_id=52897156]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_wdt34")
+
+[node name="Interactables" type="Control" parent="." unique_id=1806611601]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BtnBuy" type="TextureButton" parent="Interactables" unique_id=908568394]
+texture_filter = 1
+layout_mode = 0
+offset_left = 73.0
+offset_top = 353.0
+offset_right = 842.0
+offset_bottom = 1085.0
+focus_neighbor_left = NodePath("../BtnSell")
+focus_neighbor_right = NodePath("../BtnHeal")
+texture_normal = SubResource("AtlasTexture_n6cst")
+
+[node name="BtnHeal" type="TextureButton" parent="Interactables" unique_id=1660325010]
+texture_filter = 1
+layout_mode = 0
+offset_left = 934.0
+offset_top = 700.0
+offset_right = 1205.0
+offset_bottom = 1079.0
+focus_neighbor_left = NodePath("../BtnBuy")
+focus_neighbor_right = NodePath("../BtnSell")
+texture_normal = SubResource("AtlasTexture_cf2ep")
+
+[node name="BtnSell" type="TextureButton" parent="Interactables" unique_id=1262879023]
+texture_filter = 1
+layout_mode = 0
+offset_left = 1320.0
+offset_top = 365.0
+offset_right = 1919.0
+offset_bottom = 1079.0
+focus_neighbor_left = NodePath("../BtnHeal")
+focus_neighbor_right = NodePath("../BtnBuy")
+texture_normal = SubResource("AtlasTexture_7gqer")
+
+[node name="UI_Overlay" type="CanvasLayer" parent="." unique_id=1961901099]
+
+[node name="CoinContainer" type="HBoxContainer" parent="UI_Overlay" unique_id=367562588]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CoinLabel" type="Label" parent="UI_Overlay/CoinContainer" unique_id=1647960272]
+layout_mode = 2
+text = "KOIN"
+
+[node name="BuyPanel" type="PanelContainer" parent="UI_Overlay" unique_id=534409988]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SellPanel" type="PanelContainer" parent="UI_Overlay" unique_id=1249624550]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BtnLeave" type="Button" parent="." unique_id=776695646]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -53.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Leave"

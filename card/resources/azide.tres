@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://cu1rub4uivmbp"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_6ly24"]
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_mmcir"]
+
+[resource]
+script = ExtResource("1_6ly24")
+id = "volatile_01"
+card_name = "Azide Acid"
+card_texture = ExtResource("1_mmcir")
+modulate = Color(0.64147866, 0.003066314, 0.91669273, 1)
+cost_hydrogen = 1
+cost_nitrogen = 3
+effect_amount = 5
+can_be_reward = true
+attack_ailment = 4
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

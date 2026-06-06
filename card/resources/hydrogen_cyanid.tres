@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dueylxbij3w8c"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_0niux"]
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_ekme7"]
+[ext_resource type="Resource" uid="uid://bhhuddng6j1cw" path="res://ailments/res/toxification.tres" id="2_qipp7"]
+
+[resource]
+script = ExtResource("1_0niux")
+id = "toxic_01"
+card_name = "Hydrogen Cyanide"
+card_texture = ExtResource("1_ekme7")
+modulate = Color(0.021471128, 0.17927048, 0.4622262, 1)
+cost_hydrogen = 1
+cost_carbon = 1
+cost_nitrogen = 1
+effect_amount = 5
+can_be_reward = true
+is_multi_target = true
+attack_ailment = 3
+status_to_apply = ExtResource("2_qipp7")
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

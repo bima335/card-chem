@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://behur7e0oc1v3"]
+
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_5awky"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_p3afh"]
+[ext_resource type="Resource" uid="uid://yieksuuurmtg" path="res://ailments/res/corrotion.tres" id="2_aiqqg"]
+
+[resource]
+script = ExtResource("1_p3afh")
+id = "corrotion_01"
+card_name = "Nitric Acid"
+card_texture = ExtResource("1_5awky")
+modulate = Color(0.983182, 0.8782537, 1.540184e-06, 1)
+cost_oxygen = 3
+cost_hydrogen = 1
+cost_nitrogen = 1
+effect_amount = 5
+can_be_reward = true
+attack_ailment = 0
+status_to_apply = ExtResource("2_aiqqg")
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

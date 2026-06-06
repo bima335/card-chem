@@ -2,19 +2,37 @@
 
 [ext_resource type="Script" uid="uid://udb6cjisf3i1" path="res://deck/deck.gd" id="1_24btm"]
 [ext_resource type="Script" uid="uid://c7w10t7tfw8e5" path="res://main/battle_manager.gd" id="1_m1b1k"]
+[ext_resource type="Script" uid="uid://b8vbqgjghvovu" path="res://ailments/ailment_reaction.gd" id="2_0hkaa"]
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://cmj1i6m1hso7c" path="res://card/resources/card_1.tres" id="3_csnlq"]
+[ext_resource type="Resource" uid="uid://dc14k0ryvgl54" path="res://ailments/reactions/rules/burn.tres" id="3_ehvsk"]
+[ext_resource type="Resource" uid="uid://cu1rub4uivmbp" path="res://card/resources/azide.tres" id="4_21jdp"]
 [ext_resource type="Resource" uid="uid://djflprno7d43g" path="res://card/resources/card_2.tres" id="4_k6tid"]
-[ext_resource type="Resource" uid="uid://5u3w2ahqt2qc" path="res://card/resources/card_3.tres" id="5_ylpik"]
+[ext_resource type="Resource" uid="uid://c5ladbwva1g8r" path="res://card/resources/h_peroxide.tres" id="5_3aatk"]
+[ext_resource type="Resource" uid="uid://dxfdw7frugwao" path="res://card/resources/asetilena.tres" id="6_0hkaa"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
+[ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
+[ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
 [ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="9_csnlq"]
+[ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 script = ExtResource("1_m1b1k")
+active_reactions = Array[ExtResource("2_0hkaa")]([ExtResource("3_ehvsk")])
 card_ui_scene = ExtResource("2_csnlq")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_csnlq"), ExtResource("4_k6tid"), ExtResource("5_ylpik")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("4_21jdp"), ExtResource("5_3aatk"), ExtResource("6_0hkaa"), ExtResource("4_k6tid")])
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
+texture_filter = 1
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("9_ehvsk")
+
+[node name="StageManager" type="Node2D" parent="." unique_id=1219606548]
+script = ExtResource("7_ylpik")
+enemy_scene = ExtResource("8_21jdp")
 
 [node name="Player" type="Node" parent="." unique_id=1595257805]
 script = ExtResource("7_k6tid")
@@ -39,15 +57,190 @@ offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="DrawButton" type="Button" parent="UI" unique_id=864069634]
-offset_right = 8.0
-offset_bottom = 8.0
-
 [node name="DeckVisual" type="TextureButton" parent="UI" unique_id=1314374451]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
+offset_top = -64.0
+offset_right = 48.0
 grow_vertical = 0
 texture_normal = ExtResource("9_csnlq")
+
+[node name="DiscardVisual" type="TextureButton" parent="UI" unique_id=946672430]
+modulate = Color(0.41124472, 0.00016865015, 0.43268502, 1)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -64.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("9_csnlq")
+
+[node name="PlayerHPBar" type="ProgressBar" parent="UI" unique_id=1408518611]
+offset_left = 12.0
+offset_top = 443.0
+offset_right = 128.0
+offset_bottom = 470.0
+step = 1.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="UI/PlayerHPBar" unique_id=1441573184]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerShieldBar" type="ProgressBar" parent="UI" unique_id=2089301244]
+offset_left = 12.0
+offset_top = 488.0
+offset_right = 128.0
+offset_bottom = 515.0
+step = 1.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="UI/PlayerShieldBar" unique_id=793629810]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EndTurnButton" type="Button" parent="UI" unique_id=1374644199]
+offset_left = 1728.0
+offset_top = 435.0
+offset_right = 1823.0
+offset_bottom = 508.0
+text = "End Turn"
+
+[node name="TokenContainer" type="VBoxContainer" parent="UI" unique_id=1305011282]
+offset_top = 74.0
+offset_right = 95.0
+offset_bottom = 319.0
+
+[node name="CLabel" type="Label" parent="UI/TokenContainer" unique_id=1336236963]
+layout_mode = 2
+
+[node name="HLabel" type="Label" parent="UI/TokenContainer" unique_id=1702646118]
+layout_mode = 2
+
+[node name="OLabel" type="Label" parent="UI/TokenContainer" unique_id=119395391]
+layout_mode = 2
+
+[node name="NLabel" type="Label" parent="UI/TokenContainer" unique_id=1634551958]
+layout_mode = 2
+
+[node name="DeckBackDrop" type="ColorRect" parent="UI" unique_id=1123639773]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.3647059)
+
+[node name="DeckViewPanel" type="PanelContainer" parent="UI" unique_id=704264590]
+visible = false
+custom_minimum_size = Vector2(1500, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -400.0
+offset_right = 750.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DeckViewPanel" unique_id=191365710]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/DeckViewPanel/VBoxContainer" unique_id=592154474]
+custom_minimum_size = Vector2(1000, 400)
+layout_mode = 2
+
+[node name="CardGrid" type="GridContainer" parent="UI/DeckViewPanel/VBoxContainer/ScrollContainer" unique_id=1205949729]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 6
+
+[node name="TitleLabel" type="Label" parent="UI/DeckViewPanel" unique_id=715867543]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "DECK"
+
+[node name="CloseButton" type="Button" parent="UI/DeckViewPanel" unique_id=992015313]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Close"
+
+[node name="ColorRect" type="ColorRect" parent="UI" unique_id=985614902]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.022622466, 0.022621531, 0.14014712, 0.75686276)
+
+[node name="RewardBackdrop" type="ColorRect" parent="UI" unique_id=621223476]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.81960785)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/RewardBackdrop" unique_id=798449482]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="TtileLabel" type="Label" parent="UI/RewardBackdrop/VBoxContainer" unique_id=789828]
+layout_mode = 2
+text = "VICTORY"
+
+[node name="RewardCardGrid" type="HBoxContainer" parent="UI/RewardBackdrop/VBoxContainer" unique_id=1619136986]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="SkipButton" type="Button" parent="UI/RewardBackdrop/VBoxContainer" unique_id=1294469247]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "SKIP"

@@ -6,8 +6,10 @@
 [resource]
 script = ExtResource("1_6kl6u")
 id = "c1"
-card_name = "Card 1"
+card_name = "H2"
 card_texture = ExtResource("1_q5x4f")
-cost_oxygen = 10
-cost_hydrogen = 10
+modulate = Color(1, 0, 0, 0)
+cost_hydrogen = 2
+effect_amount = 8
+effect = 3
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

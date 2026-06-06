@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dxfdw7frugwao"]
+
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_lbj7c"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_xeblc"]
+
+[resource]
+script = ExtResource("1_xeblc")
+id = "ignite_01"
+card_name = "Asetilena"
+card_texture = ExtResource("1_lbj7c")
+modulate = Color(0.8749152, 0.3429549, 0, 1)
+cost_hydrogen = 2
+cost_carbon = 2
+effect_amount = 1
+can_be_reward = true
+attack_ailment = 1
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

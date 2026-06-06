@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="StatusAilment" format=3 uid="uid://bhhuddng6j1cw"]
+
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="1_r63c2"]
+
+[resource]
+script = ExtResource("1_r63c2")
+ailment = 3
+metadata/_custom_type_script = "uid://ck4m1qolca0es"

@@ -1,13 +1,17 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://djflprno7d43g"]
 
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_4kpju"]
-[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_dfnoe"]
+[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_dfnoe"]
 
 [resource]
 script = ExtResource("1_4kpju")
 id = "c2"
-card_name = "Card 2"
+card_name = "CO2"
 card_texture = ExtResource("1_dfnoe")
-cost_oxygen = 10
-cost_hydrogen = 10
+modulate = Color(0, 0, 0, 0)
+cost_oxygen = 2
+cost_carbon = 1
+effect_amount = 5
+effect = 3
+tipe = 1
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

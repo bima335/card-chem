@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://c5ladbwva1g8r"]
+
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_847rb"]
+[ext_resource type="Resource" uid="uid://bjwtqh0esjut0" path="res://ailments/res/oxidation.tres" id="2_ecdso"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="3_tbpbw"]
+
+[resource]
+script = ExtResource("3_tbpbw")
+id = "oxidation_01"
+card_name = "Hydrogen Peroxide"
+card_texture = ExtResource("1_847rb")
+modulate = Color(0.32172796, 0.32172796, 0.32172796, 1)
+cost_oxygen = 2
+cost_hydrogen = 2
+effect_amount = 5
+can_be_reward = true
+attack_ailment = 2
+status_to_apply = ExtResource("2_ecdso")
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

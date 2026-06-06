@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EnemyAction" format=3 uid="uid://s07r4mi84yb0"]
+
+[ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_yv3c0"]
+
+[resource]
+script = ExtResource("1_yv3c0")
+action_name = "Basik"
+amount = 2
+metadata/_custom_type_script = "uid://dth0bkr3nr2v1"

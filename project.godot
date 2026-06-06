@@ -11,8 +11,25 @@ config_version=5
 [application]
 
 config/name="card-chem"
+run/main_scene="uid://buyq5ss3jowmi"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="uid://b1folfgnn1b2q"
+
+[autoload]
+
+EventBus="*uid://wr80w5hspfcd"
+GameManager="*uid://cjueth0ijpwir"
+SoundManager="*uid://dolvy1javft0v"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
 
 [physics]
 

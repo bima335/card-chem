@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ReactionExplode" format=3 uid="uid://dc14k0ryvgl54"]
+
+[ext_resource type="Script" uid="uid://bhenp1r42jcnd" path="res://ailments/reactions/reaction_burn.gd" id="1_jt8f7"]
+[ext_resource type="Resource" uid="uid://4wp2ma3lr2cp" path="res://ailments/res/burnt.tres" id="1_txpe0"]
+
+[resource]
+script = ExtResource("1_jt8f7")
+bonus_damage = 20
+existing_element = 2
+incoming_element = 1
+resulting_status = ExtResource("1_txpe0")
+metadata/_custom_type_script = "uid://bhenp1r42jcnd"

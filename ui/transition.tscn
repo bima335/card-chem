@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cw4djfg6e1fbk"]
+
+[ext_resource type="Shader" uid="uid://bk36np3vyrmnx" path="res://ui/transition.gdshader" id="1_dvrck"]
+[ext_resource type="Script" uid="uid://b62krnl8mng16" path="res://ui/transition.gd" id="2_71j1v"]
+[ext_resource type="Texture2D" uid="uid://copa3040teryh" path="res://assets/Aura_Card_Ferrum_01.png" id="2_dky4j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_71j1v"]
+shader = ExtResource("1_dvrck")
+shader_parameter/mask_texture = ExtResource("2_dky4j")
+shader_parameter/zoom = 0.60800002888
+shader_parameter/strength = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
+
+[node name="Transition" type="CanvasLayer" unique_id=851107355]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=639775385]
+material = SubResource("ShaderMaterial_71j1v")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_71j1v")
