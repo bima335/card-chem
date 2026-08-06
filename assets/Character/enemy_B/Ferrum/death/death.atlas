@@ -1,0 +1,125 @@
+
+death.png
+size: 919,327
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+B_Ferrum-death_00
+  rotate: false
+  xy: 827, 8
+  size: 90, 156
+  orig: 222, 186
+  offset: 90, 29
+  index: -1
+B_Ferrum-death_01
+  rotate: true
+  xy: 200, 2
+  size: 105, 150
+  orig: 222, 186
+  offset: 77, 29
+  index: -1
+B_Ferrum-death_02
+  rotate: false
+  xy: 701, 7
+  size: 124, 143
+  orig: 222, 186
+  offset: 63, 29
+  index: -1
+B_Ferrum-death_03
+  rotate: false
+  xy: 557, 2
+  size: 142, 136
+  orig: 222, 186
+  offset: 50, 29
+  index: -1
+B_Ferrum-death_04
+  rotate: true
+  xy: 769, 166
+  size: 159, 122
+  orig: 222, 186
+  offset: 38, 36
+  index: -1
+B_Ferrum-death_05
+  rotate: true
+  xy: 650, 152
+  size: 173, 117
+  orig: 222, 186
+  offset: 28, 34
+  index: -1
+B_Ferrum-death_06
+  rotate: true
+  xy: 538, 140
+  size: 185, 110
+  orig: 222, 186
+  offset: 19, 33
+  index: -1
+B_Ferrum-death_07
+  rotate: false
+  xy: 2, 2
+  size: 196, 103
+  orig: 222, 186
+  offset: 11, 32
+  index: -1
+B_Ferrum-death_08
+  rotate: false
+  xy: 352, 11
+  size: 203, 97
+  orig: 222, 186
+  offset: 6, 31
+  index: -1
+B_Ferrum-death_09
+  rotate: true
+  xy: 446, 115
+  size: 210, 90
+  orig: 222, 186
+  offset: 2, 30
+  index: -1
+B_Ferrum-death_10
+  rotate: true
+  xy: 360, 112
+  size: 213, 84
+  orig: 222, 186
+  offset: 1, 28
+  index: -1
+B_Ferrum-death_11
+  rotate: true
+  xy: 272, 110
+  size: 215, 86
+  orig: 222, 186
+  offset: 1, 30
+  index: -1
+B_Ferrum-death_12
+  rotate: true
+  xy: 182, 109
+  size: 216, 88
+  orig: 222, 186
+  offset: 2, 32
+  index: -1
+B_Ferrum-death_13
+  rotate: true
+  xy: 93, 108
+  size: 217, 87
+  orig: 222, 186
+  offset: 2, 32
+  index: -1
+B_Ferrum-death_14
+  rotate: true
+  xy: 2, 107
+  size: 218, 89
+  orig: 222, 186
+  offset: 2, 29
+  index: -1
+B_Ferrum-death_15
+  rotate: true
+  xy: 2, 107
+  size: 218, 89
+  orig: 222, 186
+  offset: 2, 29
+  index: -1
+B_Ferrum-death_16
+  rotate: true
+  xy: 2, 107
+  size: 218, 89
+  orig: 222, 186
+  offset: 2, 29
+  index: -1
