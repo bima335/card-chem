@@ -1,83 +1,83 @@
 
 B_Ferrum.png
-size: 461,284
+size: 78,479
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Bayangan Copy
-  rotate: false
-  xy: 297, 117
-  size: 129, 33
-  orig: 131, 35
-  offset: 1, 1
+  rotate: true
+  xy: 49, 224
+  size: 66, 18
+  orig: 66, 18
+  offset: 0, 0
   index: -1
 body belakang
   rotate: true
-  xy: 217, 2
-  size: 97, 123
-  orig: 100, 125
-  offset: 2, 1
+  xy: 2, 52
+  size: 49, 63
+  orig: 50, 63
+  offset: 1, 0
   index: -1
 body depan
   rotate: false
-  xy: 297, 152
-  size: 130, 130
-  orig: 132, 133
-  offset: 1, 2
+  xy: 2, 103
+  size: 66, 65
+  orig: 66, 67
+  offset: 0, 1
   index: -1
 face
-  rotate: true
-  xy: 342, 2
-  size: 97, 93
-  orig: 99, 95
-  offset: 1, 1
+  rotate: false
+  xy: 2, 2
+  size: 50, 48
+  orig: 50, 48
+  offset: 0, 0
   index: -1
 helm depan
   rotate: false
-  xy: 2, 99
-  size: 145, 183
-  orig: 147, 185
-  offset: 1, 1
+  xy: 2, 292
+  size: 74, 91
+  orig: 74, 93
+  offset: 0, 1
   index: -1
 helmbelakang
   rotate: false
-  xy: 149, 101
-  size: 146, 181
-  orig: 148, 183
-  offset: 1, 1
+  xy: 2, 385
+  size: 74, 92
+  orig: 74, 92
+  offset: 0, 0
   index: -1
 kaki kanan
-  rotate: false
-  xy: 429, 183
-  size: 18, 48
-  orig: 20, 50
-  offset: 1, 1
+  rotate: true
+  xy: 2, 170
+  size: 10, 25
+  orig: 10, 25
+  offset: 0, 0
   index: -1
 kaki kiri
-  rotate: false
-  xy: 437, 51
-  size: 20, 48
-  orig: 22, 50
-  offset: 1, 1
+  rotate: true
+  xy: 49, 175
+  size: 11, 25
+  orig: 11, 25
+  offset: 0, 0
   index: -1
 tangan kanan
-  rotate: false
-  xy: 428, 101
-  size: 31, 49
-  orig: 33, 51
-  offset: 1, 1
+  rotate: true
+  xy: 49, 206
+  size: 16, 26
+  orig: 17, 26
+  offset: 1, 0
   index: -1
 tangan kiri
-  rotate: false
-  xy: 429, 233
-  size: 30, 49
-  orig: 32, 51
-  offset: 1, 1
+  rotate: true
+  xy: 49, 188
+  size: 16, 26
+  orig: 16, 26
+  offset: 0, 0
   index: -1
 tombak
-  rotate: true
-  xy: 2, 10
-  size: 87, 213
-  orig: 89, 215
-  offset: 1, 1
+  rotate: false
+  xy: 2, 182
+  size: 45, 108
+  orig: 45, 108
+  offset: 0, 0
   index: -1
