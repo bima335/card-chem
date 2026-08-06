@@ -1,0 +1,83 @@
+
+B_Ferrum.png
+size: 461,284
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bayangan Copy
+  rotate: false
+  xy: 297, 117
+  size: 129, 33
+  orig: 131, 35
+  offset: 1, 1
+  index: -1
+body belakang
+  rotate: true
+  xy: 217, 2
+  size: 97, 123
+  orig: 100, 125
+  offset: 2, 1
+  index: -1
+body depan
+  rotate: false
+  xy: 297, 152
+  size: 130, 130
+  orig: 132, 133
+  offset: 1, 2
+  index: -1
+face
+  rotate: true
+  xy: 342, 2
+  size: 97, 93
+  orig: 99, 95
+  offset: 1, 1
+  index: -1
+helm depan
+  rotate: false
+  xy: 2, 99
+  size: 145, 183
+  orig: 147, 185
+  offset: 1, 1
+  index: -1
+helmbelakang
+  rotate: false
+  xy: 149, 101
+  size: 146, 181
+  orig: 148, 183
+  offset: 1, 1
+  index: -1
+kaki kanan
+  rotate: false
+  xy: 429, 183
+  size: 18, 48
+  orig: 20, 50
+  offset: 1, 1
+  index: -1
+kaki kiri
+  rotate: false
+  xy: 437, 51
+  size: 20, 48
+  orig: 22, 50
+  offset: 1, 1
+  index: -1
+tangan kanan
+  rotate: false
+  xy: 428, 101
+  size: 31, 49
+  orig: 33, 51
+  offset: 1, 1
+  index: -1
+tangan kiri
+  rotate: false
+  xy: 429, 233
+  size: 30, 49
+  orig: 32, 51
+  offset: 1, 1
+  index: -1
+tombak
+  rotate: true
+  xy: 2, 10
+  size: 87, 213
+  orig: 89, 215
+  offset: 1, 1
+  index: -1
