@@ -11,19 +11,16 @@ const MAX_TOKEN: int = 7
 @export var carbon: int = 0
 @export var nitrogen: int = 0
 
-@export var max_hp = GameManager.player_max_hp
-var current_hp = GameManager.player_current_hp
+@export var max_hp: int = 30
+var current_hp: int = 30
 var shield: int = 0
-
 @export var base_damage: int = 0
 
-
 func _ready() -> void:
-	
 	if not EventBus.player_took_damage.is_connected(take_damage):
 		EventBus.player_took_damage.connect(take_damage)
 
-func reset_for_battle():
+func reset_for_battle() -> void:
 	shield = 0
 	carbon = 3
 	hydrogen = 3
@@ -32,17 +29,19 @@ func reset_for_battle():
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
 
-func gain_tokens(amount:int):
-	carbon = clampi(carbon + amount, 0, MAX_TOKEN)
-	hydrogen = clampi(hydrogen + amount, 0, MAX_TOKEN)
-	oxygen = clampi(oxygen + amount, 0, MAX_TOKEN)
-	nitrogen = clampi(nitrogen + amount, 0, MAX_TOKEN)
+func add_specific_tokens(c: int, h: int, o: int, n: int) -> void:
+	carbon = clampi(carbon + c, 0, MAX_TOKEN)
+	hydrogen = clampi(hydrogen + h, 0, MAX_TOKEN)
+	oxygen = clampi(oxygen + o, 0, MAX_TOKEN)
+	nitrogen = clampi(nitrogen + n, 0, MAX_TOKEN)
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
+
+func gain_tokens(amount: int) -> void:
+	add_specific_tokens(amount, amount, amount, amount)
 
 func gain_shield(amount: int) -> void:
 	shield += amount
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
-	print("Mendapat Shield: ", amount, " | Total Shield: ", shield)
 
 func take_damage(amount: int) -> void:
 	var actual_damage = amount - shield
@@ -56,28 +55,24 @@ func take_damage(amount: int) -> void:
 	current_hp = clampi(current_hp, 0, max_hp)
 	GameManager.player_current_hp = current_hp
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
-	print("Player terkena hit! HP sekarang: ", current_hp, "/", max_hp)
+	
 	if current_hp <= 0:
-		print("HP Habis! GAME OVER!")
+		print("Player Kalah!")
 
 func heal(amount: int) -> void:
-	current_hp += amount
-	current_hp = clampi(current_hp, 0, max_hp)
-	
-	# Sinkronisasi ke memori abadi
+	current_hp = clampi(current_hp + amount, 0, max_hp)
 	GameManager.player_current_hp = current_hp
-	
-	# Update UI
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
-	print("Pemain memulihkan HP! Sisa HP: ", current_hp)
 
 func can_afford(card: CardData) -> bool:
-	return oxygen >= card.cost_oxygen and hydrogen >= card.cost_hydrogen and carbon >= card.cost_carbon and nitrogen >= card.cost_nitrogen
+	return oxygen >= card.cost_oxygen \
+		and hydrogen >= card.cost_hydrogen \
+		and carbon >= card.cost_carbon \
+		and nitrogen >= card.cost_nitrogen
 
-func pay_for_card(card: CardData):
+func pay_for_card(card: CardData) -> void:
 	carbon = clampi(carbon - card.cost_carbon, 0, MAX_TOKEN)
 	hydrogen = clampi(hydrogen - card.cost_hydrogen, 0, MAX_TOKEN)
 	oxygen = clampi(oxygen - card.cost_oxygen, 0, MAX_TOKEN)
 	nitrogen = clampi(nitrogen - card.cost_nitrogen, 0, MAX_TOKEN)
-	
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
