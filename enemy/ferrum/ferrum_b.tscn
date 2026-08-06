@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ccb7m5pu0lee1"]
+
+[ext_resource type="SpineAtlasResource" uid="uid://dyvcpju32ut7q" path="res://assets/Character/enemy_B/Ferrum/B_Ferrum.atlas" id="1_7mvcb"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://w24naxxtmqf0" path="res://assets/Character/enemy_B/Ferrum/B_Ferrum.skel" id="2_mn1ej"]
+
+[sub_resource type="SpineSkeletonDataResource" id="SpineSkeletonDataResource_g4v7s"]
+atlas_res = ExtResource("1_7mvcb")
+skeleton_file_res = ExtResource("2_mn1ej")
+
+[node name="FerrumB" type="Node2D" unique_id=836598344]
+
+[node name="SpineSprite" type="SpineSprite" parent="." unique_id=1419335654]
+skeleton_data_res = SubResource("SpineSkeletonDataResource_g4v7s")

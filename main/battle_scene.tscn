@@ -2,26 +2,23 @@
 
 [ext_resource type="Script" uid="uid://udb6cjisf3i1" path="res://deck/deck.gd" id="1_24btm"]
 [ext_resource type="Script" uid="uid://c7w10t7tfw8e5" path="res://main/battle_manager.gd" id="1_m1b1k"]
-[ext_resource type="Script" uid="uid://b8vbqgjghvovu" path="res://ailments/ailment_reaction.gd" id="2_0hkaa"]
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://dc14k0ryvgl54" path="res://ailments/reactions/rules/burn.tres" id="3_ehvsk"]
 [ext_resource type="Resource" uid="uid://cu1rub4uivmbp" path="res://card/resources/azide.tres" id="4_21jdp"]
-[ext_resource type="Resource" uid="uid://djflprno7d43g" path="res://card/resources/card_2.tres" id="4_k6tid"]
-[ext_resource type="Resource" uid="uid://c5ladbwva1g8r" path="res://card/resources/h_peroxide.tres" id="5_3aatk"]
 [ext_resource type="Resource" uid="uid://dxfdw7frugwao" path="res://card/resources/asetilena.tres" id="6_0hkaa"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
+[ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
 [ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="9_csnlq"]
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
+[ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
+[ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 script = ExtResource("1_m1b1k")
-active_reactions = Array[ExtResource("2_0hkaa")]([ExtResource("3_ehvsk")])
-card_ui_scene = ExtResource("2_csnlq")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("4_21jdp"), ExtResource("5_3aatk"), ExtResource("6_0hkaa"), ExtResource("4_k6tid")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("6_0hkaa"), ExtResource("4_21jdp")])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -42,6 +39,41 @@ script = ExtResource("1_24btm")
 
 [node name="Hand" type="Node" parent="." unique_id=898936308]
 script = ExtResource("2_hoxqo")
+
+[node name="Subsystems" type="Node" parent="." unique_id=1393369240]
+
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_label", "h_label", "o_label", "n_label", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid")]
+script = ExtResource("8_3aatk")
+card_ui_scene = ExtResource("2_csnlq")
+hand_container = NodePath("../../UI/HandContainer")
+end_turn_button = NodePath("../../UI/EndTurnButton")
+deck_visual = NodePath("../../UI/DeckVisual")
+discard_visual = NodePath("../../UI/DiscardVisual")
+close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
+player_hp_bar = NodePath("../../UI/PlayerHPBar")
+player_hp_label = NodePath("../../UI/PlayerHPBar/Label")
+player_shield_bar = NodePath("../../UI/PlayerShieldBar")
+player_shield_label = NodePath("../../UI/PlayerShieldBar/Label")
+token_container = NodePath("../../UI/TokenContainer")
+c_label = NodePath("../../UI/TokenContainer/CLabel")
+h_label = NodePath("../../UI/TokenContainer/HLabel")
+o_label = NodePath("../../UI/TokenContainer/OLabel")
+n_label = NodePath("../../UI/TokenContainer/NLabel")
+deck_backdrop = NodePath("../../UI/DeckBackDrop")
+deck_view_panel = NodePath("../../UI/DeckViewPanel")
+panel_title_label = NodePath("../../UI/DeckViewPanel/TitleLabel")
+card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
+
+[node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
+script = ExtResource("10_0hkaa")
+card_ui_scene = ExtResource("2_csnlq")
+reward_backdrop = NodePath("../../UI/RewardBackdrop")
+reward_title = NodePath("../../UI/RewardBackdrop/VBoxContainer/TtileLabel")
+reward_card_grid = NodePath("../../UI/RewardBackdrop/VBoxContainer/RewardCardGrid")
+skip_button = NodePath("../../UI/RewardBackdrop/VBoxContainer/SkipButton")
+
+[node name="CardResolver" type="Node" parent="Subsystems" unique_id=1352173905]
+script = ExtResource("11_ehvsk")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
 
