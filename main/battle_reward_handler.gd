@@ -13,7 +13,8 @@ extends Node
 signal effect_target_requested(effect_name: String)
 
 func setup() -> void:
-	skip_button.pressed.connect(_return_to_map)
+	if skip_button and not skip_button.pressed.is_connected(_return_to_map):
+		skip_button.pressed.connect(_return_to_map)
 
 func show_reward_screen() -> void:
 	GameManager.shop_coins += 10
@@ -51,13 +52,13 @@ func _setup_normal_reward() -> void:
 		card_ui.pressed.connect(_on_reward_card_chosen.bind(card_data))
 
 func _setup_hard_reward() -> void:
-	reward_title.text = "HARD VICTORY!\n+10 Shop Coins (Total: " + str(GameManager.shop_coins) + ")\n\nPILIH 1 EFEK UNTUK KARTUMU:"
+	reward_title.text = "HARD VICTORY!\n+10 Shop Coins (Total: " + str(GameManager.shop_coins) + ")\n\nPILIH 1 EFFECT COAT UNTUK KARTUMU:"
 	skip_button.hide() 
 	
-	var effects = ["UNSTABLE", "VOLATILE", "CLONE"]
+	var effects = ["UNSTABLE", "INSULATED", "CLONE"]
 	var effect_desc = [
-		"UNSTABLE\n(Damage diri saat dipakai)", 
-		"VOLATILE\n(Hancur setelah dipakai)", 
+		"UNSTABLE\n(2x Damage, 1/2 Self Damage)", 
+		"INSULATED\n(Mencegah kartu di-drain)", 
 		"CLONE\n(Gandakan kartu ke Deck)"
 	]
 	
@@ -69,7 +70,7 @@ func _setup_hard_reward() -> void:
 		reward_card_grid.add_child(btn)
 
 func _on_reward_card_chosen(chosen_card: CardData) -> void:
-	GameManager.player_deck.append(chosen_card)
+	GameManager.player_deck.append(chosen_card.duplicate(true))
 	_return_to_map()
 
 func _on_effect_chosen(effect_name: String) -> void:
@@ -77,12 +78,14 @@ func _on_effect_chosen(effect_name: String) -> void:
 	effect_target_requested.emit(effect_name)
 
 func apply_effect_to_card(target_card: CardData, active_effect: String) -> void:
+	# PERBAIKAN: Menyesuaikan enum CardData.EffectCoat yang baru
 	match active_effect:
 		"UNSTABLE":
-			target_card.effect = CardData.effect_kartu.UNSTABLE
-		"VOLATILE":
-			target_card.effect = CardData.effect_kartu.VOLATILE
+			target_card.coat = CardData.EffectCoat.UNSTABLE
+		"INSULATED":
+			target_card.coat = CardData.EffectCoat.INSULATED
 		"CLONE":
+			target_card.coat = CardData.EffectCoat.CLONE
 			var cloned_card = target_card.duplicate(true)
 			GameManager.player_deck.append(cloned_card)
 			

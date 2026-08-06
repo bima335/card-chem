@@ -1,43 +1,104 @@
 class_name CardResolver
 extends Node
 
-func execute_card_logic(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: StageManager, active_reactions: Array[AilmentReaction]) -> bool:
-	match card_data.tipe:
-		CardData.tipe_kartu.SHIELD:
-			player.gain_shield(card_data.effect_amount)
+func execute_card_logic(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node) -> bool:
+	if not player.can_afford(card_data):
+		print("Token tidak cukup!")
+		return false
+		
+	player.pay_for_card(card_data)
+	
+	match card_data.card_type:
+		CardData.CardType.BUFF:
+			_process_buff_card(card_data, player)
 			return true
 			
-		CardData.tipe_kartu.ATTACK:
-			var targets: Array[EnemyBase] = []
+		CardData.CardType.ATK:
+			return _process_attack_card(card_data, player, current_target, stage_manager)
 			
-			if card_data.is_multi_target:
-				for child in stage_manager.get_children():
-					if child is EnemyBase and not child.is_queued_for_deletion():
-						targets.append(child)
-			else:
-				if current_target == null or not is_instance_valid(current_target):
-					return false
-				targets.append(current_target)
+		CardData.CardType.DEBUFF:
+			return _process_debuff_card(card_data, current_target, stage_manager)
 			
-			_process_attack_targets(targets, card_data, player, stage_manager, active_reactions)
-			return true
+		CardData.CardType.TRIGGER:
+			return _process_trigger_card(card_data, current_target, stage_manager)
 			
 	return false
 
-func _process_attack_targets(targets: Array[EnemyBase], card_data: CardData, player: Player, stage_manager: StageManager, active_reactions: Array[AilmentReaction]) -> void:
-	for target in targets:
-		var final_damage = player.base_damage + card_data.effect_amount
-		var reaction_occurred: bool = false
-		var incoming_el = card_data.attack_ailment
+func _process_buff_card(card_data: CardData, player: Player) -> void:
+	player.add_tokens(card_data.gain_carbon, card_data.gain_hydrogen, card_data.gain_oxygen, card_data.gain_nitrogen)
+	if card_data.shield_amount > 0:
+		player.gain_shield(card_data.shield_amount)
+
+func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase, stage_manager: Node) -> bool:
+	var targets = _get_targets(card_data, target, stage_manager)
+	if targets.is_empty(): return false
+	
+	var base_dmg = player.base_damage + card_data.damage_amount
+	
+	if card_data.coat == CardData.EffectCoat.UNSTABLE:
+		base_dmg *= 2
+		player.take_damage(base_dmg / 2)
 		
-		if incoming_el != StatusAilment.ailment_type.None:
-			for reaction_rule in active_reactions:
-				if incoming_el == reaction_rule.incoming_element and target.has_status(reaction_rule.existing_element):
-					final_damage = reaction_rule.execute(target, stage_manager, final_damage)
-					reaction_occurred = true
-					break
+	for enemy in targets:
+		enemy.take_damage(base_dmg)
+		_apply_card_statuses(card_data, enemy)
 		
-		target.take_damage(final_damage)
+	return true
+
+func _process_debuff_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> bool:
+	var targets = _get_targets(card_data, target, stage_manager)
+	if targets.is_empty(): return false
+	
+	for enemy in targets:
+		_apply_card_statuses(card_data, enemy)
 		
-		if not reaction_occurred and card_data.status_to_apply != null:
-			target.apply_status(card_data.status_to_apply, card_data.status_to_apply.duration)
+	return true
+
+func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> bool:
+	var targets = _get_targets(card_data, target, stage_manager)
+	if targets.is_empty(): return false
+	
+	for enemy in targets:
+		match card_data.trigger_element:
+			StatusAilment.AilmentType.IGNITE:
+				if enemy.has_status(StatusAilment.AilmentType.OXIDIZE):
+					print("COMBO BURN DIPICU!")
+					var burn_status = StatusAilment.new()
+					burn_status.ailment = StatusAilment.AilmentType.BURN
+					enemy.apply_status(burn_status, 3)
+					enemy.remove_status(StatusAilment.AilmentType.OXIDIZE)
+					
+			StatusAilment.AilmentType.OXIDIZE:
+				if enemy.has_status(StatusAilment.AilmentType.CORROSION):
+					print("COMBO DESTABILIZE DIPICU!")
+					var dest_status = StatusAilment.new()
+					dest_status.ailment = StatusAilment.AilmentType.DESTABILIZE
+					enemy.apply_status(dest_status, 2)
+					enemy.remove_status(StatusAilment.AilmentType.CORROSION)
+					
+			StatusAilment.AilmentType.VOLATILE:
+				var vol_status = StatusAilment.new()
+				vol_status.ailment = StatusAilment.AilmentType.VOLATILE
+				enemy.apply_status(vol_status, 2)
+				
+		_apply_card_statuses(card_data, enemy)
+		
+	return true
+
+func _apply_card_statuses(card_data: CardData, enemy: EnemyBase) -> void:
+	for status_res in card_data.statuses_to_apply:
+		if status_res.ailment == StatusAilment.AilmentType.TOXIC:
+			enemy.add_toxic_stack(1)
+		else:
+			enemy.apply_status(status_res, status_res.duration)
+
+func _get_targets(card_data: CardData, current_target: EnemyBase, stage_manager: Node) -> Array[EnemyBase]:
+	var targets: Array[EnemyBase] = []
+	if card_data.target_type == CardData.TargetType.ALL_ENEMIES:
+		for child in stage_manager.get_children():
+			if child is EnemyBase and not child.is_queued_for_deletion():
+				targets.append(child)
+	else:
+		if current_target != null and is_instance_valid(current_target):
+			targets.append(current_target)
+	return targets

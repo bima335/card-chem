@@ -4,7 +4,6 @@ extends Node2D
 enum TurnState { PLAYER, ENEMY }
 var current_state: TurnState = TurnState.PLAYER
 
-@export var active_reactions: Array[AilmentReaction] = []
 @export var available_cards: Array[CardData] 
 
 @onready var deck: Deck = $Deck
@@ -25,7 +24,6 @@ var active_effect_choice: String = ""
 
 func _ready() -> void:
 	SoundManager.play_bgm("battle_theme")
-	
 	_connect_signals()
 	
 	current_round = 1
@@ -55,10 +53,13 @@ func _connect_signals() -> void:
 func _prepare_starting_deck() -> void:
 	if GameManager.player_deck.is_empty():
 		for i in range(15):
-			GameManager.player_deck.append(available_cards.pick_random())
+			if not available_cards.is_empty():
+				GameManager.player_deck.append(available_cards.pick_random())
 
+	# PERBAIKAN: Duplikasi Resource kartu agar perubahan di Battle tidak mengacak-acak GameManager secara permanen
 	for card in GameManager.player_deck:
-		deck.add_card(card)
+		var card_copy = card.duplicate(true) as CardData
+		deck.add_card(card_copy)
 		
 	_start_player_turn()
 
@@ -77,7 +78,7 @@ func _start_player_turn() -> void:
 		await get_tree().create_timer(0.2).timeout 
 		_draw_single_card()
 	
-	await get_tree().create_timer(0.5).timeout 
+	await get_tree().create_timer(0.3).timeout 
 	ui_manager.end_turn_button.disabled = false
 
 func _draw_single_card() -> void:
@@ -100,11 +101,10 @@ func _play_card(clicked_ui: CardUI, card_data: CardData) -> void:
 		ui_manager.reject_play(clicked_ui)
 		return
 
-	# Eksekusi Logika Serangan/Shield lewat Subsystem
-	var success = card_resolver.execute_card_logic(card_data, player, current_target, stage_manager, active_reactions)
+	# PERBAIKAN: Menyesuaikan signature eksekusi CardResolver yang baru
+	var success = card_resolver.execute_card_logic(card_data, player, current_target, stage_manager)
 	
 	if success:
-		player.pay_for_card(card_data)
 		hand.remove_card(card_data)
 		deck.add_to_discard(card_data)
 		clicked_ui.queue_free()
@@ -127,7 +127,6 @@ func _on_end_turn_pressed() -> void:
 	_discard_hand_to_deck()
 	stage_manager.execute_enemies_turn()
 
-# --- TARGETING & EVENTS ---
 func _on_enemy_selected(enemy: EnemyBase) -> void:
 	current_target = enemy
 
@@ -144,11 +143,10 @@ func _on_round_won() -> void:
 	await get_tree().create_timer(1.5).timeout
 	reward_handler.show_reward_screen()
 
-# --- REWARD EFFECT FLOW ---
 func _on_effect_target_requested(effect_name: String) -> void:
 	active_effect_choice = effect_name
 	is_selecting_effect_target = true
-	ui_manager.show_card_viewer(GameManager.player_deck, "PILIH 1 KARTU UNTUK DIBERIKAN EFEK: " + effect_name, true)
+	ui_manager.show_card_viewer(GameManager.player_deck, "PILIH 1 KARTU UNTUK DIBERIKAN COAT: " + effect_name, true)
 
 func _on_card_selected_for_effect(target_card: CardData) -> void:
 	if is_selecting_effect_target:

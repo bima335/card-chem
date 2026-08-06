@@ -5,8 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://cu1rub4uivmbp" path="res://card/resources/azide.tres" id="4_21jdp"]
-[ext_resource type="Resource" uid="uid://dxfdw7frugwao" path="res://card/resources/asetilena.tres" id="6_0hkaa"]
+[ext_resource type="Resource" uid="uid://dw0m23xpkfdwv" path="res://card/resources/buff/h2.tres" id="3_0hkaa"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
@@ -18,7 +17,7 @@
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("6_0hkaa"), ExtResource("4_21jdp")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_0hkaa")])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
