@@ -65,6 +65,31 @@ func _spawn_wave(wave_data: Array) -> void:
 		else:
 			push_error("GAGAL SPAWN: 'Enemy Scene' di Inspector StageManager masih kosong!")
 
+func get_sorted_active_enemies() -> Array[EnemyBase]:
+	var enemies: Array[EnemyBase] = []
+	for child in get_children():
+		if child is EnemyBase and not child.is_queued_for_deletion():
+			enemies.append(child)
+
+	enemies.sort_custom(func(a: EnemyBase, b: EnemyBase): return a.global_position.x < b.global_position.x)
+	return enemies
+
+func get_adjacent_enemies(target_enemy: EnemyBase) -> Dictionary:
+	var result = {"left": null, "right": null}
+	var sorted_enemies = get_sorted_active_enemies()
+	
+	var target_index = sorted_enemies.find(target_enemy)
+	if target_index == -1:
+		return result
+		
+	if target_index > 0:
+		result["left"] = sorted_enemies[target_index - 1]
+		
+	if target_index < sorted_enemies.size() - 1:
+		result["right"] = sorted_enemies[target_index + 1]
+		
+	return result
+
 func execute_enemies_turn() -> void:
 	var active_enemies: Array[EnemyBase] = []
 	for child in get_children():

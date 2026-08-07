@@ -75,7 +75,7 @@ func start_turn_process() -> void:
 		return
 
 	if burn_stacks > 0:
-		var burn_damage = burn_stacks * 5
+		var burn_damage = 5
 		print(stats.enemy_name, " menerima ", burn_damage, " damage dari Burn!")
 		take_damage(burn_damage)
 		burn_stacks = max(0, burn_stacks - 1)
@@ -106,6 +106,13 @@ func take_damage(amount: int) -> void:
 		else:
 			damage_multiplier = 1.5
 			
+	
+	if has_status(StatusAilment.AilmentType.BURN):
+		if has_status(StatusAilment.AilmentType.VOLATILE):
+			remove_status(StatusAilment.AilmentType.BURN)
+			remove_status(StatusAilment.AilmentType.VOLATILE)
+	
+	
 	var final_damage = int(amount * damage_multiplier)
 	current_hp = clampi(current_hp - final_damage, 0, stats.max_hp)
 	

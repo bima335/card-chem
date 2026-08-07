@@ -1,6 +1,8 @@
 class_name CardResolver
 extends Node
 
+@export var burn_ailment: StatusAilment
+
 func execute_card_logic(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node) -> bool:
 	if not player.can_afford(card_data):
 		print("Token tidak cukup!")
@@ -81,9 +83,7 @@ func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager
 		match card_data.trigger_element:
 			StatusAilment.AilmentType.IGNITE:
 				if enemy.has_status(StatusAilment.AilmentType.OXIDIZE):
-					var burn_status = StatusAilment.new()
-					burn_status.ailment = StatusAilment.AilmentType.BURN
-					enemy.apply_status(burn_status, 3)
+					enemy.apply_status(burn_ailment, burn_ailment.duration)
 					enemy.remove_status(StatusAilment.AilmentType.OXIDIZE)
 					
 			StatusAilment.AilmentType.OXIDIZE:
@@ -94,10 +94,19 @@ func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager
 					enemy.remove_status(StatusAilment.AilmentType.CORROSION)
 					
 			StatusAilment.AilmentType.VOLATILE:
+				if !enemy.has_status(StatusAilment.AilmentType.BURN) and !enemy.has_status(StatusAilment.AilmentType.POISON) and !enemy.has_status(StatusAilment.AilmentType.DESTABILIZE):
+					return
 				var vol_status = StatusAilment.new()
 				vol_status.ailment = StatusAilment.AilmentType.VOLATILE
-				enemy.apply_status(vol_status, 2)
-				
+				enemy.apply_status(vol_status, 1)
+				if enemy.has_status(StatusAilment.AilmentType.BURN):
+					var adjacent = stage_manager.get_adjacent_enemies(target)
+					var splash_dmg = (enemy.burn_stacks * 7) / 3
+					if adjacent["left"] != null:
+						adjacent["left"].take_damage(splash_dmg)
+					if adjacent["right"] != null:
+						adjacent["right"].take_damage(splash_dmg)
+					enemy.take_damage(enemy.burn_stacks * 7)
 		_apply_card_statuses(card_data, enemy)
 
 func _apply_card_statuses(card_data: CardData, enemy: EnemyBase) -> void:

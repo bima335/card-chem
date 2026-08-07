@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
 [ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="3_0hkaa"]
+[ext_resource type="Resource" uid="uid://1rhiulfq30o5" path="res://card/resources/trigger/o_ignite.tres" id="4_ehvsk"]
+[ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
@@ -14,10 +16,11 @@
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
+[ext_resource type="Resource" uid="uid://dpg4l0kf5u7mo" path="res://ailments/res/burn.tres" id="15_xre4y"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_0hkaa")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_0hkaa"), ExtResource("4_ehvsk"), ExtResource("5_j5qo7")])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -73,6 +76,7 @@ skip_button = NodePath("../../UI/RewardBackdrop/VBoxContainer/SkipButton")
 
 [node name="CardResolver" type="Node" parent="Subsystems" unique_id=1352173905]
 script = ExtResource("11_ehvsk")
+burn_ailment = ExtResource("15_xre4y")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
 

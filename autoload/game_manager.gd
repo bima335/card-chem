@@ -49,7 +49,9 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, pool_enemie
 				
 				if not tutorial_pool.is_empty():
 					var first_stage_wave: Array[EnemyStat] = []
-					first_stage_wave.append(tutorial_pool.pick_random())
+					var selected_enemy: EnemyStat = tutorial_pool.pick_random()
+					for i in range(3):
+						first_stage_wave.append(selected_enemy)
 					node_data.wave_data = first_stage_wave
 				else:
 					push_error("GameManager: Tidak ada musuh SMALL untuk Stage 1!")
