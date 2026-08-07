@@ -1,8 +1,19 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://ck43wj6i8k0f0"]
 
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_47are"]
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_b1uv2"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_b1uv2"]
 
 [resource]
 script = ExtResource("1_47are")
+id = "c_b_02"
+card_name = "Nama Carbon Dioxide"
+card_texture = ExtResource("1_b1uv2")
+modulate = Color(0.3254902, 1, 1, 1)
+card_type = 1
+target_type = 2
+gain_oxygen = 2
+gain_carbon = 1
+buy_value = 6
+sell_value = 3
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

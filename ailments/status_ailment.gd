@@ -17,3 +17,4 @@ enum AilmentType {
 @export var ailment: AilmentType = AilmentType.NONE
 @export var duration: int = 1
 @export var status_icon: Texture2D
+@export var modulate: Color = Color.WHITE

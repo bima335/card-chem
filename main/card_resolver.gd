@@ -6,6 +6,10 @@ func execute_card_logic(card_data: CardData, player: Player, current_target: Ene
 		print("Token tidak cukup!")
 		return false
 		
+	if not _is_target_valid(card_data, current_target, stage_manager):
+		print("Target tidak valid atau belum dipilih!")
+		return false
+
 	player.pay_for_card(card_data)
 	
 	match card_data.card_type:
@@ -14,14 +18,35 @@ func execute_card_logic(card_data: CardData, player: Player, current_target: Ene
 			return true
 			
 		CardData.CardType.ATK:
-			return _process_attack_card(card_data, player, current_target, stage_manager)
+			_process_attack_card(card_data, player, current_target, stage_manager)
+			return true
 			
 		CardData.CardType.DEBUFF:
-			return _process_debuff_card(card_data, current_target, stage_manager)
+			_process_debuff_card(card_data, current_target, stage_manager)
+			return true
 			
 		CardData.CardType.TRIGGER:
-			return _process_trigger_card(card_data, current_target, stage_manager)
+			_process_trigger_card(card_data, current_target, stage_manager)
+			return true
 			
+	return false
+
+func _is_target_valid(card_data: CardData, current_target: EnemyBase, stage_manager: Node) -> bool:
+	if card_data.target_type == CardData.TargetType.SELF:
+		return true
+
+	if card_data.target_type == CardData.TargetType.SINGLE:
+		return current_target != null and is_instance_valid(current_target) and not current_target.is_queued_for_deletion()
+
+	if card_data.target_type == CardData.TargetType.ALL_ENEMIES:
+		return _has_living_enemies(stage_manager)
+
+	return false
+
+func _has_living_enemies(stage_manager: Node) -> bool:
+	for child in stage_manager.get_children():
+		if child is EnemyBase and not child.is_queued_for_deletion():
+			return true
 	return false
 
 func _process_buff_card(card_data: CardData, player: Player) -> void:
@@ -29,9 +54,11 @@ func _process_buff_card(card_data: CardData, player: Player) -> void:
 	if card_data.shield_amount > 0:
 		player.gain_shield(card_data.shield_amount)
 
-func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase, stage_manager: Node) -> bool:
+func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase, stage_manager: Node) -> void:
 	var targets = _get_targets(card_data, target, stage_manager)
-	if targets.is_empty(): return false
+	
+	if card_data.shield_amount > 0:
+		player.gain_shield(card_data.shield_amount)
 	
 	var base_dmg = player.base_damage + card_data.damage_amount
 	
@@ -42,27 +69,18 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 	for enemy in targets:
 		enemy.take_damage(base_dmg)
 		_apply_card_statuses(card_data, enemy)
-		
-	return true
 
-func _process_debuff_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> bool:
+func _process_debuff_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> void:
 	var targets = _get_targets(card_data, target, stage_manager)
-	if targets.is_empty(): return false
-	
 	for enemy in targets:
 		_apply_card_statuses(card_data, enemy)
-		
-	return true
 
-func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> bool:
+func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> void:
 	var targets = _get_targets(card_data, target, stage_manager)
-	if targets.is_empty(): return false
-	
 	for enemy in targets:
 		match card_data.trigger_element:
 			StatusAilment.AilmentType.IGNITE:
 				if enemy.has_status(StatusAilment.AilmentType.OXIDIZE):
-					print("COMBO BURN DIPICU!")
 					var burn_status = StatusAilment.new()
 					burn_status.ailment = StatusAilment.AilmentType.BURN
 					enemy.apply_status(burn_status, 3)
@@ -70,7 +88,6 @@ func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager
 					
 			StatusAilment.AilmentType.OXIDIZE:
 				if enemy.has_status(StatusAilment.AilmentType.CORROSION):
-					print("COMBO DESTABILIZE DIPICU!")
 					var dest_status = StatusAilment.new()
 					dest_status.ailment = StatusAilment.AilmentType.DESTABILIZE
 					enemy.apply_status(dest_status, 2)
@@ -82,8 +99,6 @@ func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager
 				enemy.apply_status(vol_status, 2)
 				
 		_apply_card_statuses(card_data, enemy)
-		
-	return true
 
 func _apply_card_statuses(card_data: CardData, enemy: EnemyBase) -> void:
 	for status_res in card_data.statuses_to_apply:
@@ -98,7 +113,7 @@ func _get_targets(card_data: CardData, current_target: EnemyBase, stage_manager:
 		for child in stage_manager.get_children():
 			if child is EnemyBase and not child.is_queued_for_deletion():
 				targets.append(child)
-	else:
+	elif card_data.target_type == CardData.TargetType.SINGLE:
 		if current_target != null and is_instance_valid(current_target):
 			targets.append(current_target)
 	return targets

@@ -36,6 +36,13 @@ func add_tokens(c: int, h: int, o: int, n: int) -> void:
 	nitrogen = clampi(nitrogen + n, 0, MAX_TOKEN)
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
 
+func gain_tokens(amount:int):
+	carbon = clampi(carbon + amount, 0, MAX_TOKEN)
+	hydrogen = clampi(hydrogen + amount, 0, MAX_TOKEN)
+	oxygen = clampi(oxygen + amount, 0, MAX_TOKEN)
+	nitrogen = clampi(nitrogen + amount, 0, MAX_TOKEN)
+	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
+
 func gain_shield(amount: int) -> void:
 	shield += amount
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)

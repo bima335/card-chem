@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://jjs12ewhi0vm"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_3gf87"]
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_olimn"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_olimn"]
+
+[resource]
+script = ExtResource("1_3gf87")
+id = "c_b_05"
+card_name = "Nitrogen Gas"
+card_texture = ExtResource("1_olimn")
+modulate = Color(1, 1, 0.78039217, 1)
+card_type = 1
+target_type = 2
+gain_nitrogen = 2
+buy_value = 5
+sell_value = 2
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

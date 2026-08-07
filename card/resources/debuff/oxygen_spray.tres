@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b7ksujfeuql47"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_6loh0"]
+[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_f2g3o"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_f2g3o"]
+[ext_resource type="Resource" uid="uid://bjwtqh0esjut0" path="res://ailments/res/oxidation.tres" id="4_k5gjq"]
+
+[resource]
+script = ExtResource("1_6loh0")
+id = "c_d_01"
+card_name = "Oxygen Spray"
+card_texture = ExtResource("1_f2g3o")
+modulate = Color(0.30588236, 0.50980395, 1, 1)
+card_type = 2
+cost_oxygen = 1
+buy_value = 6
+sell_value = 3
+statuses_to_apply = Array[ExtResource("2_f2g3o")]([ExtResource("4_k5gjq")])
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

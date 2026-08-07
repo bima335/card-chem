@@ -122,10 +122,14 @@ func _on_end_turn_pressed() -> void:
 	
 	current_state = TurnState.ENEMY
 	ui_manager.end_turn_button.disabled = true
-	current_target = null
-	
+
+	_deselect_current_enemy()
 	_discard_hand_to_deck()
 	stage_manager.execute_enemies_turn()
+
+func _deselect_current_enemy() -> void:
+	current_target = null
+	EventBus.enemy_selected.emit(null)
 
 func _on_enemy_selected(enemy: EnemyBase) -> void:
 	current_target = enemy

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://d4ccc1ynr7qfb"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_8dgr4"]
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_bagbq"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_bagbq"]
+
+[resource]
+script = ExtResource("1_8dgr4")
+id = "c_b_04"
+card_name = "Hydro Battery"
+card_texture = ExtResource("1_bagbq")
+modulate = Color(0, 0.18431373, 1, 1)
+card_type = 1
+target_type = 2
+cost_carbon = 1
+gain_hydrogen = 3
+buy_value = 7
+sell_value = 3
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

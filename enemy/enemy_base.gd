@@ -57,6 +57,16 @@ func _adjust_sprite_scale() -> void:
 	shape.size = original_size * scale_factor
 	collision_shape.shape = shape
 
+## --- FUNGSI AI PENENTU GERAKAN (YANG SEBELUMNYA HILANG) ---
+func determine_next_move() -> EnemyAction:
+	if stats == null or stats.moveset.is_empty():
+		push_error("EnemyBase: " + (stats.enemy_name if stats else name) + " tidak memiliki moveset di Inspector!")
+		return null
+		
+	# Memilih jurus secara acak dari Resource moveset
+	var chosen_action: EnemyAction = stats.moveset.pick_random()
+	return chosen_action
+
 func start_turn_process() -> void:
 	if is_stunned:
 		print(stats.enemy_name, " ter-stun dan tidak bisa bergerak turn ini!")
@@ -75,7 +85,7 @@ func start_turn_process() -> void:
 	decrease_status_durations()
 
 func execute_move(action: EnemyAction) -> void:
-	if is_stunned:
+	if is_stunned or action == null:
 		return
 		
 	match action.type:
@@ -175,6 +185,7 @@ func _update_status_ui() -> void:
 		icon_rect.texture = resource_data.status_icon
 		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon_rect.custom_minimum_size = Vector2(30, 30)
+		icon_rect.modulate = resource_data.modulate
 		
 		var duration_label = Label.new()
 		duration_label.text = str(current_duration)
@@ -191,7 +202,10 @@ func _update_status_ui() -> void:
 func _on_click_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		SoundManager.play_sfx("enemy_select")
-		EventBus.enemy_selected.emit(self)
+		if is_selected:
+			EventBus.enemy_selected.emit(null)
+		else:
+			EventBus.enemy_selected.emit(self)
 
 func _on_mouse_entered() -> void:
 	if is_selected: return

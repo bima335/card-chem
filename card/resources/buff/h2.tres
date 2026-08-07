@@ -12,4 +12,6 @@ card_texture = ExtResource("1_6lr5x")
 card_type = 1
 target_type = 2
 gain_hydrogen = 2
+buy_value = 5
+sell_value = 2
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

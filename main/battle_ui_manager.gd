@@ -33,7 +33,7 @@ signal card_clicked_in_viewer(card_data: CardData)
 func _ready() -> void:
 	close_deck_button.pressed.connect(hide_deck_viewer)
 
-func update_tokens(c: int, h: int, o: int, n: int) -> void:
+func update_tokens(o: int, h: int, c: int, n: int) -> void:
 	c_label.text = "Carbon: " + str(c)
 	h_label.text = "Hydrogen: " + str(h)
 	o_label.text = "Oxygen: " + str(o)
