@@ -1,0 +1,16 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://b5kjvp5vkgr5c"
+path="res://.godot/imported/Ferrum_Boss_Ingame.atlas-af9c5d9bda13478a211abce9d9ed6a97.spatlas"
+
+[deps]
+
+source_file="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame.atlas"
+dest_files=["res://.godot/imported/Ferrum_Boss_Ingame.atlas-af9c5d9bda13478a211abce9d9ed6a97.spatlas"]
+
+[params]
+
+normal_map_prefix="n"
+specular_map_prefix="s"
