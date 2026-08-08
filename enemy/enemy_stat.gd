@@ -1,7 +1,7 @@
 class_name EnemyStat
 extends Resource
 
-enum EnemyTag { SMALL, BIG, BOSS}
+enum EnemyTag { SMALL, BIG, BOSS, MINION}
 
 @export var enemy_name: String = "Musuh Dasar"
 @export var max_hp: int = 30

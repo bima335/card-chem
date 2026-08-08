@@ -20,6 +20,7 @@ func _ready() -> void:
 	_calculate_stage_positions()
 	_setup_wave_from_map()
 	EventBus.enemy_died.connect(_on_enemy_died)
+	EventBus.enemy_summon_requested.connect(_on_enemy_summon_requested)
 	start_next_wave()
 
 func _calculate_stage_positions() -> void:
@@ -34,6 +35,42 @@ func _calculate_stage_positions() -> void:
 		var pos_x: float = center_x + (x_offset * enemy_spacing_x)
 		var pos_y: float = base_enemy_y + (curve_steepness * pow(x_offset, 2))
 		enemy_position.append(Vector2(pos_x, pos_y))
+
+func _on_enemy_summon_requested(minion_stat: EnemyStat, amount: int	) -> void:
+	if minion_stat == null or amount <= 0:
+		return
+		
+	var empty_indices: Array[int] = _get_available_spawn_indices()
+	var spawn_count: int = mini(amount, empty_indices.size())
+	
+	for i in range(spawn_count):
+		var target_index: int = empty_indices[i]
+		_spawn_single_enemy(minion_stat, enemy_position[target_index])
+
+func _get_available_spawn_indices() -> Array[int]:
+	var occupied_positions: Array[Vector2] = []
+	for child in get_children():
+		if child is EnemyBase and not child.is_queued_for_deletion():
+			occupied_positions.append(child.global_position)
+			
+	var free_indices: Array[int] = []
+	for i in range(enemy_position.size()):
+		var pos: Vector2 = enemy_position[i]
+		if not occupied_positions.has(pos):
+			free_indices.append(i)
+			
+	return free_indices
+
+func _spawn_single_enemy(stat: EnemyStat, spawn_pos: Vector2) -> void:
+	var scene_to_spawn: PackedScene = enemy_scene
+	if stat.custom_enemy_scene != null:
+		scene_to_spawn = stat.custom_enemy_scene
+		
+	if scene_to_spawn != null:
+		var enemy_instance: EnemyBase = scene_to_spawn.instantiate() as EnemyBase
+		enemy_instance.stats = stat
+		enemy_instance.global_position = spawn_pos
+		add_child(enemy_instance)
 
 func _setup_wave_from_map() -> void:
 	wave_queue.clear()
