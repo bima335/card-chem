@@ -3,10 +3,11 @@
 [ext_resource type="Script" uid="uid://bkycgeu0v82k" path="res://map/map_manager.gd" id="1_xrkvi"]
 [ext_resource type="PackedScene" uid="uid://duwa2rq4fgcsj" path="res://map/map_node.tscn" id="2_q2h2y"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="3_rdi2l"]
-[ext_resource type="Resource" uid="uid://b1loydl5u6sls" path="res://enemy/res/dummy_enemy1.tres" id="4_ab781"]
-[ext_resource type="Resource" uid="uid://2u4b4bfmfag2" path="res://enemy/res/dummy_big.tres" id="5_1ym7n"]
+[ext_resource type="Resource" uid="uid://d1xqe638qj6vx" path="res://enemy/ferrum/res/ferrum_common.tres" id="4_jcvi6"]
+[ext_resource type="Resource" uid="uid://uqxxw766mt6t" path="res://enemy/ferrum/res/ferrum_elite.tres" id="5_1ym7n"]
 [ext_resource type="Texture2D" uid="uid://5oly4a3ev0cm" path="res://assets/backgrounds/tengah_map_tree.png" id="5_jcvi6"]
 [ext_resource type="Texture2D" uid="uid://b8dcrvgw6kxhe" path="res://assets/backgrounds/top_map_tree.png" id="6_1ym7n"]
+[ext_resource type="Resource" uid="uid://ioayte3s2jxw" path="res://enemy/ferrum/res/ferrum_boss.tres" id="6_ubh7o"]
 
 [node name="MapScene" type="Control" unique_id=1082545900]
 layout_mode = 3
@@ -30,7 +31,7 @@ vertical_scroll_mode = 3
 layout_mode = 2
 script = ExtResource("1_xrkvi")
 map_node_scene = ExtResource("2_q2h2y")
-all_available_enemies = Array[ExtResource("3_rdi2l")]([ExtResource("4_ab781"), ExtResource("5_1ym7n")])
+all_available_enemies = Array[ExtResource("3_rdi2l")]([ExtResource("4_jcvi6"), ExtResource("5_1ym7n"), ExtResource("6_ubh7o")])
 section_wallpapers = Array[Texture2D]([ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("6_1ym7n")])
 
 [node name="BtnUp" type="Button" parent="." unique_id=691623035]

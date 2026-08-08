@@ -43,6 +43,12 @@ func _ready() -> void:
 	
 	base_sprite_y = sprite.position.y
 	EventBus.enemy_selected.connect(_on_any_enemy_selected)
+	
+	_setup_enemy()
+
+# Hook virtual untuk inisialisasi kelas turunan
+func _setup_enemy() -> void:
+	pass
 
 func _update_hp_text() -> void:
 	if hp_label:
@@ -57,32 +63,33 @@ func _adjust_sprite_scale() -> void:
 	shape.size = original_size * scale_factor
 	collision_shape.shape = shape
 
-## --- FUNGSI AI PENENTU GERAKAN (YANG SEBELUMNYA HILANG) ---
 func determine_next_move() -> EnemyAction:
 	if stats == null or stats.moveset.is_empty():
-		push_error("EnemyBase: " + (stats.enemy_name if stats else name) + " tidak memiliki moveset di Inspector!")
+		push_error("EnemyBase: " + (stats.enemy_name if stats else name) + " tidak memiliki moveset!")
 		return null
 		
-	# Memilih jurus secara acak dari Resource moveset
-	var chosen_action: EnemyAction = stats.moveset.pick_random()
-	return chosen_action
+	return stats.moveset.pick_random()
 
 func start_turn_process() -> void:
+	_on_turn_started()
+
 	if is_stunned:
-		print(stats.enemy_name, " ter-stun dan tidak bisa bergerak turn ini!")
 		is_stunned = false
 		remove_status(StatusAilment.AilmentType.STUN)
 		return
 
 	if burn_stacks > 0:
 		var burn_damage = 5
-		print(stats.enemy_name, " menerima ", burn_damage, " damage dari Burn!")
 		take_damage(burn_damage)
 		burn_stacks = max(0, burn_stacks - 1)
 		if burn_stacks == 0:
 			remove_status(StatusAilment.AilmentType.BURN)
 
 	decrease_status_durations()
+
+# Hook virtual untuk logika diawal turn
+func _on_turn_started() -> void:
+	pass
 
 func execute_move(action: EnemyAction) -> void:
 	if is_stunned or action == null:
@@ -106,14 +113,17 @@ func take_damage(amount: int) -> void:
 		else:
 			damage_multiplier = 1.5
 			
-	
 	if has_status(StatusAilment.AilmentType.BURN):
 		if has_status(StatusAilment.AilmentType.VOLATILE):
 			remove_status(StatusAilment.AilmentType.BURN)
 			remove_status(StatusAilment.AilmentType.VOLATILE)
 	
+	var base_calculated_damage = int(amount * damage_multiplier)
 	
-	var final_damage = int(amount * damage_multiplier)
+	var reduction_pct = _calculate_custom_damage_reduction()
+	var final_damage = int(base_calculated_damage * (1.0 - reduction_pct))
+	final_damage = max(0, final_damage)
+
 	current_hp = clampi(current_hp - final_damage, 0, stats.max_hp)
 	
 	var tween = create_tween()
@@ -124,23 +134,26 @@ func take_damage(amount: int) -> void:
 	flash_tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	flash_tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 	
+	_on_health_changed(current_hp)
+
 	if current_hp <= 0:
 		EventBus.enemy_died.emit(self)
-		queue_free()
+		die()
+
+func _calculate_custom_damage_reduction() -> float:
+	return 0.0
+
+func _on_health_changed(_new_hp: int) -> void:
+	pass
 
 func add_toxic_stack(amount: int) -> void:
 	toxic_stacks += amount
-	print(stats.enemy_name, " mendapat Toxic stack. Total: ", toxic_stacks)
-	
 	if toxic_stacks >= 5:
 		trigger_poison_explosion()
 
 func trigger_poison_explosion() -> void:
-	print("POISON MELEDAK pada ", stats.enemy_name)
 	toxic_stacks = max(0, toxic_stacks - 5)
-	
 	take_damage(15)
-	
 	is_stunned = true
 	var stun_resource = StatusAilment.new()
 	stun_resource.ailment = StatusAilment.AilmentType.STUN
@@ -246,3 +259,6 @@ func _become_deselected() -> void:
 	create_tween().tween_property(self, "scale", Vector2.ONE, 0.2)
 	if float_tween and float_tween.is_valid(): float_tween.kill()
 	create_tween().tween_property(sprite, "position:y", base_sprite_y, 0.2)
+
+func die() -> void:
+	queue_free()

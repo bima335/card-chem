@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://jtxcjua5i0y8"]
+
+[ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_7j3ic"]
+[ext_resource type="Script" uid="uid://dek3p2uy70qlw" path="res://enemy/ferrum/enemy_ferrum.gd" id="2_s12ld"]
+
+[node name="EnemyFerrum" unique_id=181012001 instance=ExtResource("1_7j3ic")]
+script = ExtResource("2_s12ld")
+tier = 0
+stats = null

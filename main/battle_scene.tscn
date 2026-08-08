@@ -16,7 +16,9 @@
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
+[ext_resource type="Resource" uid="uid://otourkerimal" path="res://card/resources/atk/water.tres" id="15_6ojnn"]
 [ext_resource type="Resource" uid="uid://dpg4l0kf5u7mo" path="res://ailments/res/burn.tres" id="15_xre4y"]
+[ext_resource type="Resource" uid="uid://b1nye4430c7yv" path="res://card/resources/buff/c_shield.tres" id="16_dairb"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 script = ExtResource("1_m1b1k")
@@ -69,6 +71,7 @@ card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardG
 [node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
 script = ExtResource("10_0hkaa")
 card_ui_scene = ExtResource("2_csnlq")
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn"), ExtResource("16_dairb"), ExtResource("5_j5qo7")])
 reward_backdrop = NodePath("../../UI/RewardBackdrop")
 reward_title = NodePath("../../UI/RewardBackdrop/VBoxContainer/TtileLabel")
 reward_card_grid = NodePath("../../UI/RewardBackdrop/VBoxContainer/RewardCardGrid")

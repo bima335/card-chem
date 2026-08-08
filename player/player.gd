@@ -19,7 +19,10 @@ var shield: int = 0
 func _ready() -> void:
 	if not EventBus.player_took_damage.is_connected(take_damage):
 		EventBus.player_took_damage.connect(take_damage)
-
+		
+	if EventBus.has_signal("siphon_token_requested"):
+		EventBus.siphon_token_requested.connect(_on_siphon_token_requested)
+	
 func reset_for_battle() -> void:
 	shield = 0
 	carbon = 3
@@ -59,6 +62,9 @@ func take_damage(amount: int) -> void:
 	GameManager.player_current_hp = current_hp
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
 	
+	print("amount: ", amount)
+	print("actual: ", actual_damage)
+	
 	if current_hp <= 0:
 		print("HP Habis! GAME OVER!")
 
@@ -75,4 +81,17 @@ func pay_for_card(card: CardData) -> void:
 	hydrogen = clampi(hydrogen - card.cost_hydrogen, 0, MAX_TOKEN)
 	oxygen = clampi(oxygen - card.cost_oxygen, 0, MAX_TOKEN)
 	nitrogen = clampi(nitrogen - card.cost_nitrogen, 0, MAX_TOKEN)
+	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
+
+func _on_siphon_token_requested(token_type: String, amount: int) -> void:
+	match token_type:
+		"oxygen":
+			oxygen = max(0, oxygen - amount)
+		"carbon":
+			carbon = max(0, carbon - amount)
+		"hydrogen":
+			hydrogen = max(0, hydrogen - amount)
+		"nitrogen":
+			nitrogen = max(0, nitrogen - amount)
+			
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)

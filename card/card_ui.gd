@@ -3,14 +3,16 @@ extends TextureButton
 
 var data: CardData
 
+var is_preview: bool = false
+
 var hover_tween: Tween
 @export var hover_scale: Vector2 = Vector2(1.2, 1.2)
 @export var hover_rotation_degrees: float = 3.0
 @export var animation_duration: float = 0.25
 
-@onready var name_label = $TooltipPanel/VBoxContainer/Name
-@onready var cost_label = $TooltipPanel/VBoxContainer/Cost
-@onready var tooltip_panel = $TooltipPanel
+@onready var name_label: Label = $TooltipPanel/VBoxContainer/Name
+@onready var cost_label: Label = $TooltipPanel/VBoxContainer/Cost
+@onready var tooltip_panel: PanelContainer = $TooltipPanel
 
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)

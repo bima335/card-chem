@@ -8,8 +8,8 @@ var is_map_generated: bool = false
 var available_paths: Array[Vector2i] = []
 var history_path: Array[Vector2i] = []
 
-var player_current_hp: int = 50
-var player_max_hp: int = 50
+var player_current_hp: int = 1000
+var player_max_hp: int = 1000
 var active_event_type: MapNodeData.NodeType
 var shop_coins: int = 0
 var player_deck: Array[CardData] = []
@@ -44,13 +44,13 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, pool_enemie
 				
 			elif floor_idx == 0:
 
-				node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
-				var tutorial_pool = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.SMALL)
+				node_data.type = MapNodeData.NodeType.BATTLE_HARD
+				var tutorial_pool = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.BIG)
 				
 				if not tutorial_pool.is_empty():
 					var first_stage_wave: Array[EnemyStat] = []
 					var selected_enemy: EnemyStat = tutorial_pool.pick_random()
-					for i in range(3):
+					for i in range(1):
 						first_stage_wave.append(selected_enemy)
 					node_data.wave_data = first_stage_wave
 				else:

@@ -12,9 +12,11 @@ extends Node
 
 signal effect_target_requested(effect_name: String)
 
-func setup() -> void:
-	if skip_button and not skip_button.pressed.is_connected(_return_to_map):
-		skip_button.pressed.connect(_return_to_map)
+# Gunakan _ready() agar dieksekusi otomatis oleh Godot saat node siap
+func _ready() -> void:
+	if skip_button:
+		if not skip_button.pressed.is_connected(_return_to_map):
+			skip_button.pressed.connect(_return_to_map)
 
 func show_reward_screen() -> void:
 	GameManager.shop_coins += 10
@@ -78,7 +80,6 @@ func _on_effect_chosen(effect_name: String) -> void:
 	effect_target_requested.emit(effect_name)
 
 func apply_effect_to_card(target_card: CardData, active_effect: String) -> void:
-	# PERBAIKAN: Menyesuaikan enum CardData.EffectCoat yang baru
 	match active_effect:
 		"UNSTABLE":
 			target_card.coat = CardData.EffectCoat.UNSTABLE

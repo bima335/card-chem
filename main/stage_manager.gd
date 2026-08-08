@@ -57,13 +57,18 @@ func _spawn_wave(wave_data: Array) -> void:
 	for i in range(wave_data.size()):
 		var stat: EnemyStat = wave_data[i]
 		var spawn_pos: Vector2 = enemy_position[start_index + i]
-		if enemy_scene != null:
-			var enemy_instance: EnemyBase = enemy_scene.instantiate() as EnemyBase
+
+		var scene_to_spawn: PackedScene = enemy_scene
+		if stat.custom_enemy_scene != null:
+			scene_to_spawn = stat.custom_enemy_scene
+			
+		if scene_to_spawn != null:
+			var enemy_instance: EnemyBase = scene_to_spawn.instantiate() as EnemyBase
 			enemy_instance.stats = stat
 			enemy_instance.global_position = spawn_pos
 			add_child(enemy_instance)
 		else:
-			push_error("GAGAL SPAWN: 'Enemy Scene' di Inspector StageManager masih kosong!")
+			push_error("GAGAL SPAWN: Tidak ada PackedScene valid untuk di-instantiate!")
 
 func get_sorted_active_enemies() -> Array[EnemyBase]:
 	var enemies: Array[EnemyBase] = []
@@ -101,15 +106,15 @@ func execute_enemies_turn() -> void:
 		return
 		
 	for enemy in active_enemies:
-		if is_instance_valid(enemy):
-			# PERBAIKAN: Panggil start_turn_process() untuk Burn damage, Stun, & durasi status
+		if is_instance_valid(enemy) and not enemy.is_queued_for_deletion():
 			enemy.start_turn_process()
-			
-			var action = enemy.determine_next_move()
-			if action != null:
-				enemy.execute_move(action)
-			
-			await get_tree().create_timer(0.8).timeout
+
+			if is_instance_valid(enemy) and not enemy.is_queued_for_deletion():
+				var action = enemy.determine_next_move()
+				if action != null:
+					enemy.execute_move(action)
+				
+				await get_tree().create_timer(0.8).timeout
 			
 	enemy_turn_ended.emit()
 

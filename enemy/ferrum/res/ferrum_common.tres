@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyStat" format=3 uid="uid://d1xqe638qj6vx"]
+
+[ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_101dh"]
+[ext_resource type="PackedScene" uid="uid://jtxcjua5i0y8" path="res://enemy/ferrum/enemy_ferrum.tscn" id="1_lw45f"]
+[ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_embsr"]
+[ext_resource type="Texture2D" uid="uid://cy60xrwfnvwhw" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_00.png" id="4_u0csb"]
+
+[resource]
+script = ExtResource("2_embsr")
+enemy_name = "Ferrum Common"
+max_hp = 45
+texture = ExtResource("4_u0csb")
+custom_enemy_scene = ExtResource("1_lw45f")
+metadata/_custom_type_script = "uid://brndm7sxcapx3"

@@ -99,14 +99,16 @@ func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager
 				var vol_status = StatusAilment.new()
 				vol_status.ailment = StatusAilment.AilmentType.VOLATILE
 				enemy.apply_status(vol_status, 1)
-				if enemy.has_status(StatusAilment.AilmentType.BURN):
+				if target.has_status(StatusAilment.AilmentType.BURN):
 					var adjacent = stage_manager.get_adjacent_enemies(target)
-					var splash_dmg = (enemy.burn_stacks * 7) / 3
+					var splash_dmg = (target.burn_stacks * 70) / 3
 					if adjacent["left"] != null:
 						adjacent["left"].take_damage(splash_dmg)
 					if adjacent["right"] != null:
 						adjacent["right"].take_damage(splash_dmg)
-					enemy.take_damage(enemy.burn_stacks * 7)
+					target.take_damage(enemy.burn_stacks * 70)
+					target.burn_stacks = 0
+					
 		_apply_card_statuses(card_data, enemy)
 
 func _apply_card_statuses(card_data: CardData, enemy: EnemyBase) -> void:

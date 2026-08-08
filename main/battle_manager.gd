@@ -41,7 +41,7 @@ func _connect_signals() -> void:
 	player.stats_updated.connect(ui_manager.update_player_stats)
 	player.coins_updated.connect(ui_manager.update_tokens)
 	
-	stage_manager.enemy_turn_ended.connect(_start_player_turn)
+	stage_manager.enemy_turn_ended.connect(_on_enemy_turn_completed)
 	stage_manager.wave_cleared.connect(_on_wave_cleared)
 	stage_manager.round_won.connect(_on_round_won)
 	
@@ -56,11 +56,15 @@ func _prepare_starting_deck() -> void:
 			if not available_cards.is_empty():
 				GameManager.player_deck.append(available_cards.pick_random())
 
-	# PERBAIKAN: Duplikasi Resource kartu agar perubahan di Battle tidak mengacak-acak GameManager secara permanen
 	for card in GameManager.player_deck:
 		var card_copy = card.duplicate(true) as CardData
 		deck.add_card(card_copy)
 		
+	_start_player_turn()
+
+func _on_enemy_turn_completed() -> void:
+	EventBus.round_ended.emit()
+	
 	_start_player_turn()
 
 func _start_player_turn() -> void:
@@ -72,6 +76,8 @@ func _start_player_turn() -> void:
 	else:
 		player.gain_tokens(current_round)
 		current_round += 1
+		
+	EventBus.round_started.emit()
 	
 	var cards_to_draw: int = hand.max_hand_size - hand.cards_in_hand.size()
 	for i in range(cards_to_draw):
@@ -101,7 +107,6 @@ func _play_card(clicked_ui: CardUI, card_data: CardData) -> void:
 		ui_manager.reject_play(clicked_ui)
 		return
 
-	# PERBAIKAN: Menyesuaikan signature eksekusi CardResolver yang baru
 	var success = card_resolver.execute_card_logic(card_data, player, current_target, stage_manager)
 	
 	if success:

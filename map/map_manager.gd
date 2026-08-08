@@ -170,7 +170,7 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 			print("Singgah di fasilitas damai. Melanjutkan langsung ke lantai berikutnya...")
 			GameManager.active_event_type = node_data.type
 			get_tree().change_scene_to_file("res://event/event_scene.tscn")
-		MapNodeData.NodeType.BATTLE_NORMAL, MapNodeData.NodeType.BATTLE_HARD:
+		MapNodeData.NodeType.BATTLE_NORMAL, MapNodeData.NodeType.BATTLE_HARD, MapNodeData.NodeType.BOSS:
 			GameManager.current_wave_data = node_data.wave_data
 			get_tree().change_scene_to_file("res://main/battle_scene.tscn")
 
