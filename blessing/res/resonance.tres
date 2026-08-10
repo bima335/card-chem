@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://byajmsgsturl4"]
+
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_ig4ij"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_jcaca"]
+
+[resource]
+script = ExtResource("1_ig4ij")
+name = "Resonance"
+description = "Heal 2 HP on combo"
+icon = ExtResource("1_jcaca")
+buy_price = 22
+sell_price = 11
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"

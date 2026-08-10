@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://b1folfgnn1b2q"
 EventBus="*uid://wr80w5hspfcd"
 GameManager="*uid://cjueth0ijpwir"
 SoundManager="*uid://dolvy1javft0v"
+BlessingManager="*uid://d15kmdy5ipw3x"
 
 [display]
 

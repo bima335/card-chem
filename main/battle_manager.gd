@@ -15,18 +15,19 @@ var current_state: TurnState = TurnState.PLAYER
 @onready var reward_handler: BattleRewardHandler = $Subsystems/BattleRewardHandler
 @onready var card_resolver: CardResolver = $Subsystems/CardResolver
 
-var current_round: int = 1
 var is_first_turn: bool = true
 var current_target: EnemyBase = null
 
 var is_selecting_effect_target: bool = false
 var active_effect_choice: String = ""
+var accumulated_gold: int = 0
 
 func _ready() -> void:
 	SoundManager.play_bgm("battle_theme")
 	_connect_signals()
 	
-	current_round = 1
+	accumulated_gold = 0
+	GameManager.reset_round()
 	is_first_turn = true
 	player.reset_for_battle()
 	_prepare_starting_deck()
@@ -64,7 +65,6 @@ func _prepare_starting_deck() -> void:
 
 func _on_enemy_turn_completed() -> void:
 	EventBus.round_ended.emit()
-	
 	_start_player_turn()
 
 func _start_player_turn() -> void:
@@ -74,10 +74,10 @@ func _start_player_turn() -> void:
 	if is_first_turn:
 		is_first_turn = false
 	else:
-		player.gain_tokens(current_round)
-		current_round += 1
+		player.gain_tokens(GameManager.current_round)
+		GameManager.advance_round()
 		
-	EventBus.round_started.emit()
+	EventBus.round_started.emit(GameManager.current_round)
 	
 	var cards_to_draw: int = hand.max_hand_size - hand.cards_in_hand.size()
 	for i in range(cards_to_draw):
@@ -95,8 +95,73 @@ func _draw_single_card() -> void:
 
 func _on_card_added_to_hand(new_card_data: CardData) -> void:
 	ui_manager.animate_draw_card(new_card_data, func(real_card_ui: CardUI):
-		real_card_ui.pressed.connect(_play_card.bind(real_card_ui, new_card_data))
+		real_card_ui.drag_ended.connect(_on_card_drag_ended.bind(new_card_data))
 	)
+
+func _on_card_drag_ended(card_ui: CardUI, drop_position: Vector2, card_data: CardData) -> void:
+	if current_state != TurnState.PLAYER:
+		card_ui.return_to_hand()
+		return
+
+	if _is_dropped_on_discard(drop_position):
+		_manual_discard_card(card_ui, card_data)
+		return
+
+	if card_data.card_type == CardData.CardType.BUFF:
+		var hovered_enemy = _get_enemy_at_position(drop_position)
+		if hovered_enemy != null:
+			ui_manager.reject_play(card_ui)
+			card_ui.return_to_hand()
+			return
+
+	var target_enemy = _get_enemy_at_position(drop_position)
+	if target_enemy == null:
+		target_enemy = current_target
+
+	_play_card_with_target(card_ui, card_data, target_enemy)
+
+func _play_card_with_target(clicked_ui: CardUI, card_data: CardData, target: EnemyBase) -> void:
+	if not player.can_afford(card_data):
+		ui_manager.reject_play(clicked_ui)
+		clicked_ui.return_to_hand()
+		return
+
+	var success = card_resolver.execute_card_logic(card_data, player, target, stage_manager)
+	
+	if success:
+		hand.remove_card(card_data)
+		deck.add_to_discard(card_data)
+		clicked_ui.queue_free()
+	else:
+		ui_manager.reject_play(clicked_ui)
+		clicked_ui.return_to_hand()
+
+func _manual_discard_card(card_ui: CardUI, card_data: CardData) -> void:
+	hand.remove_card(card_data)
+	deck.add_to_discard(card_data)
+	card_ui.queue_free()
+	
+	player.add_random_token(1)
+	
+	EventBus.card_manually_discarded.emit(card_data)
+
+func _is_dropped_on_discard(drop_position: Vector2) -> bool:
+	var discard_rect = ui_manager.discard_visual.get_global_rect()
+	return discard_rect.has_point(drop_position)
+
+func _get_enemy_at_position(pos: Vector2) -> EnemyBase:
+	for child in stage_manager.get_children():
+		if child is EnemyBase and is_instance_valid(child) and not child.is_queued_for_deletion():
+			var space_state = get_world_2d().direct_space_state
+			var query = PhysicsPointQueryParameters2D.new()
+			query.position = pos
+			query.collide_with_areas = true
+			var results = space_state.intersect_point(query)
+			
+			for result in results:
+				if result.collider.get_parent() == child:
+					return child
+	return null
 
 func _play_card(clicked_ui: CardUI, card_data: CardData) -> void:
 	if current_state != TurnState.PLAYER:
@@ -142,13 +207,19 @@ func _on_enemy_selected(enemy: EnemyBase) -> void:
 func _on_enemy_died(dead_enemy: EnemyBase) -> void:
 	if current_target == dead_enemy:
 		current_target = null
+		
+	if dead_enemy and dead_enemy.stats:
+		accumulated_gold += dead_enemy.stats.gold_out
 
 func _on_wave_cleared() -> void:
 	_discard_hand_to_deck()
+	GameManager.reset_round()
 	_start_player_turn()
 
 func _on_round_won() -> void:
 	ui_manager.end_turn_button.disabled = true
+	if accumulated_gold > 0:
+		GameManager.add_shop_coins(accumulated_gold)
 	await get_tree().create_timer(1.5).timeout
 	reward_handler.show_reward_screen()
 

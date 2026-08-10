@@ -1,40 +1,35 @@
 class_name WaveGenerator
 extends RefCounted
 
-static func generate_wave(node_type: int, pool_enemies: Array[EnemyStat]) -> Array[EnemyStat]:
+static func generate_wave(
+	node_type: int, 
+	section: SectionData, 
+	global_common: Array[EnemyStat], 
+	global_elite: Array[EnemyStat]
+) -> Array[EnemyStat]:
+	
 	var generated_wave: Array[EnemyStat] = []
 	
-	if pool_enemies.is_empty():
-		push_error("WaveGenerator: pool_enemies kosong!")
+	if section == null:
+		push_error("WaveGenerator: SectionData bernilai null!")
 		return generated_wave
-		
-	if node_type == 0: # Normal Battle (SMALL)
-		var small_pool: Array[EnemyStat] = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.SMALL)
-		if small_pool.is_empty(): small_pool = pool_enemies
-			
-		var enemy_count: int = randi_range(1, 3)
-		for i in range(enemy_count):
-			generated_wave.append(small_pool.pick_random())
-			
-	elif node_type == 1: # Hard Battle (BIG)
-		var big_pool: Array[EnemyStat] = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.BIG)
-		if big_pool.is_empty():
-			push_warning("WaveGenerator: Tidak menemukan musuh BIG! Menggunakan SMALL.")
-			big_pool = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.SMALL)
-			
-		if not big_pool.is_empty():
-			generated_wave.append(big_pool.pick_random())
-			
-		if randf() > 0.5:
-			var small_pool: Array[EnemyStat] = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.SMALL)
-			if not small_pool.is_empty():
-				generated_wave.append(small_pool.pick_random())
 
-	elif node_type == 2: # Boss Battle (BOSS)
-		var boss_pool: Array[EnemyStat] = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.BOSS)
-		if boss_pool.is_empty():
-			push_error("WaveGenerator: Tidak menemukan musuh BOSS di pool_enemies!")
-		else:
-			generated_wave.append(boss_pool.pick_random())
-				
+	match node_type:
+		0: # Normal Battle (1 Exclusive Common + 1 Global Common)
+			_append_random_enemy(generated_wave, section.exclusive_common, "Exclusive Common")
+			_append_random_enemy(generated_wave, global_common, "Global Common")
+			
+		1: # Hard Battle (1 Exclusive Elite + 1 Global Elite)
+			_append_random_enemy(generated_wave, section.exclusive_elite, "Exclusive Elite")
+			_append_random_enemy(generated_wave, global_elite, "Global Elite")
+
+		2: # Boss Battle (1 Exclusive Boss)
+			_append_random_enemy(generated_wave, section.exclusive_boss, "Exclusive Boss")
+
 	return generated_wave
+
+static func _append_random_enemy(target_array: Array[EnemyStat], source_pool: Array[EnemyStat], pool_name: String) -> void:
+	if not source_pool.is_empty():
+		target_array.append(source_pool.pick_random())
+	else:
+		push_warning("WaveGenerator: Pool %s kosong saat melakukan generation!" % pool_name)

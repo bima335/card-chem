@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SectionData" format=3 uid="uid://d0hnw12tuwdo"]
+
+[ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="1_0lfpy"]
+[ext_resource type="Script" uid="uid://dncorhl3akjyt" path="res://map/sections/section_data.gd" id="2_owjho"]
+[ext_resource type="Resource" uid="uid://b22v161baskb2" path="res://enemy/cobalt/res/cobalt_boss.tres" id="2_rnuc1"]
+[ext_resource type="Resource" uid="uid://bcjwouj1xdml0" path="res://enemy/cobalt/res/cobalt_common.tres" id="3_02txh"]
+[ext_resource type="Resource" uid="uid://ca3u8s6esuegx" path="res://enemy/cobalt/res/cobalt_elite.tres" id="4_3o66b"]
+
+[resource]
+script = ExtResource("2_owjho")
+section_name = "Section Cobalt"
+exclusive_common = Array[ExtResource("1_0lfpy")]([ExtResource("3_02txh")])
+exclusive_elite = Array[ExtResource("1_0lfpy")]([ExtResource("4_3o66b")])
+exclusive_boss = Array[ExtResource("1_0lfpy")]([ExtResource("2_rnuc1")])
+metadata/_custom_type_script = "uid://dncorhl3akjyt"

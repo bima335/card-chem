@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dprdx160u3qe7"]
+
+[ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_w5jle"]
+[ext_resource type="Script" uid="uid://rs88ne5y2ilf" path="res://enemy/neon/enemy_neon.gd" id="2_och3b"]
+
+[node name="EnemyNeon" unique_id=181012001 instance=ExtResource("1_w5jle")]
+script = ExtResource("2_och3b")
+minion_stat = null
+stats = null

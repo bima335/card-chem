@@ -10,5 +10,6 @@ script = ExtResource("2_embsr")
 enemy_name = "Ferrum Common"
 max_hp = 45
 texture = ExtResource("4_u0csb")
+gold_out = 3
 custom_enemy_scene = ExtResource("1_lw45f")
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

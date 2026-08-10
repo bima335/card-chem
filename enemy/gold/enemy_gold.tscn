@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dgtg4sk12kirn"]
+
+[ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_x6yus"]
+[ext_resource type="Script" uid="uid://b5wewrec7faac" path="res://enemy/gold/enemy_gold.gd" id="2_gmwh6"]
+
+[node name="EnemyGold" unique_id=181012001 instance=ExtResource("1_x6yus")]
+script = ExtResource("2_gmwh6")
+stats = null

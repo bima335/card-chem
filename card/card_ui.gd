@@ -1,11 +1,20 @@
 class_name CardUI
 extends TextureButton
 
-var data: CardData
+signal drag_started(card_ui: CardUI)
+signal drag_ended(card_ui: CardUI, drop_position: Vector2)
 
+var data: CardData
 var is_preview: bool = false
+var is_dragging: bool = false
+var is_returning: bool = false
+
+var drag_offset: Vector2 = Vector2.ZERO
+var home_global_position: Vector2 = Vector2.ZERO
 
 var hover_tween: Tween
+var return_tween: Tween
+
 @export var hover_scale: Vector2 = Vector2(1.2, 1.2)
 @export var hover_rotation_degrees: float = 3.0
 @export var animation_duration: float = 0.25
@@ -14,34 +23,137 @@ var hover_tween: Tween
 @onready var cost_label: Label = $TooltipPanel/VBoxContainer/Cost
 @onready var tooltip_panel: PanelContainer = $TooltipPanel
 
+
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	gui_input.connect(_on_gui_input)
+	
+	_setup_tooltip_text()
 
-func _process(_delta: float) -> void:
-	if data:
-		modulate = data.modulate
 
 func setup(card_data: CardData) -> void:
 	data = card_data
 	texture_normal = data.card_texture
 	if texture_normal:
 		pivot_offset = custom_minimum_size / 2.0
+		
 	_setup_tooltip_text()
 
+
 func _setup_tooltip_text() -> void:
-	name_label.text = data.card_name
+	if not data:
+		return
+		
+	var target_name_label = _get_name_label()
+	var target_cost_label = _get_cost_label()
 	
-	var cost_string: String = ""
-	if data.cost_carbon > 0: cost_string += "[C: " + str(data.cost_carbon) + "] "
-	if data.cost_hydrogen > 0: cost_string += "[H: " + str(data.cost_hydrogen) + "] "
-	if data.cost_oxygen > 0: cost_string += "[O: " + str(data.cost_oxygen) + "] "
-	if data.cost_nitrogen > 0: cost_string += "[N: " + str(data.cost_nitrogen) + "] "
+	if target_name_label:
+		target_name_label.text = data.card_name
+		
+	if target_cost_label:
+		var cost_string: String = ""
+		if data.cost_carbon > 0: cost_string += "[C: " + str(data.cost_carbon) + "] "
+		if data.cost_hydrogen > 0: cost_string += "[H: " + str(data.cost_hydrogen) + "] "
+		if data.cost_oxygen > 0: cost_string += "[O: " + str(data.cost_oxygen) + "] "
+		if data.cost_nitrogen > 0: cost_string += "[N: " + str(data.cost_nitrogen) + "] "
+		
+		if cost_string == "": cost_string = "Gratis!"
+		target_cost_label.text = cost_string.strip_edges()
+
+
+func _get_name_label() -> Label:
+	if name_label:
+		return name_label
+	if has_node("TooltipPanel/VBoxContainer/Name"):
+		return get_node("TooltipPanel/VBoxContainer/Name") as Label
+	return null
+
+
+func _get_cost_label() -> Label:
+	if cost_label:
+		return cost_label
+	if has_node("TooltipPanel/VBoxContainer/Cost"):
+		return get_node("TooltipPanel/VBoxContainer/Cost") as Label
+	return null
+
+
+func _process(_delta: float) -> void:
+	if data:
+		modulate = data.modulate
 	
-	if cost_string == "": cost_string = "Gratis!"
-	cost_label.text = cost_string.strip_edges()
+	if is_dragging:
+		global_position = get_global_mouse_position() - drag_offset
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if is_preview or is_returning:
+		return
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_start_drag()
+		else:
+			_stop_drag()
+
+
+func _start_drag() -> void:
+	if is_returning:
+		return
+
+	if hover_tween and hover_tween.is_valid():
+		hover_tween.kill()
+
+	scale = Vector2.ONE
+	rotation = 0.0
+
+	home_global_position = global_position
+	drag_offset = get_global_mouse_position() - global_position
+	
+	is_dragging = true
+	z_index = 100
+	if tooltip_panel:
+		tooltip_panel.hide()
+	
+	drag_started.emit(self)
+
+
+func _stop_drag() -> void:
+	if not is_dragging:
+		return
+		
+	is_dragging = false
+	z_index = 0
+	drag_ended.emit(self, get_global_mouse_position())
+
+
+func return_to_hand() -> void:
+	is_returning = true
+	mouse_filter = MOUSE_FILTER_IGNORE
+	if tooltip_panel:
+		tooltip_panel.hide()
+
+	if return_tween and return_tween.is_valid():
+		return_tween.kill()
+
+	return_tween = create_tween().set_parallel(true)
+	return_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	
+	return_tween.tween_property(self, "global_position", home_global_position, 0.18)
+	return_tween.tween_property(self, "scale", Vector2.ONE, 0.18)
+	return_tween.tween_property(self, "rotation", 0.0, 0.18)
+
+	return_tween.finished.connect(func():
+		global_position = home_global_position
+		mouse_filter = MOUSE_FILTER_STOP
+		is_returning = false
+	)
+
 
 func _on_mouse_entered() -> void:
+	if is_dragging or is_preview or is_returning:
+		return
+		
 	SoundManager.play_sfx("card_hover")
 	z_index = 10 
 	
@@ -49,21 +161,28 @@ func _on_mouse_entered() -> void:
 	var target_rot: float = deg_to_rad(hover_rotation_degrees) * random_dir
 	_animate_hover(hover_scale, target_rot)
 
-	tooltip_panel.show()
-	tooltip_panel.reset_size() 
-	
-	var target_x: float = global_position.x + (size.x / 2.0) - (tooltip_panel.size.x / 2.0)
-	var target_y: float = global_position.y - tooltip_panel.size.y - 15.0
-	tooltip_panel.global_position = Vector2(target_x, target_y)
-	
-	tooltip_panel.modulate = Color(1, 1, 1, 0)
-	var tween = create_tween().bind_node(self)
-	tween.tween_property(tooltip_panel, "modulate", Color.WHITE, 0.15)
+	if tooltip_panel:
+		tooltip_panel.show()
+		tooltip_panel.reset_size() 
+		
+		var target_x: float = global_position.x + (size.x / 2.0) - (tooltip_panel.size.x / 2.0)
+		var target_y: float = global_position.y - tooltip_panel.size.y - 15.0
+		tooltip_panel.global_position = Vector2(target_x, target_y)
+		
+		tooltip_panel.modulate = Color(1, 1, 1, 0)
+		var tween = create_tween().bind_node(self)
+		tween.tween_property(tooltip_panel, "modulate", Color.WHITE, 0.15)
+
 
 func _on_mouse_exited() -> void:
+	if is_dragging or is_preview or is_returning:
+		return
+		
 	z_index = 0
 	_animate_hover(Vector2.ONE, 0.0) 
-	tooltip_panel.hide()
+	if tooltip_panel:
+		tooltip_panel.hide()
+
 
 func _animate_hover(target_scale: Vector2, target_rotation: float) -> void:
 	if hover_tween and hover_tween.is_valid():

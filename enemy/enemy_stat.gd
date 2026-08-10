@@ -9,5 +9,5 @@ enum EnemyTag { SMALL, BIG, BOSS, MINION}
 @export_multiline var description: String = "Deskripsi musuh."
 @export var moveset: Array[EnemyAction] = []
 @export var tag: EnemyTag = EnemyTag.SMALL
-
+@export var gold_out: int = 0
 @export var custom_enemy_scene: PackedScene = null

@@ -10,7 +10,6 @@ var max_rust_armor_stacks: int = 4
 var rust_armor_durations: Array[int] = []
 
 var current_phase: int = 1
-var round_counter: int = 1
 var player_korosi_stacks_applied: int = 0
 
 func _setup_enemy() -> void:
@@ -39,17 +38,16 @@ func _sync_tier_from_stats() -> void:
 			tier = FerrumTier.BOSS
 
 func _on_turn_started() -> void:
-	print("round:", round_counter)
+	print("round:", GameManager.current_round)
 	if tier == FerrumTier.BOSS:
 		print("Rust Armor: ", rust_armor_stacks)
-	round_counter += 1
 	_decay_rust_armor()
 
 	if tier == FerrumTier.BOSS and current_phase == 2:
 		_siphon_oxygen(2)
 
-func _on_round_started():
-	print("Round dimulai")
+func _on_round_started(current_round: int) -> void:
+	print("Round dimulai:", current_round)
 	if tier == FerrumTier.BOSS:
 		print("Round Start Armor: ", rust_armor_stacks)
 

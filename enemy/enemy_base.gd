@@ -11,6 +11,8 @@ var current_shield: int = 0
 var toxic_stacks: int = 0
 var burn_stacks: int = 0
 var is_stunned: bool = false
+var stun_duration: int = 0
+var is_targetable: bool = true
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var selection_aura: Sprite2D = $SelectionAura
@@ -46,8 +48,47 @@ func _ready() -> void:
 	
 	_setup_enemy()
 
-# Hook virtual untuk inisialisasi kelas turunan
 func _setup_enemy() -> void:
+	pass
+
+func set_stun(enable: bool, duration: int = 1, stun_resource: StatusAilment = null) -> void:
+	if enable:
+		is_stunned = true
+		stun_duration = max(1, duration)
+		
+		if stun_resource:
+			apply_status(stun_resource, stun_duration)
+		else:
+			active_statuses[StatusAilment.AilmentType.STUN] = {
+				"duration": stun_duration,
+				"resource": null
+			}
+			_update_status_ui()
+	else:
+		is_stunned = false
+		stun_duration = 0
+		remove_status(StatusAilment.AilmentType.STUN)
+		
+	_on_stun_status_changed(is_stunned, stun_duration)
+
+func toggle_stun(duration: int = 1, stun_resource: StatusAilment = null) -> void:
+	set_stun(not is_stunned, duration, stun_resource)
+
+func check_stun_duration() -> void:
+	if not is_stunned:
+		return
+		
+	stun_duration -= 1
+	
+	if active_statuses.has(StatusAilment.AilmentType.STUN):
+		active_statuses[StatusAilment.AilmentType.STUN]["duration"] = stun_duration
+		_update_status_ui()
+		
+	if stun_duration <= 0:
+		print("Free dari stun")
+		set_stun(false)
+
+func _on_stun_status_changed(_stunned: bool, _remaining_duration: int) -> void:
 	pass
 
 func _update_hp_text() -> void:
@@ -74,29 +115,34 @@ func start_turn_process() -> void:
 	_on_turn_started()
 
 	if is_stunned:
-		is_stunned = false
-		remove_status(StatusAilment.AilmentType.STUN)
+		print("Terstun")
 		return
 
 	if burn_stacks > 0:
 		var burn_damage = 5
 		take_damage(burn_damage)
+		EventBus.burn_damage_dealt.emit(burn_damage)
 		burn_stacks = max(0, burn_stacks - 1)
 		if burn_stacks == 0:
 			remove_status(StatusAilment.AilmentType.BURN)
 
 	decrease_status_durations()
 
-# Hook virtual untuk logika diawal turn
 func _on_turn_started() -> void:
 	pass
 
 func execute_move(action: EnemyAction) -> void:
-	if is_stunned or action == null:
+	if is_stunned:
+		print("Tidak Attack karena Stun")
+		check_stun_duration()
+		return
+		
+	if action == null:
 		return
 		
 	match action.type:
 		EnemyAction.ActionType.ATTACK:
+			print("Iya attack")
 			var final_atk = max(0, action.amount - toxic_stacks)
 			EventBus.player_took_damage.emit(final_atk)
 		EnemyAction.ActionType.SHIELD:
@@ -104,7 +150,33 @@ func execute_move(action: EnemyAction) -> void:
 		EnemyAction.ActionType.HEAL:
 			current_hp = clampi(current_hp + 15, 0, stats.max_hp)
 
+func set_targetable(enable: bool) -> void:
+	if is_targetable == enable:
+		return
+		
+	is_targetable = enable
+	
+	click_area.monitoring = is_targetable
+	click_area.monitorable = is_targetable
+	collision_shape.set_deferred("disabled", not is_targetable)
+	
+	if not is_targetable and is_selected:
+		EventBus.enemy_selected.emit(null)
+		
+	var target_alpha: float = 1.0 if is_targetable else 0.4
+	create_tween().tween_property(sprite, "modulate:a", target_alpha, 0.2)
+
+
+func toggle_targetable(enable: Variant = null) -> void:
+	if enable == null:
+		set_targetable(not is_targetable)
+	else:
+		set_targetable(bool(enable))
+
 func take_damage(amount: int) -> void:
+	if not is_targetable:
+		return
+		
 	var damage_multiplier = 1.0
 	
 	if has_status(StatusAilment.AilmentType.DESTABILIZE):
@@ -154,15 +226,22 @@ func add_toxic_stack(amount: int) -> void:
 func trigger_poison_explosion() -> void:
 	toxic_stacks = max(0, toxic_stacks - 5)
 	take_damage(15)
-	is_stunned = true
+	EventBus.poison_explosion_triggered.emit(self)
 	var stun_resource = StatusAilment.new()
 	stun_resource.ailment = StatusAilment.AilmentType.STUN
-	apply_status(stun_resource, 1)
+	set_stun(true, 1, stun_resource)
 
 func apply_status(status_data: StatusAilment, duration: int) -> void:
-	if status_data == null: return
+	if not is_targetable or status_data == null: 
+		return
+		
 	var ailment_id = status_data.ailment
 	
+	if ailment_id == StatusAilment.AilmentType.STUN:
+		is_stunned = true
+		stun_duration = duration
+		_on_stun_status_changed(true, duration)
+		
 	if ailment_id == StatusAilment.AilmentType.BURN:
 		burn_stacks = 3
 		
@@ -171,11 +250,17 @@ func apply_status(status_data: StatusAilment, duration: int) -> void:
 		"resource": status_data
 	}
 	_update_status_ui()
+	EventBus.enemy_status_applied.emit(self, ailment_id)
 
 func has_status(ailment_type: StatusAilment.AilmentType) -> bool:
 	return active_statuses.has(ailment_type)
 
 func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
+	if ailment_type == StatusAilment.AilmentType.STUN:
+		is_stunned = false
+		stun_duration = 0
+		_on_stun_status_changed(false, 0)
+
 	if active_statuses.has(ailment_type):
 		active_statuses.erase(ailment_type)
 		_update_status_ui()
@@ -183,6 +268,9 @@ func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
 func decrease_status_durations() -> void:
 	var keys_to_remove = []
 	for ailment_id in active_statuses.keys():
+		if ailment_id == StatusAilment.AilmentType.STUN:
+			continue
+			
 		active_statuses[ailment_id]["duration"] -= 1
 		if active_statuses[ailment_id]["duration"] <= 0:
 			keys_to_remove.append(ailment_id)
@@ -202,10 +290,11 @@ func _update_status_ui() -> void:
 		var current_duration: int = status_info["duration"]
 		
 		var icon_rect = TextureRect.new()
-		icon_rect.texture = resource_data.status_icon
+		if resource_data:
+			icon_rect.texture = resource_data.status_icon
+			icon_rect.modulate = resource_data.modulate
 		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon_rect.custom_minimum_size = Vector2(30, 30)
-		icon_rect.modulate = resource_data.modulate
 		
 		var duration_label = Label.new()
 		duration_label.text = str(current_duration)

@@ -19,7 +19,7 @@ func _ready() -> void:
 			skip_button.pressed.connect(_return_to_map)
 
 func show_reward_screen() -> void:
-	GameManager.shop_coins += 10
+	#GameManager.shop_coins += 10
 	
 	for child in reward_card_grid.get_children():
 		child.queue_free()
@@ -30,14 +30,14 @@ func show_reward_screen() -> void:
 		MapNodeData.NodeType.BATTLE_HARD:
 			_setup_hard_reward()
 		_:
-			reward_title.text = "VICTORY!\n+10 Shop Coins"
+			reward_title.text = "VICTORY!\n"
 			skip_button.show()
 			skip_button.text = "Kembali ke Peta"
 		
 	reward_backdrop.show()
 
 func _setup_normal_reward() -> void:
-	reward_title.text = "VICTORY!\n+10 Shop Coins (Total: " + str(GameManager.shop_coins) + ")\n\nPilih 1 Kartu Baru:"
+	reward_title.text = "VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPilih 1 Kartu Baru:"
 	skip_button.show() 
 	skip_button.text = "Lewati Kartu & Kembali ke Peta"
 	
@@ -54,7 +54,7 @@ func _setup_normal_reward() -> void:
 		card_ui.pressed.connect(_on_reward_card_chosen.bind(card_data))
 
 func _setup_hard_reward() -> void:
-	reward_title.text = "HARD VICTORY!\n+10 Shop Coins (Total: " + str(GameManager.shop_coins) + ")\n\nPILIH 1 EFFECT COAT UNTUK KARTUMU:"
+	reward_title.text = "HARD VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPILIH 1 EFFECT COAT UNTUK KARTUMU:"
 	skip_button.hide() 
 	
 	var effects = ["UNSTABLE", "INSULATED", "CLONE"]

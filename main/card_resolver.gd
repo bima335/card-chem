@@ -13,6 +13,7 @@ func execute_card_logic(card_data: CardData, player: Player, current_target: Ene
 		return false
 
 	player.pay_for_card(card_data)
+	EventBus.card_played.emit(card_data)
 	
 	match card_data.card_type:
 		CardData.CardType.BUFF:
