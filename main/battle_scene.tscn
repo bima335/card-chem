@@ -147,27 +147,42 @@ offset_right = 391.0
 offset_bottom = 631.0
 texture = ExtResource("20_usmio")
 
-[node name="HealthbarUnder" type="TextureProgressBar" parent="UI" unique_id=1633202673]
-offset_left = 62.0
-offset_top = 1016.0
-offset_right = 465.0
-offset_bottom = 1056.0
+[node name="HealthBar" type="VBoxContainer" parent="UI" unique_id=802559503]
+offset_left = 58.0
+offset_top = 1013.0
+offset_right = 461.0
+offset_bottom = 1079.0
+script = ExtResource("26_ukrt6")
+
+[node name="BarContainer" type="Control" parent="UI/HealthBar" unique_id=1507703577]
+layout_mode = 2
+
+[node name="HealthbarUnder" type="TextureProgressBar" parent="UI/HealthBar/BarContainer" unique_id=1633202673]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 403.0
+offset_bottom = 35.0
 value = 80.0
 texture_under = ExtResource("20_yun0f")
 texture_progress = ExtResource("21_uakwd")
 script = ExtResource("23_iew0u")
 
-[node name="ShieldBar" type="TextureProgressBar" parent="UI" unique_id=1875574328]
-offset_left = 62.0
-offset_top = 1016.0
-offset_right = 465.0
-offset_bottom = 1056.0
+[node name="ShieldBar" type="TextureProgressBar" parent="UI/HealthBar/BarContainer" unique_id=1875574328]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 4.0
+offset_right = 404.0
+offset_bottom = 35.0
 value = 20.0
 fill_mode = 1
 texture_progress = ExtResource("24_iow6o")
 script = ExtResource("23_iew0u")
 
-[node name="HealthBar" type="Label" parent="UI" unique_id=1844871540]
+[node name="StatusContainer" type="HBoxContainer" parent="UI/HealthBar" unique_id=513030977]
+layout_mode = 2
+alignment = 1
+
+[node name="HealthBarAngka" type="Label" parent="UI" unique_id=1844871540]
 offset_left = 329.0
 offset_top = 975.0
 offset_right = 388.0
