@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CoatData" format=3 uid="uid://bnxqvevk8vi6m"]
+
+[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_fg7r6"]
+[ext_resource type="Script" uid="uid://bu5meodq28pis" path="res://card/coat/coat_data.gd" id="1_secsh"]
+
+[resource]
+script = ExtResource("1_secsh")
+coat_type = 2
+coat_name = "Unstable"
+icon = ExtResource("1_fg7r6")
+buy_price = 16
+damage_multiplier = 2.0
+self_damage_ratio = 0.5
+metadata/_custom_type_script = "uid://bu5meodq28pis"

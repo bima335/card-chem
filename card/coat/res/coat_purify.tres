@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CoatData" format=3 uid="uid://5e146oywkesi"]
+
+[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_huuhg"]
+[ext_resource type="Script" uid="uid://bu5meodq28pis" path="res://card/coat/coat_data.gd" id="1_in7tk"]
+
+[resource]
+script = ExtResource("1_in7tk")
+coat_type = 5
+coat_name = "Purify"
+icon = ExtResource("1_huuhg")
+buy_price = 10
+metadata/_custom_type_script = "uid://bu5meodq28pis"

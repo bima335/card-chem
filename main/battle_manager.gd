@@ -17,9 +17,8 @@ var current_state: TurnState = TurnState.PLAYER
 
 var is_first_turn: bool = true
 var current_target: EnemyBase = null
-
+var active_effect_choice: CoatData = null
 var is_selecting_effect_target: bool = false
-var active_effect_choice: String = ""
 var accumulated_gold: int = 0
 
 func _ready() -> void:
@@ -225,13 +224,13 @@ func _on_round_won() -> void:
 	await get_tree().create_timer(1.5).timeout
 	reward_handler.show_reward_screen()
 
-func _on_effect_target_requested(effect_name: String) -> void:
-	active_effect_choice = effect_name
+func _on_effect_target_requested(chosen_coat: CoatData) -> void:
+	active_effect_choice = chosen_coat
 	is_selecting_effect_target = true
-	ui_manager.show_card_viewer(GameManager.player_deck, "PILIH 1 KARTU UNTUK DIBERIKAN COAT: " + effect_name, true)
+	ui_manager.show_card_viewer(GameManager.player_deck, "PILIH 1 KARTU UNTUK DIBERIKAN COAT: " + chosen_coat.coat_name, true)
 
 func _on_card_selected_for_effect(target_card: CardData) -> void:
 	if is_selecting_effect_target:
 		is_selecting_effect_target = false
 		reward_handler.apply_effect_to_card(target_card, active_effect_choice)
-		active_effect_choice = ""
+		active_effect_choice = null

@@ -26,6 +26,7 @@ var is_selected: bool = false
 var float_tween: Tween
 var base_sprite_y: float
 
+
 func _ready() -> void:
 	if stats:
 		current_hp = stats.max_hp
@@ -48,8 +49,10 @@ func _ready() -> void:
 	
 	_setup_enemy()
 
+
 func _setup_enemy() -> void:
 	pass
+
 
 func set_stun(enable: bool, duration: int = 1, stun_resource: StatusAilment = null) -> void:
 	if enable:
@@ -71,8 +74,10 @@ func set_stun(enable: bool, duration: int = 1, stun_resource: StatusAilment = nu
 		
 	_on_stun_status_changed(is_stunned, stun_duration)
 
+
 func toggle_stun(duration: int = 1, stun_resource: StatusAilment = null) -> void:
 	set_stun(not is_stunned, duration, stun_resource)
+
 
 func check_stun_duration() -> void:
 	if not is_stunned:
@@ -85,15 +90,17 @@ func check_stun_duration() -> void:
 		_update_status_ui()
 		
 	if stun_duration <= 0:
-		print("Free dari stun")
 		set_stun(false)
+
 
 func _on_stun_status_changed(_stunned: bool, _remaining_duration: int) -> void:
 	pass
 
+
 func _update_hp_text() -> void:
 	if hp_label:
 		hp_label.text = str(current_hp) + " / " + str(stats.max_hp)
+
 
 func _adjust_sprite_scale() -> void:
 	if sprite.texture == null: return
@@ -104,6 +111,7 @@ func _adjust_sprite_scale() -> void:
 	shape.size = original_size * scale_factor
 	collision_shape.shape = shape
 
+
 func determine_next_move() -> EnemyAction:
 	if stats == null or stats.moveset.is_empty():
 		push_error("EnemyBase: " + (stats.enemy_name if stats else name) + " tidak memiliki moveset!")
@@ -111,11 +119,11 @@ func determine_next_move() -> EnemyAction:
 		
 	return stats.moveset.pick_random()
 
+
 func start_turn_process() -> void:
 	_on_turn_started()
 
 	if is_stunned:
-		print("Terstun")
 		return
 
 	if burn_stacks > 0:
@@ -128,12 +136,13 @@ func start_turn_process() -> void:
 
 	decrease_status_durations()
 
+
 func _on_turn_started() -> void:
 	pass
 
+
 func execute_move(action: EnemyAction) -> void:
 	if is_stunned:
-		print("Tidak Attack karena Stun")
 		check_stun_duration()
 		return
 		
@@ -142,13 +151,13 @@ func execute_move(action: EnemyAction) -> void:
 		
 	match action.type:
 		EnemyAction.ActionType.ATTACK:
-			print("Iya attack")
 			var final_atk = max(0, action.amount - toxic_stacks)
 			EventBus.player_took_damage.emit(final_atk)
 		EnemyAction.ActionType.SHIELD:
 			current_shield += 10
 		EnemyAction.ActionType.HEAL:
 			current_hp = clampi(current_hp + 15, 0, stats.max_hp)
+
 
 func set_targetable(enable: bool) -> void:
 	if is_targetable == enable:
@@ -173,6 +182,7 @@ func toggle_targetable(enable: Variant = null) -> void:
 	else:
 		set_targetable(bool(enable))
 
+
 func take_damage(amount: int) -> void:
 	if not is_targetable:
 		return
@@ -191,10 +201,8 @@ func take_damage(amount: int) -> void:
 			remove_status(StatusAilment.AilmentType.VOLATILE)
 	
 	var base_calculated_damage = int(amount * damage_multiplier)
-	
 	var reduction_pct = _calculate_custom_damage_reduction()
-	var final_damage = int(base_calculated_damage * (1.0 - reduction_pct))
-	final_damage = max(0, final_damage)
+	var final_damage = max(0, int(base_calculated_damage * (1.0 - reduction_pct)))
 
 	current_hp = clampi(current_hp - final_damage, 0, stats.max_hp)
 	
@@ -212,16 +220,20 @@ func take_damage(amount: int) -> void:
 		EventBus.enemy_died.emit(self)
 		die()
 
+
 func _calculate_custom_damage_reduction() -> float:
 	return 0.0
 
+
 func _on_health_changed(_new_hp: int) -> void:
 	pass
+
 
 func add_toxic_stack(amount: int) -> void:
 	toxic_stacks += amount
 	if toxic_stacks >= 5:
 		trigger_poison_explosion()
+
 
 func trigger_poison_explosion() -> void:
 	toxic_stacks = max(0, toxic_stacks - 5)
@@ -230,6 +242,7 @@ func trigger_poison_explosion() -> void:
 	var stun_resource = StatusAilment.new()
 	stun_resource.ailment = StatusAilment.AilmentType.STUN
 	set_stun(true, 1, stun_resource)
+
 
 func apply_status(status_data: StatusAilment, duration: int) -> void:
 	if not is_targetable or status_data == null: 
@@ -252,8 +265,10 @@ func apply_status(status_data: StatusAilment, duration: int) -> void:
 	_update_status_ui()
 	EventBus.enemy_status_applied.emit(self, ailment_id)
 
+
 func has_status(ailment_type: StatusAilment.AilmentType) -> bool:
 	return active_statuses.has(ailment_type)
+
 
 func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
 	if ailment_type == StatusAilment.AilmentType.STUN:
@@ -264,6 +279,7 @@ func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
 	if active_statuses.has(ailment_type):
 		active_statuses.erase(ailment_type)
 		_update_status_ui()
+
 
 func decrease_status_durations() -> void:
 	var keys_to_remove = []
@@ -280,9 +296,10 @@ func decrease_status_durations() -> void:
 		
 	_update_status_ui()
 
+
 func _update_status_ui() -> void:
 	for child in status_container.get_children():
-		child.queue_free()
+		child.free()
 		
 	for ailment_id in active_statuses.keys():
 		var status_info = active_statuses[ailment_id]
@@ -308,6 +325,7 @@ func _update_status_ui() -> void:
 		icon_rect.add_child(duration_label)
 		status_container.add_child(icon_rect)
 
+
 func _on_click_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		SoundManager.play_sfx("enemy_select")
@@ -316,19 +334,23 @@ func _on_click_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: 
 		else:
 			EventBus.enemy_selected.emit(self)
 
+
 func _on_mouse_entered() -> void:
 	if is_selected: return
 	create_tween().tween_property(self, "scale", Vector2(1.05, 1.05), 0.1)
 
+
 func _on_mouse_exited() -> void:
 	if is_selected: return
 	create_tween().tween_property(self, "scale", Vector2.ONE, 0.1)
+
 
 func _on_any_enemy_selected(selected_enemy: EnemyBase) -> void:
 	if selected_enemy == self:
 		_become_selected()
 	else:
 		_become_deselected()
+
 
 func _become_selected() -> void:
 	if is_selected: return
@@ -341,6 +363,7 @@ func _become_selected() -> void:
 	float_tween.tween_property(sprite, "position:y", base_sprite_y - 15.0, 1.0).set_trans(Tween.TRANS_SINE)
 	float_tween.tween_property(sprite, "position:y", base_sprite_y, 1.0).set_trans(Tween.TRANS_SINE)
 
+
 func _become_deselected() -> void:
 	if not is_selected: return
 	is_selected = false
@@ -348,6 +371,7 @@ func _become_deselected() -> void:
 	create_tween().tween_property(self, "scale", Vector2.ONE, 0.2)
 	if float_tween and float_tween.is_valid(): float_tween.kill()
 	create_tween().tween_property(sprite, "position:y", base_sprite_y, 0.2)
+
 
 func die() -> void:
 	queue_free()

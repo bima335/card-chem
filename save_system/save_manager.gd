@@ -3,6 +3,7 @@ extends Node
 signal card_discovered(card_id: String)
 signal blessing_unlocked(blessing_id: BlessingData.BlessingID)
 signal aura_unlocked(aura_id: AuraCardData.AuraID)
+signal coat_discovered(coat_id: CoatData.EffectCoatType)
 signal save_completed
 signal load_completed
 
@@ -17,15 +18,18 @@ const CARD_DIRECTORY_PATHS: Array[String] = [
 
 const BLESSING_DIRECTORY_PATH: String = "res://blessing/res/"
 const AURA_DIRECTORY_PATH: String = "res://aura/res/"
+const COAT_DIRECTORY_PATH: String = "res://card/coat/res/"
 
 var all_game_cards: Array[CardData] = []
 var all_game_blessings: Array[BlessingData] = []
 var all_game_auras: Array[AuraCardData] = []
+var all_game_coats: Array[CoatData] = []
 
 var current_save: SaveData = SaveData.new()
 var card_database: Dictionary = {}
 var blessing_database: Dictionary = {}
 var aura_database: Dictionary = {}
+var coat_database: Dictionary = {}
 
 
 func _ready() -> void:
@@ -35,6 +39,8 @@ func _ready() -> void:
 	_build_blessing_database()
 	_load_all_aura_resources()
 	_build_aura_database()
+	_load_all_coat_resources()
+	_build_coat_database()
 	load_game()
 
 
@@ -135,6 +141,46 @@ func _build_aura_database() -> void:
 			aura_database[aura.aura_id] = aura
 
 
+func _load_all_coat_resources() -> void:
+	all_game_coats.clear()
+	var dir := DirAccess.open(COAT_DIRECTORY_PATH)
+	if not dir:
+		push_warning("SaveManager: Folder coat tidak ditemukan di: " + COAT_DIRECTORY_PATH)
+		return
+
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+
+	while file_name != "":
+		if not dir.current_is_dir():
+			if file_name.ends_with(".tres") or file_name.ends_with(".res"):
+				var clean_filename := file_name.trim_suffix(".remap")
+				var full_path := COAT_DIRECTORY_PATH.path_join(clean_filename)
+				var coat_res := ResourceLoader.load(full_path) as CoatData
+				if coat_res and not all_game_coats.has(coat_res):
+					all_game_coats.append(coat_res)
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+
+
+func _build_coat_database() -> void:
+	coat_database.clear()
+	for coat in all_game_coats:
+		if coat and coat.coat_type != CoatData.EffectCoatType.NONE:
+			coat_database[coat.coat_type] = coat
+
+
+func discover_coat(coat: CoatData) -> void:
+	if not coat or coat.coat_type == CoatData.EffectCoatType.NONE:
+		return
+
+	if not current_save.discovered_coat_ids.has(coat.coat_type):
+		current_save.discovered_coat_ids.append(coat.coat_type)
+		coat_discovered.emit(coat.coat_type)
+		save_game()
+
+
 func discover_card(card: CardData) -> void:
 	if not card or card.id.is_empty():
 		return
@@ -209,10 +255,14 @@ func save_game() -> void:
 	current_save.current_hp = GameManager.player_current_hp
 	current_save.max_hp = GameManager.player_max_hp
 	
-	current_save.player_deck_ids.clear()
+	current_save.player_deck_data.clear()
 	for card in GameManager.player_deck:
 		if card and not card.id.is_empty():
-			current_save.player_deck_ids.append(card.id)
+			var card_entry: Dictionary = {
+				"card_id": card.id,
+				"coat_id": card.coat_data.coat_type if card.coat_data else CoatData.EffectCoatType.NONE
+			}
+			current_save.player_deck_data.append(card_entry)
 
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
@@ -252,9 +302,15 @@ func _apply_loaded_data_to_managers() -> void:
 	GameManager.player_max_hp = current_save.max_hp
 	
 	GameManager.player_deck.clear()
-	for card_id in current_save.player_deck_ids:
+	for entry in current_save.player_deck_data:
+		var card_id: String = entry.get("card_id", "")
+		var coat_id: int = int(entry.get("coat_id", CoatData.EffectCoatType.NONE))
+		
 		if card_database.has(card_id):
-			GameManager.player_deck.append(card_database[card_id].duplicate(true))
+			var new_card: CardData = card_database[card_id].duplicate(true)
+			if coat_database.has(coat_id):
+				new_card.coat_data = coat_database[coat_id]
+			GameManager.player_deck.append(new_card)
 
 	if BlessingManager.has_method("load_player_blessings"):
 		BlessingManager.load_player_blessings(get_unlocked_blessings())

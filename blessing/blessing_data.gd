@@ -12,6 +12,7 @@ enum BlessingID {
 	RECYCLE,
 	STAND_PROUD
 }
+enum Rarity { COMMON, UNCOMMON, RARE }
 
 @export var id: BlessingID
 @export var name: String = ""
@@ -19,3 +20,4 @@ enum BlessingID {
 @export var icon: Texture2D
 @export var buy_price: int = 0
 @export var sell_price: int = 0
+@export var rarity: Rarity = Rarity.COMMON

@@ -2,7 +2,6 @@ class_name CardData
 extends Resource
 
 enum CardType { ATK, BUFF, DEBUFF, TRIGGER }
-enum EffectCoat { NONE, CLONE, UNSTABLE, INSULATED, CRYSTALIZED, PURIFY, CATALYST }
 enum TargetType { SINGLE, ALL_ENEMIES, SELF }
 enum Rarity { COMMON, UNCOMMON, RARE }
 
@@ -15,6 +14,9 @@ enum Rarity { COMMON, UNCOMMON, RARE }
 @export var card_type: CardType = CardType.ATK
 @export var target_type: TargetType = TargetType.SINGLE
 @export var can_be_reward: bool = true
+
+@export_group("Coat Mechanics")
+@export var coat_data: CoatData
 
 @export_group("Token Costs")
 @export var cost_oxygen: int = 0
@@ -35,6 +37,5 @@ enum Rarity { COMMON, UNCOMMON, RARE }
 @export var sell_value: int = 0
 
 @export_group("Status & Combo Mechanics")
-@export var coat: EffectCoat = EffectCoat.NONE
 @export var trigger_element: StatusAilment.AilmentType = StatusAilment.AilmentType.NONE
 @export var statuses_to_apply: Array[StatusAilment] = []

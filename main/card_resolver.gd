@@ -3,6 +3,7 @@ extends Node
 
 @export var burn_ailment: StatusAilment
 
+
 func execute_card_logic(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node) -> bool:
 	if not player.can_afford(card_data):
 		print("Token tidak cukup!")
@@ -29,10 +30,11 @@ func execute_card_logic(card_data: CardData, player: Player, current_target: Ene
 			return true
 			
 		CardData.CardType.TRIGGER:
-			_process_trigger_card(card_data, current_target, stage_manager)
+			_process_trigger_card(card_data, player, current_target, stage_manager)
 			return true
 			
 	return false
+
 
 func _is_target_valid(card_data: CardData, current_target: EnemyBase, stage_manager: Node) -> bool:
 	if card_data.target_type == CardData.TargetType.SELF:
@@ -46,16 +48,19 @@ func _is_target_valid(card_data: CardData, current_target: EnemyBase, stage_mana
 
 	return false
 
+
 func _has_living_enemies(stage_manager: Node) -> bool:
 	for child in stage_manager.get_children():
 		if child is EnemyBase and not child.is_queued_for_deletion():
 			return true
 	return false
 
+
 func _process_buff_card(card_data: CardData, player: Player) -> void:
 	player.add_tokens(card_data.gain_carbon, card_data.gain_hydrogen, card_data.gain_oxygen, card_data.gain_nitrogen)
 	if card_data.shield_amount > 0:
 		player.gain_shield(card_data.shield_amount)
+
 
 func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase, stage_manager: Node) -> void:
 	var targets = _get_targets(card_data, target, stage_manager)
@@ -63,28 +68,33 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 	if card_data.shield_amount > 0:
 		player.gain_shield(card_data.shield_amount)
 	
-	var base_dmg = player.base_damage + card_data.damage_amount
+	var base_dmg: int = player.base_damage + card_data.damage_amount
 	
-	if card_data.coat == CardData.EffectCoat.UNSTABLE:
-		base_dmg *= 2
-		player.take_damage(base_dmg / 2)
+	if card_data.coat_data:
+		base_dmg = card_data.coat_data.apply_damage_modifier(base_dmg)
+		var self_dmg = card_data.coat_data.calculate_self_damage(base_dmg)
+		if self_dmg > 0:
+			player.take_damage(self_dmg)
 		
 	for enemy in targets:
 		enemy.take_damage(base_dmg)
 		_apply_card_statuses(card_data, enemy)
+
 
 func _process_debuff_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> void:
 	var targets = _get_targets(card_data, target, stage_manager)
 	for enemy in targets:
 		_apply_card_statuses(card_data, enemy)
 
-func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> void:
+
+func _process_trigger_card(card_data: CardData, _player: Player, target: EnemyBase, stage_manager: Node) -> void:
 	var targets = _get_targets(card_data, target, stage_manager)
 	for enemy in targets:
 		match card_data.trigger_element:
 			StatusAilment.AilmentType.IGNITE:
 				if enemy.has_status(StatusAilment.AilmentType.OXIDIZE):
-					enemy.apply_status(burn_ailment, burn_ailment.duration)
+					if burn_ailment:
+						enemy.apply_status(burn_ailment, burn_ailment.duration)
 					enemy.remove_status(StatusAilment.AilmentType.OXIDIZE)
 					
 			StatusAilment.AilmentType.OXIDIZE:
@@ -95,22 +105,25 @@ func _process_trigger_card(card_data: CardData, target: EnemyBase, stage_manager
 					enemy.remove_status(StatusAilment.AilmentType.CORROSION)
 					
 			StatusAilment.AilmentType.VOLATILE:
-				if !enemy.has_status(StatusAilment.AilmentType.BURN) and !enemy.has_status(StatusAilment.AilmentType.POISON) and !enemy.has_status(StatusAilment.AilmentType.DESTABILIZE):
-					return
+				if not enemy.has_status(StatusAilment.AilmentType.BURN) and not enemy.has_status(StatusAilment.AilmentType.POISON) and not enemy.has_status(StatusAilment.AilmentType.DESTABILIZE):
+					continue
 				var vol_status = StatusAilment.new()
 				vol_status.ailment = StatusAilment.AilmentType.VOLATILE
 				enemy.apply_status(vol_status, 1)
-				if target.has_status(StatusAilment.AilmentType.BURN):
-					var adjacent = stage_manager.get_adjacent_enemies(target)
-					var splash_dmg = (target.burn_stacks * 70) / 3
-					if adjacent["left"] != null:
-						adjacent["left"].take_damage(splash_dmg)
-					if adjacent["right"] != null:
-						adjacent["right"].take_damage(splash_dmg)
-					target.take_damage(enemy.burn_stacks * 70)
-					target.burn_stacks = 0
+				
+				if enemy.has_status(StatusAilment.AilmentType.BURN):
+					var splash_dmg = (enemy.burn_stacks * 70) / 3
+					if stage_manager.has_method("get_adjacent_enemies"):
+						var adjacent = stage_manager.get_adjacent_enemies(enemy)
+						if adjacent.get("left") != null:
+							adjacent["left"].take_damage(splash_dmg)
+						if adjacent.get("right") != null:
+							adjacent["right"].take_damage(splash_dmg)
+					enemy.take_damage(enemy.burn_stacks * 70)
+					enemy.burn_stacks = 0
 					
 		_apply_card_statuses(card_data, enemy)
+
 
 func _apply_card_statuses(card_data: CardData, enemy: EnemyBase) -> void:
 	for status_res in card_data.statuses_to_apply:
@@ -119,6 +132,7 @@ func _apply_card_statuses(card_data: CardData, enemy: EnemyBase) -> void:
 		else:
 			enemy.apply_status(status_res, status_res.duration)
 
+
 func _get_targets(card_data: CardData, current_target: EnemyBase, stage_manager: Node) -> Array[EnemyBase]:
 	var targets: Array[EnemyBase] = []
 	if card_data.target_type == CardData.TargetType.ALL_ENEMIES:
@@ -126,6 +140,6 @@ func _get_targets(card_data: CardData, current_target: EnemyBase, stage_manager:
 			if child is EnemyBase and not child.is_queued_for_deletion():
 				targets.append(child)
 	elif card_data.target_type == CardData.TargetType.SINGLE:
-		if current_target != null and is_instance_valid(current_target):
+		if current_target != null and is_instance_valid(current_target) and not current_target.is_queued_for_deletion():
 			targets.append(current_target)
 	return targets

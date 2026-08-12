@@ -2,10 +2,12 @@ class_name JournalUI
 extends Control
 
 const TOTAL_CARDS_COUNT: int = 30
+const TOTAL_COATS_COUNT: int = 6
 const TOTAL_BLESSINGS_COUNT: int = 8
 const TOTAL_AURAS_COUNT: int = 9
 
 const CARD_UI_SCENE: PackedScene = preload("res://card/card_ui.tscn")
+const COAT_UI_SCENE: PackedScene = preload("res://card/coat/coat_ui.tscn")
 const BLESSING_UI_ITEM_SCENE: PackedScene = preload("res://ui/blessing/blessing_ui_item.tscn")
 const AURA_CARD_UI_SCENE: PackedScene = preload("res://aura/AuraCardUI.tscn")
 
@@ -20,6 +22,13 @@ const AURA_CARD_UI_SCENE: PackedScene = preload("res://aura/AuraCardUI.tscn")
 @onready var label_card_title: Label = %Label_CardTitle
 @onready var label_card_description: RichTextLabel = %Label_CardDescription
 @onready var label_card_counter: Label = %Label_CardCounter
+
+# Effect Coat References
+@onready var grid_container_coats: GridContainer = %GridContainer_Coats
+@onready var texture_coat_preview: TextureRect = %TextureRect_CoatPreview
+@onready var label_coat_title: Label = %Label_CoatTitle
+@onready var label_coat_description: RichTextLabel = %Label_CoatDescription
+@onready var label_coat_counter: Label = %Label_CoatCounter
 
 # Blessing Tokens References
 @onready var grid_container_blessings: GridContainer = %GridContainer_Blessings
@@ -126,6 +135,85 @@ func _reset_card_preview_panel() -> void:
 	texture_card_preview.texture = null
 	label_card_title.text = "Pilih Kartu"
 	label_card_description.text = "[i]Klik salah satu kartu yang telah ditemukan untuk melihat detailnya.[/i]"
+
+
+# --- EFFECT COAT ---
+
+func _setup_coats_tab() -> void:
+	_clear_container(grid_container_coats)
+	
+	var discovered_ids: Array[int] = SaveManager.current_save.discovered_coat_ids
+	var all_coats: Array[CoatData] = SaveManager.all_game_coats
+	
+	for coat_data in all_coats:
+		if not coat_data or coat_data.coat_type == CoatData.EffectCoatType.NONE:
+			continue
+			
+		var coat_ui: TextureButton = COAT_UI_SCENE.instantiate() as TextureButton
+		grid_container_coats.add_child(coat_ui)
+		
+		# Jika TextureButton memiliki method setup / texture assignment
+		if coat_ui.has_method("setup"):
+			coat_ui.setup(coat_data)
+		else:
+			coat_ui.texture_normal = coat_data.icon
+			
+		var is_discovered: bool = discovered_ids.has(coat_data.coat_type)
+		
+		if is_discovered:
+			coat_ui.modulate = unlocked_color
+			coat_ui.pressed.connect(_on_coat_item_clicked.bind(coat_data))
+		else:
+			coat_ui.modulate = locked_color
+			
+	_update_coat_counter(discovered_ids.size())
+	_reset_coat_preview_panel()
+
+
+func _on_coat_item_clicked(coat_data: CoatData) -> void:
+	_display_coat_preview(coat_data)
+
+
+func _display_coat_preview(coat_data: CoatData) -> void:
+	if not coat_data:
+		return
+		
+	texture_coat_preview.texture = coat_data.icon
+	label_coat_title.text = coat_data.coat_name
+	label_coat_description.text = _format_coat_description(coat_data)
+
+
+func _format_coat_description(coat_data: CoatData) -> String:
+	var text: String = ""
+	text += "[b]Deskripsi:[/b]\n" + coat_data.description + "\n\n"
+	
+	text += "[b]Properti Efek:[/b]\n"
+	if coat_data.damage_multiplier != 1.0:
+		text += "- Multiplier Damage: " + str(coat_data.damage_multiplier) + "x\n"
+	if coat_data.self_damage_ratio > 0.0:
+		text += "- Self Damage: " + str(coat_data.self_damage_ratio * 100.0) + "%\n"
+	if coat_data.is_retained:
+		text += "- Retain saat Turn End: Ya\n"
+	if coat_data.retain_shield_bonus > 0:
+		text += "- Shield Bonus Retain: +" + str(coat_data.retain_shield_bonus) + "\n"
+	if coat_data.is_insulated:
+		text += "- Efek Insulated: Aktif\n"
+	if coat_data.cost_reduction_amount > 0:
+		text += "- Potongan Cost: -" + str(coat_data.cost_reduction_amount) + "\n"
+
+	text += "\n[b]Ekonomi:[/b]\n"
+	text += "- Harga Beli: " + str(coat_data.buy_price) + " Gold\n"
+	return text
+
+
+func _update_coat_counter(discovered_count: int) -> void:
+	label_coat_counter.text = "EFFECT COAT TERKUMPUL\n" + str(discovered_count) + "/" + str(TOTAL_COATS_COUNT)
+
+
+func _reset_coat_preview_panel() -> void:
+	texture_coat_preview.texture = null
+	label_coat_title.text = "Pilih Coat"
+	label_coat_description.text = "[i]Klik salah satu coat yang telah ditemukan untuk melihat detailnya.[/i]"
 
 
 # --- BLESSING TOKENS ---
@@ -257,6 +345,8 @@ func _on_tab_changed(tab_index: int) -> void:
 	match tab_index:
 		0:
 			_setup_playing_cards_tab()
+		1:
+			_setup_coats_tab()
 		2:
 			_setup_blessings_tab()
 		3:

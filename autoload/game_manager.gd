@@ -21,22 +21,27 @@ var global_common_enemies: Array[EnemyStat] = []
 var global_elite_enemies: Array[EnemyStat] = []
 var sections_data: Array[SectionData] = []
 
+
 func setup_enemy_pools(common_global: Array[EnemyStat], elite_global: Array[EnemyStat], sections: Array[SectionData]) -> void:
 	global_common_enemies = common_global
 	global_elite_enemies = elite_global
 	sections_data = sections
 
+
 func reset_round() -> void:
 	current_round = 1
+
 
 func advance_round() -> int:
 	current_round += 1
 	return current_round
 
+
 func add_shop_coins(amount: int) -> void:
 	if amount <= 0:
 		return
 	shop_coins += amount
+
 
 func update_current_section_for_floor(floor_idx: int) -> void:
 	var section_idx: int = floor_idx / 5
@@ -44,6 +49,7 @@ func update_current_section_for_floor(floor_idx: int) -> void:
 		current_section = sections_data[section_idx]
 	else:
 		push_warning("GameManager: Indeks section " + str(section_idx) + " melebihi total sections_data!")
+
 
 func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first_three_shops: bool = false) -> void:
 	if is_map_generated: return
@@ -119,6 +125,7 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first
 							current_node.next_connections.append(target_pos)
 							
 	is_map_generated = true
+
 
 func set_current_section(new_section: SectionData) -> void:
 	current_section = new_section

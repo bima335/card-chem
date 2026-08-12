@@ -1,8 +1,6 @@
 class_name ShopManager
 extends Control
 
-enum ZoneType { FERRUM, COBALT, NEON }
-
 @onready var btn_buy: TextureButton = $Interactables/BtnBuy
 @onready var btn_heal: TextureButton = $Interactables/BtnHeal
 @onready var btn_sell: TextureButton = $Interactables/BtnSell
@@ -23,31 +21,21 @@ enum ZoneType { FERRUM, COBALT, NEON }
 
 @export var card_ui_scene: PackedScene
 @export var available_cards: Array[CardData] = []
+@export var available_coats: Array[CoatData] = []
 @export var available_blessings: Array[BlessingData] = []
 
 const HEAL_PRICE: int = 20
 const HEAL_AMOUNT: int = 15
 
-var current_zone: ZoneType = ZoneType.FERRUM
 var is_shop_generated: bool = false
-var pending_coat_effect: CardData.EffectCoat = CardData.EffectCoat.NONE
+var pending_coat: CoatData = null
 var pending_coat_slot_button: Button = null
 var pending_coat_price: int = 0
-
-const COAT_DATABASE: Dictionary = {
-	CardData.EffectCoat.CLONE: {"name": "Clone", "desc": "Give 1 Copy of card to deck", "price": 20},
-	CardData.EffectCoat.UNSTABLE: {"name": "Unstable", "desc": "2x dmg to enemy, 1/2 self-dmg (Only ATTACK)", "price": 16},
-	CardData.EffectCoat.INSULATED: {"name": "Insulated", "desc": "Prevent card from being drained", "price": 12},
-	CardData.EffectCoat.CRYSTALIZED: {"name": "Crystalized", "desc": "Retain status. +1 Shield if unused", "price": 14},
-	CardData.EffectCoat.PURIFY: {"name": "Purify", "desc": "Remove debuff, gain tokens, card breaks", "price": 10},
-	CardData.EffectCoat.CATALYST: {"name": "Catalyst", "desc": "Reduce cost by 1 random token", "price": 13}
-}
 
 
 func _ready() -> void:
 	SoundManager.play_bgm("shop_theme")
 	_update_coin_display()
-	_determine_current_zone()
 	
 	btn_buy.pressed.connect(_on_btn_buy_pressed)
 	btn_heal.pressed.connect(_on_btn_heal_pressed)
@@ -58,14 +46,6 @@ func _ready() -> void:
 		btn_close_buy.pressed.connect(func(): buy_panel.hide())
 	if btn_cancel_deck_select:
 		btn_cancel_deck_select.pressed.connect(func(): deck_selector_overlay.hide())
-
-
-func _determine_current_zone() -> void:
-	var section_idx: int = GameManager.current_floor / 5
-	match section_idx:
-		0: current_zone = ZoneType.FERRUM
-		1: current_zone = ZoneType.COBALT
-		_: current_zone = ZoneType.NEON
 
 
 func _update_coin_display() -> void:
@@ -97,11 +77,25 @@ func _clear_all_grids() -> void:
 	for c in coat_grid.get_children(): c.queue_free()
 	for c in blessing_grid.get_children(): c.queue_free()
 
+func _roll_rarity(common_chance: float, uncommon_chance: float, rare_chance: float) -> int:
+	var total_weight: float = common_chance + uncommon_chance + rare_chance
+	if total_weight <= 0.0:
+		return 0
+
+	var roll: float = randf() * total_weight
+	if roll < common_chance:
+		return 0 
+	elif roll < (common_chance + uncommon_chance):
+		return 1 
+	else:
+		return 2 
+
 
 func _generate_cards_stock() -> void:
 	if available_cards.is_empty():
 		return
 
+	var current_section: SectionData = GameManager.current_section
 	var chosen_cards: Array[CardData] = []
 	
 	var buff_utility_pool: Array[CardData] = available_cards.filter(
@@ -112,51 +106,79 @@ func _generate_cards_stock() -> void:
 	)
 	
 	if not buff_utility_pool.is_empty():
-		var picked = _pick_card_by_rarity(buff_utility_pool)
+		var picked = _pick_item_by_rarity(buff_utility_pool, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance)
 		chosen_cards.append(picked)
 		
 	for i in range(2):
 		var valid_atk_pool = atk_trigger_pool.filter(func(c): return not chosen_cards.has(c))
 		if not valid_atk_pool.is_empty():
-			var picked = _pick_card_by_rarity(valid_atk_pool)
+			var picked = _pick_item_by_rarity(valid_atk_pool, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance)
 			chosen_cards.append(picked)
 			
 	while chosen_cards.size() < 5:
 		var remaining_pool = available_cards.filter(func(c): return not chosen_cards.has(c))
 		if remaining_pool.is_empty():
 			break
-		var picked = _pick_card_by_rarity(remaining_pool)
+		var picked = _pick_item_by_rarity(remaining_pool, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance)
 		chosen_cards.append(picked)
 
 	for card in chosen_cards:
 		_build_card_slot_ui(card)
 
 
-func _pick_card_by_rarity(pool: Array[CardData]) -> CardData:
-	var target_rarity = _roll_rarity_for_current_zone()
-	var matching_cards = pool.filter(func(c): return c.rarity == target_rarity)
+func _generate_coats_stock() -> void:
+	if available_coats.is_empty():
+		var dummy_lbl = Label.new()
+		dummy_lbl.text = "Tidak Ada Coat Tersedia"
+		coat_grid.add_child(dummy_lbl)
+		return
+
+	var current_section: SectionData = GameManager.current_section
+	var chosen_coats: Array[CoatData] = []
+	var pool: Array[CoatData] = available_coats.duplicate()
 	
-	if matching_cards.is_empty():
-		return pool.pick_random()
-	return matching_cards.pick_random()
+	var count: int = mini(2, pool.size())
+	for i in range(count):
+		var valid_pool = pool.filter(func(c): return not chosen_coats.has(c))
+		if valid_pool.is_empty():
+			break
+		var picked = _pick_item_by_rarity(valid_pool, current_section.coat_common_chance, current_section.coat_uncommon_chance, current_section.coat_rare_chance)
+		chosen_coats.append(picked)
+		_build_coat_slot_ui(picked)
 
 
-func _roll_rarity_for_current_zone() -> CardData.Rarity:
-	var roll = randf() * 100.0
-	match current_zone:
-		ZoneType.FERRUM:
-			if roll < 70.0: return CardData.Rarity.COMMON
-			elif roll < 95.0: return CardData.Rarity.UNCOMMON
-			else: return CardData.Rarity.RARE
-		ZoneType.COBALT:
-			if roll < 35.0: return CardData.Rarity.COMMON
-			elif roll < 85.0: return CardData.Rarity.UNCOMMON
-			else: return CardData.Rarity.RARE
-		ZoneType.NEON:
-			if roll < 15.0: return CardData.Rarity.COMMON
-			elif roll < 60.0: return CardData.Rarity.UNCOMMON
-			else: return CardData.Rarity.RARE
-	return CardData.Rarity.COMMON
+func _generate_blessings_stock() -> void:
+	if available_blessings.is_empty():
+		var dummy_lbl = Label.new()
+		dummy_lbl.text = "Tidak Ada Blessing Pin Tersedia"
+		blessing_grid.add_child(dummy_lbl)
+		return
+
+	var valid_blessings = available_blessings.filter(
+		func(b): return not _player_has_blessing(b)
+	)
+
+	if valid_blessings.is_empty():
+		var empty_lbl = Label.new()
+		empty_lbl.text = "Semua Blessing Pin Telah Dimiliki!"
+		blessing_grid.add_child(empty_lbl)
+		return
+
+	var current_section: SectionData = GameManager.current_section
+	var chosen_blessing = _pick_item_by_rarity(valid_blessings, current_section.blessing_common_chance, current_section.blessing_uncommon_chance, current_section.blessing_rare_chance)
+	_build_blessing_slot_ui(chosen_blessing)
+
+
+func _pick_item_by_rarity(pool: Array, c_chance: float, u_chance: float, r_chance: float) -> Variant:
+	var rolled_rarity_idx: int = _roll_rarity(c_chance, u_chance, r_chance)
+	
+	var matching_items = pool.filter(func(item): return int(item.rarity) == rolled_rarity_idx)
+	
+	if not matching_items.is_empty():
+		return matching_items.pick_random()
+	
+	return pool.pick_random()
+
 
 
 func _build_card_slot_ui(card_data: CardData) -> void:
@@ -192,36 +214,25 @@ func _on_buy_card_clicked(card_data: CardData, price: int, btn: Button) -> void:
 	else:
 		SoundManager.play_sfx("error")
 
-func _generate_coats_stock() -> void:
-	var all_coats = COAT_DATABASE.keys()
-	all_coats.shuffle()
-	
-	var coat_1: CardData.EffectCoat = all_coats[0]
-	var coat_2: CardData.EffectCoat = all_coats[1]
-	
-	_build_coat_slot_ui(coat_1)
-	_build_coat_slot_ui(coat_2)
 
-
-func _build_coat_slot_ui(coat_enum: CardData.EffectCoat) -> void:
-	var info = COAT_DATABASE[coat_enum]
-	
+func _build_coat_slot_ui(coat_data: CoatData) -> void:
 	var box = VBoxContainer.new()
 	box.custom_minimum_size = Vector2(180, 200)
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
 	
 	var name_lbl = Label.new()
-	name_lbl.text = info["name"]
+	name_lbl.text = coat_data.coat_name
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	
 	var desc_lbl = Label.new()
-	desc_lbl.text = info["desc"]
+	desc_lbl.text = coat_data.description
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	
 	var buy_btn = Button.new()
-	buy_btn.text = "Beli (" + str(info["price"]) + " Koin)"
-	buy_btn.pressed.connect(_on_buy_coat_clicked.bind(coat_enum, info["price"], buy_btn))
+	var price = coat_data.buy_price if coat_data.buy_price > 0 else 15
+	buy_btn.text = "Beli (" + str(price) + " Koin)"
+	buy_btn.pressed.connect(_on_buy_coat_clicked.bind(coat_data, price, buy_btn))
 	
 	box.add_child(name_lbl)
 	box.add_child(desc_lbl)
@@ -229,17 +240,16 @@ func _build_coat_slot_ui(coat_enum: CardData.EffectCoat) -> void:
 	coat_grid.add_child(box)
 
 
-func _on_buy_coat_clicked(coat_enum: CardData.EffectCoat, price: int, btn: Button) -> void:
+func _on_buy_coat_clicked(coat_data: CoatData, price: int, btn: Button) -> void:
 	if GameManager.shop_coins < price:
 		SoundManager.play_sfx("error")
 		return
 
 	if GameManager.player_deck.is_empty():
-		print("Deck kosong, tidak ada kartu yang bisa diberi Effect Coat!")
 		SoundManager.play_sfx("error")
 		return
 
-	pending_coat_effect = coat_enum
+	pending_coat = coat_data
 	pending_coat_slot_button = btn
 	pending_coat_price = price
 	
@@ -261,16 +271,21 @@ func _open_deck_selector_for_coat() -> void:
 
 
 func _on_card_selected_for_coat(target_card: CardData) -> void:
-	if pending_coat_effect == CardData.EffectCoat.UNSTABLE and target_card.card_type != CardData.CardType.ATK:
-		print("Unstable Coat hanya bisa dipasang pada kartu bertipe ATTACK!")
+	if pending_coat == null:
+		return
+
+	if pending_coat.coat_type == CoatData.EffectCoatType.UNSTABLE and target_card.card_type != CardData.CardType.ATK:
 		SoundManager.play_sfx("error")
 		return
 
 	GameManager.shop_coins -= pending_coat_price
-	target_card.coat = pending_coat_effect
+	target_card.coat_data = pending_coat
 
-	if pending_coat_effect == CardData.EffectCoat.CLONE:
+	if pending_coat.coat_type == CoatData.EffectCoatType.CLONE:
 		GameManager.player_deck.append(target_card.duplicate(true))
+
+	SaveManager.discover_coat(pending_coat)
+	SaveManager.save_game()
 
 	_update_coin_display()
 	SoundManager.play_sfx("buy_success")
@@ -280,29 +295,9 @@ func _on_card_selected_for_coat(target_card: CardData) -> void:
 		pending_coat_slot_button.text = "DIBELI"
 
 	deck_selector_overlay.hide()
-	pending_coat_effect = CardData.EffectCoat.NONE
+	pending_coat = null
 	pending_coat_slot_button = null
 	pending_coat_price = 0
-
-func _generate_blessings_stock() -> void:
-	if available_blessings.is_empty():
-		var dummy_lbl = Label.new()
-		dummy_lbl.text = "Tidak Ada Blessing Pin Tersedia"
-		blessing_grid.add_child(dummy_lbl)
-		return
-
-	var valid_blessings = available_blessings.filter(
-		func(b): return not _player_has_blessing(b)
-	)
-
-	if valid_blessings.is_empty():
-		var empty_lbl = Label.new()
-		empty_lbl.text = "Semua Blessing Pin Telah Dimiliki!"
-		blessing_grid.add_child(empty_lbl)
-		return
-
-	var chosen_blessing = valid_blessings.pick_random()
-	_build_blessing_slot_ui(chosen_blessing)
 
 
 func _player_has_blessing(blessing: BlessingData) -> bool:
@@ -378,6 +373,7 @@ func _show_blessing_failed_feedback(target_btn: Button) -> void:
 		if is_instance_valid(target_btn) and not target_btn.disabled:
 			target_btn.text = orig_text
 	)
+
 
 func _on_btn_heal_pressed() -> void:
 	if GameManager.shop_coins >= HEAL_PRICE:
