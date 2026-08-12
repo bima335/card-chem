@@ -117,7 +117,7 @@ func determine_next_move() -> EnemyAction:
 			var base_atk = 12
 			var bonus = 4 if current_phase == 2 else 3
 			action.amount = base_atk + (rust_armor_stacks * bonus)
-			
+			print ("Damage", action.amount)
 	return action
 
 func execute_move(action: EnemyAction) -> void:

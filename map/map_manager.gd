@@ -15,18 +15,15 @@ extends Control
 @export var spacing_x: float = 220.0
 
 @export_group("Debug / Testing Options")
-## Pilih Section awal untuk keperluan Testing di Inspector (0 = Section 1, 1 = Section 2, dst)
 @export_range(0, 10, 1) var test_starting_section: int = 0
-## Centang untuk mengabaikan musuh acak dan memaksa pertempuran dengan musuh ujicoba
 @export var is_ujicoba: bool = false
-## Drag & Drop file Resource .tres (EnemyStat) yang ingin diuji di sini
 @export var test_enemy: EnemyStat
+@export var force_first_three_shops: bool = false
 
 const SECTION_WIDTH: float = 1920.0
 const SECTION_HEIGHT: float = 1080.0
 
 @onready var scroll_container: ScrollContainer = get_parent()
-
 @onready var btn_up: Button = $"../../BtnUp"
 @onready var btn_down: Button = $"../../BtnDown"
 
@@ -41,7 +38,7 @@ func _ready() -> void:
 	GameManager.setup_enemy_pools(global_common_enemies, global_elite_enemies, sections_data)
 	
 	_apply_debug_starting_section()
-	GameManager.generate_new_adventure(total_floors, nodes_per_floor)
+	GameManager.generate_new_adventure(total_floors, nodes_per_floor, force_first_three_shops)
 	
 	var canvas_height: float = total_sections * SECTION_HEIGHT
 	custom_minimum_size = Vector2(SECTION_WIDTH, canvas_height)
@@ -163,9 +160,9 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 		return
 
 	match node_data.type:
-		MapNodeData.NodeType.REST, MapNodeData.NodeType.SHOP:
-			print("Singgah di fasilitas damai. Melanjutkan langsung ke lantai berikutnya...")
-			GameManager.active_event_type = node_data.type
+		MapNodeData.NodeType.SHOP:
+			get_tree().change_scene_to_file("res://shop/shop_scene.tscn")
+		MapNodeData.NodeType.REST:
 			get_tree().change_scene_to_file("res://event/event_scene.tscn")
 		MapNodeData.NodeType.BATTLE_NORMAL, MapNodeData.NodeType.BATTLE_HARD, MapNodeData.NodeType.BOSS:
 			GameManager.current_wave_data = node_data.wave_data

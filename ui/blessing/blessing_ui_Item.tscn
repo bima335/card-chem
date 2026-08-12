@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bp16sk8vhc1g3"]
+
+[ext_resource type="Script" uid="uid://dxo711nl2bpb4" path="res://ui/blessing/blessing_ui_item.gd" id="1_tgafy"]
+
+[node name="BlessingUIItem" type="TextureRect" unique_id=1834452308]
+custom_minimum_size = Vector2(60, 60)
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("1_tgafy")

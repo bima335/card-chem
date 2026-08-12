@@ -30,8 +30,8 @@ func _ready() -> void:
 	GameManager.reset_round()
 	is_first_turn = true
 	player.reset_for_battle()
+	BlessingManager.apply_passive_effects(hand)
 	_prepare_starting_deck()
-
 func _connect_signals() -> void:
 	ui_manager.end_turn_button.pressed.connect(_on_end_turn_pressed)
 	ui_manager.deck_visual.pressed.connect(func(): ui_manager.show_card_viewer(deck.cards, "SISA KARTU DECK", is_selecting_effect_target))
@@ -56,6 +56,8 @@ func _prepare_starting_deck() -> void:
 		for i in range(15):
 			if not available_cards.is_empty():
 				GameManager.player_deck.append(available_cards.pick_random())
+
+	SaveManager.discover_cards(GameManager.player_deck)
 
 	for card in GameManager.player_deck:
 		var card_copy = card.duplicate(true) as CardData

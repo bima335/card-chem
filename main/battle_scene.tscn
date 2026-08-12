@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
+[ext_resource type="PackedScene" uid="uid://bp16sk8vhc1g3" path="res://ui/blessing/blessing_ui_Item.tscn" id="12_6ojnn"]
+[ext_resource type="PackedScene" uid="uid://cd478ob8hsaip" path="res://aura/AuraCardUI.tscn" id="14_dairb"]
 [ext_resource type="Resource" uid="uid://otourkerimal" path="res://card/resources/atk/water.tres" id="15_6ojnn"]
 [ext_resource type="Resource" uid="uid://dpg4l0kf5u7mo" path="res://ailments/res/burn.tres" id="15_xre4y"]
 [ext_resource type="Resource" uid="uid://b1nye4430c7yv" path="res://card/resources/buff/c_shield.tres" id="16_dairb"]
@@ -44,7 +46,7 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_label", "h_label", "o_label", "n_label", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_label", "h_label", "o_label", "n_label", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
@@ -52,6 +54,10 @@ end_turn_button = NodePath("../../UI/EndTurnButton")
 deck_visual = NodePath("../../UI/DeckVisual")
 discard_visual = NodePath("../../UI/DiscardVisual")
 close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
+blessing_container = NodePath("../../UI/TopRightHUD/BlessingContainer")
+blessing_item_scene = ExtResource("12_6ojnn")
+aura_container = NodePath("../../UI/TopRightHUD/AuraContainer")
+aura_ui_scene = ExtResource("14_dairb")
 player_hp_bar = NodePath("../../UI/PlayerHPBar")
 player_hp_label = NodePath("../../UI/PlayerHPBar/Label")
 player_shield_bar = NodePath("../../UI/PlayerShieldBar")
@@ -69,6 +75,7 @@ card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardG
 [node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
 script = ExtResource("10_0hkaa")
 card_ui_scene = ExtResource("2_csnlq")
+aura_card_ui_scene = ExtResource("14_dairb")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn"), ExtResource("16_dairb"), ExtResource("5_j5qo7")])
 reward_backdrop = NodePath("../../UI/RewardBackdrop")
 reward_title = NodePath("../../UI/RewardBackdrop/VBoxContainer/TtileLabel")
@@ -182,6 +189,32 @@ layout_mode = 2
 
 [node name="NLabel" type="Label" parent="UI/TokenContainer" unique_id=1634551958]
 layout_mode = 2
+
+[node name="TopRightHUD" type="HBoxContainer" parent="UI" unique_id=1046660355]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 220.0
+grow_horizontal = 0
+theme_override_constants/separation = 15
+
+[node name="BlessingContainer" type="VBoxContainer" parent="UI/TopRightHUD" unique_id=408278705]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AuraContainer" type="PanelContainer" parent="UI/TopRightHUD" unique_id=2066166155]
+custom_minimum_size = Vector2(136, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AuraPlaceholder" type="Label" parent="UI/TopRightHUD/AuraContainer" unique_id=1914423894]
+layout_mode = 2
+text = "Aura Card"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DeckBackDrop" type="ColorRect" parent="UI" unique_id=1123639773]
 visible = false

@@ -2,6 +2,7 @@ class_name BattleRewardHandler
 extends Node
 
 @export var card_ui_scene: PackedScene
+@export var aura_card_ui_scene: PackedScene
 @export var available_cards: Array[CardData]
 
 @export_group("Reward UI")
@@ -12,14 +13,12 @@ extends Node
 
 signal effect_target_requested(effect_name: String)
 
-# Gunakan _ready() agar dieksekusi otomatis oleh Godot saat node siap
 func _ready() -> void:
-	if skip_button:
-		if not skip_button.pressed.is_connected(_return_to_map):
-			skip_button.pressed.connect(_return_to_map)
+	if skip_button and not skip_button.pressed.is_connected(_return_to_map):
+		skip_button.pressed.connect(_return_to_map)
 
 func show_reward_screen() -> void:
-	#GameManager.shop_coins += 10
+	GameManager.shop_coins += 10000
 	
 	for child in reward_card_grid.get_children():
 		child.queue_free()
@@ -29,6 +28,8 @@ func show_reward_screen() -> void:
 			_setup_normal_reward()
 		MapNodeData.NodeType.BATTLE_HARD:
 			_setup_hard_reward()
+		MapNodeData.NodeType.BOSS: 
+			_setup_boss_reward()
 		_:
 			reward_title.text = "VICTORY!\n"
 			skip_button.show()
@@ -71,8 +72,45 @@ func _setup_hard_reward() -> void:
 		btn.pressed.connect(_on_effect_chosen.bind(effects[i]))
 		reward_card_grid.add_child(btn)
 
+func _setup_boss_reward() -> void:
+	reward_title.text = "BOSS DEFEATED!\n\nPILIH 1 AURA CARD:"
+	skip_button.hide()
+	
+	var current_section: SectionData = GameManager.current_section
+	
+	if current_section == null or current_section.boss_aura_rewards.is_empty():
+		print_debug("[RewardHandler] WARN: GameManager.current_section bernilai null atau boss_aura_rewards kosong!")
+		reward_title.text = "BOSS DEFEATED!\n(Tidak ada Aura Card tersedia)"
+		skip_button.show()
+		skip_button.text = "Lanjut ke Peta"
+		return
+
+	var aura_pool: Array[AuraCardData] = current_section.boss_aura_rewards.duplicate()
+	aura_pool.shuffle()
+	
+	var choice_count: int = mini(3, aura_pool.size())
+	for i in range(choice_count):
+		var aura_data: AuraCardData = aura_pool[i]
+		
+		if aura_card_ui_scene == null:
+			push_error("[RewardHandler] ERROR: aura_card_ui_scene belum di-assign di Inspector!")
+			return
+
+		var aura_ui = aura_card_ui_scene.instantiate() as AuraCardUI
+		reward_card_grid.add_child(aura_ui)
+		aura_ui.setup(aura_data)
+		aura_ui.aura_selected.connect(_on_aura_reward_chosen)
+
+func _on_aura_reward_chosen(chosen_aura: AuraCardData) -> void:
+	if AuraManager:
+		AuraManager.equip_aura(chosen_aura)
+	_return_to_map()
+
 func _on_reward_card_chosen(chosen_card: CardData) -> void:
-	GameManager.player_deck.append(chosen_card.duplicate(true))
+	var new_card = chosen_card.duplicate(true)
+	GameManager.player_deck.append(new_card)
+	SaveManager.discover_card(chosen_card)
+	
 	_return_to_map()
 
 func _on_effect_chosen(effect_name: String) -> void:

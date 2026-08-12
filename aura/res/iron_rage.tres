@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://dmtsackg6uksb"]
+
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_qmq2j"]
+[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_v6f5f"]
+
+[resource]
+script = ExtResource("1_qmq2j")
+aura_id = 1
+name = "Iron Rage"
+description = "Each 10 HP lost, increase all Attack Card damage dealt by player by 5."
+icon = ExtResource("1_v6f5f")
+metadata/_custom_type_script = "uid://b100qugnu421l"

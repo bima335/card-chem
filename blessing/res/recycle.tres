@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://clq08c2g3jetx"]
+
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_786ii"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_ls3qn"]
+
+[resource]
+script = ExtResource("1_786ii")
+id = 6
+name = "Recycle"
+description = "+1 Random Token on trade"
+icon = ExtResource("1_ls3qn")
+buy_price = 22
+sell_price = 11
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"

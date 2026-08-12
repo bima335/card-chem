@@ -8,3 +8,5 @@ extends Resource
 @export var exclusive_common: Array[EnemyStat] = []
 @export var exclusive_elite: Array[EnemyStat] = []
 @export var exclusive_boss: Array[EnemyStat] = []
+@export_group("Boss Rewards")
+@export var boss_aura_rewards: Array[AuraCardData] = []

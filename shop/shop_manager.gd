@@ -180,7 +180,9 @@ func _build_card_slot_ui(card_data: CardData) -> void:
 func _on_buy_card_clicked(card_data: CardData, price: int, btn: Button) -> void:
 	if GameManager.shop_coins >= price:
 		GameManager.shop_coins -= price
-		GameManager.player_deck.append(card_data.duplicate(true))
+		var new_card = card_data.duplicate(true)
+		GameManager.player_deck.append(new_card)
+		SaveManager.discover_card(card_data)
 		
 		_update_coin_display()
 		SoundManager.play_sfx("buy_success")
@@ -303,8 +305,8 @@ func _generate_blessings_stock() -> void:
 	_build_blessing_slot_ui(chosen_blessing)
 
 
-func _player_has_blessing(_blessing: BlessingData) -> bool:
-	return false
+func _player_has_blessing(blessing: BlessingData) -> bool:
+	return BlessingManager.has_blessing(blessing.id)
 
 
 func _build_blessing_slot_ui(blessing: BlessingData) -> void:
@@ -332,17 +334,52 @@ func _build_blessing_slot_ui(blessing: BlessingData) -> void:
 	blessing_grid.add_child(box)
 
 
-func _on_buy_blessing_clicked(_blessing: BlessingData, price: int, btn: Button) -> void:
-	if GameManager.shop_coins >= price:
+func _on_buy_blessing_clicked(blessing: BlessingData, price: int, btn: Button) -> void:
+	# 1. Cek kecukupan koin
+	if GameManager.shop_coins < price:
+		SoundManager.play_sfx("error")
+		_show_insufficient_coins_feedback(btn)
+		return
+
+	# 2. Coba pasang blessing ke BlessingManager
+	var success: bool = BlessingManager.equip_blessing(blessing)
+	
+	if success:
 		GameManager.shop_coins -= price
-		
-		
 		_update_coin_display()
 		SoundManager.play_sfx("buy_success")
 		btn.disabled = true
 		btn.text = "DIBELI"
 	else:
+		# Jika slot penuh atau gagal dipasang
 		SoundManager.play_sfx("error")
+		_show_blessing_failed_feedback(btn)
+
+
+func _show_insufficient_coins_feedback(target_btn: Button) -> void:
+	var orig_color: Color = coin_label.modulate
+	var tween: Tween = create_tween().set_parallel(true)
+	
+	coin_label.modulate = Color.RED
+	tween.tween_property(coin_label, "modulate", orig_color, 0.4)
+	
+	var orig_pos: Vector2 = target_btn.position
+	var shake_tween: Tween = create_tween()
+	shake_tween.tween_property(target_btn, "position", orig_pos + Vector2(-6, 0), 0.05)
+	shake_tween.tween_property(target_btn, "position", orig_pos + Vector2(6, 0), 0.05)
+	shake_tween.tween_property(target_btn, "position", orig_pos, 0.05)
+
+
+func _show_blessing_failed_feedback(target_btn: Button) -> void:
+	var orig_text: String = target_btn.text
+	target_btn.text = "SLOT FULL!"
+	
+	var tween: Tween = create_tween()
+	tween.tween_interval(1.0)
+	tween.tween_callback(func(): 
+		if is_instance_valid(target_btn) and not target_btn.disabled:
+			target_btn.text = orig_text
+	)
 
 func _on_btn_heal_pressed() -> void:
 	if GameManager.shop_coins >= HEAL_PRICE:

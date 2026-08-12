@@ -10,8 +10,11 @@ var history_path: Array[Vector2i] = []
 var player_current_hp: int = 1000
 var player_max_hp: int = 1000
 var active_event_type: MapNodeData.NodeType
-var shop_coins: int = 0
+var shop_coins: int = 1000
 var player_deck: Array[CardData] = []
+
+@export var current_section: SectionData = null
+
 var current_round: int = 1
 
 var global_common_enemies: Array[EnemyStat] = []
@@ -35,16 +38,25 @@ func add_shop_coins(amount: int) -> void:
 		return
 	shop_coins += amount
 
-func generate_new_adventure(total_floors: int, nodes_per_floor: int) -> void:
+func update_current_section_for_floor(floor_idx: int) -> void:
+	var section_idx: int = floor_idx / 5
+	if section_idx < sections_data.size():
+		current_section = sections_data[section_idx]
+	else:
+		push_warning("GameManager: Indeks section " + str(section_idx) + " melebihi total sections_data!")
+
+func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first_three_shops: bool = false) -> void:
 	if is_map_generated: return
 	
 	map_data_matrix.clear()
 	current_floor = 0
 	available_paths.clear()
 	history_path.clear()
-	shop_coins = 0
+	shop_coins = 1000
 	player_deck.clear()
 	reset_round()
+
+	update_current_section_for_floor(0)
 
 	for floor_idx in range(total_floors):
 		map_data_matrix[floor_idx] = []
@@ -53,30 +65,32 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int) -> void:
 		var current_floor_nodes_count: int = 1 if (local_floor == 3 or local_floor == 4) else nodes_per_floor
 		
 		var section_idx: int = floor_idx / 5
-		var current_section: SectionData = null
+		var section_for_generation: SectionData = null
 		if section_idx < sections_data.size():
-			current_section = sections_data[section_idx]
+			section_for_generation = sections_data[section_idx]
 		
 		for node_idx in range(current_floor_nodes_count):
 			var node_data = MapNodeData.new()
 			node_data.grid_position = Vector2i(floor_idx, node_idx)
 			
-			if local_floor == 3:
+			if force_first_three_shops and floor_idx < 3:
+				node_data.type = MapNodeData.NodeType.SHOP
+			elif local_floor == 3:
 				node_data.type = MapNodeData.NodeType.REST
 			elif local_floor == 4:
 				node_data.type = MapNodeData.NodeType.BOSS
-				node_data.wave_data = WaveGenerator.generate_wave(2, current_section, global_common_enemies, global_elite_enemies)
+				node_data.wave_data = WaveGenerator.generate_wave(2, section_for_generation, global_common_enemies, global_elite_enemies)
 			elif floor_idx == 0:
 				node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
-				node_data.wave_data = WaveGenerator.generate_wave(0, current_section, global_common_enemies, global_elite_enemies)
+				node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
 			else:
 				var roll = randf()
 				if roll < 0.50: 
 					node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
-					node_data.wave_data = WaveGenerator.generate_wave(0, current_section, global_common_enemies, global_elite_enemies)
+					node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
 				elif roll < 0.75: 
 					node_data.type = MapNodeData.NodeType.BATTLE_HARD
-					node_data.wave_data = WaveGenerator.generate_wave(1, current_section, global_common_enemies, global_elite_enemies)
+					node_data.wave_data = WaveGenerator.generate_wave(1, section_for_generation, global_common_enemies, global_elite_enemies)
 				else: 
 					node_data.type = MapNodeData.NodeType.SHOP
 					
@@ -105,3 +119,6 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int) -> void:
 							current_node.next_connections.append(target_pos)
 							
 	is_map_generated = true
+
+func set_current_section(new_section: SectionData) -> void:
+	current_section = new_section

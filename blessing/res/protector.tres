@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://cr2ntadcnepak"]
+
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_6rgs4"]
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_qg7yq"]
+
+[resource]
+script = ExtResource("1_qg7yq")
+id = 2
+name = "Protector's Will"
+description = "Gain 2 Shields each round starts."
+icon = ExtResource("1_6rgs4")
+buy_price = 15
+sell_price = 7
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"

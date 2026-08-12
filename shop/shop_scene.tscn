@@ -7,11 +7,11 @@
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="3_vhf6s"]
 [ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="4_jis7i"]
 [ext_resource type="Resource" uid="uid://otourkerimal" path="res://card/resources/atk/water.tres" id="4_vlf3m"]
-[ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_tp2tx"]
-[ext_resource type="Resource" uid="uid://dw0m23xpkfdwv" path="res://card/resources/buff/h2.tres" id="6_cvmxc"]
-[ext_resource type="Resource" uid="uid://b1nye4430c7yv" path="res://card/resources/buff/c_shield.tres" id="7_qwuve"]
+[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="5_vlf3m"]
 [ext_resource type="Resource" uid="uid://1rhiulfq30o5" path="res://card/resources/trigger/o_ignite.tres" id="8_dsopo"]
-[ext_resource type="Resource" uid="uid://byajmsgsturl4" path="res://blessing/res/resonance.tres" id="10_tp2tx"]
+[ext_resource type="Resource" uid="uid://80ix8x1j6gsa" path="res://blessing/res/cover.tres" id="9_tp2tx"]
+[ext_resource type="Resource" uid="uid://cr2ntadcnepak" path="res://blessing/res/protector.tres" id="10_cvmxc"]
+[ext_resource type="Resource" uid="uid://clq08c2g3jetx" path="res://blessing/res/recycle.tres" id="10_qwuve"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n6cst"]
 atlas = ExtResource("2_cf2ep")
@@ -34,8 +34,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n6cst")
 card_ui_scene = ExtResource("3_cardui")
-available_cards = Array[ExtResource("3_vhf6s")]([ExtResource("4_vlf3m"), ExtResource("5_tp2tx"), ExtResource("6_cvmxc"), ExtResource("7_qwuve"), ExtResource("8_dsopo")])
-available_blessings = Array[ExtResource("4_jis7i")]([ExtResource("10_tp2tx")])
+available_cards = Array[ExtResource("3_vhf6s")]([ExtResource("8_dsopo"), ExtResource("5_vlf3m"), ExtResource("4_vlf3m")])
+available_blessings = Array[ExtResource("4_jis7i")]([ExtResource("10_cvmxc"), ExtResource("9_tp2tx"), ExtResource("10_qwuve")])
 
 [node name="Background" type="TextureRect" parent="." unique_id=1788097896]
 texture_filter = 1

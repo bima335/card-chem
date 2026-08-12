@@ -34,8 +34,8 @@ script = ExtResource("1_xrkvi")
 map_node_scene = ExtResource("2_q2h2y")
 section_wallpapers = Array[Texture2D]([ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("6_1ym7n")])
 sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_ubh7o"), ExtResource("7_71c6l"), ExtResource("8_fomgr")])
-test_starting_section = 1
 test_enemy = ExtResource("9_71c6l")
+force_first_three_shops = true
 
 [node name="BtnUp" type="Button" parent="." unique_id=691623035]
 layout_mode = 1

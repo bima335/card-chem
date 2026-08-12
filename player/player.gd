@@ -133,6 +133,11 @@ func gain_tokens(amount: int) -> void:
 	nitrogen = clampi(nitrogen + amount, 0, MAX_TOKEN)
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
 
+func get_max_oxygen() -> int:
+	return MAX_TOKEN + AuraManager.get_max_token_oxygen_modifier()
+
+func get_max_chn() -> int:
+	return MAX_TOKEN + AuraManager.get_max_token_chn_modifier()
 
 func gain_shield(amount: int) -> void:
 	shield += amount
@@ -140,12 +145,14 @@ func gain_shield(amount: int) -> void:
 
 
 func take_damage(amount: int) -> void:
-	var actual_damage = amount - shield
+	var final_incoming_damage = AuraManager.get_modified_incoming_damage(amount)
+	
+	var actual_damage = final_incoming_damage - shield
 	if actual_damage > 0:
 		shield = 0
 		current_hp -= actual_damage
 	else:
-		shield -= amount
+		shield -= final_incoming_damage
 		
 	current_hp = clampi(current_hp, 0, max_hp)
 	GameManager.player_current_hp = current_hp

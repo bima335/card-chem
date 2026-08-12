@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://cfg4t2h1ia4dd"]
+
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_2kc0l"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_a8l87"]
+
+[resource]
+script = ExtResource("1_2kc0l")
+id = 7
+name = "Stand Proud"
+description = "+3 Shield on Debuff"
+icon = ExtResource("1_a8l87")
+buy_price = 13
+sell_price = 6
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"
