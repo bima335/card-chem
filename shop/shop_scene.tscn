@@ -20,10 +20,8 @@
 [ext_resource type="Resource" uid="uid://5e146oywkesi" path="res://card/coat/res/coat_purify.tres" id="12_ols6i"]
 [ext_resource type="Resource" uid="uid://c22oy6nl6qgnf" path="res://card/coat/res/crystalized.tres" id="13_dd36f"]
 [ext_resource type="Texture2D" uid="uid://cdi42dnwdsrkq" path="res://assets/HUD/speroavatar.png" id="20_tvudj"]
-[ext_resource type="Script" uid="uid://t467axc5qguh" path="res://main/health_bar.gd" id="21_vqonx"]
 [ext_resource type="Texture2D" uid="uid://cohmwkije4j0a" path="res://assets/HUD/healthbarwadahplayer.png" id="22_oct2v"]
 [ext_resource type="Texture2D" uid="uid://vhfdey5jp05f" path="res://assets/HUD/healthbarisiplayer.png" id="23_f8d3e"]
-[ext_resource type="Script" uid="uid://bgmjei68n4qpw" path="res://main/texture_progress_bar.gd" id="24_fs380"]
 [ext_resource type="Texture2D" uid="uid://bn0jqf08h3sn0" path="res://assets/HUD/shieldhpbarplayer.png" id="25_itbvl"]
 [ext_resource type="Texture2D" uid="uid://43l7p73t0ti" path="res://assets/HUD/iconhealth.png" id="26_t74tl"]
 [ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="27_ip4db"]
@@ -131,7 +129,6 @@ offset_left = 58.0
 offset_top = 1013.0
 offset_right = 461.0
 offset_bottom = 1079.0
-script = ExtResource("21_vqonx")
 
 [node name="BarContainer" type="Control" parent="UI_Overlay/Character/HealthBar" unique_id=180382292]
 layout_mode = 2
@@ -144,7 +141,6 @@ offset_bottom = 35.0
 value = 80.0
 texture_under = ExtResource("22_oct2v")
 texture_progress = ExtResource("23_f8d3e")
-script = ExtResource("24_fs380")
 
 [node name="ShieldBar" type="TextureProgressBar" parent="UI_Overlay/Character/HealthBar/BarContainer" unique_id=1306099688]
 layout_mode = 0
@@ -155,7 +151,6 @@ offset_bottom = 35.0
 value = 20.0
 fill_mode = 1
 texture_progress = ExtResource("25_itbvl")
-script = ExtResource("24_fs380")
 
 [node name="StatusContainer" type="HBoxContainer" parent="UI_Overlay/Character/HealthBar" unique_id=132678004]
 layout_mode = 2
@@ -176,9 +171,6 @@ offset_bottom = 1007.0
 theme_override_fonts/font = ExtResource("27_ip4db")
 theme_override_font_sizes/font_size = 25
 text = "80/100 (+20 shield)"
-script = ExtResource("21_vqonx")
-theme_override_fonts/font = ExtResource("27_ip4db")
-theme_override_font_sizes/font_size = 25
 
 [node name="GoldAngka" type="Label" parent="UI_Overlay/Character" unique_id=937225162]
 offset_left = 184.0
@@ -188,9 +180,6 @@ offset_bottom = 1005.0
 theme_override_fonts/font = ExtResource("27_ip4db")
 theme_override_font_sizes/font_size = 25
 text = "200"
-script = ExtResource("21_vqonx")
-theme_override_fonts/font = ExtResource("27_ip4db")
-theme_override_font_sizes/font_size = 25
 
 [node name="GoldIcon" type="TextureRect" parent="UI_Overlay/Character" unique_id=346080059]
 offset_left = 129.0

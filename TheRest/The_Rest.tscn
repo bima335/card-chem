@@ -1,18 +1,16 @@
 [gd_scene format=3 uid="uid://djoe3hism8ory"]
 
-[ext_resource type="Texture2D" uid="uid://bdc13xvmvi2wc" path="res://assets/backgrounds/The Rest.png" id="1_jnc5d"]
-[ext_resource type="Texture2D" uid="uid://dtbdekgh45qvs" path="res://assets/backgrounds/apiunggungtherest.png" id="2_bu308"]
-[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="3_bu308"]
-[ext_resource type="Texture2D" uid="uid://cdi42dnwdsrkq" path="res://assets/HUD/speroavatar.png" id="3_mobr3"]
-[ext_resource type="Script" uid="uid://t467axc5qguh" path="res://main/health_bar.gd" id="4_ej5ql"]
-[ext_resource type="Texture2D" uid="uid://cohmwkije4j0a" path="res://assets/HUD/healthbarwadahplayer.png" id="5_3i160"]
-[ext_resource type="Texture2D" uid="uid://vhfdey5jp05f" path="res://assets/HUD/healthbarisiplayer.png" id="6_pe6hn"]
-[ext_resource type="Script" uid="uid://bgmjei68n4qpw" path="res://main/texture_progress_bar.gd" id="7_pfue7"]
-[ext_resource type="Texture2D" uid="uid://bn0jqf08h3sn0" path="res://assets/HUD/shieldhpbarplayer.png" id="8_ubiol"]
-[ext_resource type="Texture2D" uid="uid://43l7p73t0ti" path="res://assets/HUD/iconhealth.png" id="9_c4rhk"]
-[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="10_mec6m"]
-[ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="11_juk14"]
-[ext_resource type="Texture2D" uid="uid://dgtgf0v1tjctr" path="res://assets/HUD/iconDeck.png" id="12_wl7hk"]
+[ext_resource type="Texture2D" uid="uid://bdc13xvmvi2wc" path="res://assets/backgrounds/The Rest.png" id="1_nihhw"]
+[ext_resource type="Texture2D" uid="uid://dtbdekgh45qvs" path="res://assets/backgrounds/apiunggungtherest.png" id="2_81mpy"]
+[ext_resource type="Texture2D" uid="uid://cdi42dnwdsrkq" path="res://assets/HUD/speroavatar.png" id="3_3jf0a"]
+[ext_resource type="Texture2D" uid="uid://cohmwkije4j0a" path="res://assets/HUD/healthbarwadahplayer.png" id="4_brj6k"]
+[ext_resource type="Texture2D" uid="uid://vhfdey5jp05f" path="res://assets/HUD/healthbarisiplayer.png" id="5_n0l30"]
+[ext_resource type="Texture2D" uid="uid://bn0jqf08h3sn0" path="res://assets/HUD/shieldhpbarplayer.png" id="6_67mcp"]
+[ext_resource type="Texture2D" uid="uid://43l7p73t0ti" path="res://assets/HUD/iconhealth.png" id="7_fl1e8"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="8_4ucqd"]
+[ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="9_8wx5k"]
+[ext_resource type="Texture2D" uid="uid://dgtgf0v1tjctr" path="res://assets/HUD/iconDeck.png" id="10_uxcdq"]
+[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="11_kyj0b"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8jdc"]
 
@@ -28,7 +26,7 @@ grow_vertical = 2
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
-texture = ExtResource("1_jnc5d")
+texture = ExtResource("1_nihhw")
 
 [node name="ApiUnggun" type="TextureButton" parent="." unique_id=570165672]
 layout_mode = 0
@@ -36,7 +34,7 @@ offset_left = 491.0
 offset_top = 180.0
 offset_right = 1019.0
 offset_bottom = 1010.0
-texture_normal = ExtResource("2_bu308")
+texture_normal = ExtResource("2_81mpy")
 
 [node name="Character" type="CanvasLayer" parent="." unique_id=1777817809]
 
@@ -44,14 +42,13 @@ texture_normal = ExtResource("2_bu308")
 offset_top = 3.0
 offset_right = 1920.0
 offset_bottom = 1083.0
-texture = ExtResource("3_mobr3")
+texture = ExtResource("3_3jf0a")
 
 [node name="HealthBar" type="VBoxContainer" parent="Character" unique_id=1795373072]
 offset_left = 58.0
 offset_top = 1013.0
 offset_right = 461.0
 offset_bottom = 1079.0
-script = ExtResource("4_ej5ql")
 
 [node name="BarContainer" type="Control" parent="Character/HealthBar" unique_id=766348997]
 layout_mode = 2
@@ -62,9 +59,8 @@ offset_top = 4.0
 offset_right = 403.0
 offset_bottom = 35.0
 value = 80.0
-texture_under = ExtResource("5_3i160")
-texture_progress = ExtResource("6_pe6hn")
-script = ExtResource("7_pfue7")
+texture_under = ExtResource("4_brj6k")
+texture_progress = ExtResource("5_n0l30")
 
 [node name="ShieldBar" type="TextureProgressBar" parent="Character/HealthBar/BarContainer" unique_id=27154854]
 layout_mode = 0
@@ -74,8 +70,7 @@ offset_right = 404.0
 offset_bottom = 35.0
 value = 20.0
 fill_mode = 1
-texture_progress = ExtResource("8_ubiol")
-script = ExtResource("7_pfue7")
+texture_progress = ExtResource("6_67mcp")
 
 [node name="StatusContainer" type="HBoxContainer" parent="Character/HealthBar" unique_id=1253469090]
 layout_mode = 2
@@ -86,38 +81,32 @@ offset_left = 280.0
 offset_top = 970.0
 offset_right = 327.0
 offset_bottom = 1016.0
-texture = ExtResource("9_c4rhk")
+texture = ExtResource("7_fl1e8")
 
 [node name="HealthBarAngka" type="Label" parent="Character" unique_id=1913053423]
 offset_left = 329.0
 offset_top = 975.0
 offset_right = 495.0
 offset_bottom = 1007.0
-theme_override_fonts/font = ExtResource("10_mec6m")
+theme_override_fonts/font = ExtResource("8_4ucqd")
 theme_override_font_sizes/font_size = 25
 text = "80/100 (+20 shield)"
-script = ExtResource("4_ej5ql")
-theme_override_fonts/font = ExtResource("10_mec6m")
-theme_override_font_sizes/font_size = 25
 
 [node name="GoldAngka" type="Label" parent="Character" unique_id=1578024578]
 offset_left = 184.0
 offset_top = 973.0
 offset_right = 221.0
 offset_bottom = 1005.0
-theme_override_fonts/font = ExtResource("10_mec6m")
+theme_override_fonts/font = ExtResource("8_4ucqd")
 theme_override_font_sizes/font_size = 25
 text = "200"
-script = ExtResource("4_ej5ql")
-theme_override_fonts/font = ExtResource("10_mec6m")
-theme_override_font_sizes/font_size = 25
 
 [node name="GoldIcon" type="TextureRect" parent="Character" unique_id=2104983537]
 offset_left = 129.0
 offset_top = 967.0
 offset_right = 177.0
 offset_bottom = 1022.0
-texture = ExtResource("11_juk14")
+texture = ExtResource("9_8wx5k")
 
 [node name="DeckVisual" type="TextureButton" parent="Character" unique_id=831134170]
 anchors_preset = 2
@@ -126,7 +115,7 @@ anchor_bottom = 1.0
 offset_top = -168.0
 offset_right = 168.0
 grow_vertical = 0
-texture_normal = ExtResource("12_wl7hk")
+texture_normal = ExtResource("10_uxcdq")
 
 [node name="JumlahHealper100" type="Label" parent="." unique_id=143463088]
 layout_mode = 0
@@ -159,7 +148,7 @@ offset_left = -1.0
 offset_top = -1.0
 offset_right = 120.0
 offset_bottom = 41.0
-texture = ExtResource("3_bu308")
+texture = ExtResource("11_kyj0b")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="BtnLeave" unique_id=1934678888]
