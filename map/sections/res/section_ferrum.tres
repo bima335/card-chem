@@ -9,12 +9,10 @@
 [ext_resource type="Resource" uid="uid://uqxxw766mt6t" path="res://enemy/ferrum/res/ferrum_elite.tres" id="4_egan1"]
 [ext_resource type="Resource" uid="uid://4rbfsu4bchgp" path="res://aura/res/rusted_resilience.tres" id="4_xqorw"]
 [ext_resource type="Script" uid="uid://dncorhl3akjyt" path="res://map/sections/section_data.gd" id="5_c1n0e"]
-[ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="10_xqorw"]
 
 [resource]
 script = ExtResource("5_c1n0e")
 section_name = "Section Ferrum"
-section_wallpaper = ExtResource("10_xqorw")
 exclusive_common = Array[ExtResource("1_ekav3")]([ExtResource("3_b58mf")])
 exclusive_elite = Array[ExtResource("1_ekav3")]([ExtResource("4_egan1")])
 exclusive_boss = Array[ExtResource("1_ekav3")]([ExtResource("2_58p1v")])
