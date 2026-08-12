@@ -1,0 +1,145 @@
+
+Ferrum_Boss_Ingame.png
+size: 1977,1699
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bahu kanan
+  rotate: true
+  xy: 1431, 1017
+  size: 426, 448
+  orig: 428, 450
+  offset: 1, 1
+  index: -1
+bahu kiri
+  rotate: true
+  xy: 410, 1125
+  size: 390, 457
+  orig: 392, 460
+  offset: 1, 2
+  index: -1
+dada
+  rotate: false
+  xy: 628, 8
+  size: 783, 514
+  orig: 785, 516
+  offset: 1, 1
+  index: -1
+head
+  rotate: true
+  xy: 869, 1073
+  size: 378, 560
+  orig: 380, 563
+  offset: 1, 1
+  index: -1
+isi kepala
+  rotate: true
+  xy: 2, 1245
+  size: 329, 406
+  orig: 331, 408
+  offset: 1, 1
+  index: -1
+jambul 1
+  rotate: false
+  xy: 199, 1597
+  size: 200, 100
+  orig: 202, 103
+  offset: 1, 2
+  index: -1
+jambul 2
+  rotate: true
+  xy: 2, 1633
+  size: 64, 195
+  orig: 66, 198
+  offset: 1, 1
+  index: -1
+jambul 3
+  rotate: true
+  xy: 401, 1576
+  size: 121, 266
+  orig: 123, 268
+  offset: 1, 1
+  index: -1
+lengan kanan
+  rotate: true
+  xy: 2, 683
+  size: 388, 943
+  orig: 388, 943
+  offset: 0, 0
+  index: -1
+lengan kiri
+  rotate: true
+  xy: 947, 524
+  size: 491, 974
+  orig: 497, 976
+  offset: 3, 2
+  index: -1
+mask
+  rotate: false
+  xy: 924, 1464
+  size: 323, 233
+  orig: 325, 235
+  offset: 1, 1
+  index: -1
+neck
+  rotate: true
+  xy: 669, 1517
+  size: 180, 253
+  orig: 182, 255
+  offset: 1, 1
+  index: -1
+zirah bahu kanan
+  rotate: false
+  xy: 2, 172
+  size: 624, 509
+  orig: 626, 511
+  offset: 1, 1
+  index: -1
+zirah bahu kiri
+  rotate: false
+  xy: 1413, 2
+  size: 562, 520
+  orig: 564, 522
+  offset: 1, 1
+  index: -1
+zirah lengan kanan
+  rotate: true
+  xy: 1249, 1453
+  size: 244, 272
+  orig: 246, 275
+  offset: 1, 1
+  index: -1
+zirah lengan kiri
+  rotate: true
+  xy: 1523, 1445
+  size: 252, 274
+  orig: 254, 277
+  offset: 1, 1
+  index: -1
+
+Ferrum_Boss_Ingame2.png
+size: 1909,1293
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pedang
+  rotate: false
+  xy: 2, 207
+  size: 1057, 1084
+  orig: 1059, 1086
+  offset: 1, 1
+  index: -1
+perut
+  rotate: false
+  xy: 1061, 2
+  size: 714, 631
+  orig: 716, 633
+  offset: 1, 1
+  index: -1
+zirah body
+  rotate: true
+  xy: 1061, 635
+  size: 656, 846
+  orig: 658, 849
+  offset: 1, 1
+  index: -1
