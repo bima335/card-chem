@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bd1nckquvt4rq"]
 
+[ext_resource type="Texture2D" uid="uid://bj3yrnjm7tmhn" path="res://assets/event/battle_general.png" id="1_jin6d"]
 [ext_resource type="Texture2D" uid="uid://ct1xo8h48x77c" path="res://assets/event/goldencpanel.png" id="1_n28i7"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="3_b85yh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
 
@@ -13,6 +15,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="bg" type="TextureRect" parent="." unique_id=366809630]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_jin6d")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1383912392]
 layout_mode = 1
@@ -45,3 +53,14 @@ offset_top = 867.0
 offset_right = 1198.0
 offset_bottom = 950.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_yf5fn")
+
+[node name="Label" type="Label" parent="TextureRect" unique_id=1347849364]
+layout_mode = 0
+offset_left = 1444.0
+offset_top = 584.0
+offset_right = 1532.0
+offset_bottom = 670.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_b85yh")
+theme_override_font_sizes/font_size = 70
+text = "200"

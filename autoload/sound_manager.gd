@@ -12,6 +12,8 @@ var sfx_database: Dictionary = {
 
 var bgm_database: Dictionary = {
 	"battle_theme": preload("res://assets/audio/bgm/Go!_Fight!_Win!.mp3"),
+	"the_lab" : preload("res://assets/audio/bgm/The_Lab.mp3"),
+	"the_rest" : preload("res://assets/audio/bgm/The_Rest.mp3"),
 }
 
 func _ready() -> void:
