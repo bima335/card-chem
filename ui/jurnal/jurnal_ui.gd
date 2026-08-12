@@ -2,18 +2,38 @@ class_name JournalUI
 extends Control
 
 const TOTAL_CARDS_COUNT: int = 30
+const TOTAL_BLESSINGS_COUNT: int = 8
+const TOTAL_AURAS_COUNT: int = 9
+
 const CARD_UI_SCENE: PackedScene = preload("res://card/card_ui.tscn")
+const BLESSING_UI_ITEM_SCENE: PackedScene = preload("res://ui/blessing/blessing_ui_item.tscn")
+const AURA_CARD_UI_SCENE: PackedScene = preload("res://aura/AuraCardUI.tscn")
 
 @export var locked_color: Color = Color(0.15, 0.15, 0.15, 0.6)
 @export var unlocked_color: Color = Color.WHITE
 
 @onready var tab_container: TabContainer = %TabContainer
-@onready var grid_container: GridContainer = %GridContainer_Cards
 
-@onready var texture_preview: TextureRect = %TextureRect_Preview
-@onready var label_title: Label = %Label_CardTitle
-@onready var label_description: RichTextLabel = %Label_CardDescription
-@onready var label_counter: Label = %Label_CardCounter
+# Playing Cards References
+@onready var grid_container_cards: GridContainer = %GridContainer_Cards
+@onready var texture_card_preview: TextureRect = %TextureRect_Preview
+@onready var label_card_title: Label = %Label_CardTitle
+@onready var label_card_description: RichTextLabel = %Label_CardDescription
+@onready var label_card_counter: Label = %Label_CardCounter
+
+# Blessing Tokens References
+@onready var grid_container_blessings: GridContainer = %GridContainer_Blessings
+@onready var texture_blessing_preview: TextureRect = %TextureRect_BlessingPreview
+@onready var label_blessing_title: Label = %Label_BlessingTitle
+@onready var label_blessing_description: RichTextLabel = %Label_BlessingDescription
+@onready var label_blessing_counter: Label = %Label_BlessingCounter
+
+# Aura Bosscard References
+@onready var grid_container_auras: GridContainer = %GridContainer_Auras
+@onready var texture_aura_preview: TextureRect = %TextureRect_AuraPreview
+@onready var label_aura_title: Label = %Label_AuraTitle
+@onready var label_aura_description: RichTextLabel = %Label_AuraDescription
+@onready var label_aura_counter: Label = %Label_AuraCounter
 
 
 func _ready() -> void:
@@ -21,8 +41,10 @@ func _ready() -> void:
 	_setup_playing_cards_tab()
 
 
+# --- PLAYING CARDS ---
+
 func _setup_playing_cards_tab() -> void:
-	_clear_grid_container()
+	_clear_container(grid_container_cards)
 	
 	var discovered_ids: Array[String] = SaveManager.current_save.discovered_card_ids
 	var all_cards: Array[CardData] = SaveManager.all_game_cards
@@ -32,25 +54,20 @@ func _setup_playing_cards_tab() -> void:
 			continue
 			
 		var card_ui: CardUI = CARD_UI_SCENE.instantiate() as CardUI
-		grid_container.add_child(card_ui)
+		grid_container_cards.add_child(card_ui)
 		card_ui.setup(card_data)
 		card_ui.is_preview = true
 		
 		var is_discovered: bool = discovered_ids.has(card_data.id)
 		
 		if is_discovered:
-			card_ui.modulate = unlocked_color
+			card_ui.set_visual_color(unlocked_color)
 			card_ui.gui_input.connect(_on_card_gui_input.bind(card_data))
 		else:
-			card_ui.modulate = locked_color
+			card_ui.set_visual_color(locked_color)
 	
 	_update_card_counter(discovered_ids.size())
-	_reset_preview_panel()
-
-
-func _clear_grid_container() -> void:
-	for child in grid_container.get_children():
-		child.queue_free()
+	_reset_card_preview_panel()
 
 
 func _on_card_gui_input(event: InputEvent, card_data: CardData) -> void:
@@ -62,16 +79,13 @@ func _display_card_preview(card_data: CardData) -> void:
 	if not card_data:
 		return
 		
-	texture_preview.texture = card_data.card_texture
-	label_title.text = card_data.card_name
-	
-	var desc_text: String = _format_card_description(card_data)
-	label_description.text = desc_text
+	texture_card_preview.texture = card_data.card_texture
+	label_card_title.text = card_data.card_name
+	label_card_description.text = _format_card_description(card_data)
 
 
 func _format_card_description(card_data: CardData) -> String:
 	var text: String = ""
-	
 	var rarity_str: String = CardData.Rarity.keys()[card_data.rarity]
 	var type_str: String = CardData.CardType.keys()[card_data.card_type]
 	
@@ -105,16 +119,145 @@ func _format_card_description(card_data: CardData) -> String:
 
 
 func _update_card_counter(discovered_count: int) -> void:
-	label_counter.text = "KARTU TERKUMPUL\n" + str(discovered_count) + "/" + str(TOTAL_CARDS_COUNT)
+	label_card_counter.text = "KARTU TERKUMPUL\n" + str(discovered_count) + "/" + str(TOTAL_CARDS_COUNT)
 
 
-func _reset_preview_panel() -> void:
-	texture_preview.texture = null
-	label_title.text = "Pilih Kartu"
-	label_description.text = "[i]Klik salah satu kartu yang telah ditemukan untuk melihat detailnya.[/i]"
+func _reset_card_preview_panel() -> void:
+	texture_card_preview.texture = null
+	label_card_title.text = "Pilih Kartu"
+	label_card_description.text = "[i]Klik salah satu kartu yang telah ditemukan untuk melihat detailnya.[/i]"
+
+
+# --- BLESSING TOKENS ---
+
+func _setup_blessings_tab() -> void:
+	_clear_container(grid_container_blessings)
+	
+	var owned_ids: Array[int] = SaveManager.current_save.owned_blessing_ids
+	var all_blessings: Array[BlessingData] = SaveManager.all_game_blessings
+	
+	for blessing_data in all_blessings:
+		if not blessing_data:
+			continue
+			
+		var blessing_item: BlessingUIItem = BLESSING_UI_ITEM_SCENE.instantiate() as BlessingUIItem
+		grid_container_blessings.add_child(blessing_item)
+		blessing_item.setup(blessing_data)
+		
+		var is_unlocked: bool = owned_ids.has(blessing_data.id)
+		
+		if is_unlocked:
+			blessing_item.set_visual_color(unlocked_color)
+			blessing_item.clicked.connect(_on_blessing_item_clicked)
+		else:
+			blessing_item.set_visual_color(locked_color)
+			
+	_update_blessing_counter(owned_ids.size())
+	_reset_blessing_preview_panel()
+
+
+func _on_blessing_item_clicked(blessing_data: BlessingData) -> void:
+	_display_blessing_preview(blessing_data)
+
+
+func _display_blessing_preview(blessing_data: BlessingData) -> void:
+	if not blessing_data:
+		return
+		
+	texture_blessing_preview.texture = blessing_data.icon
+	label_blessing_title.text = blessing_data.name
+	label_blessing_description.text = _format_blessing_description(blessing_data)
+
+
+func _format_blessing_description(blessing_data: BlessingData) -> String:
+	var text: String = ""
+	text += "[b]Deskripsi:[/b]\n" + blessing_data.description + "\n\n"
+	text += "[b]Ekonomi:[/b]\n"
+	text += "- Harga Beli: " + str(blessing_data.buy_price) + " Gold\n"
+	text += "- Harga Jual: " + str(blessing_data.sell_price) + " Gold\n"
+	return text
+
+
+func _update_blessing_counter(owned_count: int) -> void:
+	label_blessing_counter.text = "BLESSING TERKUMPUL\n" + str(owned_count) + "/" + str(TOTAL_BLESSINGS_COUNT)
+
+
+func _reset_blessing_preview_panel() -> void:
+	texture_blessing_preview.texture = null
+	label_blessing_title.text = "Pilih Blessing"
+	label_blessing_description.text = "[i]Klik salah satu blessing yang telah didapatkan untuk melihat detailnya.[/i]"
+
+
+# --- AURA BOSSCARD ---
+
+func _setup_auras_tab() -> void:
+	_clear_container(grid_container_auras)
+	
+	var owned_ids: Array[int] = SaveManager.current_save.owned_aura_ids
+	var all_auras: Array[AuraCardData] = SaveManager.all_game_auras
+	
+	for aura_data in all_auras:
+		if not aura_data:
+			continue
+			
+		var aura_ui: AuraCardUI = AURA_CARD_UI_SCENE.instantiate() as AuraCardUI
+		grid_container_auras.add_child(aura_ui)
+		aura_ui.setup(aura_data)
+		
+		var is_unlocked: bool = owned_ids.has(aura_data.aura_id)
+		
+		if is_unlocked:
+			aura_ui.set_visual_color(unlocked_color)
+			aura_ui.aura_selected.connect(_on_aura_selected)
+		else:
+			aura_ui.set_visual_color(locked_color)
+			
+	_update_aura_counter(owned_ids.size())
+	_reset_aura_preview_panel()
+
+
+func _on_aura_selected(aura_data: AuraCardData) -> void:
+	_display_aura_preview(aura_data)
+
+
+func _display_aura_preview(aura_data: AuraCardData) -> void:
+	if not aura_data:
+		return
+		
+	texture_aura_preview.texture = aura_data.icon
+	label_aura_title.text = aura_data.name
+	label_aura_description.text = _format_aura_description(aura_data)
+
+
+func _format_aura_description(aura_data: AuraCardData) -> String:
+	var text: String = ""
+	text += "[b]Efek Pasif Aura:[/b]\n"
+	text += aura_data.description
+	return text
+
+
+func _update_aura_counter(owned_count: int) -> void:
+	label_aura_counter.text = "AURA TERKUMPUL\n" + str(owned_count) + "/" + str(TOTAL_AURAS_COUNT)
+
+
+func _reset_aura_preview_panel() -> void:
+	texture_aura_preview.texture = null
+	label_aura_title.text = "Pilih Aura"
+	label_aura_description.text = "[i]Klik salah satu aura yang telah didapatkan untuk melihat detailnya.[/i]"
+
+
+# --- UTILS ---
+
+func _clear_container(container: Container) -> void:
+	for child in container.get_children():
+		child.queue_free()
 
 
 func _on_tab_changed(tab_index: int) -> void:
-	var tab_title: String = tab_container.get_tab_title(tab_index)
-	if tab_index == 0:
-		_setup_playing_cards_tab()
+	match tab_index:
+		0:
+			_setup_playing_cards_tab()
+		2:
+			_setup_blessings_tab()
+		3:
+			_setup_auras_tab()

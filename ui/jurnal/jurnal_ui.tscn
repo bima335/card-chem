@@ -10,6 +10,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2lymr")
+locked_color = Color(0, 0, 0, 0.7254902)
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=305952201]
 custom_minimum_size = Vector2(1500, 1000)
@@ -70,7 +71,7 @@ horizontal_scroll_mode = 0
 [node name="GridContainer_Cards" type="GridContainer" parent="PanelContainer/MarginContainer/TabContainer/Playing Card/MarginContainer_Left/VBoxContainer/ScrollContainer" unique_id=377703359]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 size_flags_vertical = 3
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
@@ -169,16 +170,38 @@ horizontal_alignment = 1
 [node name="Blessing Token" type="HBoxContainer" parent="PanelContainer/MarginContainer/TabContainer" unique_id=636253603]
 visible = false
 layout_mode = 2
+theme_override_constants/separation = 16
 metadata/_tab_index = 2
 
 [node name="MarginContainer_Left" type="MarginContainer" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token" unique_id=1103935221]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="Label_Title" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Left" unique_id=203739472]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Left" unique_id=203739472]
 layout_mode = 2
-text = "BLESSING TOKEN - Halaman Kiri"
+theme_override_constants/separation = 16
+
+[node name="Label_Title" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Left/VBoxContainer" unique_id=1812758957]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "BLESSING TOKEN"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer_Grid" type="CenterContainer" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Left/VBoxContainer" unique_id=1812758959]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer_Blessings" type="GridContainer" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Left/VBoxContainer/CenterContainer_Grid" unique_id=1812758960]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+columns = 3
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token" unique_id=1812758958]
 layout_mode = 2
@@ -186,25 +209,99 @@ layout_mode = 2
 [node name="MarginContainer_Right" type="MarginContainer" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token" unique_id=1462238872]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="Label_Title" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right" unique_id=729372807]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right" unique_id=729372807]
 layout_mode = 2
-text = "BLESSING TOKEN - Halaman Kanan"
+theme_override_constants/separation = 16
+
+[node name="Panel_BlessingPreview" type="Panel" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right/VBoxContainer" unique_id=1462238873]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextureRect_BlessingPreview" type="TextureRect" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right/VBoxContainer/Panel_BlessingPreview" unique_id=1462238874]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label_BlessingTitle" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right/VBoxContainer" unique_id=1462238875]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Pilih Blessing"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right/VBoxContainer" unique_id=1462238876]
+layout_mode = 2
+
+[node name="ScrollContainer_Desc" type="ScrollContainer" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right/VBoxContainer" unique_id=1462238877]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Label_BlessingDescription" type="RichTextLabel" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right/VBoxContainer/ScrollContainer_Desc" unique_id=1462238878]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[i]Klik salah satu blessing yang telah didapatkan untuk melihat detailnya.[/i]"
+
+[node name="Label_BlessingCounter" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Blessing Token/MarginContainer_Right/VBoxContainer" unique_id=1462238879]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 18
+text = "BLESSING TERKUMPUL
+0/8"
 horizontal_alignment = 1
 
 [node name="Aura Bosscard" type="HBoxContainer" parent="PanelContainer/MarginContainer/TabContainer" unique_id=855369026]
 visible = false
 layout_mode = 2
+theme_override_constants/separation = 16
 metadata/_tab_index = 3
 
 [node name="MarginContainer_Left" type="MarginContainer" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard" unique_id=1224524712]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="Label_Title" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Left" unique_id=391891825]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Left" unique_id=391891825]
 layout_mode = 2
-text = "AURA BOSSCARD - Halaman Kiri"
+theme_override_constants/separation = 16
+
+[node name="Label_Title" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Left/VBoxContainer" unique_id=191891825]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "AURA BOSSCARD"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer_Grid" type="CenterContainer" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Left/VBoxContainer" unique_id=291891825]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer_Auras" type="GridContainer" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Left/VBoxContainer/CenterContainer_Grid" unique_id=391891826]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 3
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard" unique_id=1972965434]
 layout_mode = 2
@@ -212,8 +309,60 @@ layout_mode = 2
 [node name="MarginContainer_Right" type="MarginContainer" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard" unique_id=812047445]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="Label_Title" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right" unique_id=465687753]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right" unique_id=465687753]
 layout_mode = 2
-text = "AURA BOSSCARD - Halaman Kanan"
+theme_override_constants/separation = 16
+
+[node name="Panel_AuraPreview" type="Panel" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right/VBoxContainer" unique_id=565687753]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 350)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextureRect_AuraPreview" type="TextureRect" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right/VBoxContainer/Panel_AuraPreview" unique_id=665687753]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label_AuraTitle" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right/VBoxContainer" unique_id=765687753]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Pilih Aura"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right/VBoxContainer" unique_id=865687753]
+layout_mode = 2
+
+[node name="ScrollContainer_Desc" type="ScrollContainer" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right/VBoxContainer" unique_id=965687753]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Label_AuraDescription" type="RichTextLabel" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right/VBoxContainer/ScrollContainer_Desc" unique_id=1065687753]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[i]Klik salah satu aura yang telah didapatkan untuk melihat detailnya.[/i]"
+
+[node name="Label_AuraCounter" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Aura Bosscard/MarginContainer_Right/VBoxContainer" unique_id=1165687753]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 18
+text = "AURA TERKUMPUL
+0/9"
 horizontal_alignment = 1

@@ -18,6 +18,9 @@ func setup(data: AuraCardData) -> void:
 	if aura_data:
 		tooltip_text = aura_data.description
 
+func set_visual_color(color: Color) -> void:
+	self.modulate = color
+
 func _on_pressed() -> void:
 	if aura_data:
 		aura_selected.emit(aura_data)

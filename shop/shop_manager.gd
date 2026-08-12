@@ -335,23 +335,21 @@ func _build_blessing_slot_ui(blessing: BlessingData) -> void:
 
 
 func _on_buy_blessing_clicked(blessing: BlessingData, price: int, btn: Button) -> void:
-	# 1. Cek kecukupan koin
 	if GameManager.shop_coins < price:
 		SoundManager.play_sfx("error")
 		_show_insufficient_coins_feedback(btn)
 		return
 
-	# 2. Coba pasang blessing ke BlessingManager
 	var success: bool = BlessingManager.equip_blessing(blessing)
 	
 	if success:
 		GameManager.shop_coins -= price
 		_update_coin_display()
+		SaveManager.unlock_blessing(blessing)
 		SoundManager.play_sfx("buy_success")
 		btn.disabled = true
 		btn.text = "DIBELI"
 	else:
-		# Jika slot penuh atau gagal dipasang
 		SoundManager.play_sfx("error")
 		_show_blessing_failed_feedback(btn)
 

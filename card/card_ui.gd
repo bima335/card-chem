@@ -38,7 +38,17 @@ func setup(card_data: CardData) -> void:
 	if texture_normal:
 		pivot_offset = custom_minimum_size / 2.0
 		
+	if data:
+		modulate = data.modulate
+		
 	_setup_tooltip_text()
+
+
+func set_visual_color(color_tint: Color) -> void:
+	if data:
+		modulate = data.modulate * color_tint
+	else:
+		modulate = color_tint
 
 
 func _setup_tooltip_text() -> void:
@@ -76,14 +86,6 @@ func _get_cost_label() -> Label:
 	if has_node("TooltipPanel/VBoxContainer/Cost"):
 		return get_node("TooltipPanel/VBoxContainer/Cost") as Label
 	return null
-
-
-func _process(_delta: float) -> void:
-	if data:
-		modulate = data.modulate
-	
-	if is_dragging:
-		global_position = get_global_mouse_position() - drag_offset
 
 
 func _on_gui_input(event: InputEvent) -> void:

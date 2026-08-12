@@ -1,21 +1,69 @@
 extends Node
 
 signal card_discovered(card_id: String)
+signal blessing_unlocked(blessing_id: BlessingData.BlessingID)
+signal aura_unlocked(aura_id: AuraCardData.AuraID)
 signal save_completed
 signal load_completed
 
 const SAVE_PATH: String = "user://save_data.json"
 
-# Seluruh database kartu yang ada di dalam game (Resource CardData)
-@export var all_game_cards: Array[CardData] = []
+const CARD_DIRECTORY_PATHS: Array[String] = [
+	"res://card/resources/atk/",
+	"res://card/resources/buff/",
+	"res://card/resources/debuff/",
+	"res://card/resources/trigger/"
+]
+
+const BLESSING_DIRECTORY_PATH: String = "res://blessing/res/"
+const AURA_DIRECTORY_PATH: String = "res://aura/res/"
+
+var all_game_cards: Array[CardData] = []
+var all_game_blessings: Array[BlessingData] = []
+var all_game_auras: Array[AuraCardData] = []
 
 var current_save: SaveData = SaveData.new()
 var card_database: Dictionary = {}
+var blessing_database: Dictionary = {}
+var aura_database: Dictionary = {}
 
 
 func _ready() -> void:
+	_load_all_card_resources()
 	_build_card_database()
+	_load_all_blessing_resources()
+	_build_blessing_database()
+	_load_all_aura_resources()
+	_build_aura_database()
 	load_game()
+
+
+func _load_all_card_resources() -> void:
+	all_game_cards.clear()
+	for folder_path in CARD_DIRECTORY_PATHS:
+		_scan_and_load_card_folder(folder_path)
+
+
+func _scan_and_load_card_folder(folder_path: String) -> void:
+	var dir := DirAccess.open(folder_path)
+	if not dir:
+		push_warning("SaveManager: Folder kartu tidak ditemukan di: " + folder_path)
+		return
+
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+
+	while file_name != "":
+		if not dir.current_is_dir():
+			if file_name.ends_with(".tres") or file_name.ends_with(".res"):
+				var clean_filename := file_name.trim_suffix(".remap")
+				var full_path := folder_path.path_join(clean_filename)
+				var card_res := ResourceLoader.load(full_path) as CardData
+				if card_res and not all_game_cards.has(card_res):
+					all_game_cards.append(card_res)
+		file_name = dir.get_next()
+		
+	dir.list_dir_end()
 
 
 func _build_card_database() -> void:
@@ -24,7 +72,67 @@ func _build_card_database() -> void:
 		if card and not card.id.is_empty():
 			card_database[card.id] = card
 		else:
-			push_warning("SaveManager: Kartu tanpa ID valid ditemukan!")
+			push_warning("SaveManager: Ada Resource CardData tanpa ID valid!")
+
+
+func _load_all_blessing_resources() -> void:
+	all_game_blessings.clear()
+	var dir := DirAccess.open(BLESSING_DIRECTORY_PATH)
+	if not dir:
+		push_warning("SaveManager: Folder blessing tidak ditemukan di: " + BLESSING_DIRECTORY_PATH)
+		return
+
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+
+	while file_name != "":
+		if not dir.current_is_dir():
+			if file_name.ends_with(".tres") or file_name.ends_with(".res"):
+				var clean_filename := file_name.trim_suffix(".remap")
+				var full_path := BLESSING_DIRECTORY_PATH.path_join(clean_filename)
+				var blessing_res := ResourceLoader.load(full_path) as BlessingData
+				if blessing_res and not all_game_blessings.has(blessing_res):
+					all_game_blessings.append(blessing_res)
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+
+
+func _build_blessing_database() -> void:
+	blessing_database.clear()
+	for blessing in all_game_blessings:
+		if blessing:
+			blessing_database[blessing.id] = blessing
+
+
+func _load_all_aura_resources() -> void:
+	all_game_auras.clear()
+	var dir := DirAccess.open(AURA_DIRECTORY_PATH)
+	if not dir:
+		push_warning("SaveManager: Folder aura tidak ditemukan di: " + AURA_DIRECTORY_PATH)
+		return
+
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+
+	while file_name != "":
+		if not dir.current_is_dir():
+			if file_name.ends_with(".tres") or file_name.ends_with(".res"):
+				var clean_filename := file_name.trim_suffix(".remap")
+				var full_path := AURA_DIRECTORY_PATH.path_join(clean_filename)
+				var aura_res := ResourceLoader.load(full_path) as AuraCardData
+				if aura_res and not all_game_auras.has(aura_res):
+					all_game_auras.append(aura_res)
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+
+
+func _build_aura_database() -> void:
+	aura_database.clear()
+	for aura in all_game_auras:
+		if aura and aura.aura_id != AuraCardData.AuraID.NONE:
+			aura_database[aura.aura_id] = aura
 
 
 func discover_card(card: CardData) -> void:
@@ -38,27 +146,60 @@ func discover_card(card: CardData) -> void:
 
 
 func discover_cards(cards: Array[CardData]) -> void:
-	var new_discovery: bool = false
+	var state_changed := false
+	
 	for card in cards:
 		if card and not card.id.is_empty():
 			if not current_save.discovered_card_ids.has(card.id):
 				current_save.discovered_card_ids.append(card.id)
 				card_discovered.emit(card.id)
-				new_discovery = true
-	
-	if new_discovery:
+				state_changed = true
+				
+	if state_changed:
 		save_game()
 
 
-func is_card_discovered(card_id: String) -> bool:
-	return current_save.discovered_card_ids.has(card_id)
+func unlock_blessing(blessing: BlessingData) -> void:
+	if not blessing:
+		return
+
+	if not current_save.owned_blessing_ids.has(blessing.id):
+		current_save.owned_blessing_ids.append(blessing.id)
+		blessing_unlocked.emit(blessing.id)
+		save_game()
 
 
-func get_discovered_cards() -> Array[CardData]:
-	var result: Array[CardData] = []
-	for card_id in current_save.discovered_card_ids:
-		if card_database.has(card_id):
-			result.append(card_database[card_id])
+func unlock_aura(aura: AuraCardData) -> void:
+	if not aura or aura.aura_id == AuraCardData.AuraID.NONE:
+		return
+
+	if not current_save.owned_aura_ids.has(aura.aura_id):
+		current_save.owned_aura_ids.append(aura.aura_id)
+		aura_unlocked.emit(aura.aura_id)
+		save_game()
+
+
+func is_blessing_unlocked(blessing_id: BlessingData.BlessingID) -> bool:
+	return current_save.owned_blessing_ids.has(blessing_id)
+
+
+func is_aura_unlocked(aura_id: AuraCardData.AuraID) -> bool:
+	return current_save.owned_aura_ids.has(aura_id)
+
+
+func get_unlocked_blessings() -> Array[BlessingData]:
+	var result: Array[BlessingData] = []
+	for b_id in current_save.owned_blessing_ids:
+		if blessing_database.has(b_id):
+			result.append(blessing_database[b_id])
+	return result
+
+
+func get_unlocked_auras() -> Array[AuraCardData]:
+	var result: Array[AuraCardData] = []
+	for a_id in current_save.owned_aura_ids:
+		if aura_database.has(a_id):
+			result.append(aura_database[a_id])
 	return result
 
 
@@ -80,7 +221,7 @@ func save_game() -> void:
 		file.close()
 		save_completed.emit()
 	else:
-		push_error("SaveManager: Gagal membuka file simpan untuk ditulis! Error: " + str(FileAccess.get_open_error()))
+		push_error("SaveManager: Gagal menulis file save!")
 
 
 func load_game() -> void:
@@ -89,22 +230,19 @@ func load_game() -> void:
 
 	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if not file:
-		push_error("SaveManager: Gagal membaca file simpan! Error: " + str(FileAccess.get_open_error()))
+		push_error("SaveManager: Gagal membaca file save!")
 		return
 
 	var json_string: String = file.get_as_text()
 	file.close()
 
 	var json = JSON.new()
-	var parse_result = json.parse(json_string)
-	if parse_result == OK:
+	if json.parse(json_string) == OK:
 		var data_dict = json.data
 		if data_dict is Dictionary:
 			current_save.from_dict(data_dict)
 			_apply_loaded_data_to_managers()
 			load_completed.emit()
-	else:
-		push_error("SaveManager: Parsing JSON gagal di baris " + str(json.get_error_line()) + ": " + json.get_error_message())
 
 
 func _apply_loaded_data_to_managers() -> void:
@@ -117,3 +255,9 @@ func _apply_loaded_data_to_managers() -> void:
 	for card_id in current_save.player_deck_ids:
 		if card_database.has(card_id):
 			GameManager.player_deck.append(card_database[card_id].duplicate(true))
+
+	if BlessingManager.has_method("load_player_blessings"):
+		BlessingManager.load_player_blessings(get_unlocked_blessings())
+		
+	if AuraManager and AuraManager.has_method("load_player_auras"):
+		AuraManager.load_player_auras(get_unlocked_auras())

@@ -104,6 +104,10 @@ func _setup_boss_reward() -> void:
 func _on_aura_reward_chosen(chosen_aura: AuraCardData) -> void:
 	if AuraManager:
 		AuraManager.equip_aura(chosen_aura)
+	
+	if SaveManager:
+		SaveManager.unlock_aura(chosen_aura)
+		
 	_return_to_map()
 
 func _on_reward_card_chosen(chosen_card: CardData) -> void:
