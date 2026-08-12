@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
-[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="9_csnlq"]
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
@@ -19,6 +18,40 @@
 [ext_resource type="Resource" uid="uid://otourkerimal" path="res://card/resources/atk/water.tres" id="15_6ojnn"]
 [ext_resource type="Resource" uid="uid://dpg4l0kf5u7mo" path="res://ailments/res/burn.tres" id="15_xre4y"]
 [ext_resource type="Resource" uid="uid://b1nye4430c7yv" path="res://card/resources/buff/c_shield.tres" id="16_dairb"]
+[ext_resource type="Texture2D" uid="uid://cdi42dnwdsrkq" path="res://assets/HUD/speroavatar.png" id="19_unxtc"]
+[ext_resource type="Texture2D" uid="uid://kukjk6c1d1ce" path="res://assets/HUD/logbattle.png" id="20_usmio"]
+[ext_resource type="Texture2D" uid="uid://cohmwkije4j0a" path="res://assets/HUD/healthbarwadahplayer.png" id="20_yun0f"]
+[ext_resource type="Texture2D" uid="uid://vhfdey5jp05f" path="res://assets/HUD/healthbarisiplayer.png" id="21_uakwd"]
+[ext_resource type="Texture2D" uid="uid://dgtgf0v1tjctr" path="res://assets/HUD/iconDeck.png" id="22_yme4k"]
+[ext_resource type="Texture2D" uid="uid://bniumr7o1ajmh" path="res://assets/HUD/icondiscard.png" id="23_4n26w"]
+[ext_resource type="Script" uid="uid://bgmjei68n4qpw" path="res://main/texture_progress_bar.gd" id="23_iew0u"]
+[ext_resource type="Texture2D" uid="uid://bn0jqf08h3sn0" path="res://assets/HUD/shieldhpbarplayer.png" id="24_iow6o"]
+[ext_resource type="Texture2D" uid="uid://qkrieqt724o7" path="res://assets/HUD/iconstatus.png" id="24_wsa3t"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="25_lwejg"]
+[ext_resource type="Script" uid="uid://t467axc5qguh" path="res://main/health_bar.gd" id="26_ukrt6"]
+[ext_resource type="Texture2D" uid="uid://tumowwmhun23" path="res://assets/HUD/namaspero.png" id="30_ts2vl"]
+[ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="31_e72vb"]
+[ext_resource type="Texture2D" uid="uid://43l7p73t0ti" path="res://assets/HUD/iconhealth.png" id="32_oveg7"]
+[ext_resource type="Texture2D" uid="uid://blf4xt6fd6kgc" path="res://assets/HUD/layoutcardaura.png" id="33_06b3h"]
+[ext_resource type="Texture2D" uid="uid://bw55ilnta4bmo" path="res://assets/HUD/layoutblessingtokens.png" id="34_7mfaq"]
+[ext_resource type="Texture2D" uid="uid://2xyjw222so2" path="res://assets/HUD/tombolendround.png" id="35_j1o3r"]
+[ext_resource type="Texture2D" uid="uid://bb2q074ndhgrc" path="res://assets/HUD/wadahtoken.png" id="36_7djar"]
+[ext_resource type="Texture2D" uid="uid://dmhrymf7gchy6" path="res://assets/HUD/isitokenC.png" id="37_olllg"]
+[ext_resource type="Texture2D" uid="uid://d5arhd5p07k5" path="res://assets/HUD/isitokenH.png" id="38_a71yv"]
+[ext_resource type="Texture2D" uid="uid://cjvb36kmjsgoe" path="res://assets/HUD/isitokenO.png" id="39_7i7p3"]
+[ext_resource type="Texture2D" uid="uid://di4q5vfxwv2ve" path="res://assets/HUD/isitokenN.png" id="40_e61ho"]
+[ext_resource type="Texture2D" uid="uid://b75cnef6h3o8m" path="res://assets/backgrounds/deckpanel.png" id="41_gfdxq"]
+[ext_resource type="Texture2D" uid="uid://dm6wh3bpctwsl" path="res://assets/HUD/statusplayerpanel.png" id="42_y3ceo"]
+[ext_resource type="Texture2D" uid="uid://co0hm6x21sw4f" path="res://assets/backgrounds/discardedpanel.png" id="43_6w65c"]
+[ext_resource type="Texture2D" uid="uid://4pr0yhl0ghrj" path="res://assets/backgrounds/panelrewards.png" id="44_icwpv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_57qmd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d0u6y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yf5fn"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 script = ExtResource("1_m1b1k")
@@ -53,24 +86,24 @@ hand_container = NodePath("../../UI/HandContainer")
 end_turn_button = NodePath("../../UI/EndTurnButton")
 deck_visual = NodePath("../../UI/DeckVisual")
 discard_visual = NodePath("../../UI/DiscardVisual")
-close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
+close_deck_button = NodePath("")
 blessing_container = NodePath("../../UI/TopRightHUD/BlessingContainer")
 blessing_item_scene = ExtResource("12_6ojnn")
 aura_container = NodePath("../../UI/TopRightHUD/AuraContainer")
 aura_ui_scene = ExtResource("14_dairb")
-player_hp_bar = NodePath("../../UI/PlayerHPBar")
-player_hp_label = NodePath("../../UI/PlayerHPBar/Label")
-player_shield_bar = NodePath("../../UI/PlayerShieldBar")
-player_shield_label = NodePath("../../UI/PlayerShieldBar/Label")
+player_hp_bar = NodePath("")
+player_hp_label = NodePath("")
+player_shield_bar = NodePath("")
+player_shield_label = NodePath("")
 token_container = NodePath("../../UI/TokenContainer")
-c_label = NodePath("../../UI/TokenContainer/CLabel")
-h_label = NodePath("../../UI/TokenContainer/HLabel")
-o_label = NodePath("../../UI/TokenContainer/OLabel")
-n_label = NodePath("../../UI/TokenContainer/NLabel")
+c_label = NodePath("")
+h_label = NodePath("")
+o_label = NodePath("")
+n_label = NodePath("")
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
-deck_view_panel = NodePath("../../UI/DeckViewPanel")
-panel_title_label = NodePath("../../UI/DeckViewPanel/TitleLabel")
-card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
+deck_view_panel = NodePath("../../UI/DeckPlayerPanel")
+panel_title_label = NodePath("")
+card_grid = NodePath("../../UI/DeckPlayerPanel/VBoxContainer/ScrollContainer/CardGrid")
 
 [node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
 script = ExtResource("10_0hkaa")
@@ -100,6 +133,59 @@ offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="Avatar" type="TextureRect" parent="UI" unique_id=804045130]
+offset_left = -2.0
+offset_top = 1.0
+offset_right = 1918.0
+offset_bottom = 1081.0
+texture = ExtResource("19_unxtc")
+
+[node name="PanelLog" type="TextureRect" parent="UI" unique_id=1705203816]
+offset_left = 10.0
+offset_top = 310.0
+offset_right = 391.0
+offset_bottom = 631.0
+texture = ExtResource("20_usmio")
+
+[node name="HealthbarUnder" type="TextureProgressBar" parent="UI" unique_id=1633202673]
+offset_left = 62.0
+offset_top = 1016.0
+offset_right = 465.0
+offset_bottom = 1056.0
+value = 80.0
+texture_under = ExtResource("20_yun0f")
+texture_progress = ExtResource("21_uakwd")
+script = ExtResource("23_iew0u")
+
+[node name="ShieldBar" type="TextureProgressBar" parent="UI" unique_id=1875574328]
+offset_left = 62.0
+offset_top = 1016.0
+offset_right = 465.0
+offset_bottom = 1056.0
+value = 20.0
+fill_mode = 1
+texture_progress = ExtResource("24_iow6o")
+script = ExtResource("23_iew0u")
+
+[node name="HealthBar" type="Label" parent="UI" unique_id=1844871540]
+offset_left = 329.0
+offset_top = 975.0
+offset_right = 388.0
+offset_bottom = 1007.0
+theme_override_fonts/font = ExtResource("25_lwejg")
+theme_override_font_sizes/font_size = 25
+text = "80/100 (+20 shield)"
+script = ExtResource("26_ukrt6")
+
+[node name="GoldValue" type="Label" parent="UI" unique_id=372004685]
+offset_left = 178.0
+offset_top = 969.0
+offset_right = 217.0
+offset_bottom = 1007.0
+theme_override_fonts/font = ExtResource("25_lwejg")
+theme_override_font_sizes/font_size = 31
+text = "200"
+
 [node name="DeckVisual" type="TextureButton" parent="UI" unique_id=1314374451]
 anchors_preset = 2
 anchor_top = 1.0
@@ -107,97 +193,247 @@ anchor_bottom = 1.0
 offset_top = -64.0
 offset_right = 48.0
 grow_vertical = 0
-texture_normal = ExtResource("9_csnlq")
+texture_normal = ExtResource("22_yme4k")
 
 [node name="DiscardVisual" type="TextureButton" parent="UI" unique_id=946672430]
-modulate = Color(0.41124472, 0.00016865015, 0.43268502, 1)
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -48.0
-offset_top = -64.0
+offset_left = -1893.0
+offset_top = -222.0
+offset_right = -1826.0
+offset_bottom = -158.0
 grow_horizontal = 0
 grow_vertical = 0
-texture_normal = ExtResource("9_csnlq")
+texture_normal = ExtResource("23_4n26w")
 
-[node name="PlayerHPBar" type="ProgressBar" parent="UI" unique_id=1408518611]
-offset_left = 12.0
-offset_top = 443.0
-offset_right = 128.0
-offset_bottom = 470.0
-step = 1.0
-show_percentage = false
+[node name="StatusVisual" type="TextureButton" parent="UI" unique_id=139929331]
+offset_left = 30.0
+offset_top = 794.0
+offset_right = 86.0
+offset_bottom = 855.0
+texture_normal = ExtResource("24_wsa3t")
 
-[node name="Label" type="Label" parent="UI/PlayerHPBar" unique_id=1441573184]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Nama" type="TextureRect" parent="UI" unique_id=1485723375]
+offset_left = 119.0
+offset_top = 921.0
+offset_right = 269.0
+offset_bottom = 974.0
+texture = ExtResource("30_ts2vl")
 
-[node name="PlayerShieldBar" type="ProgressBar" parent="UI" unique_id=2089301244]
-offset_left = 12.0
-offset_top = 488.0
-offset_right = 128.0
-offset_bottom = 515.0
-step = 1.0
-show_percentage = false
+[node name="GoldIcon" type="TextureRect" parent="UI" unique_id=2126915016]
+offset_left = 129.0
+offset_top = 967.0
+offset_right = 177.0
+offset_bottom = 1022.0
+texture = ExtResource("31_e72vb")
 
-[node name="Label" type="Label" parent="UI/PlayerShieldBar" unique_id=793629810]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Hearth" type="TextureRect" parent="UI" unique_id=243099145]
+offset_left = 280.0
+offset_top = 970.0
+offset_right = 327.0
+offset_bottom = 1016.0
+texture = ExtResource("32_oveg7")
+
+[node name="LayoutAuraBoss" type="TextureRect" parent="UI" unique_id=91231908]
+offset_left = 1509.0
+offset_top = -16.0
+offset_right = 1886.0
+offset_bottom = 265.0
+texture = ExtResource("33_06b3h")
+
+[node name="LayoutBlessingCard" type="TextureRect" parent="UI" unique_id=1136671805]
+offset_left = 1445.0
+offset_top = 6.0
+offset_right = 1570.0
+offset_bottom = 264.0
+texture = ExtResource("34_7mfaq")
 
 [node name="EndTurnButton" type="Button" parent="UI" unique_id=1374644199]
-offset_left = 1728.0
-offset_top = 435.0
-offset_right = 1823.0
-offset_bottom = 508.0
-text = "End Turn"
+offset_left = 1541.0
+offset_top = 734.0
+offset_right = 1896.0
+offset_bottom = 1070.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_g4v7s")
+icon = ExtResource("35_j1o3r")
 
 [node name="TokenContainer" type="VBoxContainer" parent="UI" unique_id=1305011282]
-offset_top = 74.0
-offset_right = 95.0
-offset_bottom = 319.0
+offset_left = 24.0
+offset_top = 15.0
+offset_right = 419.0
+offset_bottom = 261.0
+theme_override_constants/separation = -9
 
-[node name="CLabel" type="Label" parent="UI/TokenContainer" unique_id=1336236963]
+[node name="WadahTokenC" type="TextureRect" parent="UI/TokenContainer" unique_id=1403419328]
 layout_mode = 2
+texture = ExtResource("36_7djar")
 
-[node name="HLabel" type="Label" parent="UI/TokenContainer" unique_id=1702646118]
-layout_mode = 2
+[node name="isiTokenC" type="HBoxContainer" parent="UI/TokenContainer/WadahTokenC" unique_id=507291016]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 11.0
+offset_right = 163.0
+offset_bottom = 55.0
+theme_override_constants/separation = -8
 
-[node name="OLabel" type="Label" parent="UI/TokenContainer" unique_id=119395391]
+[node name="TextureRect" type="TextureRect" parent="UI/TokenContainer/WadahTokenC/isiTokenC" unique_id=633997213]
 layout_mode = 2
+texture = ExtResource("37_olllg")
 
-[node name="NLabel" type="Label" parent="UI/TokenContainer" unique_id=1634551958]
+[node name="TextureRect2" type="TextureRect" parent="UI/TokenContainer/WadahTokenC/isiTokenC" unique_id=1302068517]
 layout_mode = 2
+texture = ExtResource("37_olllg")
+
+[node name="TextureRect3" type="TextureRect" parent="UI/TokenContainer/WadahTokenC/isiTokenC" unique_id=173273778]
+layout_mode = 2
+texture = ExtResource("37_olllg")
+
+[node name="TextureRect4" type="TextureRect" parent="UI/TokenContainer/WadahTokenC/isiTokenC" unique_id=1919896972]
+layout_mode = 2
+texture = ExtResource("37_olllg")
+
+[node name="TextureRect5" type="TextureRect" parent="UI/TokenContainer/WadahTokenC/isiTokenC" unique_id=641964769]
+layout_mode = 2
+texture = ExtResource("37_olllg")
+
+[node name="TextureRect6" type="TextureRect" parent="UI/TokenContainer/WadahTokenC/isiTokenC" unique_id=40545900]
+layout_mode = 2
+texture = ExtResource("37_olllg")
+
+[node name="TextureRect7" type="TextureRect" parent="UI/TokenContainer/WadahTokenC/isiTokenC" unique_id=2087128625]
+layout_mode = 2
+texture = ExtResource("37_olllg")
+
+[node name="WadahTokenH" type="TextureRect" parent="UI/TokenContainer" unique_id=1159940450]
+layout_mode = 2
+texture = ExtResource("36_7djar")
+
+[node name="isiTokenH" type="HBoxContainer" parent="UI/TokenContainer/WadahTokenH" unique_id=1658553064]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 7.0
+offset_right = 377.0
+offset_bottom = 59.0
+theme_override_constants/separation = -15
+
+[node name="TextureRect" type="TextureRect" parent="UI/TokenContainer/WadahTokenH/isiTokenH" unique_id=775334474]
+layout_mode = 2
+texture = ExtResource("38_a71yv")
+
+[node name="TextureRect2" type="TextureRect" parent="UI/TokenContainer/WadahTokenH/isiTokenH" unique_id=1665440249]
+layout_mode = 2
+texture = ExtResource("38_a71yv")
+
+[node name="TextureRect3" type="TextureRect" parent="UI/TokenContainer/WadahTokenH/isiTokenH" unique_id=927802902]
+layout_mode = 2
+texture = ExtResource("38_a71yv")
+
+[node name="TextureRect4" type="TextureRect" parent="UI/TokenContainer/WadahTokenH/isiTokenH" unique_id=883869111]
+layout_mode = 2
+texture = ExtResource("38_a71yv")
+
+[node name="TextureRect5" type="TextureRect" parent="UI/TokenContainer/WadahTokenH/isiTokenH" unique_id=1823706035]
+layout_mode = 2
+texture = ExtResource("38_a71yv")
+
+[node name="TextureRect6" type="TextureRect" parent="UI/TokenContainer/WadahTokenH/isiTokenH" unique_id=1966211945]
+layout_mode = 2
+texture = ExtResource("38_a71yv")
+
+[node name="TextureRect7" type="TextureRect" parent="UI/TokenContainer/WadahTokenH/isiTokenH" unique_id=404487631]
+layout_mode = 2
+texture = ExtResource("38_a71yv")
+
+[node name="WadahTokenO" type="TextureRect" parent="UI/TokenContainer" unique_id=451340339]
+layout_mode = 2
+texture = ExtResource("36_7djar")
+
+[node name="isiTokenO" type="HBoxContainer" parent="UI/TokenContainer/WadahTokenO" unique_id=1075243300]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 14.0
+offset_right = 370.0
+offset_bottom = 58.0
+theme_override_constants/separation = -1
+
+[node name="TextureRect" type="TextureRect" parent="UI/TokenContainer/WadahTokenO/isiTokenO" unique_id=1998006795]
+layout_mode = 2
+texture = ExtResource("39_7i7p3")
+
+[node name="TextureRect2" type="TextureRect" parent="UI/TokenContainer/WadahTokenO/isiTokenO" unique_id=1906807308]
+layout_mode = 2
+texture = ExtResource("39_7i7p3")
+
+[node name="TextureRect3" type="TextureRect" parent="UI/TokenContainer/WadahTokenO/isiTokenO" unique_id=769215066]
+layout_mode = 2
+texture = ExtResource("39_7i7p3")
+
+[node name="TextureRect4" type="TextureRect" parent="UI/TokenContainer/WadahTokenO/isiTokenO" unique_id=2080540017]
+layout_mode = 2
+texture = ExtResource("39_7i7p3")
+
+[node name="TextureRect5" type="TextureRect" parent="UI/TokenContainer/WadahTokenO/isiTokenO" unique_id=2142686572]
+layout_mode = 2
+texture = ExtResource("39_7i7p3")
+
+[node name="TextureRect6" type="TextureRect" parent="UI/TokenContainer/WadahTokenO/isiTokenO" unique_id=601640631]
+layout_mode = 2
+texture = ExtResource("39_7i7p3")
+
+[node name="TextureRect7" type="TextureRect" parent="UI/TokenContainer/WadahTokenO/isiTokenO" unique_id=1984974813]
+layout_mode = 2
+texture = ExtResource("39_7i7p3")
+
+[node name="WadahTokenN" type="TextureRect" parent="UI/TokenContainer" unique_id=1820148039]
+layout_mode = 2
+texture = ExtResource("36_7djar")
+
+[node name="isiTokenC" type="HBoxContainer" parent="UI/TokenContainer/WadahTokenN" unique_id=515290352]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 11.0
+offset_right = 163.0
+offset_bottom = 55.0
+theme_override_constants/separation = -4
+
+[node name="TextureRect" type="TextureRect" parent="UI/TokenContainer/WadahTokenN/isiTokenC" unique_id=183933707]
+layout_mode = 2
+texture = ExtResource("40_e61ho")
+
+[node name="TextureRect2" type="TextureRect" parent="UI/TokenContainer/WadahTokenN/isiTokenC" unique_id=814129994]
+layout_mode = 2
+texture = ExtResource("40_e61ho")
+
+[node name="TextureRect3" type="TextureRect" parent="UI/TokenContainer/WadahTokenN/isiTokenC" unique_id=2025707768]
+layout_mode = 2
+texture = ExtResource("40_e61ho")
+
+[node name="TextureRect4" type="TextureRect" parent="UI/TokenContainer/WadahTokenN/isiTokenC" unique_id=1311847972]
+layout_mode = 2
+texture = ExtResource("40_e61ho")
+
+[node name="TextureRect5" type="TextureRect" parent="UI/TokenContainer/WadahTokenN/isiTokenC" unique_id=1216861444]
+layout_mode = 2
+texture = ExtResource("40_e61ho")
+
+[node name="TextureRect6" type="TextureRect" parent="UI/TokenContainer/WadahTokenN/isiTokenC" unique_id=368430302]
+layout_mode = 2
+texture = ExtResource("40_e61ho")
+
+[node name="TextureRect7" type="TextureRect" parent="UI/TokenContainer/WadahTokenN/isiTokenC" unique_id=1517883640]
+layout_mode = 2
+texture = ExtResource("40_e61ho")
 
 [node name="TopRightHUD" type="HBoxContainer" parent="UI" unique_id=1046660355]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -220.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = 220.0
+offset_left = -380.0
+offset_top = 31.0
+offset_right = -78.0
+offset_bottom = 231.0
 grow_horizontal = 0
 theme_override_constants/separation = 15
 
@@ -205,16 +441,29 @@ theme_override_constants/separation = 15
 layout_mode = 2
 theme_override_constants/separation = 10
 
+[node name="BlessingUIItem" parent="UI/TopRightHUD/BlessingContainer" unique_id=1834452308 instance=ExtResource("12_6ojnn")]
+layout_mode = 2
+texture = ExtResource("24_wsa3t")
+
+[node name="BlessingUIItem2" parent="UI/TopRightHUD/BlessingContainer" unique_id=642153267 instance=ExtResource("12_6ojnn")]
+layout_mode = 2
+texture = ExtResource("24_wsa3t")
+
+[node name="BlessingUIItem3" parent="UI/TopRightHUD/BlessingContainer" unique_id=1828925716 instance=ExtResource("12_6ojnn")]
+layout_mode = 2
+texture = ExtResource("24_wsa3t")
+
 [node name="AuraContainer" type="PanelContainer" parent="UI/TopRightHUD" unique_id=2066166155]
 custom_minimum_size = Vector2(136, 200)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_57qmd")
 
-[node name="AuraPlaceholder" type="Label" parent="UI/TopRightHUD/AuraContainer" unique_id=1914423894]
+[node name="AuraContainer2" type="PanelContainer" parent="UI/TopRightHUD" unique_id=1751933580]
+custom_minimum_size = Vector2(136, 200)
 layout_mode = 2
-text = "Aura Card"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_d0u6y")
 
 [node name="DeckBackDrop" type="ColorRect" parent="UI" unique_id=1123639773]
 visible = false
@@ -225,7 +474,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.3647059)
 
-[node name="DeckViewPanel" type="PanelContainer" parent="UI" unique_id=704264590]
+[node name="DeckPlayerPanel" type="PanelContainer" parent="UI" unique_id=704264590]
 visible = false
 custom_minimum_size = Vector2(1500, 800)
 anchors_preset = 8
@@ -239,32 +488,93 @@ offset_right = 750.0
 offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_yf5fn")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/DeckViewPanel" unique_id=191365710]
+[node name="panel" type="TextureRect" parent="UI/DeckPlayerPanel" unique_id=366091581]
+layout_mode = 2
+texture = ExtResource("41_gfdxq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DeckPlayerPanel" unique_id=191365710]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UI/DeckViewPanel/VBoxContainer" unique_id=592154474]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/DeckPlayerPanel/VBoxContainer" unique_id=592154474]
 custom_minimum_size = Vector2(1000, 400)
 layout_mode = 2
 
-[node name="CardGrid" type="GridContainer" parent="UI/DeckViewPanel/VBoxContainer/ScrollContainer" unique_id=1205949729]
+[node name="CardGrid" type="GridContainer" parent="UI/DeckPlayerPanel/VBoxContainer/ScrollContainer" unique_id=1205949729]
 layout_mode = 2
 size_flags_horizontal = 4
 columns = 6
 
-[node name="TitleLabel" type="Label" parent="UI/DeckViewPanel" unique_id=715867543]
+[node name="StatusPlayerPanel" type="PanelContainer" parent="UI" unique_id=806951631]
+visible = false
+custom_minimum_size = Vector2(1500, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -400.0
+offset_right = 750.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_yf5fn")
+
+[node name="panel" type="TextureRect" parent="UI/StatusPlayerPanel" unique_id=1638203179]
+layout_mode = 2
+texture = ExtResource("42_y3ceo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/StatusPlayerPanel" unique_id=1580805928]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
-text = "DECK"
+size_flags_vertical = 4
 
-[node name="CloseButton" type="Button" parent="UI/DeckViewPanel" unique_id=992015313]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/StatusPlayerPanel/VBoxContainer" unique_id=1061982818]
+custom_minimum_size = Vector2(1000, 400)
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-text = "Close"
+
+[node name="CardGrid" type="GridContainer" parent="UI/StatusPlayerPanel/VBoxContainer/ScrollContainer" unique_id=1172489447]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 6
+
+[node name="DiscardPlayerPanel" type="PanelContainer" parent="UI" unique_id=2043484867]
+visible = false
+custom_minimum_size = Vector2(1500, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -400.0
+offset_right = 750.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_yf5fn")
+
+[node name="panel" type="TextureRect" parent="UI/DiscardPlayerPanel" unique_id=1139190395]
+layout_mode = 2
+texture = ExtResource("43_6w65c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DiscardPlayerPanel" unique_id=1729648397]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/DiscardPlayerPanel/VBoxContainer" unique_id=1912247484]
+custom_minimum_size = Vector2(1000, 400)
+layout_mode = 2
+
+[node name="CardGrid" type="GridContainer" parent="UI/DiscardPlayerPanel/VBoxContainer/ScrollContainer" unique_id=403140814]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 6
 
 [node name="ColorRect" type="ColorRect" parent="UI" unique_id=985614902]
 visible = false
@@ -283,7 +593,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.81960785)
+color = Color(0.14911404, 0.14911404, 0.14911404, 0.81960785)
+
+[node name="panelreward" type="TextureRect" parent="UI/RewardBackdrop" unique_id=1589454301]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 1849.0
+offset_bottom = 1020.0
+texture = ExtResource("44_icwpv")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/RewardBackdrop" unique_id=798449482]
 layout_mode = 1
