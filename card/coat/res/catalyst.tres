@@ -9,5 +9,4 @@ coat_type = 6
 coat_name = "Catalyst"
 icon = ExtResource("1_ie6xm")
 buy_price = 13
-cost_reduction_amount = 1
 metadata/_custom_type_script = "uid://bu5meodq28pis"

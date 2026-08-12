@@ -1,7 +1,7 @@
 class_name MapNodeData
 extends Resource
 
-enum NodeType {BATTLE_NORMAL, BATTLE_HARD, SHOP, REST, BOSS}
+enum NodeType {BATTLE_NORMAL, BATTLE_HARD, RANDOM_EVENT,SHOP, REST, BOSS}
 
 @export var type: NodeType = NodeType.BATTLE_NORMAL
 @export var grid_position: Vector2i

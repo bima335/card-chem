@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bpuh2bs22puvk" path="res://assets/shop.jpeg" id="5_c1dec"]
 [ext_resource type="Texture2D" uid="uid://ckufyfnu7788r" path="res://assets/sleep.jpeg" id="6_tdrfg"]
 [ext_resource type="Texture2D" uid="uid://do5vysx2ext6m" path="res://assets/boss.jpeg" id="7_dix6y"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="8_c1dec"]
 
 [node name="MapNode" type="TextureButton" unique_id=216622706]
 custom_minimum_size = Vector2(10, 10)
@@ -26,3 +27,4 @@ tex_battle_hard = ExtResource("4_dix6y")
 tex_shop = ExtResource("5_c1dec")
 tex_rest = ExtResource("6_tdrfg")
 tex_boss = ExtResource("7_dix6y")
+tex_random_event = ExtResource("8_c1dec")

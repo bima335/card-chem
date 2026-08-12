@@ -164,6 +164,8 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 			get_tree().change_scene_to_file("res://shop/shop_scene.tscn")
 		MapNodeData.NodeType.REST:
 			get_tree().change_scene_to_file("res://event/event_scene.tscn")
+		MapNodeData.NodeType.RANDOM_EVENT:
+			get_tree().change_scene_to_file("res://event/random_event_scene.tscn")
 		MapNodeData.NodeType.BATTLE_NORMAL, MapNodeData.NodeType.BATTLE_HARD, MapNodeData.NodeType.BOSS:
 			GameManager.current_wave_data = node_data.wave_data
 			get_tree().change_scene_to_file("res://main/battle_scene.tscn")

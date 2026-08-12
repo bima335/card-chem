@@ -11,13 +11,12 @@ var data: MapNodeData
 @export var tex_shop: Texture2D
 @export var tex_rest: Texture2D
 @export var tex_boss: Texture2D
+@export var tex_random_event: Texture2D # Slot Tekstur Baru
 
-# Variabel penyimpan animasi agar tidak tumpang tindih
 var scale_tween: Tween
 var wobble_tween: Tween
 
 func _ready() -> void:
-	# Menyambungkan sinyal klik dan hover
 	if not pressed.is_connected(_on_pressed):
 		pressed.connect(_on_pressed)
 	
@@ -33,7 +32,6 @@ func setup_node(node_data: MapNodeData, is_accessible: bool) -> void:
 	custom_minimum_size = Vector2(50, 50)
 	size = Vector2(50, 50) 
 	
-	# PENTING: Memusatkan titik tumpu (Pivot) agar Zoom dan Goyang berpusat di tengah!
 	pivot_offset = size / 2.0
 	
 	match data.type:
@@ -42,8 +40,8 @@ func setup_node(node_data: MapNodeData, is_accessible: bool) -> void:
 		MapNodeData.NodeType.SHOP: texture_normal = tex_shop
 		MapNodeData.NodeType.REST: texture_normal = tex_rest
 		MapNodeData.NodeType.BOSS: texture_normal = tex_boss
+		MapNodeData.NodeType.RANDOM_EVENT: texture_normal = tex_random_event
 			
-	# Aturan Akses Lantai
 	if is_accessible:
 		disabled = false
 		modulate.a = 1.0
@@ -51,7 +49,6 @@ func setup_node(node_data: MapNodeData, is_accessible: bool) -> void:
 		disabled = true
 		modulate.a = 0.25
 
-## --- ANIMASI SAAT KURSOR MASUK (HOVER) ---
 func _on_mouse_entered() -> void:
 	if disabled: return 
 	if scale_tween and scale_tween.is_valid(): scale_tween.kill()

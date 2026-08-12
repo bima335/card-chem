@@ -91,12 +91,14 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first
 				node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
 			else:
 				var roll = randf()
-				if roll < 0.50: 
+				if roll < 0.40: 
 					node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
 					node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
-				elif roll < 0.75: 
+				elif roll < 0.60: 
 					node_data.type = MapNodeData.NodeType.BATTLE_HARD
 					node_data.wave_data = WaveGenerator.generate_wave(1, section_for_generation, global_common_enemies, global_elite_enemies)
+				elif roll < 0.80:
+					node_data.type = MapNodeData.NodeType.RANDOM_EVENT
 				else: 
 					node_data.type = MapNodeData.NodeType.SHOP
 					
