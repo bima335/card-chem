@@ -1,15 +1,17 @@
 [gd_resource type="Resource" script_class="SectionData" format=3 uid="uid://dauq3gdi8e5f5"]
 
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="1_egxei"]
-[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_sap8n"]
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_jsvkc"]
 [ext_resource type="Resource" uid="uid://d1ybrvsjelsev" path="res://enemy/neon/res/neon_boss.tres" id="2_5ffek"]
 [ext_resource type="Script" uid="uid://dncorhl3akjyt" path="res://map/sections/section_data.gd" id="2_c82l8"]
 [ext_resource type="Resource" uid="uid://cviq8n2dao727" path="res://enemy/neon/res/neon_common.tres" id="3_sap8n"]
 [ext_resource type="Resource" uid="uid://bn1innlyfyffv" path="res://enemy/neon/res/neon_elite.tres" id="4_jsvkc"]
+[ext_resource type="Texture2D" uid="uid://dk8udj0spqm86" path="res://assets/backgrounds/wallpaper neon.png" id="7_2tg6s"]
 
 [resource]
 script = ExtResource("2_c82l8")
 section_name = "Section Neon"
+section_wallpaper = ExtResource("7_2tg6s")
 exclusive_common = Array[ExtResource("1_egxei")]([ExtResource("3_sap8n")])
 exclusive_elite = Array[ExtResource("1_egxei")]([ExtResource("4_jsvkc")])
 exclusive_boss = Array[ExtResource("1_egxei")]([ExtResource("2_5ffek")])
