@@ -22,6 +22,7 @@ var return_tween: Tween
 @onready var name_label: Label = $TooltipPanel/VBoxContainer/Name
 @onready var cost_label: Label = $TooltipPanel/VBoxContainer/Cost
 @onready var tooltip_panel: PanelContainer = $TooltipPanel
+@onready var coat_icon: TextureRect = $CoatIcon
 
 
 func _ready() -> void:
@@ -40,8 +41,22 @@ func setup(card_data: CardData) -> void:
 		
 	if data:
 		modulate = data.modulate
+		_update_coat_visual() # Update tampilan Coat saat setup
 		
 	_setup_tooltip_text()
+
+
+func _update_coat_visual() -> void:
+	if not coat_icon:
+		return
+
+	# Cek apakah kartu memiliki data coat dan icon
+	if data and data.coat_data and data.coat_data.icon:
+		coat_icon.texture = data.coat_data.icon
+		coat_icon.show()
+	else:
+		coat_icon.texture = null
+		coat_icon.hide()
 
 
 func set_visual_color(color_tint: Color) -> void:
@@ -49,7 +64,6 @@ func set_visual_color(color_tint: Color) -> void:
 		modulate = data.modulate * color_tint
 	else:
 		modulate = color_tint
-
 
 func _setup_tooltip_text() -> void:
 	if not data:
@@ -62,14 +76,41 @@ func _setup_tooltip_text() -> void:
 		target_name_label.text = data.card_name
 		
 	if target_cost_label:
-		var cost_string: String = ""
-		if data.cost_carbon > 0: cost_string += "[C: " + str(data.cost_carbon) + "] "
-		if data.cost_hydrogen > 0: cost_string += "[H: " + str(data.cost_hydrogen) + "] "
-		if data.cost_oxygen > 0: cost_string += "[O: " + str(data.cost_oxygen) + "] "
-		if data.cost_nitrogen > 0: cost_string += "[N: " + str(data.cost_nitrogen) + "] "
+		var cost_parts: Array[String] = []
 		
-		if cost_string == "": cost_string = "Gratis!"
+		_append_cost_info(cost_parts, "C", CardData.CostType.CARBON)
+		_append_cost_info(cost_parts, "H", CardData.CostType.HYDROGEN)
+		_append_cost_info(cost_parts, "O", CardData.CostType.OXYGEN)
+		_append_cost_info(cost_parts, "N", CardData.CostType.NITROGEN)
+		
+		var cost_string: String = " ".join(cost_parts)
+		if cost_string.is_empty():
+			cost_string = "Gratis!"
+			
 		target_cost_label.text = cost_string.strip_edges()
+
+
+func _append_cost_info(parts_array: Array[String], symbol: String, type: CardData.CostType) -> void:
+	var base_cost: int = 0
+	
+	match type:
+		CardData.CostType.CARBON:
+			base_cost = data.cost_carbon
+		CardData.CostType.HYDROGEN:
+			base_cost = data.cost_hydrogen
+		CardData.CostType.OXYGEN:
+			base_cost = data.cost_oxygen
+		CardData.CostType.NITROGEN:
+			base_cost = data.cost_nitrogen
+
+	if base_cost <= 0:
+		return
+		
+	if data.catalyst_reduced_type == type:
+		var reduced_cost: int = data.get_effective_cost(type)
+		parts_array.append("%s: %d (-1 From Catalyst)" % [symbol, reduced_cost])
+	else:
+		parts_array.append("%s: %d" % [symbol, base_cost])
 
 
 func _get_name_label() -> Label:

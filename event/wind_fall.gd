@@ -183,7 +183,11 @@ func _open_deck_for_coat_selection() -> void:
 		_return_to_map()
 		return
 
-	for card_data in GameManager.player_deck:
+	var uncoated_cards = GameManager.player_deck.filter(
+		func(card: CardData): return card.coat_data == null
+	)
+
+	for card_data in uncoated_cards:
 		var card_ui = card_ui_scene.instantiate() as CardUI
 		card_grid.add_child(card_ui)
 		card_ui.setup(card_data)

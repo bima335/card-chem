@@ -5,8 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://1rhiulfq30o5" path="res://card/resources/trigger/o_ignite.tres" id="3_4kvfx"]
-[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="4_wg8pm"]
+[ext_resource type="Resource" uid="uid://n44iryvkes3k" path="res://card/resources/debuff/carbon_monoxide.tres" id="3_lp6dp"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
@@ -21,11 +20,14 @@
 [ext_resource type="Resource" uid="uid://otourkerimal" path="res://card/resources/atk/water.tres" id="15_6ojnn"]
 [ext_resource type="Resource" uid="uid://dpg4l0kf5u7mo" path="res://ailments/res/burn.tres" id="15_xre4y"]
 [ext_resource type="Resource" uid="uid://b1nye4430c7yv" path="res://card/resources/buff/c_shield.tres" id="16_dairb"]
+[ext_resource type="Resource" uid="uid://dyouajpneqx50" path="res://ailments/res/poison.tres" id="20_4kvfx"]
+[ext_resource type="Resource" uid="uid://bhhuddng6j1cw" path="res://ailments/res/toxification.tres" id="21_0n4fo"]
+[ext_resource type="Resource" uid="uid://dcrq5so5inoee" path="res://ailments/res/stun.tres" id="22_unxtc"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_4kvfx"), ExtResource("4_wg8pm")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_lp6dp"), ExtResource("5_j5qo7")])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -89,6 +91,9 @@ skip_button = NodePath("../../UI/RewardBackdrop/VBoxContainer/SkipButton")
 [node name="CardResolver" type="Node" parent="Subsystems" unique_id=1352173905]
 script = ExtResource("11_ehvsk")
 burn_ailment = ExtResource("15_xre4y")
+poison_ailment = ExtResource("20_4kvfx")
+toxic_ailment = ExtResource("21_0n4fo")
+stun_ailment = ExtResource("22_unxtc")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
 

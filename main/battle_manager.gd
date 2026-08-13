@@ -133,7 +133,12 @@ func _play_card_with_target(clicked_ui: CardUI, card_data: CardData, target: Ene
 	
 	if success:
 		hand.remove_card(card_data)
-		deck.add_to_discard(card_data)
+		
+		if _should_exhaust_card(card_data):
+			print("Kartu dengan Coat Purify hancur dan tidak masuk ke Discard Pile!")
+		else:
+			deck.add_to_discard(card_data)
+			
 		clicked_ui.queue_free()
 	else:
 		ui_manager.reject_play(clicked_ui)
@@ -179,16 +184,68 @@ func _play_card(clicked_ui: CardUI, card_data: CardData) -> void:
 	
 	if success:
 		hand.remove_card(card_data)
-		deck.add_to_discard(card_data)
+		
+		if _should_exhaust_card(card_data):
+			print("Kartu dengan Coat Purify hancur dan tidak masuk ke Discard Pile!")
+		else:
+			deck.add_to_discard(card_data)
+			
 		clicked_ui.queue_free()
 	else:
 		ui_manager.reject_play(clicked_ui)
 
+func _should_exhaust_card(card_data: CardData) -> bool:
+	if card_data.coat_data != null:
+		if card_data.coat_data.coat_type == CoatData.EffectCoatType.PURIFY:
+			return true
+	return false
+
 func _discard_hand_to_deck() -> void:
+	var remaining_cards: Array[CardData] = []
+	var cards_to_discard: Array[CardData] = []
+
 	for card in hand.cards_in_hand:
+		var coat: CoatData = card.coat_data
+		
+		if coat and (coat.coat_type == CoatData.EffectCoatType.CRYSTALIZED or coat.is_retained):
+			remaining_cards.append(card)
+			
+			if coat.retain_shield_bonus > 0:
+				_apply_crystalized_shield(coat.retain_shield_bonus)
+		else:
+			cards_to_discard.append(card)
+
+	for card in cards_to_discard:
 		deck.add_to_discard(card)
-	hand.cards_in_hand.clear()
-	ui_manager.clear_hand_visuals()
+
+	hand.cards_in_hand = remaining_cards
+	hand.hand_updated.emit(hand.cards_in_hand.size(), hand.max_hand_size)
+
+	_update_hand_ui_after_discard(cards_to_discard)
+
+func _apply_crystalized_shield(amount: int) -> void:
+	if player.has_method("add_shield"):
+		player.add_shield(amount)
+	elif player.has_method("gain_shield"):
+		player.gain_shield(amount)
+	elif "shield" in player:
+		player.shield += amount
+		player.stats_updated.emit()
+
+func _update_hand_ui_after_discard(discarded_cards: Array[CardData]) -> void:
+	if ui_manager.has_method("remove_discarded_card_visuals"):
+		ui_manager.remove_discarded_card_visuals(discarded_cards)
+	else:
+		_default_clean_discarded_ui(discarded_cards)
+
+func _default_clean_discarded_ui(discarded_cards: Array[CardData]) -> void:
+	var hand_container: Node = ui_manager.hand_container if "hand_container" in ui_manager else null
+	if not hand_container:
+		return
+
+	for child in hand_container.get_children():
+		if child is CardUI and child.data in discarded_cards:
+			child.queue_free()
 
 func _on_end_turn_pressed() -> void:
 	if current_state != TurnState.PLAYER: return
@@ -245,7 +302,12 @@ func _trigger_victory() -> void:
 func _on_effect_target_requested(chosen_coat: CoatData) -> void:
 	active_effect_choice = chosen_coat
 	is_selecting_effect_target = true
-	ui_manager.show_card_viewer(GameManager.player_deck, "PILIH 1 KARTU UNTUK DIBERIKAN COAT: " + chosen_coat.coat_name, true)
+
+	var uncoated_cards = GameManager.player_deck.filter(
+		func(card: CardData): return card.coat_data == null
+	)
+	
+	ui_manager.show_card_viewer(uncoated_cards, "PILIH 1 KARTU UNTUK DIBERIKAN COAT: " + chosen_coat.coat_name, true)
 
 func _on_card_selected_for_effect(target_card: CardData) -> void:
 	if is_selecting_effect_target:

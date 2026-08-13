@@ -260,7 +260,11 @@ func _open_deck_selector_for_coat() -> void:
 	for child in deck_card_grid.get_children():
 		child.queue_free()
 
-	for card_data in GameManager.player_deck:
+	var available_deck_cards = GameManager.player_deck.filter(
+		func(card: CardData): return card.coat_data == null
+	)
+
+	for card_data in available_deck_cards:
 		var card_ui = card_ui_scene.instantiate() as CardUI
 		deck_card_grid.add_child(card_ui)
 		card_ui.setup(card_data)

@@ -80,10 +80,10 @@ func _on_dazzle_stacks_changed(stacks: int) -> void:
 
 func get_modified_card_cost(card: CardData) -> Dictionary:
 	var base_costs = {
-		"carbon": card.cost_carbon,
-		"hydrogen": card.cost_hydrogen,
-		"oxygen": card.cost_oxygen,
-		"nitrogen": card.cost_nitrogen
+		"carbon": card.get_effective_cost(CardData.CostType.CARBON),
+		"hydrogen": card.get_effective_cost(CardData.CostType.HYDROGEN),
+		"oxygen": card.get_effective_cost(CardData.CostType.OXYGEN),
+		"nitrogen": card.get_effective_cost(CardData.CostType.NITROGEN)
 	}
 	
 	if active_dazzle_stacks > 0:
@@ -94,16 +94,19 @@ func get_modified_card_cost(card: CardData) -> Dictionary:
 			
 	return base_costs
 
-
 func can_afford(card: CardData) -> bool:
 	if not can_take_action():
 		return false
 		
-	var costs = get_modified_card_cost(card)
-	return (oxygen >= costs["oxygen"] and 
-			hydrogen >= costs["hydrogen"] and 
-			carbon >= costs["carbon"] and 
-			nitrogen >= costs["nitrogen"])
+	var req_c = card.get_effective_cost(CardData.CostType.CARBON)
+	var req_h = card.get_effective_cost(CardData.CostType.HYDROGEN)
+	var req_o = card.get_effective_cost(CardData.CostType.OXYGEN)
+	var req_n = card.get_effective_cost(CardData.CostType.NITROGEN)
+	
+	if active_dazzle_stacks > 0:
+		pass
+		
+	return (carbon >= req_c and hydrogen >= req_h and oxygen >= req_o and nitrogen >= req_n)
 
 
 func pay_for_card(card: CardData) -> void:
@@ -210,3 +213,16 @@ func _on_siphon_token_requested(token_type: String, amount: int) -> void:
 			nitrogen = max(0, nitrogen - amount)
 			
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
+
+func clean_all_debuffs() -> void:
+
+	if is_stunned:
+		is_stunned = false
+		stun_duration = 0
+		stun_status_changed.emit(false)
+
+	if active_dazzle_stacks > 0:
+		active_dazzle_stacks = 0
+		EventBus.dazzle_stacks_changed.emit(0)
+
+	print("Player: Semua debuff berhasil dibersihkan oleh Purify!")

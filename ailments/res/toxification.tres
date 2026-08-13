@@ -1,8 +1,10 @@
 [gd_resource type="Resource" script_class="StatusAilment" format=3 uid="uid://bhhuddng6j1cw"]
 
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="1_r63c2"]
+[ext_resource type="Texture2D" uid="uid://bedmbmywoufu7" path="res://assets/Tag/tag_Toxic.png" id="2_hevge"]
 
 [resource]
 script = ExtResource("1_r63c2")
-ailment = 3
+ailment = 2
+status_icon = ExtResource("2_hevge")
 metadata/_custom_type_script = "uid://ck4m1qolca0es"
