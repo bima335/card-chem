@@ -56,6 +56,9 @@ func apply_stun(duration: int) -> void:
 	is_stunned = true
 	stun_duration = max(1, duration)
 	stun_status_changed.emit(true)
+
+	EventBus.player_stunned.emit(stun_duration)
+	
 	print("Player terkena STUN selama ", stun_duration, " ronde!")
 
 

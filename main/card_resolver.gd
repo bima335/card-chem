@@ -137,8 +137,13 @@ func _process_trigger_card(card_data: CardData, _player: Player, target: EnemyBa
 					continue
 
 				var has_poison_stack: bool = enemy.has_status(StatusAilment.AilmentType.POISON)
+				var has_burn_stack: bool = enemy.has_status(StatusAilment.AilmentType.BURN)
+
+				# Kondisi 4 & 5: Trigger Volatile pada musuh yang punya Burn atau Poison
+				if has_burn_stack or has_poison_stack:
+					BlessingManager.trigger_resonance_heal()
 				
-				if enemy.has_status(StatusAilment.AilmentType.BURN):
+				if has_burn_stack:
 					var splash_dmg = (enemy.burn_stacks * 70) / 3
 					if stage_manager.has_method("get_adjacent_enemies"):
 						var adjacent = stage_manager.get_adjacent_enemies(enemy)
@@ -168,6 +173,9 @@ func _convert_destabilize_to_disintegrate(enemy: EnemyBase) -> void:
 		var dis_status = StatusAilment.new()
 		dis_status.ailment = StatusAilment.AilmentType.DISINTEGRATE
 		enemy.apply_status(dis_status, current_stacks)
+
+	# Kondisi 6: Berhasil menyebabkan Disintegrate
+	BlessingManager.trigger_resonance_heal()
 
 
 func _apply_poison_and_stun(enemy: EnemyBase, poison_amount: int, stun_amount: int) -> void:

@@ -6,6 +6,8 @@ var current_state: TurnState = TurnState.PLAYER
 
 @export var available_cards: Array[CardData] 
 
+@export var default_blessing: BlessingData
+
 @onready var deck: Deck = $Deck
 @onready var hand: Hand = $Hand
 @onready var stage_manager: StageManager = $StageManager
@@ -24,7 +26,7 @@ var accumulated_gold: int = 0
 func _ready() -> void:
 	SoundManager.play_bgm("battle_theme")
 	_connect_signals()
-	
+	BlessingManager.equip_blessing(default_blessing)
 	accumulated_gold = 0
 	GameManager.reset_round()
 	is_first_turn = true

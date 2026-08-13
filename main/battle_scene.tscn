@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://llsf6kysyij2" path="res://card/resources/trigger/nitrogen_dioxide.tres" id="4_unxtc"]
 [ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="4_wg8pm"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
+[ext_resource type="Resource" uid="uid://dwjyvk25i5hbl" path="res://blessing/res/over_accidic.tres" id="5_yme4k"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
@@ -30,7 +31,8 @@
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("4_wg8pm"), ExtResource("4_unxtc"), ExtResource("15_6ojnn"), ExtResource("5_j5qo7")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("4_unxtc"), ExtResource("4_wg8pm"), ExtResource("15_6ojnn")])
+default_blessing = ExtResource("5_yme4k")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1

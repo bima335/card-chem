@@ -144,6 +144,8 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 		return
 		
 	var damage_multiplier: float = 1.0
+	var flat_bonus_damage: int = 0
+	
 	var has_disintegrate: bool = has_status(StatusAilment.AilmentType.DISINTEGRATE)
 	var has_destabilize: bool = has_status(StatusAilment.AilmentType.DESTABILIZE)
 	
@@ -155,12 +157,17 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 		else:
 			damage_multiplier = 1.5
 			
+		# Pengecekan Blessing OVER_ACCIDIC saat serangan langsung
+		if is_direct_attack and BlessingManager.has_blessing(BlessingData.BlessingID.OVER_ACCIDIC):
+			flat_bonus_damage = 3
+			
 	if has_status(StatusAilment.AilmentType.BURN):
 		if has_status(StatusAilment.AilmentType.VOLATILE):
 			remove_status(StatusAilment.AilmentType.BURN)
 			remove_status(StatusAilment.AilmentType.VOLATILE)
 	
-	var base_calculated_damage = int(amount * damage_multiplier)
+	# Kalkulasi damage utama: (Damage * Multiplier) + Flat Bonus
+	var base_calculated_damage = int(amount * damage_multiplier) + flat_bonus_damage
 	var reduction_pct = _calculate_custom_damage_reduction()
 	var final_damage = max(0, int(base_calculated_damage * (1.0 - reduction_pct)))
 
@@ -188,7 +195,6 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 		EventBus.enemy_killed.emit(self, is_boss)
 		EventBus.enemy_died.emit(self)
 		die()
-
 
 func consume_hit_based_statuses() -> void:
 	if has_status(StatusAilment.AilmentType.DISINTEGRATE):
