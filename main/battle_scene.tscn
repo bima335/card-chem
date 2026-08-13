@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
+[ext_resource type="Resource" uid="uid://1rhiulfq30o5" path="res://card/resources/trigger/o_ignite.tres" id="3_4kvfx"]
+[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="4_wg8pm"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
@@ -21,8 +23,9 @@
 [ext_resource type="Resource" uid="uid://b1nye4430c7yv" path="res://card/resources/buff/c_shield.tres" id="16_dairb"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
+process_mode = 1
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_4kvfx"), ExtResource("4_wg8pm")])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -37,6 +40,7 @@ enemy_scene = ExtResource("8_21jdp")
 
 [node name="Player" type="Node" parent="." unique_id=1595257805]
 script = ExtResource("7_k6tid")
+max_hp = 100
 
 [node name="Deck" type="Node" parent="." unique_id=1484422164]
 script = ExtResource("1_24btm")

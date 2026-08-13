@@ -78,6 +78,7 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 		
 	for enemy in targets:
 		enemy.take_damage(base_dmg)
+		EventBus.player_dealt_damage.emit(base_dmg, enemy)
 		_apply_card_statuses(card_data, enemy)
 
 

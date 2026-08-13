@@ -27,6 +27,7 @@ SoundManager="*uid://dolvy1javft0v"
 BlessingManager="*uid://d15kmdy5ipw3x"
 AuraManager="*uid://bqku0emeqha7l"
 SaveManager="*uid://dwyrxfig24u4p"
+RecapManager="*uid://c6r5bxqbjqilv"
 
 [display]
 

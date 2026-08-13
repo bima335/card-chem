@@ -54,12 +54,14 @@ func _prepare_starting_deck() -> void:
 	if GameManager.player_deck.is_empty():
 		for i in range(15):
 			if not available_cards.is_empty():
-				GameManager.player_deck.append(available_cards.pick_random())
+				var picked_card: CardData = available_cards.pick_random()
+				GameManager.player_deck.append(picked_card)
+				EventBus.card_obtained.emit(picked_card)
 
 	SaveManager.discover_cards(GameManager.player_deck)
 
 	for card in GameManager.player_deck:
-		var card_copy = card.duplicate(true) as CardData
+		var card_copy: CardData = card.duplicate(true) as CardData
 		deck.add_card(card_copy)
 		
 	_start_player_turn()
@@ -221,8 +223,24 @@ func _on_round_won() -> void:
 	ui_manager.end_turn_button.disabled = true
 	if accumulated_gold > 0:
 		GameManager.add_shop_coins(accumulated_gold)
+
+	if GameManager.current_floor >= 15 and GameManager.active_event_type == MapNodeData.NodeType.BOSS:
+		await get_tree().create_timer(1.0).timeout
+		_trigger_victory()
+		return
+
 	await get_tree().create_timer(1.5).timeout
 	reward_handler.show_reward_screen()
+
+
+func _trigger_victory() -> void:
+	get_tree().paused = true
+	var recap_scene = load("res://ui/recap/recap_ui.tscn")
+	if recap_scene:
+		var recap_instance = recap_scene.instantiate() as RecapUI
+		get_tree().root.add_child(recap_instance)
+		recap_instance.setup_recap(true)
+		queue_free()
 
 func _on_effect_target_requested(chosen_coat: CoatData) -> void:
 	active_effect_choice = chosen_coat

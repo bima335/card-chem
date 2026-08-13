@@ -205,7 +205,7 @@ func _on_buy_card_clicked(card_data: CardData, price: int, btn: Button) -> void:
 		var new_card = card_data.duplicate(true)
 		GameManager.player_deck.append(new_card)
 		SaveManager.discover_card(card_data)
-		
+		EventBus.card_obtained.emit(card_data)
 		_update_coin_display()
 		SoundManager.play_sfx("buy_success")
 		

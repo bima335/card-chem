@@ -160,6 +160,20 @@ func take_damage(amount: int) -> void:
 	
 	if current_hp <= 0:
 		print("HP Habis! GAME OVER!")
+		_trigger_game_over()
+
+
+func _trigger_game_over() -> void:
+	get_tree().paused = true
+	
+	var recap_scene = load("res://ui/recap/recap_ui.tscn")
+	if recap_scene:
+		var recap_instance = recap_scene.instantiate() as RecapUI
+		get_tree().root.add_child(recap_instance)
+		recap_instance.setup_recap(false)
+		var battle_scene = owner
+		if battle_scene:
+			battle_scene.queue_free()
 
 
 func heal(amount: int) -> void:

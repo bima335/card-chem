@@ -217,6 +217,12 @@ func take_damage(amount: int) -> void:
 	_on_health_changed(current_hp)
 
 	if current_hp <= 0:
+		var is_boss: bool = false
+		if stats and stats.has_method("is_boss"):
+			is_boss = stats.is_boss
+		elif "BOSS" in name.to_upper():
+			is_boss = true
+		EventBus.enemy_killed.emit(self, is_boss)
 		EventBus.enemy_died.emit(self)
 		die()
 

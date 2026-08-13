@@ -8,8 +8,8 @@ var discovered_coat_ids: Array[int] = []
 
 var coins: int = 0
 var current_floor: int = 0
-var current_hp: int = 1000
-var max_hp: int = 1000
+var current_hp: int = 100
+var max_hp: int = 100
 
 # Menyimpan pasangan kartu dan coat, contoh: [{"card_id": "atk_slash", "coat_id": 2}]
 var player_deck_data: Array[Dictionary] = []

@@ -24,6 +24,7 @@ func equip_blessing(blessing: BlessingData) -> bool:
 
 	active_blessings.append(blessing)
 	_on_blessing_added(blessing)
+	RecapManager.track_blessing_acquired(blessing)
 	EventBus.blessing_list_changed.emit()
 	return true
 

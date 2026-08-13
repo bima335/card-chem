@@ -107,7 +107,7 @@ func _draw_map_on_canvas(canvas_max_y: float) -> void:
 			var pos_y: float = canvas_max_y - bottom_padding - (floor_idx * spacing_y)
 			node_positions[data.grid_position] = Vector2(pos_x, pos_y)
 
-	var center_offset := Vector2(40.0, 40.0) 
+	var center_offset := Vector2(30.0, 40.0) 
 	
 	for floor_idx in matrix:
 		for node_data: MapNodeData in matrix[floor_idx]:
@@ -153,6 +153,9 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 	GameManager.current_floor += 1
 	GameManager.active_event_type = node_data.type
 	
+	if Engine.has_singleton("RecapManager") or get_node_or_null("/root/RecapManager"):
+		RecapManager.record_node_visited(node_data.grid_position, GameManager.current_floor)
+
 	if is_ujicoba and test_enemy != null:
 		print("[TEST MODE] Memulai pertempuran uji coba melawan: ", test_enemy.enemy_name)
 		GameManager.current_wave_data = [test_enemy]
