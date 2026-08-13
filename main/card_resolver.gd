@@ -83,7 +83,11 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 	if card_data.shield_amount > 0:
 		player.gain_shield(card_data.shield_amount)
 	
-	var initial_dmg: int = player.base_damage + card_data.damage_amount
+	# Ambil bonus damage dari Aura (Iron Rage)
+	var aura_bonus_dmg: int = AuraManager.get_total_attack_bonus(player)
+	
+	# Masukkan aura_bonus_dmg ke kalkulasi awal damage serangan
+	var initial_dmg: int = player.base_damage + card_data.damage_amount + aura_bonus_dmg
 	var final_dmg: int = initial_dmg
 	
 	if card_data.coat_data:

@@ -7,6 +7,7 @@ var current_state: TurnState = TurnState.PLAYER
 @export var available_cards: Array[CardData] 
 
 @export var default_blessing: BlessingData
+@export var default_aura_1:  AuraCardData
 
 @onready var deck: Deck = $Deck
 @onready var hand: Hand = $Hand
@@ -26,7 +27,8 @@ var accumulated_gold: int = 0
 func _ready() -> void:
 	SoundManager.play_bgm("battle_theme")
 	_connect_signals()
-	BlessingManager.equip_blessing(default_blessing)
+	#BlessingManager.equip_blessing(default_blessing)
+	AuraManager.equip_aura(default_aura_1)
 	accumulated_gold = 0
 	GameManager.reset_round()
 	is_first_turn = true
@@ -254,6 +256,8 @@ func _on_end_turn_pressed() -> void:
 	
 	current_state = TurnState.ENEMY
 	ui_manager.end_turn_button.disabled = true
+
+	AuraManager.prepare_next_round_accumulator()
 
 	_deselect_current_enemy()
 	_discard_hand_to_deck()

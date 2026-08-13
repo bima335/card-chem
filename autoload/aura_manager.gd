@@ -5,17 +5,18 @@ signal aura_unequipped
 
 var active_aura: AuraCardData = null
 
-var iron_rage_bonus_damage: int = 0
-var iron_rage_hp_lost_accumulator: int = 0
-
-var last_damage_taken_from_enemy: int = 0
+var current_round_damage_accumulated: int = 0
+var previous_round_damage_accumulated: int = 0
 
 
 func _ready() -> void:
-	EventBus.player_took_damage.connect(_on_player_took_damage)
-	EventBus.card_played.connect(_on_card_played)
-	if EventBus.has_signal("round_started"):
-		EventBus.round_started.connect(_on_round_started)
+	if EventBus.has_signal("player_took_damage"):
+		if not EventBus.player_took_damage.is_connected(_on_player_took_damage):
+			EventBus.player_took_damage.connect(_on_player_took_damage)
+			
+	if EventBus.has_signal("player_dealt_damage"):
+		if not EventBus.player_dealt_damage.is_connected(_on_player_dealt_damage):
+			EventBus.player_dealt_damage.connect(_on_player_dealt_damage)
 
 
 func equip_aura(new_aura: AuraCardData) -> void:
@@ -24,79 +25,77 @@ func equip_aura(new_aura: AuraCardData) -> void:
 		
 	active_aura = new_aura
 	aura_equipped.emit(active_aura)
-	_apply_static_modifiers()
 
 
 func unequip_aura() -> void:
 	if active_aura == null:
 		return
 		
-	_remove_static_modifiers()
 	active_aura = null
 	reset_battle_state()
 	aura_unequipped.emit()
 
 
 func reset_battle_state() -> void:
-	iron_rage_bonus_damage = 0
-	iron_rage_hp_lost_accumulator = 0
-	last_damage_taken_from_enemy = 0
-
-func _apply_static_modifiers() -> void:
-	if active_aura == null:
-		return
-		
-	match active_aura.aura_id:
-		AuraCardData.AuraID.CORRODED_LIMITS:
-			pass
+	current_round_damage_accumulated = 0
+	previous_round_damage_accumulated = 0
 
 
-func _remove_static_modifiers() -> void:
-	if active_aura == null:
-		return
+func prepare_next_round_accumulator() -> void:
+	previous_round_damage_accumulated = current_round_damage_accumulated
+	current_round_damage_accumulated = 0
 
 
-func _on_round_started(_current_round: int) -> void:
-	reset_battle_state()
+func get_modified_incoming_damage(base_damage: int) -> int:
+	if active_aura != null and active_aura.aura_id == AuraCardData.AuraID.RUSTED_RESILIENCE:
+		var reduced: float = float(base_damage) * 0.7
+		return int(floor(reduced))
+	return base_damage
 
 
 func _on_player_took_damage(amount: int) -> void:
 	if active_aura == null:
 		return
 		
-	match active_aura.aura_id:
-		AuraCardData.AuraID.IRON_RAGE:
-			iron_rage_hp_lost_accumulator += amount
-			var stacks = iron_rage_hp_lost_accumulator / 10
-			iron_rage_bonus_damage = stacks * 5
-			
-		AuraCardData.AuraID.RUSTED_RESILIENCE:
-			last_damage_taken_from_enemy = amount
+	if active_aura.aura_id == AuraCardData.AuraID.RUSTED_RESILIENCE:
+		current_round_damage_accumulated += amount
 
 
-func _on_card_played(card: CardData) -> void:
+func _on_player_dealt_damage(_amount: int, _target_enemy: EnemyBase) -> void:
 	if active_aura == null:
 		return
 		
 	if active_aura.aura_id == AuraCardData.AuraID.RUSTED_RESILIENCE:
-		if card.card_type == CardData.CardType.ATK and last_damage_taken_from_enemy > 0:
-			var heal_amount: int = int(last_damage_taken_from_enemy * 0.05)
+		if previous_round_damage_accumulated > 0:
+			var heal_amount: int = int(floor(float(previous_round_damage_accumulated) * 0.05))
+			
+			if heal_amount < 1 and previous_round_damage_accumulated > 0:
+				heal_amount = 1
+				
 			if heal_amount > 0:
-				var player = get_tree().get_first_node_in_group("player") as Player
-				if player:
-					player.heal(heal_amount)
+				_apply_heal_to_player(heal_amount)
 
 
-func get_modified_incoming_damage(base_damage: int) -> int:
-	if active_aura != null and active_aura.aura_id == AuraCardData.AuraID.RUSTED_RESILIENCE:
-		var reduced = float(base_damage) * 0.7
-		return int(floor(reduced))
-	return base_damage
+func _apply_heal_to_player(amount: int) -> void:
+	var player_node: Player = get_tree().get_first_node_in_group("player") as Player
+	
+	if player_node == null:
+		var battle_manager = get_tree().current_scene
+		if battle_manager and "player" in battle_manager:
+			player_node = battle_manager.player as Player
+
+	if player_node != null:
+		player_node.heal(amount)
+	else:
+		push_error("AuraManager: Node Player tidak ditemukan! Pastikan Node Player dimasukkan ke group 'player'.")
 
 
-func get_total_attack_bonus() -> int:
+func get_total_attack_bonus(player: Player) -> int:
 	if active_aura != null and active_aura.aura_id == AuraCardData.AuraID.IRON_RAGE:
-		return iron_rage_bonus_damage
+		if player != null:
+			var hp_lost: int = max(0, player.max_hp - player.current_hp)
+			var stacks: int = hp_lost / 10
+			return stacks * 5
 	return 0
 
 
