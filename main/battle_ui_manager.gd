@@ -3,7 +3,6 @@ extends Node
 
 @export var card_ui_scene: PackedScene
 
-# --- REFERENSI UI ---
 @export_group("UI Elements")
 @export var hand_container: HBoxContainer
 @export var end_turn_button: Button
@@ -13,27 +12,41 @@ extends Node
 @export var blessing_container: VBoxContainer
 @export var blessing_item_scene: PackedScene
 
-# --- REFERENSI AURA NEW ---
 @export_group("Aura UI")
 @export var aura_container: Control
 @export var aura_ui_scene: PackedScene
 
 @export_group("Player HUD")
-@export var player_hp_bar: ProgressBar
+@export var player_hp_bar: TextureProgressBar
 @export var player_hp_label: Label
 @export var player_shield_bar: ProgressBar
 @export var player_shield_label: Label
 @export var token_container: Control
-@export var c_label: Label
-@export var h_label: Label
-@export var o_label: Label
-@export var n_label: Label
+
+@export_group("Token Visual Containers")
+@export var c_token_container: HBoxContainer
+@export var h_token_container: HBoxContainer
+@export var o_token_container: HBoxContainer
+@export var n_token_container: HBoxContainer
+
+@export_group("Token Textures")
+@export var token_c_tex: Texture2D
+@export var token_h_tex: Texture2D
+@export var token_o_tex: Texture2D
+@export var token_n_tex: Texture2D
+
+@export_group("Token Layout Settings")
+@export var token_spacing: int = 8
+@export var token_icon_size: Vector2 = Vector2(32, 32)
 
 @export_group("Deck Viewer Panel")
 @export var deck_backdrop: ColorRect
 @export var deck_view_panel: PanelContainer
 @export var panel_title_label: Label
 @export var card_grid: GridContainer
+
+@export_category("Gold")
+@export var gold_label: Label
 
 signal card_clicked_in_viewer(card_data: CardData)
 
@@ -45,56 +58,88 @@ func _ready() -> void:
 		EventBus.blessing_list_changed.connect(update_blessings_display)
 		
 	_connect_aura_signals()
+	_connect_gold_signals()
+	update_gold_display(GameManager.shop_coins)
 	update_blessings_display()
-	update_aura_display(AuraManager.active_aura)
+	update_aura_display()
 
 
 func _connect_aura_signals() -> void:
 	if AuraManager.has_signal("aura_equipped"):
 		AuraManager.aura_equipped.connect(_on_aura_changed)
 	if AuraManager.has_signal("aura_unequipped"):
-		AuraManager.aura_unequipped.connect(func(): _on_aura_changed(null))
+		AuraManager.aura_unequipped.connect(_on_aura_changed_slot)
 
 
-func _on_aura_changed(aura_data: AuraCardData) -> void:
-	update_aura_display(aura_data)
+func _on_aura_changed(_aura_data: AuraCardData, _slot_index: int) -> void:
+	update_aura_display()
 
 
-func update_aura_display(aura_data: AuraCardData) -> void:
+func _on_aura_changed_slot(_slot_index: int) -> void:
+	update_aura_display()
+
+
+func update_aura_display() -> void:
 	if not aura_container:
 		return
 
 	for child in aura_container.get_children():
 		child.queue_free()
 
-	if aura_data != null and aura_ui_scene != null:
-		var aura_ui = aura_ui_scene.instantiate() as AuraCardUI
-		aura_container.add_child(aura_ui)
-		aura_ui.setup(aura_data)
-		aura_ui.custom_minimum_size = Vector2(136, 200)
-	else:
-		_show_aura_placeholder()
+	for slot_index in range(AuraManager.MAX_AURA_SLOTS):
+		var aura_data: AuraCardData = AuraManager.equipped_auras[slot_index] if slot_index < AuraManager.equipped_auras.size() else null
+		
+		if aura_data != null and aura_ui_scene != null:
+			var aura_ui = aura_ui_scene.instantiate() as AuraCardUI
+			aura_container.add_child(aura_ui)
+			aura_ui.setup(aura_data)
+			aura_ui.custom_minimum_size = Vector2(136, 200)
+		else:
+			_show_aura_placeholder(slot_index)
 
 
-func _show_aura_placeholder() -> void:
+func _show_aura_placeholder(slot_index: int) -> void:
+	var placeholder_panel = PanelContainer.new()
+	placeholder_panel.custom_minimum_size = Vector2(136, 200)
+	
 	var placeholder_label = Label.new()
-	placeholder_label.text = "EMPTY AURA"
+	placeholder_label.text = "EMPTY AURA " + str(slot_index + 1)
 	placeholder_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	placeholder_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	placeholder_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	placeholder_label.modulate = Color(1, 1, 1, 0.4)
-	aura_container.add_child(placeholder_label)
+	
+	placeholder_panel.add_child(placeholder_label)
+	aura_container.add_child(placeholder_panel)
 
 
 func update_tokens(o: int, h: int, c: int, n: int) -> void:
-	c_label.text = "Carbon: " + str(c)
-	h_label.text = "Hydrogen: " + str(h)
-	o_label.text = "Oxygen: " + str(o)
-	n_label.text = "Nitrogen: " + str(n)
-	
+	_render_token_icons(c_token_container, token_c_tex, c)
+	_render_token_icons(h_token_container, token_h_tex, h)
+	_render_token_icons(o_token_container, token_o_tex, o)
+	_render_token_icons(n_token_container, token_n_tex, n)
+
 	var tween = create_tween()
-	tween.tween_property(token_container, "scale", Vector2(1.1, 1.1), 0.1)
+	tween.tween_property(token_container, "scale", Vector2(1.05, 1.05), 0.1)
 	tween.tween_property(token_container, "scale", Vector2.ONE, 0.1)
+
+
+func _render_token_icons(container: HBoxContainer, texture: Texture2D, count: int) -> void:
+	if not container or not texture:
+		return
+		
+	container.add_theme_constant_override("separation", token_spacing)
+		
+	for child in container.get_children():
+		child.queue_free()
+		
+	for i in range(count):
+		var icon = TextureRect.new()
+		icon.texture = texture
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.custom_minimum_size = token_icon_size
+		container.add_child(icon)
 
 
 func update_player_stats(hp: int, max_hp: int, shield: int, _damage: int) -> void:
@@ -205,3 +250,15 @@ func update_blessings_display() -> void:
 		var blessing_ui = blessing_item_scene.instantiate() as BlessingUIItem
 		blessing_container.add_child(blessing_ui)
 		blessing_ui.setup(blessing_data)
+
+func _connect_gold_signals() -> void:
+	if EventBus.has_signal("gold_changed"):
+		if not EventBus.gold_changed.is_connected(_on_gold_changed):
+			EventBus.gold_changed.connect(_on_gold_changed)
+
+func _on_gold_changed(total_gold: int) -> void:
+	update_gold_display(total_gold)
+
+func update_gold_display(amount: int) -> void:
+	if gold_label:
+		gold_label.text = str(amount)

@@ -5,13 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://ci1iahhwxt7sg" path="res://aura/res/neon_illuminate.tres" id="4_yun0f"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
-[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="9_csnlq"]
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
@@ -23,14 +21,31 @@
 [ext_resource type="Resource" uid="uid://dyouajpneqx50" path="res://ailments/res/poison.tres" id="20_4kvfx"]
 [ext_resource type="Resource" uid="uid://bhhuddng6j1cw" path="res://ailments/res/toxification.tres" id="21_0n4fo"]
 [ext_resource type="Resource" uid="uid://dcrq5so5inoee" path="res://ailments/res/stun.tres" id="22_unxtc"]
+[ext_resource type="Texture2D" uid="uid://cdi42dnwdsrkq" path="res://assets/HUD/speroavatar.png" id="24_uakwd"]
 [ext_resource type="Resource" uid="uid://u2qskia73v30" path="res://ailments/res/destabilize.tres" id="24_yun0f"]
 [ext_resource type="Resource" uid="uid://c635se6h4mthq" path="res://ailments/res/disintegrated.tres" id="25_uakwd"]
+[ext_resource type="Texture2D" uid="uid://qkrieqt724o7" path="res://assets/HUD/iconstatus.png" id="25_yme4k"]
+[ext_resource type="Texture2D" uid="uid://bniumr7o1ajmh" path="res://assets/HUD/icondiscard.png" id="26_4n26w"]
+[ext_resource type="Texture2D" uid="uid://dgtgf0v1tjctr" path="res://assets/HUD/iconDeck.png" id="27_wsa3t"]
+[ext_resource type="Texture2D" uid="uid://cohmwkije4j0a" path="res://assets/HUD/healthbarwadahplayer.png" id="28_wadah"]
+[ext_resource type="Texture2D" uid="uid://vhfdey5jp05f" path="res://assets/HUD/healthbarisiplayer.png" id="29_isi"]
+[ext_resource type="Texture2D" uid="uid://bb2q074ndhgrc" path="res://assets/HUD/wadahtoken.png" id="30_wadah_token"]
+[ext_resource type="Texture2D" uid="uid://dmhrymf7gchy6" path="res://assets/HUD/isitokenC.png" id="31_token_c"]
+[ext_resource type="Texture2D" uid="uid://d5arhd5p07k5" path="res://assets/HUD/isitokenH.png" id="32_token_h"]
+[ext_resource type="Texture2D" uid="uid://cjvb36kmjsgoe" path="res://assets/HUD/isitokenO.png" id="33_token_o"]
+[ext_resource type="Texture2D" uid="uid://di4q5vfxwv2ve" path="res://assets/HUD/isitokenN.png" id="34_token_n"]
+[ext_resource type="Texture2D" uid="uid://tumowwmhun23" path="res://assets/HUD/namaspero.png" id="34_xu2u0"]
+[ext_resource type="Texture2D" uid="uid://43l7p73t0ti" path="res://assets/HUD/iconhealth.png" id="35_d7b84"]
+[ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="36_p5m33"]
+[ext_resource type="PackedScene" uid="uid://dyaaa2mkebw73" path="res://ui/battle_log/battle_log_ui.tscn" id="37_d7b84"]
+[ext_resource type="Texture2D" uid="uid://2xyjw222so2" path="res://assets/HUD/tombolendround.png" id="37_lt6r5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5m33"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn")])
-default_aura_1 = ExtResource("4_yun0f")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -55,31 +70,36 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_label", "h_label", "o_label", "n_label", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid", "gold_label")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
 end_turn_button = NodePath("../../UI/EndTurnButton")
-deck_visual = NodePath("../../UI/DeckVisual")
-discard_visual = NodePath("../../UI/DiscardVisual")
+deck_visual = NodePath("../../UI/StatGroup/DeckVisual")
+discard_visual = NodePath("../../UI/StatGroup/DiscardVisual")
 close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
 blessing_container = NodePath("../../UI/TopRightHUD/BlessingContainer")
 blessing_item_scene = ExtResource("12_6ojnn")
-aura_container = NodePath("../../UI/TopRightHUD/AuraContainer")
 aura_ui_scene = ExtResource("14_dairb")
-player_hp_bar = NodePath("../../UI/PlayerHPBar")
-player_hp_label = NodePath("../../UI/PlayerHPBar/Label")
+player_hp_bar = NodePath("../../UI/StatGroup/PlayerHPBar")
+player_hp_label = NodePath("../../UI/StatGroup/Label")
 player_shield_bar = NodePath("../../UI/PlayerShieldBar")
 player_shield_label = NodePath("../../UI/PlayerShieldBar/Label")
 token_container = NodePath("../../UI/TokenContainer")
-c_label = NodePath("../../UI/TokenContainer/CLabel")
-h_label = NodePath("../../UI/TokenContainer/HLabel")
-o_label = NodePath("../../UI/TokenContainer/OLabel")
-n_label = NodePath("../../UI/TokenContainer/NLabel")
+c_token_container = NodePath("../../UI/TokenContainer/CWadah/CMargin/CContainer")
+h_token_container = NodePath("../../UI/TokenContainer/HWadah/HMargin/HContainer")
+o_token_container = NodePath("../../UI/TokenContainer/OWadah/OMargin/OContainer")
+n_token_container = NodePath("../../UI/TokenContainer/NWadah/NMargin/NContainer")
+token_c_tex = ExtResource("31_token_c")
+token_h_tex = ExtResource("32_token_h")
+token_o_tex = ExtResource("33_token_o")
+token_n_tex = ExtResource("34_token_n")
+token_spacing = 5
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
 panel_title_label = NodePath("../../UI/DeckViewPanel/TitleLabel")
 card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
+gold_label = NodePath("../../UI/StatGroup/GoldLabel")
 
 [node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
 script = ExtResource("10_0hkaa")
@@ -102,6 +122,115 @@ disintegrate_ailment = ExtResource("25_uakwd")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
 
+[node name="Avatar" type="TextureRect" parent="UI" unique_id=1471078765]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("24_uakwd")
+
+[node name="StatGroup" type="Control" parent="UI" unique_id=947168470]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI/StatGroup" unique_id=1441573184]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 179.0
+offset_top = 958.0
+offset_right = 219.0
+offset_bottom = 981.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerHPBar" type="TextureProgressBar" parent="UI/StatGroup" unique_id=1408518611]
+custom_minimum_size = Vector2(240, 40)
+layout_mode = 0
+offset_left = 97.0
+offset_top = 1002.0
+offset_right = 476.0
+offset_bottom = 1042.0
+size_flags_horizontal = 2
+size_flags_vertical = 8
+nine_patch_stretch = true
+stretch_margin_left = 10
+stretch_margin_top = 5
+stretch_margin_right = 10
+stretch_margin_bottom = 5
+texture_under = ExtResource("28_wadah")
+texture_progress = ExtResource("29_isi")
+
+[node name="StatVisual" type="TextureButton" parent="UI/StatGroup" unique_id=122638433]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 811.0
+offset_right = 89.0
+offset_bottom = 872.0
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(-10, 0)
+texture_normal = ExtResource("25_yme4k")
+stretch_mode = 5
+
+[node name="DiscardVisual" type="TextureButton" parent="UI/StatGroup" unique_id=946672430]
+modulate = Color(0.41124472, 0.00016865015, 0.43268502, 1)
+layout_mode = 0
+offset_left = 30.0
+offset_top = 864.0
+offset_right = 97.0
+offset_bottom = 924.0
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(-10, 0)
+texture_normal = ExtResource("26_4n26w")
+stretch_mode = 5
+
+[node name="DeckVisual" type="TextureButton" parent="UI/StatGroup" unique_id=1314374451]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 910.0
+offset_right = 169.0
+offset_bottom = 1078.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("27_wsa3t")
+stretch_mode = 5
+
+[node name="Name" type="TextureRect" parent="UI/StatGroup" unique_id=1792769740]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 938.0
+offset_right = 257.0
+offset_bottom = 982.0
+texture = ExtResource("34_xu2u0")
+
+[node name="HPIcon" type="TextureRect" parent="UI/StatGroup" unique_id=1248485028]
+layout_mode = 0
+offset_left = 142.0
+offset_top = 966.0
+offset_right = 189.0
+offset_bottom = 1012.0
+texture = ExtResource("35_d7b84")
+
+[node name="GoldIcon" type="TextureRect" parent="UI/StatGroup" unique_id=1028521227]
+layout_mode = 0
+offset_left = 302.0
+offset_top = 960.0
+offset_right = 350.0
+offset_bottom = 1015.0
+texture = ExtResource("36_p5m33")
+
+[node name="GoldLabel" type="Label" parent="UI/StatGroup" unique_id=1523654921]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 976.0
+offset_right = 400.0
+offset_bottom = 999.0
+
 [node name="HandContainer" type="HBoxContainer" parent="UI" unique_id=700329193]
 anchors_preset = 7
 anchor_left = 0.5
@@ -113,50 +242,6 @@ offset_top = -40.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-
-[node name="DeckVisual" type="TextureButton" parent="UI" unique_id=1314374451]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -64.0
-offset_right = 48.0
-grow_vertical = 0
-texture_normal = ExtResource("9_csnlq")
-
-[node name="DiscardVisual" type="TextureButton" parent="UI" unique_id=946672430]
-modulate = Color(0.41124472, 0.00016865015, 0.43268502, 1)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -48.0
-offset_top = -64.0
-grow_horizontal = 0
-grow_vertical = 0
-texture_normal = ExtResource("9_csnlq")
-
-[node name="PlayerHPBar" type="ProgressBar" parent="UI" unique_id=1408518611]
-offset_left = 12.0
-offset_top = 443.0
-offset_right = 128.0
-offset_bottom = 470.0
-step = 1.0
-show_percentage = false
-
-[node name="Label" type="Label" parent="UI/PlayerHPBar" unique_id=1441573184]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="PlayerShieldBar" type="ProgressBar" parent="UI" unique_id=2089301244]
 offset_left = 12.0
@@ -181,28 +266,102 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="EndTurnButton" type="Button" parent="UI" unique_id=1374644199]
-offset_left = 1728.0
-offset_top = 435.0
-offset_right = 1823.0
-offset_bottom = 508.0
-text = "End Turn"
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -355.0
+offset_top = -336.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p5m33")
+icon = ExtResource("37_lt6r5")
 
 [node name="TokenContainer" type="VBoxContainer" parent="UI" unique_id=1305011282]
+offset_left = 20.0
 offset_top = 74.0
-offset_right = 95.0
-offset_bottom = 319.0
+offset_right = 320.0
+offset_bottom = 320.0
+theme_override_constants/separation = -1
 
-[node name="CLabel" type="Label" parent="UI/TokenContainer" unique_id=1336236963]
+[node name="CWadah" type="TextureRect" parent="UI/TokenContainer" unique_id=1336236963]
+custom_minimum_size = Vector2(350, 60)
 layout_mode = 2
+texture = ExtResource("30_wadah_token")
+expand_mode = 1
 
-[node name="HLabel" type="Label" parent="UI/TokenContainer" unique_id=1702646118]
-layout_mode = 2
+[node name="CMargin" type="MarginContainer" parent="UI/TokenContainer/CWadah" unique_id=20018307]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 52
 
-[node name="OLabel" type="Label" parent="UI/TokenContainer" unique_id=119395391]
+[node name="CContainer" type="HBoxContainer" parent="UI/TokenContainer/CWadah/CMargin" unique_id=1821039811]
 layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="NLabel" type="Label" parent="UI/TokenContainer" unique_id=1634551958]
+[node name="HWadah" type="TextureRect" parent="UI/TokenContainer" unique_id=1702646118]
+custom_minimum_size = Vector2(350, 60)
 layout_mode = 2
+texture = ExtResource("30_wadah_token")
+expand_mode = 1
+
+[node name="HMargin" type="MarginContainer" parent="UI/TokenContainer/HWadah" unique_id=413400907]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 52
+
+[node name="HContainer" type="HBoxContainer" parent="UI/TokenContainer/HWadah/HMargin" unique_id=1903921832]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="OWadah" type="TextureRect" parent="UI/TokenContainer" unique_id=119395391]
+custom_minimum_size = Vector2(350, 60)
+layout_mode = 2
+texture = ExtResource("30_wadah_token")
+expand_mode = 1
+
+[node name="OMargin" type="MarginContainer" parent="UI/TokenContainer/OWadah" unique_id=1384873146]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 52
+
+[node name="OContainer" type="HBoxContainer" parent="UI/TokenContainer/OWadah/OMargin" unique_id=1892301982]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="NWadah" type="TextureRect" parent="UI/TokenContainer" unique_id=1634551958]
+custom_minimum_size = Vector2(350, 60)
+layout_mode = 2
+texture = ExtResource("30_wadah_token")
+expand_mode = 1
+
+[node name="NMargin" type="MarginContainer" parent="UI/TokenContainer/NWadah" unique_id=1840738310]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 52
+
+[node name="NContainer" type="HBoxContainer" parent="UI/TokenContainer/NWadah/NMargin" unique_id=1023918239]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BattleLogUI" parent="UI" unique_id=259505878 instance=ExtResource("37_d7b84")]
 
 [node name="TopRightHUD" type="HBoxContainer" parent="UI" unique_id=1046660355]
 anchors_preset = 1
@@ -219,10 +378,10 @@ theme_override_constants/separation = 15
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="AuraContainer" type="PanelContainer" parent="UI/TopRightHUD" unique_id=2066166155]
-custom_minimum_size = Vector2(136, 200)
+[node name="AuraContainer" type="HBoxContainer" parent="UI/TopRightHUD" unique_id=2066166155]
+custom_minimum_size = Vector2(280, 200)
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/separation = 10
 
 [node name="AuraPlaceholder" type="Label" parent="UI/TopRightHUD/AuraContainer" unique_id=1914423894]
 layout_mode = 2

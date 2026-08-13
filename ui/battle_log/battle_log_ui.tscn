@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dyaaa2mkebw73"]
+
+[ext_resource type="Texture2D" uid="uid://kukjk6c1d1ce" path="res://assets/HUD/logbattle.png" id="1_log_bg"]
+[ext_resource type="Script" uid="uid://h8tyqdul7xbe" path="res://ui/battle_log/battle_log_ui.gd" id="2_r7ywd"]
+
+[node name="BattleLogUI" type="NinePatchRect" unique_id=259505878]
+custom_minimum_size = Vector2(350, 220)
+offset_left = 20.0
+offset_top = 330.0
+offset_right = 370.0
+offset_bottom = 550.0
+texture = ExtResource("1_log_bg")
+patch_margin_left = 30
+patch_margin_top = 50
+patch_margin_right = 30
+patch_margin_bottom = 30
+script = ExtResource("2_r7ywd")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2113585480]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 65
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 25
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer" unique_id=746185947]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="LogLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer" unique_id=379375849]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
