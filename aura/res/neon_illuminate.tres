@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://ci1iahhwxt7sg"]
+
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_0y2rq"]
+[ext_resource type="Texture2D" uid="uid://6m2xiuyh5iva" path="res://assets/Card/aura_boss_card/Neon_NeonIlluminate.png" id="1_nivfk"]
+
+[resource]
+script = ExtResource("1_0y2rq")
+aura_id = 9
+name = "Neon Illuminate"
+icon = ExtResource("1_nivfk")
+metadata/_custom_type_script = "uid://b100qugnu421l"

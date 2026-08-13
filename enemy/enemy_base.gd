@@ -3,6 +3,7 @@ extends Node2D
 
 @export var stats: EnemyStat 
 @export var max_display_size: Vector2 = Vector2(150.0, 150.0)
+@export var exposed_resource_data: StatusAilment 
 
 var active_statuses: Dictionary = {}
 
@@ -10,6 +11,7 @@ var current_hp: int
 var current_shield: int = 0
 var toxic_stacks: int = 0
 var burn_stacks: int = 0
+var exposed_stacks: int = 0
 var is_stunned: bool = false
 var is_targetable: bool = true
 
@@ -87,6 +89,7 @@ func start_turn_process() -> void:
 		if burn_stacks == 0:
 			remove_status(StatusAilment.AilmentType.BURN)
 
+
 func execute_move(action: EnemyAction) -> void:
 	if is_stunned:
 		print(name, " gagal menyerang karena sedang STUN!")
@@ -156,7 +159,6 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 		else:
 			damage_multiplier = 1.5
 			
-		# Pengecekan Blessing OVER_ACCIDIC saat serangan langsung
 		if is_direct_attack and BlessingManager.has_blessing(BlessingData.BlessingID.OVER_ACCIDIC):
 			flat_bonus_damage = 3
 			
@@ -165,7 +167,10 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 			remove_status(StatusAilment.AilmentType.BURN)
 			remove_status(StatusAilment.AilmentType.VOLATILE)
 	
-	# Kalkulasi damage utama: (Damage * Multiplier) + Flat Bonus
+	# Tambahkan multiplier dari stack EXPOSED (1 stack = +15% extra damage)
+	if exposed_stacks > 0:
+		damage_multiplier += (exposed_stacks * 0.15)
+	
 	var base_calculated_damage = int(amount * damage_multiplier) + flat_bonus_damage
 	var reduction_pct = _calculate_custom_damage_reduction()
 	var final_damage = max(0, int(base_calculated_damage * (1.0 - reduction_pct)))
@@ -185,6 +190,10 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 	
 	_on_health_changed(current_hp)
 
+	# Terapkan stack EXPOSED pasca hit damage jika berasal dari direct attack
+	if is_direct_attack:
+		AuraManager.process_neon_illuminate_post_damage(self)
+
 	if current_hp <= 0:
 		var is_boss: bool = false
 		if stats and stats.has_method("is_boss"):
@@ -194,6 +203,21 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 		EventBus.enemy_killed.emit(self, is_boss)
 		EventBus.enemy_died.emit(self)
 		die()
+
+
+func add_exposed_stack(amount: int = 1) -> void:
+	exposed_stacks += amount
+	
+	if exposed_resource_data != null:
+		apply_status(exposed_resource_data, 999)
+	else:
+		if not active_statuses.has(StatusAilment.AilmentType.EXPOSED):
+			active_statuses[StatusAilment.AilmentType.EXPOSED] = {
+				"duration": 999,
+				"resource": null
+			}
+		_update_status_ui()
+
 
 func consume_hit_based_statuses() -> void:
 	if has_status(StatusAilment.AilmentType.DISINTEGRATE):
@@ -294,6 +318,7 @@ func apply_status(status_data: StatusAilment, duration: int) -> void:
 func has_status(ailment_type: StatusAilment.AilmentType) -> bool:
 	return active_statuses.has(ailment_type)
 
+
 func has_poison() -> bool:
 	return has_status(StatusAilment.AilmentType.POISON)
 
@@ -309,6 +334,7 @@ func apply_poison_and_stun(poison_amount: int = 1, stun_amount: int = 1) -> void
 	stun_data.duration = stun_amount
 	apply_status(stun_data, stun_amount)
 
+
 func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
 	if ailment_type == StatusAilment.AilmentType.STUN:
 		is_stunned = false
@@ -321,7 +347,8 @@ func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
 func decrease_status_durations() -> void:
 	var keys_to_remove = []
 	for ailment_id in active_statuses.keys():
-		if ailment_id == StatusAilment.AilmentType.TOXIC or ailment_id == StatusAilment.AilmentType.DESTABILIZE or ailment_id == StatusAilment.AilmentType.DISINTEGRATE:
+		# EXPOSED tidak akan pernah berkurang durasi/stack-nya setiap turn end
+		if ailment_id == StatusAilment.AilmentType.TOXIC or ailment_id == StatusAilment.AilmentType.DESTABILIZE or ailment_id == StatusAilment.AilmentType.DISINTEGRATE or ailment_id == StatusAilment.AilmentType.EXPOSED:
 			continue
 			
 		active_statuses[ailment_id]["duration"] -= 1
@@ -354,6 +381,8 @@ func _update_status_ui() -> void:
 		var duration_label = Label.new()
 		if ailment_id == StatusAilment.AilmentType.TOXIC:
 			duration_label.text = str(toxic_stacks)
+		elif ailment_id == StatusAilment.AilmentType.EXPOSED:
+			duration_label.text = str(exposed_stacks)
 		else:
 			duration_label.text = str(current_duration)
 

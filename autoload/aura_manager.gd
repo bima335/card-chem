@@ -9,6 +9,8 @@ var current_round_damage_accumulated: int = 0
 var previous_round_damage_accumulated: int = 0
 var has_played_first_card_this_round: bool = false
 var is_ferromagnetic_shield_used: bool = false
+var phase_armor_shield_stacks: int = 0
+var cards_played_this_round: int = 0
 
 func _ready() -> void:
 	if EventBus.has_signal("player_took_damage"):
@@ -25,7 +27,8 @@ func _ready() -> void:
 
 func _on_round_started(_current_round: int) -> void:
 	has_played_first_card_this_round = false
-
+	cards_played_this_round = 0
+	_process_phase_armor_round_start(_current_round)
 
 func is_magnetic_pull_active() -> bool:
 	return active_aura != null and active_aura.aura_id == AuraCardData.AuraID.MAGNETIC_PULL
@@ -60,6 +63,8 @@ func reset_battle_state() -> void:
 	previous_round_damage_accumulated = 0
 	has_played_first_card_this_round = false
 	is_ferromagnetic_shield_used = false
+	phase_armor_shield_stacks = 0
+	cards_played_this_round = 0
 
 
 func prepare_next_round_accumulator() -> void:
@@ -171,3 +176,59 @@ func process_incoming_player_damage(current_hp: int, current_shield_val: int, in
 		"prevented": false,
 		"final_damage": final_incoming_damage
 	}
+
+func _process_phase_armor_round_start(current_round: int) -> void:
+	if active_aura == null or active_aura.aura_id != AuraCardData.AuraID.PHASE_ARMOR:
+		return
+		
+	# Cek apakah ronde genap
+	if current_round % 2 == 0:
+		if phase_armor_shield_stacks < 5:
+			phase_armor_shield_stacks += 1
+			_apply_shield_to_player(1)
+
+
+func _apply_shield_to_player(amount: int) -> void:
+	var player_node: Player = get_tree().get_first_node_in_group("player") as Player
+	if player_node == null:
+		var battle_manager = get_tree().current_scene
+		if battle_manager and "player" in battle_manager:
+			player_node = battle_manager.player as Player
+
+	if player_node != null:
+		player_node.gain_shield(amount)
+	else:
+		push_error("AuraManager: Node Player tidak ditemukan untuk menambahkan Shield Phase Armor!")
+
+func get_phase_armor_attack_bonus(current_round: int) -> int:
+	if active_aura != null and active_aura.aura_id == AuraCardData.AuraID.PHASE_ARMOR:
+		if current_round % 2 != 0:
+			return 3
+	return 0
+
+func is_plasma_amplifier_active() -> bool:
+	return active_aura != null and active_aura.aura_id == AuraCardData.AuraID.PLASMA_AMPLIFIER
+
+func register_card_played(player: Player) -> void:
+	cards_played_this_round += 1
+	
+	if is_plasma_amplifier_active():
+		_process_plasma_amplifier_odd_trigger(player)
+
+func _process_plasma_amplifier_odd_trigger(player: Player) -> void:
+	if cards_played_this_round > 1 and cards_played_this_round % 2 != 0:
+		if player != null:
+			player.add_random_token(1)
+
+func get_plasma_amplifier_damage_modifier(base_damage: int) -> int:
+	if is_plasma_amplifier_active():
+		if cards_played_this_round > 0 and cards_played_this_round % 2 == 0:
+			return int(floor(float(base_damage) * 1.5))
+	return base_damage
+
+func is_neon_illuminate_active() -> bool:
+	return active_aura != null and active_aura.aura_id == AuraCardData.AuraID.NEON_ILLUMINATE
+
+func process_neon_illuminate_post_damage(enemy: EnemyBase) -> void:
+	if is_neon_illuminate_active() and is_instance_valid(enemy) and not enemy.is_queued_for_deletion():
+		enemy.add_exposed_stack(1)

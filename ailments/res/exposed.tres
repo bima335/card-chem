@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatusAilment" format=3 uid="uid://ch1i55np1p2cp"]
+
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="1_7xq4s"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="2_j0qd1"]
+
+[resource]
+script = ExtResource("1_7xq4s")
+ailment = 11
+status_icon = ExtResource("2_j0qd1")
+modulate = Color(0, 0.2898716, 0.34058237, 1)
+metadata/_custom_type_script = "uid://ck4m1qolca0es"

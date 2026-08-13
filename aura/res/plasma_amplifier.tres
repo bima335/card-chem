@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://bkb5r6gv8ufjg"]
+
+[ext_resource type="Texture2D" uid="uid://bmmkhid4p0xqy" path="res://assets/Card/aura_boss_card/Neon_PlasmaAmplifier.png" id="1_v8b3t"]
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_vwsiw"]
+
+[resource]
+script = ExtResource("1_vwsiw")
+aura_id = 8
+name = "Plasma Amplifier"
+icon = ExtResource("1_v8b3t")
+metadata/_custom_type_script = "uid://b100qugnu421l"

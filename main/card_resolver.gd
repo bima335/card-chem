@@ -20,9 +20,11 @@ func execute_card_logic(card_data: CardData, player: Player, current_target: Ene
 			return false
 
 		player.pay_for_card(card_data)
+		
+		AuraManager.register_card_played(player)
+		
 		EventBus.card_played.emit(card_data)
 
-	# Cek apakah efek Magnetic Pull harus aktif sebelum eksekusi pertama
 	var trigger_magnetic_pull: bool = AuraManager.should_trigger_magnetic_pull(is_retrigger_pass)
 
 	var success: bool = _dispatch_card_effect(card_data, player, current_target, stage_manager)
@@ -113,8 +115,11 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 	if card_data.shield_amount > 0:
 		player.gain_shield(card_data.shield_amount)
 	
-	var aura_bonus_dmg: int = AuraManager.get_total_attack_bonus(player)
-	var initial_dmg: int = player.base_damage + card_data.damage_amount + aura_bonus_dmg
+	# Hitung akumulasi bonus aura (Iron Rage + Phase Armor ganjil)
+	var iron_rage_bonus: int = AuraManager.get_total_attack_bonus(player)
+	var phase_armor_bonus: int = AuraManager.get_phase_armor_attack_bonus(GameManager.current_round)
+	
+	var initial_dmg: int = player.base_damage + card_data.damage_amount + iron_rage_bonus + phase_armor_bonus
 	
 	if card_data.coat_data:
 		var self_dmg = card_data.coat_data.calculate_self_damage(initial_dmg)
@@ -123,7 +128,10 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 			
 		initial_dmg = card_data.coat_data.apply_damage_modifier(initial_dmg)
 	
-	var final_dmg: int = AuraManager.get_modified_outgoing_attack_damage(initial_dmg)
+	# Hitung damage modifikasi dasar (seperti Crystal Resonance)
+	var modified_dmg: int = AuraManager.get_modified_outgoing_attack_damage(initial_dmg)
+	
+	var final_dmg: int = AuraManager.get_plasma_amplifier_damage_modifier(modified_dmg)
 		
 	for enemy in targets:
 		enemy.take_damage(final_dmg, true)
