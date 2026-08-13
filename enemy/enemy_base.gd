@@ -97,7 +97,7 @@ func execute_move(action: EnemyAction) -> void:
 		match action.type:
 			EnemyAction.ActionType.ATTACK:
 				var final_atk = max(0, action.amount - toxic_stacks)
-				EventBus.player_damage_requested.emit(final_atk)
+				EventBus.player_damage_requested.emit(final_atk, self)
 			EnemyAction.ActionType.SHIELD:
 				current_shield += 10
 			EnemyAction.ActionType.HEAL:

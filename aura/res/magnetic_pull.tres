@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://cnm4ip8t65wxi"]
+
+[ext_resource type="Texture2D" uid="uid://bfarrddwptn3n" path="res://assets/Card/aura_boss_card/Cobalt_MagneticPull.png" id="1_233sp"]
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_vysiy"]
+
+[resource]
+script = ExtResource("1_vysiy")
+aura_id = 4
+name = "Magnetic Pull"
+icon = ExtResource("1_233sp")
+metadata/_custom_type_script = "uid://b100qugnu421l"

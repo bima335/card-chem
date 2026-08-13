@@ -54,6 +54,7 @@ func reset_for_battle() -> void:
 	is_stunned = false
 	stun_duration = 0
 	active_dazzle_stacks = 0
+	AuraManager.reset_battle_state()
 	clamp_tokens_to_max()
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
@@ -169,20 +170,26 @@ func gain_shield(amount: int) -> void:
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
 
 
-func take_damage(amount: int) -> void:
-	var final_incoming_damage = AuraManager.get_modified_incoming_damage(amount)
-
-	var actual_damage = final_incoming_damage - shield
-	if actual_damage > 0:
-		shield = 0
-		current_hp -= actual_damage
+func take_damage(amount: int, attacker: EnemyBase = null) -> void:
+	var result = AuraManager.process_incoming_player_damage(current_hp, shield, amount, attacker)
+	
+	if result["prevented"]:
+		current_hp = result["new_hp"]
+		shield = result["new_shield"]
 	else:
-		shield -= final_incoming_damage
+		var final_incoming_damage: int = result["final_damage"]
+		var actual_damage: int = final_incoming_damage - shield
 		
+		if actual_damage > 0:
+			shield = 0
+			current_hp -= actual_damage
+		else:
+			shield -= final_incoming_damage
+			
 	current_hp = clampi(current_hp, 0, max_hp)
 	GameManager.player_current_hp = current_hp
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
-	EventBus.player_took_damage.emit(final_incoming_damage)
+	EventBus.player_took_damage.emit(amount)
 	
 	if current_hp <= 0:
 		_trigger_game_over()

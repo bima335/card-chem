@@ -9,20 +9,44 @@ extends Node
 @export var disintegrate_ailment: StatusAilment
 
 
-func execute_card_logic(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node) -> bool:
-	if not player.can_afford(card_data):
-		print("Token tidak cukup!")
-		return false
-		
-	if not _is_target_valid(card_data, current_target, stage_manager):
-		print("Target tidak valid atau belum dipilih!")
-		return false
+func execute_card_logic(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node, is_retrigger_pass: bool = false) -> bool:
+	if not is_retrigger_pass:
+		if not player.can_afford(card_data):
+			print("Token tidak cukup!")
+			return false
+			
+		if not _is_target_valid(card_data, current_target, stage_manager):
+			print("Target tidak valid atau belum dipilih!")
+			return false
 
-	player.pay_for_card(card_data)
-	EventBus.card_played.emit(card_data)
+		player.pay_for_card(card_data)
+		EventBus.card_played.emit(card_data)
+
+	# Cek apakah efek Magnetic Pull harus aktif sebelum eksekusi pertama
+	var trigger_magnetic_pull: bool = AuraManager.should_trigger_magnetic_pull(is_retrigger_pass)
+
+	var success: bool = _dispatch_card_effect(card_data, player, current_target, stage_manager)
+
+	if success and trigger_magnetic_pull:
+		_process_magnetic_pull_retrigger(card_data, player, current_target, stage_manager)
+
+	return success
+
+
+func _process_magnetic_pull_retrigger(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node) -> void:
+	print("MAGNETIC PULL TERPACU: Mengulang efek kartu ", card_data.card_name)
 	
+	# Ambil ulang target yang valid jika target sebelumnya mati/hilang
+	var valid_target: EnemyBase = current_target
+	if valid_target == null or not is_instance_valid(valid_target) or valid_target.is_queued_for_deletion():
+		valid_target = _get_fallback_target(stage_manager)
+
+	execute_card_logic(card_data, player, valid_target, stage_manager, true)
+
+
+func _dispatch_card_effect(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node) -> bool:
 	_process_coat_effects(card_data, player)
-	
+
 	match card_data.card_type:
 		CardData.CardType.BUFF:
 			_process_buff_card(card_data, player)
@@ -41,6 +65,13 @@ func execute_card_logic(card_data: CardData, player: Player, current_target: Ene
 			return true
 			
 	return false
+
+
+func _get_fallback_target(stage_manager: Node) -> EnemyBase:
+	for child in stage_manager.get_children():
+		if child is EnemyBase and is_instance_valid(child) and not child.is_queued_for_deletion():
+			return child
+	return null
 
 
 func _process_coat_effects(card_data: CardData, player: Player) -> void:
@@ -63,7 +94,6 @@ func _is_target_valid(card_data: CardData, current_target: EnemyBase, stage_mana
 
 	return false
 
-
 func _has_living_enemies(stage_manager: Node) -> bool:
 	for child in stage_manager.get_children():
 		if child is EnemyBase and not child.is_queued_for_deletion():
@@ -83,24 +113,46 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 	if card_data.shield_amount > 0:
 		player.gain_shield(card_data.shield_amount)
 	
-	# Ambil bonus damage dari Aura (Iron Rage)
 	var aura_bonus_dmg: int = AuraManager.get_total_attack_bonus(player)
-	
-	# Masukkan aura_bonus_dmg ke kalkulasi awal damage serangan
 	var initial_dmg: int = player.base_damage + card_data.damage_amount + aura_bonus_dmg
-	var final_dmg: int = initial_dmg
 	
 	if card_data.coat_data:
 		var self_dmg = card_data.coat_data.calculate_self_damage(initial_dmg)
 		if self_dmg > 0:
 			player.take_damage(self_dmg)
 			
-		final_dmg = card_data.coat_data.apply_damage_modifier(initial_dmg)
+		initial_dmg = card_data.coat_data.apply_damage_modifier(initial_dmg)
+	
+	var final_dmg: int = AuraManager.get_modified_outgoing_attack_damage(initial_dmg)
 		
 	for enemy in targets:
 		enemy.take_damage(final_dmg, true)
 		EventBus.player_dealt_damage.emit(final_dmg, enemy)
 		_apply_card_statuses(card_data, enemy)
+
+	if AuraManager.is_crystal_resonance_active() and target != null and is_instance_valid(target):
+		_apply_crystal_resonance_blast(target, stage_manager)
+
+
+func _apply_crystal_resonance_blast(target: EnemyBase, stage_manager: Node) -> void:
+	const BLAST_DAMAGE: int = 8
+	var targets_to_blast: Array[EnemyBase] = []
+	
+	targets_to_blast.append(target)
+	
+	if stage_manager.has_method("get_adjacent_enemies"):
+		var adjacent_enemies: Dictionary = stage_manager.get_adjacent_enemies(target)
+		
+		if adjacent_enemies.get("left") != null:
+			targets_to_blast.append(adjacent_enemies["left"])
+			
+		if adjacent_enemies.get("right") != null:
+			targets_to_blast.append(adjacent_enemies["right"])
+			
+	for enemy in targets_to_blast:
+		if is_instance_valid(enemy) and not enemy.is_queued_for_deletion():
+			enemy.take_damage(BLAST_DAMAGE, false)
+			EventBus.player_dealt_damage.emit(BLAST_DAMAGE, enemy)
 
 
 func _process_debuff_card(card_data: CardData, target: EnemyBase, stage_manager: Node) -> void:
@@ -143,7 +195,6 @@ func _process_trigger_card(card_data: CardData, _player: Player, target: EnemyBa
 				var has_poison_stack: bool = enemy.has_status(StatusAilment.AilmentType.POISON)
 				var has_burn_stack: bool = enemy.has_status(StatusAilment.AilmentType.BURN)
 
-				# Kondisi 4 & 5: Trigger Volatile pada musuh yang punya Burn atau Poison
 				if has_burn_stack or has_poison_stack:
 					BlessingManager.trigger_resonance_heal()
 				
@@ -178,7 +229,6 @@ func _convert_destabilize_to_disintegrate(enemy: EnemyBase) -> void:
 		dis_status.ailment = StatusAilment.AilmentType.DISINTEGRATE
 		enemy.apply_status(dis_status, current_stacks)
 
-	# Kondisi 6: Berhasil menyebabkan Disintegrate
 	BlessingManager.trigger_resonance_heal()
 
 

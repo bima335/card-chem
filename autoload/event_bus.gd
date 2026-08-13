@@ -2,6 +2,7 @@ extends Node
 
 signal player_took_damage(amount: int)
 signal player_damage_requested(amount: int)
+signal ferromagnetic_shield_triggered(reflected_damage: int, attacker: EnemyBase)
 signal enemy_selected(enemy_node: EnemyBase)
 signal enemy_died(enemy_node: EnemyBase)
 signal round_started(current_round: int)
