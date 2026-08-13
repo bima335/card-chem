@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://80ix8x1j6gsa"]
+
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_cffto"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_u3ade"]
+
+[resource]
+script = ExtResource("1_cffto")
+id = 4
+name = "Cover Behind Smoke"
+description = "Burn Damage gives 2 shield"
+icon = ExtResource("1_u3ade")
+buy_price = 20
+sell_price = 10
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"

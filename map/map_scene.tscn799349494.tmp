@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://dceffs3gwfhae"]
+
+[ext_resource type="Script" uid="uid://bkycgeu0v82k" path="res://map/map_manager.gd" id="1_xrkvi"]
+[ext_resource type="PackedScene" uid="uid://duwa2rq4fgcsj" path="res://map/map_node.tscn" id="2_q2h2y"]
+[ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="3_rdi2l"]
+[ext_resource type="Resource" uid="uid://bcjwouj1xdml0" path="res://enemy/cobalt/res/cobalt_common.tres" id="4_jcvi6"]
+[ext_resource type="Resource" uid="uid://ca3u8s6esuegx" path="res://enemy/cobalt/res/cobalt_elite.tres" id="5_1ym7n"]
+[ext_resource type="Texture2D" uid="uid://5oly4a3ev0cm" path="res://assets/backgrounds/tengah_map_tree.png" id="5_jcvi6"]
+[ext_resource type="Texture2D" uid="uid://b8dcrvgw6kxhe" path="res://assets/backgrounds/top_map_tree.png" id="6_1ym7n"]
+[ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="6_71c6l"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="7_fomgr"]
+[ext_resource type="Resource" uid="uid://b22v161baskb2" path="res://enemy/cobalt/res/cobalt_boss.tres" id="8_fomgr"]
+
+[sub_resource type="Resource" id="Resource_eucgu"]
+script = ExtResource("3_rdi2l")
+enemy_name = "Cobalt Minion"
+max_hp = 12
+texture = ExtResource("7_fomgr")
+tag = 3
+metadata/_custom_type_script = "uid://brndm7sxcapx3"
+
+[node name="MapScene" type="Control" unique_id=1082545900]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=458417094]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="MapCanvas" type="Control" parent="ScrollContainer" unique_id=720246590]
+layout_mode = 2
+script = ExtResource("1_xrkvi")
+map_node_scene = ExtResource("2_q2h2y")
+all_available_enemies = Array[ExtResource("3_rdi2l")]([ExtResource("4_jcvi6"), ExtResource("5_1ym7n"), SubResource("Resource_eucgu"), ExtResource("8_fomgr")])
+section_wallpapers = Array[Texture2D]([ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("6_1ym7n")])
+
+[node name="BtnUp" type="Button" parent="." unique_id=691623035]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.97900003
+anchor_top = 0.407
+anchor_right = 1.0
+anchor_bottom = 0.44400004
+offset_left = 0.3199463
+offset_top = 0.44000244
+offset_bottom = 0.47994995
+grow_horizontal = 0
+grow_vertical = 2
+text = "UP"
+
+[node name="BtnDown" type="Button" parent="." unique_id=312079737]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.96900004
+anchor_top = 0.55600005
+anchor_right = 1.0
+anchor_bottom = 0.59300005
+offset_left = -0.48010254
+offset_top = -0.4800415
+offset_bottom = -0.44006348
+grow_horizontal = 0
+grow_vertical = 2
+text = "DOWN"

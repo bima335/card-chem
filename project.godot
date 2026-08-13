@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="card-chem"
-run/main_scene="uid://buyq5ss3jowmi"
+run/main_scene="uid://dceffs3gwfhae"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
@@ -24,6 +24,10 @@ buses/default_bus_layout="uid://b1folfgnn1b2q"
 EventBus="*uid://wr80w5hspfcd"
 GameManager="*uid://cjueth0ijpwir"
 SoundManager="*uid://dolvy1javft0v"
+BlessingManager="*uid://d15kmdy5ipw3x"
+AuraManager="*uid://bqku0emeqha7l"
+SaveManager="*uid://dwyrxfig24u4p"
+RecapManager="*uid://c6r5bxqbjqilv"
 
 [display]
 

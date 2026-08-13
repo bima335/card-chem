@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://dwjyvk25i5hbl"]
+
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_4b47u"]
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_u6158"]
+
+[resource]
+script = ExtResource("1_u6158")
+id = 5
+name = "Over Accidic"
+description = "+3 Damage on destablize"
+icon = ExtResource("1_4b47u")
+buy_price = 16
+sell_price = 8
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://otourkerimal"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_7027x"]
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_dgq05"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_dgq05"]
+
+[resource]
+script = ExtResource("1_7027x")
+id = "c_a_01"
+card_name = "Water (H2O)"
+card_texture = ExtResource("1_dgq05")
+modulate = Color(0, 1, 1, 1)
+damage_amount = 20
+shield_amount = 1
+buy_value = 7
+sell_value = 3
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

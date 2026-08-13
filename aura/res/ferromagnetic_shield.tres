@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://bj2nhbmcthyea"]
+
+[ext_resource type="Texture2D" uid="uid://d05l6tm3iomjd" path="res://assets/Card/aura_boss_card/Cobalt_FerromagneticShield.png" id="1_4l3a7"]
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_mc8eo"]
+
+[resource]
+script = ExtResource("1_mc8eo")
+aura_id = 6
+name = "Ferromagnetic Shield"
+icon = ExtResource("1_4l3a7")
+metadata/_custom_type_script = "uid://b100qugnu421l"

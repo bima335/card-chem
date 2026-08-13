@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://cfdgokrg7u7t5"]
+
+[ext_resource type="Texture2D" uid="uid://d0m8vqj37eleg" path="res://assets/Card/aura_boss_card/Cobalt_CrystalResonance.png" id="1_3pn6g"]
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_gytgk"]
+
+[resource]
+script = ExtResource("1_gytgk")
+aura_id = 5
+name = "Crystal Resonance"
+icon = ExtResource("1_3pn6g")
+metadata/_custom_type_script = "uid://b100qugnu421l"

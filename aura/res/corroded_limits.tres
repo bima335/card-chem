@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://dj5p473cnvohy"]
+
+[ext_resource type="Texture2D" uid="uid://dl2ryx4qq3pwv" path="res://assets/Card/aura_boss_card/Ferrum_CorrodedLimits.png" id="1_8jfi8"]
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="2_7gxrd"]
+
+[resource]
+script = ExtResource("2_7gxrd")
+aura_id = 2
+name = "Corroded Limits"
+description = "- 1 Max O Token, +1 Max for else"
+icon = ExtResource("1_8jfi8")
+metadata/_custom_type_script = "uid://b100qugnu421l"

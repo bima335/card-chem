@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://bq5ls8alaxbbo"]
+
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_6fw3l"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_80hqa"]
+
+[resource]
+script = ExtResource("1_6fw3l")
+id = 3
+name = "Toxic Chemist"
+description = "Poisen triggers 6 AoE damage."
+icon = ExtResource("1_80hqa")
+buy_price = 28
+sell_price = 14
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SectionData" format=3 uid="uid://v2hn1utjhfsr"]
+
+[ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_b58mf"]
+[ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="1_ekav3"]
+[ext_resource type="Resource" uid="uid://ioayte3s2jxw" path="res://enemy/ferrum/res/ferrum_boss.tres" id="2_58p1v"]
+[ext_resource type="Resource" uid="uid://dmtsackg6uksb" path="res://aura/res/iron_rage.tres" id="2_egan1"]
+[ext_resource type="Resource" uid="uid://d1xqe638qj6vx" path="res://enemy/ferrum/res/ferrum_common.tres" id="3_b58mf"]
+[ext_resource type="Resource" uid="uid://dj5p473cnvohy" path="res://aura/res/corroded_limits.tres" id="3_c1n0e"]
+[ext_resource type="Resource" uid="uid://uqxxw766mt6t" path="res://enemy/ferrum/res/ferrum_elite.tres" id="4_egan1"]
+[ext_resource type="Resource" uid="uid://4rbfsu4bchgp" path="res://aura/res/rusted_resilience.tres" id="4_xqorw"]
+[ext_resource type="Script" uid="uid://dncorhl3akjyt" path="res://map/sections/section_data.gd" id="5_c1n0e"]
+
+[resource]
+script = ExtResource("5_c1n0e")
+section_name = "Section Ferrum"
+exclusive_common = Array[ExtResource("1_ekav3")]([ExtResource("3_b58mf")])
+exclusive_elite = Array[ExtResource("1_ekav3")]([ExtResource("4_egan1")])
+exclusive_boss = Array[ExtResource("1_ekav3")]([ExtResource("2_58p1v")])
+boss_aura_rewards = Array[ExtResource("1_b58mf")]([ExtResource("2_egan1"), ExtResource("3_c1n0e"), ExtResource("4_xqorw")])
+metadata/_custom_type_script = "uid://dncorhl3akjyt"

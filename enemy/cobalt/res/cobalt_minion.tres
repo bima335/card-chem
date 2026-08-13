@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyStat" format=3 uid="uid://bhspn8f4djyj4"]
+
+[ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_n0rih"]
+[ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_npro0"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="3_npro0"]
+
+[resource]
+script = ExtResource("2_npro0")
+enemy_name = "Cobalt Minion"
+max_hp = 12
+texture = ExtResource("3_npro0")
+tag = 3
+metadata/_custom_type_script = "uid://brndm7sxcapx3"

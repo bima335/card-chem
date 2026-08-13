@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://ccrl2qrkcpt5v" path="res://shop/shop_manager.gd" id="1_n6cst"]
 [ext_resource type="Texture2D" uid="uid://dqx2k3caf8ivr" path="res://assets/backgrounds/layer_paling_bawah_the_lab.png" id="1_wdt34"]
 [ext_resource type="Texture2D" uid="uid://do8ifaisydr4q" path="res://assets/shop/Gelas_Labb.png" id="2_cf2ep"]
+[ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="3_cardui"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="3_vhf6s"]
+[ext_resource type="Resource" uid="uid://n44iryvkes3k" path="res://card/resources/debuff/carbon_monoxide.tres" id="4_5ktgv"]
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="4_jis7i"]
+[ext_resource type="Script" uid="uid://bu5meodq28pis" path="res://card/coat/coat_data.gd" id="7_hwuqm"]
+[ext_resource type="Resource" uid="uid://byajmsgsturl4" path="res://blessing/res/resonance.tres" id="10_tp2tx"]
+[ext_resource type="Resource" uid="uid://5e146oywkesi" path="res://card/coat/res/coat_purify.tres" id="12_ols6i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n6cst"]
 atlas = ExtResource("2_cf2ep")
@@ -16,7 +23,7 @@ region = Rect2(933.6311, 700.60657, 271.34668, 379.39343)
 atlas = ExtResource("2_cf2ep")
 region = Rect2(1320.2819, 364.69305, 599.71814, 714.6606)
 
-[node name="ShopScene" type="Control" unique_id=54156396]
+[node name="ShopScene" type="Control" unique_id=969635537]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,8 +31,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n6cst")
+card_ui_scene = ExtResource("3_cardui")
+available_cards = Array[ExtResource("3_vhf6s")]([ExtResource("4_5ktgv")])
+available_coats = Array[ExtResource("7_hwuqm")]([ExtResource("12_ols6i")])
+available_blessings = Array[ExtResource("4_jis7i")]([ExtResource("10_tp2tx")])
 
-[node name="Background" type="TextureRect" parent="." unique_id=52897156]
+[node name="Background" type="TextureRect" parent="." unique_id=1788097896]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
@@ -35,12 +46,12 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_wdt34")
 
-[node name="Interactables" type="Control" parent="." unique_id=1806611601]
+[node name="Interactables" type="Control" parent="." unique_id=46762546]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="BtnBuy" type="TextureButton" parent="Interactables" unique_id=908568394]
+[node name="BtnBuy" type="TextureButton" parent="Interactables" unique_id=1453895871]
 texture_filter = 1
 layout_mode = 0
 offset_left = 73.0
@@ -51,7 +62,7 @@ focus_neighbor_left = NodePath("../BtnSell")
 focus_neighbor_right = NodePath("../BtnHeal")
 texture_normal = SubResource("AtlasTexture_n6cst")
 
-[node name="BtnHeal" type="TextureButton" parent="Interactables" unique_id=1660325010]
+[node name="BtnHeal" type="TextureButton" parent="Interactables" unique_id=1769739260]
 texture_filter = 1
 layout_mode = 0
 offset_left = 934.0
@@ -62,7 +73,7 @@ focus_neighbor_left = NodePath("../BtnBuy")
 focus_neighbor_right = NodePath("../BtnSell")
 texture_normal = SubResource("AtlasTexture_cf2ep")
 
-[node name="BtnSell" type="TextureButton" parent="Interactables" unique_id=1262879023]
+[node name="BtnSell" type="TextureButton" parent="Interactables" unique_id=1289971775]
 texture_filter = 1
 layout_mode = 0
 offset_left = 1320.0
@@ -73,35 +84,150 @@ focus_neighbor_left = NodePath("../BtnHeal")
 focus_neighbor_right = NodePath("../BtnBuy")
 texture_normal = SubResource("AtlasTexture_7gqer")
 
-[node name="UI_Overlay" type="CanvasLayer" parent="." unique_id=1961901099]
+[node name="UI_Overlay" type="CanvasLayer" parent="." unique_id=52073734]
 
-[node name="CoinContainer" type="HBoxContainer" parent="UI_Overlay" unique_id=367562588]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="CoinContainer" type="HBoxContainer" parent="UI_Overlay" unique_id=960652043]
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 70.0
 
-[node name="CoinLabel" type="Label" parent="UI_Overlay/CoinContainer" unique_id=1647960272]
+[node name="CoinLabel" type="Label" parent="UI_Overlay/CoinContainer" unique_id=1720427864]
 layout_mode = 2
-text = "KOIN"
+text = "Koin: 0"
 
-[node name="BuyPanel" type="PanelContainer" parent="UI_Overlay" unique_id=534409988]
+[node name="BuyPanel" type="PanelContainer" parent="UI_Overlay" unique_id=986527415]
 visible = false
-offset_right = 40.0
-offset_bottom = 40.0
+custom_minimum_size = Vector2(1600, 900)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -800.0
+offset_top = -450.0
+offset_right = 800.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="SellPanel" type="PanelContainer" parent="UI_Overlay" unique_id=1249624550]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI_Overlay/BuyPanel" unique_id=1212077153]
+layout_mode = 2
+
+[node name="MainVBox" type="VBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer" unique_id=1060217489]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 25
+
+[node name="HeaderHBox" type="HBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox" unique_id=2108196850]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/HeaderHBox" unique_id=1778806617]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "KATALOG SHOP"
+horizontal_alignment = 1
+
+[node name="BtnCloseBuy" type="Button" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/HeaderHBox" unique_id=789175666]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "X"
+
+[node name="CardsSection" type="VBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox" unique_id=1205959056]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/CardsSection" unique_id=780293743]
+layout_mode = 2
+text = "PLAYING CARDS"
+horizontal_alignment = 1
+
+[node name="CardGrid" type="HBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/CardsSection" unique_id=1958483911]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CoatsSection" type="VBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox" unique_id=718994491]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/CoatsSection" unique_id=1765463672]
+layout_mode = 2
+text = "EFFECT COATS"
+horizontal_alignment = 1
+
+[node name="CoatGrid" type="HBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/CoatsSection" unique_id=1955980696]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="BlessingSection" type="VBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox" unique_id=2080129195]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/BlessingSection" unique_id=78408040]
+layout_mode = 2
+text = "BLESSING PIN"
+horizontal_alignment = 1
+
+[node name="BlessingGrid" type="HBoxContainer" parent="UI_Overlay/BuyPanel/ScrollContainer/MainVBox/BlessingSection" unique_id=213843540]
+layout_mode = 2
+alignment = 1
+
+[node name="DeckSelectorOverlay" type="PanelContainer" parent="UI_Overlay/BuyPanel" unique_id=672880296]
 visible = false
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 2
 
-[node name="BtnLeave" type="Button" parent="." unique_id=776695646]
+[node name="OverlayVBox" type="VBoxContainer" parent="UI_Overlay/BuyPanel/DeckSelectorOverlay" unique_id=888765155]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="UI_Overlay/BuyPanel/DeckSelectorOverlay/OverlayVBox" unique_id=1118312495]
+layout_mode = 2
+text = "Pilih 1 Kartu dari Deck untuk Diberi Effect Coat"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI_Overlay/BuyPanel/DeckSelectorOverlay/OverlayVBox" unique_id=12520783]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+
+[node name="DeckCardGrid" type="GridContainer" parent="UI_Overlay/BuyPanel/DeckSelectorOverlay/OverlayVBox/ScrollContainer" unique_id=1782057005]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 6
+
+[node name="BtnCancelDeckSelect" type="Button" parent="UI_Overlay/BuyPanel/DeckSelectorOverlay/OverlayVBox" unique_id=198535316]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Batal"
+
+[node name="SellPanel" type="PanelContainer" parent="UI_Overlay" unique_id=1099540122]
+visible = false
+custom_minimum_size = Vector2(1000, 600)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -300.0
+offset_right = 500.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BtnLeave" type="Button" parent="." unique_id=1437370269]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -53.0
-offset_top = -31.0
+offset_left = -150.0
+offset_top = -60.0
+offset_right = -30.0
+offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Leave"
+text = "Leave Shop"

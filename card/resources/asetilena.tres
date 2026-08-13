@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_lbj7c"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_xeblc"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="3_p12sa"]
 
 [resource]
 script = ExtResource("1_xeblc")
@@ -11,7 +12,5 @@ card_texture = ExtResource("1_lbj7c")
 modulate = Color(0.8749152, 0.3429549, 0, 1)
 cost_hydrogen = 2
 cost_carbon = 2
-effect_amount = 1
-can_be_reward = true
-attack_ailment = 1
+damage_amount = 10
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

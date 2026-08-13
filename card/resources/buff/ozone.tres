@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://6txgvio0r0lx"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_c7845"]
+[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_cvxmx"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_cvxmx"]
+
+[resource]
+script = ExtResource("1_c7845")
+id = "c_b_06"
+card_name = "Ozone"
+card_texture = ExtResource("1_cvxmx")
+modulate = Color(0.29630697, 0.12502718, 0.0032942852, 1)
+card_type = 1
+cost_oxygen = 1
+gain_oxygen = 3
+buy_value = 6
+sell_value = 3
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

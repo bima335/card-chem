@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://doh0k0hvjakiw"]
+
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_khixs"]
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_r0w54"]
+
+[resource]
+script = ExtResource("1_r0w54")
+id = 1
+name = "A Helping Hand"
+description = "+1 Hand Size"
+icon = ExtResource("1_khixs")
+buy_price = 32
+sell_price = 16
+metadata/_custom_type_script = "uid://jgx4rvn7vuk3"

@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bjsm28yyguoga" path="res://map/map_node.gd" id="1_thdk5"]
 [ext_resource type="Texture2D" uid="uid://dwhejslhcg07g" path="res://assets/asa.jpeg" id="2_hlve0"]
-[ext_resource type="Texture2D" uid="uid://c06a7ktpm8gv8" path="res://assets/normal.jpeg" id="3_wenc3"]
-[ext_resource type="Texture2D" uid="uid://c6lhgs7oictaq" path="res://assets/strong.jpeg" id="4_dix6y"]
-[ext_resource type="Texture2D" uid="uid://bpuh2bs22puvk" path="res://assets/shop.jpeg" id="5_c1dec"]
-[ext_resource type="Texture2D" uid="uid://ckufyfnu7788r" path="res://assets/sleep.jpeg" id="6_tdrfg"]
-[ext_resource type="Texture2D" uid="uid://do5vysx2ext6m" path="res://assets/boss.jpeg" id="7_dix6y"]
+[ext_resource type="Texture2D" uid="uid://dtwxai6hq4bw5" path="res://assets/MapIcon/EnemyA.png" id="3_c1dec"]
+[ext_resource type="Texture2D" uid="uid://w2qq2p762cg" path="res://assets/MapIcon/EnemyB.png" id="4_tdrfg"]
+[ext_resource type="Texture2D" uid="uid://ifgtysn1yst1" path="res://assets/MapIcon/Lab.png" id="5_bpacv"]
+[ext_resource type="Texture2D" uid="uid://mvgjxhgul3mm" path="res://assets/MapIcon/Rest.png" id="6_ntf41"]
+[ext_resource type="Texture2D" uid="uid://imx68yw73wjf" path="res://assets/MapIcon/Boss.png" id="7_7fa63"]
+[ext_resource type="Texture2D" uid="uid://blac0811pc60g" path="res://assets/MapIcon/Random.png" id="8_gx3cc"]
 
 [node name="MapNode" type="TextureButton" unique_id=216622706]
 custom_minimum_size = Vector2(10, 10)
@@ -21,8 +22,9 @@ texture_normal = ExtResource("2_hlve0")
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("1_thdk5")
-tex_battle_normal = ExtResource("3_wenc3")
-tex_battle_hard = ExtResource("4_dix6y")
-tex_shop = ExtResource("5_c1dec")
-tex_rest = ExtResource("6_tdrfg")
-tex_boss = ExtResource("7_dix6y")
+tex_battle_normal = ExtResource("3_c1dec")
+tex_battle_hard = ExtResource("4_tdrfg")
+tex_shop = ExtResource("5_bpacv")
+tex_rest = ExtResource("6_ntf41")
+tex_boss = ExtResource("7_7fa63")
+tex_random_event = ExtResource("8_gx3cc")

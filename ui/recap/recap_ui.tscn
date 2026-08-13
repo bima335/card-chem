@@ -1,0 +1,148 @@
+[gd_scene format=3 uid="uid://b5gkqrhxej7et"]
+
+[ext_resource type="Script" uid="uid://dvpt57lyqcadh" path="res://ui/recap/recap_ui.gd" id="1_ari5e"]
+[ext_resource type="Texture2D" uid="uid://cf0asp0cjx2tn" path="res://assets/backgrounds/panelvictory.png" id="1_xeiod"]
+[ext_resource type="Texture2D" uid="uid://j2p6mynujcj1" path="res://assets/backgrounds/gameoverpanel.png" id="3_nc0np"]
+
+[node name="RecapUI" type="Control" unique_id=7424656]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ari5e")
+victory_texture = ExtResource("1_xeiod")
+defeat_texture = ExtResource("3_nc0np")
+
+[node name="Background" type="TextureRect" parent="." unique_id=287365945]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_xeiod")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TotalDamageRecap" type="Label" parent="." unique_id=1576610322]
+layout_mode = 0
+offset_left = 784.0
+offset_top = 416.0
+offset_right = 848.0
+offset_bottom = 439.0
+text = "Damage"
+
+[node name="NodeCountRecap" type="Label" parent="." unique_id=2117126109]
+layout_mode = 0
+offset_left = 801.0
+offset_top = 264.0
+offset_right = 841.0
+offset_bottom = 287.0
+text = "15"
+
+[node name="TotalGoldRecap" type="Label" parent="." unique_id=2103341760]
+layout_mode = 0
+offset_left = 840.0
+offset_top = 592.0
+offset_right = 880.0
+offset_bottom = 615.0
+text = "Gold"
+
+[node name="DamageTakenRecap" type="Label" parent="." unique_id=523048636]
+layout_mode = 0
+offset_left = 784.0
+offset_top = 768.0
+offset_right = 916.0
+offset_bottom = 791.0
+text = "DamageDiterima"
+
+[node name="CardGotRecap" type="Label" parent="." unique_id=1491007103]
+layout_mode = 0
+offset_left = 822.0
+offset_top = 920.0
+offset_right = 862.0
+offset_bottom = 943.0
+text = "CardRecap"
+
+[node name="EnemyDefeated" type="Label" parent="." unique_id=1978038616]
+layout_mode = 0
+offset_left = 1288.0
+offset_top = 464.0
+offset_right = 1328.0
+offset_bottom = 487.0
+text = "Enemy"
+
+[node name="BossDefeated" type="Label" parent="." unique_id=2143740520]
+layout_mode = 0
+offset_left = 1296.0
+offset_top = 520.0
+offset_right = 1336.0
+offset_bottom = 543.0
+text = "Boss"
+
+[node name="TotalDamage" type="Label" parent="." unique_id=176439085]
+layout_mode = 0
+offset_left = 1296.0
+offset_top = 688.0
+offset_right = 1399.0
+offset_bottom = 711.0
+text = "TotalDamage"
+
+[node name="OneHitDamage" type="Label" parent="." unique_id=1356006344]
+layout_mode = 0
+offset_left = 1360.0
+offset_top = 752.0
+offset_right = 1415.0
+offset_bottom = 775.0
+text = "one hit"
+
+[node name="DamageTaken" type="Label" parent="." unique_id=1821521456]
+layout_mode = 0
+offset_left = 1328.0
+offset_top = 792.0
+offset_right = 1452.0
+offset_bottom = 815.0
+text = "Damage Takaen"
+
+[node name="TotalGold" type="Label" parent="." unique_id=1212585863]
+layout_mode = 0
+offset_left = 1760.0
+offset_top = 456.0
+offset_right = 1800.0
+offset_bottom = 479.0
+text = "Gold"
+
+[node name="CardGot" type="Label" parent="." unique_id=697563014]
+layout_mode = 0
+offset_left = 1712.0
+offset_top = 696.0
+offset_right = 1787.0
+offset_bottom = 719.0
+text = "Kartu Got"
+
+[node name="DiscardTotal" type="Label" parent="." unique_id=1661133928]
+layout_mode = 0
+offset_left = 1688.0
+offset_top = 736.0
+offset_right = 1747.0
+offset_bottom = 759.0
+text = "Discard"
+
+[node name="CardPlayed" type="Label" parent="." unique_id=579593691]
+layout_mode = 0
+offset_left = 1752.0
+offset_top = 792.0
+offset_right = 1844.0
+offset_bottom = 815.0
+text = "Card Played"
+
+[node name="BlessingGot" type="Label" parent="." unique_id=1737719169]
+layout_mode = 0
+offset_left = 1680.0
+offset_top = 840.0
+offset_right = 1744.0
+offset_bottom = 863.0
+text = "Blessing"

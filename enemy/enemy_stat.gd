@@ -1,7 +1,7 @@
 class_name EnemyStat
 extends Resource
 
-enum EnemyTag { SMALL, BIG }
+enum EnemyTag { SMALL, BIG, BOSS, MINION}
 
 @export var enemy_name: String = "Musuh Dasar"
 @export var max_hp: int = 30
@@ -9,3 +9,5 @@ enum EnemyTag { SMALL, BIG }
 @export_multiline var description: String = "Deskripsi musuh."
 @export var moveset: Array[EnemyAction] = []
 @export var tag: EnemyTag = EnemyTag.SMALL
+@export var gold_out: int = 0
+@export var custom_enemy_scene: PackedScene = null

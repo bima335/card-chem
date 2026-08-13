@@ -1,92 +1,116 @@
 extends Node
 
 var current_wave_data: Array[EnemyStat] = []
-
 var map_data_matrix: Dictionary = {}
 var current_floor: int = 0
-var is_map_generated: bool = false # Flag agar peta tidak teracak ulang saat kembali dari battle
+var is_map_generated: bool = false
 var available_paths: Array[Vector2i] = []
 var history_path: Array[Vector2i] = []
 
-var player_current_hp: int = 50
-var player_max_hp: int = 50
+var player_max_hp: int = 100
+var player_current_hp: int = 100
 var active_event_type: MapNodeData.NodeType
-var shop_coins: int = 0
+var shop_coins: int = 321
 var player_deck: Array[CardData] = []
 
-func generate_new_adventure(total_floors: int, nodes_per_floor: int, pool_enemies: Array[EnemyStat]) -> void:
+@export var current_section: SectionData = null
+
+var current_round: int = 1
+
+var global_common_enemies: Array[EnemyStat] = []
+var global_elite_enemies: Array[EnemyStat] = []
+var sections_data: Array[SectionData] = []
+
+
+func setup_enemy_pools(common_global: Array[EnemyStat], elite_global: Array[EnemyStat], sections: Array[SectionData]) -> void:
+	global_common_enemies = common_global
+	global_elite_enemies = elite_global
+	sections_data = sections
+
+
+func reset_round() -> void:
+	current_round = 1
+
+func heal_player(amount: int) -> int:
+	var old_hp: int = player_current_hp
+	player_current_hp = clampi(player_current_hp + amount, 0, player_max_hp)
+	
+	var actual_healed: int = player_current_hp - old_hp
+	return actual_healed
+
+func advance_round() -> int:
+	current_round += 1
+	return current_round
+
+
+func add_shop_coins(amount: int) -> void:
+	if amount <= 0:
+		return
+	shop_coins += amount
+	EventBus.gold_changed.emit(shop_coins)
+
+
+func update_current_section_for_floor(floor_idx: int) -> void:
+	var section_idx: int = floor_idx / 5
+	if section_idx < sections_data.size():
+		current_section = sections_data[section_idx]
+	else:
+		push_warning("GameManager: Indeks section " + str(section_idx) + " melebihi total sections_data!")
+
+
+func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first_three_shops: bool = false) -> void:
 	if is_map_generated: return
 	
 	map_data_matrix.clear()
 	current_floor = 0
 	available_paths.clear()
 	history_path.clear()
-	
-	shop_coins = 0
+	shop_coins = 321
 	player_deck.clear()
-	# Asumsi HP dsb direset di sini...
-	
-	# ==========================================
-	# TAHAP 1: MEMBANGUN SELURUH LANTAI & NODE
-	# ==========================================
-	for floor_idx in range(total_floors): # total_floors sekarang akan diisi 15
+	reset_round()
+
+	update_current_section_for_floor(0)
+
+	for floor_idx in range(total_floors):
 		map_data_matrix[floor_idx] = []
 		
-		# local_floor adalah angka 0 sampai 4 (Lantai ke-berapa di dalam section tersebut)
 		var local_floor: int = floor_idx % 5 
-		
-		# Lantai 3 (Rest) dan Lantai 4 (Boss) HANYA memiliki 1 Node! Sisanya sesuai nodes_per_floor.
 		var current_floor_nodes_count: int = 1 if (local_floor == 3 or local_floor == 4) else nodes_per_floor
+		
+		var section_idx: int = floor_idx / 5
+		var section_for_generation: SectionData = null
+		if section_idx < sections_data.size():
+			section_for_generation = sections_data[section_idx]
 		
 		for node_idx in range(current_floor_nodes_count):
 			var node_data = MapNodeData.new()
 			node_data.grid_position = Vector2i(floor_idx, node_idx)
 			
-			if local_floor == 3:
+			if force_first_three_shops and floor_idx < 3:
+				node_data.type = MapNodeData.NodeType.SHOP
+			elif local_floor == 3:
 				node_data.type = MapNodeData.NodeType.REST
-				
 			elif local_floor == 4:
 				node_data.type = MapNodeData.NodeType.BOSS
-				# (Wave untuk Boss nanti bisa ditambahkan di sini)
-				
+				node_data.wave_data = WaveGenerator.generate_wave(2, section_for_generation, global_common_enemies, global_elite_enemies)
 			elif floor_idx == 0:
-				# ==========================================
-				# DESAIN KHUSUS: STAGE 1 (TUTORIAL / WARM-UP)
-				# ==========================================
 				node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
-				var tutorial_pool = pool_enemies.filter(func(e): return e.tag == EnemyStat.EnemyTag.SMALL)
-				
-				if not tutorial_pool.is_empty():
-					var first_stage_wave: Array[EnemyStat] = []
-					first_stage_wave.append(tutorial_pool.pick_random())
-					node_data.wave_data = first_stage_wave
-				else:
-					push_error("GameManager: Tidak ada musuh SMALL untuk Stage 1!")
-					
+				node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
 			else:
-				# ==========================================
-				# GENERASI ACAK UNTUK LANTAI SELANJUTNYA
-				# ==========================================
 				var roll = randf()
-				if roll < 0.50: 
+				if roll < 0.40: 
 					node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
-					# Pengisian wave normal dipindah ke sini agar aman!
-					node_data.wave_data = WaveGenerator.generate_wave(0, pool_enemies)
-					
-				elif roll < 0.75: 
+					node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
+				elif roll < 0.60: 
 					node_data.type = MapNodeData.NodeType.BATTLE_HARD
-					# Pengisian wave hard dipindah ke sini agar aman!
-					node_data.wave_data = WaveGenerator.generate_wave(1, pool_enemies)
-					
+					node_data.wave_data = WaveGenerator.generate_wave(1, section_for_generation, global_common_enemies, global_elite_enemies)
+				elif roll < 0.80:
+					node_data.type = MapNodeData.NodeType.RANDOM_EVENT
 				else: 
 					node_data.type = MapNodeData.NodeType.SHOP
 					
-			# Masukkan ke matriks peta
 			map_data_matrix[floor_idx].append(node_data)
-			
-	# ==========================================
-	# TAHAP 2: MENYAMBUNGKAN GARIS KONEKSI (BOTTLENECK LOGIC)
-	# ==========================================
+
 	for floor_idx in range(total_floors - 1):
 		var current_nodes = map_data_matrix[floor_idx]
 		var next_nodes = map_data_matrix[floor_idx + 1]
@@ -95,16 +119,11 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, pool_enemie
 			var current_node: MapNodeData = current_nodes[i]
 			
 			if next_nodes.size() == 1:
-				# ATURAN CORONG: Jika lantai depan cuma 1 node (Rest/Boss), SEMUA jalur harus tersedot ke node 0 tersebut.
 				current_node.next_connections.append(next_nodes[0].grid_position)
-				
 			elif current_nodes.size() == 1:
-				# ATURAN MEKAR: Jika lantai ini cuma 1 node (Boss) dan depan banyak (awal Section baru), buka semua jalur!
 				for target_node in next_nodes:
 					current_node.next_connections.append(target_node.grid_position)
-					
 			else:
-				# ATURAN NORMAL: Lurus dan serong
 				current_node.next_connections.append(next_nodes[i].grid_position)
 				if randf() > 0.5:
 					var offset = 1 if randf() > 0.5 else -1
@@ -115,3 +134,7 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, pool_enemie
 							current_node.next_connections.append(target_pos)
 							
 	is_map_generated = true
+
+
+func set_current_section(new_section: SectionData) -> void:
+	current_section = new_section

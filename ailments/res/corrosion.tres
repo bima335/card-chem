@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatusAilment" format=3 uid="uid://yieksuuurmtg"]
+
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="1_5ob5e"]
+[ext_resource type="Texture2D" uid="uid://c6coojvybnva4" path="res://assets/Tag/tag_Corrosion.png" id="2_mjsf2"]
+
+[resource]
+script = ExtResource("1_5ob5e")
+ailment = 3
+status_icon = ExtResource("2_mjsf2")
+metadata/_custom_type_script = "uid://ck4m1qolca0es"

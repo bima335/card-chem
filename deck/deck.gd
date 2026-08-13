@@ -6,13 +6,11 @@ extends Node
 var cards: Array[CardData] = []
 var discard_pile: Array[CardData] = []
 
-#Define signal
 signal deck_updated(current_size: int, max_size:int)
 signal discard_updated(current_size: int)
 signal card_drawn(card:CardData)
 signal deck_empty
 
-#functoin
 
 func add_card(new_card: CardData) -> bool:
 	if cards.size() >= max_capacity:
@@ -28,7 +26,6 @@ func shuffle_deck():
 
 func draw_card() -> CardData:
 	if cards.is_empty():
-		# Pengecekan Discard Pile harus dilakukan DI SINI, sebelum melakukan return null!
 		if discard_pile.is_empty():
 			deck_empty.emit()
 			return null
