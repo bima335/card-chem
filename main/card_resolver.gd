@@ -5,6 +5,8 @@ extends Node
 @export var poison_ailment: StatusAilment
 @export var toxic_ailment: StatusAilment
 @export var stun_ailment: StatusAilment
+@export var destabilize_ailment: StatusAilment
+@export var disintegrate_ailment: StatusAilment
 
 
 func execute_card_logic(card_data: CardData, player: Player, current_target: EnemyBase, stage_manager: Node) -> bool:
@@ -92,7 +94,7 @@ func _process_attack_card(card_data: CardData, player: Player, target: EnemyBase
 		final_dmg = card_data.coat_data.apply_damage_modifier(initial_dmg)
 		
 	for enemy in targets:
-		enemy.take_damage(final_dmg)
+		enemy.take_damage(final_dmg, true)
 		EventBus.player_dealt_damage.emit(final_dmg, enemy)
 		_apply_card_statuses(card_data, enemy)
 
@@ -116,15 +118,22 @@ func _process_trigger_card(card_data: CardData, _player: Player, target: EnemyBa
 						enemy.apply_status(burn_ailment, burn_ailment.duration)
 					enemy.remove_status(StatusAilment.AilmentType.OXIDIZE)
 					
-			StatusAilment.AilmentType.OXIDIZE:
-				if enemy.has_status(StatusAilment.AilmentType.CORROSION):
-					var dest_status = StatusAilment.new()
-					dest_status.ailment = StatusAilment.AilmentType.DESTABILIZE
-					enemy.apply_status(dest_status, 2)
-					enemy.remove_status(StatusAilment.AilmentType.CORROSION)
+			StatusAilment.AilmentType.CORROSION:
+				if enemy.has_status(StatusAilment.AilmentType.OXIDIZE):
+					enemy.remove_status(StatusAilment.AilmentType.OXIDIZE)
+					
+					if destabilize_ailment:
+						enemy.apply_status(destabilize_ailment, 1)
+					else:
+						var dest_status = StatusAilment.new()
+						dest_status.ailment = StatusAilment.AilmentType.DESTABILIZE
+						enemy.apply_status(dest_status, 1)
 					
 			StatusAilment.AilmentType.VOLATILE:
-				if not enemy.has_status(StatusAilment.AilmentType.BURN) and not enemy.has_status(StatusAilment.AilmentType.POISON) and not enemy.has_status(StatusAilment.AilmentType.DESTABILIZE):
+				if enemy.has_status(StatusAilment.AilmentType.DESTABILIZE):
+					_convert_destabilize_to_disintegrate(enemy)
+
+				if not enemy.has_status(StatusAilment.AilmentType.BURN) and not enemy.has_status(StatusAilment.AilmentType.POISON) and not enemy.has_status(StatusAilment.AilmentType.DESTABILIZE) and not enemy.has_status(StatusAilment.AilmentType.DISINTEGRATE):
 					continue
 
 				var has_poison_stack: bool = enemy.has_status(StatusAilment.AilmentType.POISON)
@@ -144,6 +153,21 @@ func _process_trigger_card(card_data: CardData, _player: Player, target: EnemyBa
 					_apply_aoe_poison_and_stun(stage_manager, 1, 1)
 					
 		_apply_card_statuses(card_data, enemy)
+
+
+func _convert_destabilize_to_disintegrate(enemy: EnemyBase) -> void:
+	var current_stacks: int = enemy.get_status_duration(StatusAilment.AilmentType.DESTABILIZE)
+	if current_stacks <= 0:
+		return
+		
+	enemy.remove_status(StatusAilment.AilmentType.DESTABILIZE)
+	
+	if disintegrate_ailment:
+		enemy.apply_status(disintegrate_ailment, current_stacks)
+	else:
+		var dis_status = StatusAilment.new()
+		dis_status.ailment = StatusAilment.AilmentType.DISINTEGRATE
+		enemy.apply_status(dis_status, current_stacks)
 
 
 func _apply_poison_and_stun(enemy: EnemyBase, poison_amount: int, stun_amount: int) -> void:

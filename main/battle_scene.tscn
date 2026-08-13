@@ -5,7 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://n44iryvkes3k" path="res://card/resources/debuff/carbon_monoxide.tres" id="3_lp6dp"]
+[ext_resource type="Resource" uid="uid://llsf6kysyij2" path="res://card/resources/trigger/nitrogen_dioxide.tres" id="4_unxtc"]
+[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="4_wg8pm"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
@@ -23,11 +24,13 @@
 [ext_resource type="Resource" uid="uid://dyouajpneqx50" path="res://ailments/res/poison.tres" id="20_4kvfx"]
 [ext_resource type="Resource" uid="uid://bhhuddng6j1cw" path="res://ailments/res/toxification.tres" id="21_0n4fo"]
 [ext_resource type="Resource" uid="uid://dcrq5so5inoee" path="res://ailments/res/stun.tres" id="22_unxtc"]
+[ext_resource type="Resource" uid="uid://u2qskia73v30" path="res://ailments/res/destabilize.tres" id="24_yun0f"]
+[ext_resource type="Resource" uid="uid://c635se6h4mthq" path="res://ailments/res/disintegrated.tres" id="25_uakwd"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_lp6dp"), ExtResource("5_j5qo7")])
+available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("4_wg8pm"), ExtResource("4_unxtc"), ExtResource("15_6ojnn"), ExtResource("5_j5qo7")])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -94,6 +97,8 @@ burn_ailment = ExtResource("15_xre4y")
 poison_ailment = ExtResource("20_4kvfx")
 toxic_ailment = ExtResource("21_0n4fo")
 stun_ailment = ExtResource("22_unxtc")
+destabilize_ailment = ExtResource("24_yun0f")
+disintegrate_ailment = ExtResource("25_uakwd")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
 

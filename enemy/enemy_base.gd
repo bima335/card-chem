@@ -81,7 +81,7 @@ func start_turn_process() -> void:
 
 	if burn_stacks > 0:
 		var burn_damage = 5
-		take_damage(burn_damage)
+		take_damage(burn_damage, false)
 		EventBus.burn_damage_dealt.emit(burn_damage)
 		burn_stacks = max(0, burn_stacks - 1)
 		if burn_stacks == 0:
@@ -139,13 +139,17 @@ func toggle_targetable(enable: Variant = null) -> void:
 		set_targetable(bool(enable))
 
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 	if not is_targetable:
 		return
 		
-	var damage_multiplier = 1.0
+	var damage_multiplier: float = 1.0
+	var has_disintegrate: bool = has_status(StatusAilment.AilmentType.DISINTEGRATE)
+	var has_destabilize: bool = has_status(StatusAilment.AilmentType.DESTABILIZE)
 	
-	if has_status(StatusAilment.AilmentType.DESTABILIZE):
+	if has_disintegrate:
+		damage_multiplier = 2.0
+	elif has_destabilize:
 		if has_status(StatusAilment.AilmentType.VOLATILE):
 			damage_multiplier = 2.0
 		else:
@@ -161,6 +165,9 @@ func take_damage(amount: int) -> void:
 	var final_damage = max(0, int(base_calculated_damage * (1.0 - reduction_pct)))
 
 	current_hp = clampi(current_hp - final_damage, 0, stats.max_hp)
+	
+	if is_direct_attack:
+		consume_hit_based_statuses()
 	
 	var tween = create_tween()
 	tween.tween_property(hp_bar, "value", current_hp, 0.2).set_trans(Tween.TRANS_SINE)
@@ -181,6 +188,30 @@ func take_damage(amount: int) -> void:
 		EventBus.enemy_killed.emit(self, is_boss)
 		EventBus.enemy_died.emit(self)
 		die()
+
+
+func consume_hit_based_statuses() -> void:
+	if has_status(StatusAilment.AilmentType.DISINTEGRATE):
+		_decrement_status_stack(StatusAilment.AilmentType.DISINTEGRATE)
+	elif has_status(StatusAilment.AilmentType.DESTABILIZE):
+		_decrement_status_stack(StatusAilment.AilmentType.DESTABILIZE)
+
+
+func _decrement_status_stack(ailment_type: StatusAilment.AilmentType) -> void:
+	if not active_statuses.has(ailment_type):
+		return
+		
+	active_statuses[ailment_type]["duration"] -= 1
+	if active_statuses[ailment_type]["duration"] <= 0:
+		remove_status(ailment_type)
+	else:
+		_update_status_ui()
+
+
+func get_status_duration(ailment_type: StatusAilment.AilmentType) -> int:
+	if active_statuses.has(ailment_type):
+		return active_statuses[ailment_type]["duration"]
+	return 0
 
 
 func _calculate_custom_damage_reduction() -> float:
@@ -285,7 +316,7 @@ func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
 func decrease_status_durations() -> void:
 	var keys_to_remove = []
 	for ailment_id in active_statuses.keys():
-		if ailment_id == StatusAilment.AilmentType.TOXIC:
+		if ailment_id == StatusAilment.AilmentType.TOXIC or ailment_id == StatusAilment.AilmentType.DESTABILIZE or ailment_id == StatusAilment.AilmentType.DISINTEGRATE:
 			continue
 			
 		active_statuses[ailment_id]["duration"] -= 1

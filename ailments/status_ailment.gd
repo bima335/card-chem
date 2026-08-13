@@ -11,7 +11,8 @@ enum AilmentType {
 	BURN,
 	POISON,
 	DESTABILIZE,
-	STUN
+	STUN,
+	DISINTEGRATE
 }
 
 @export var ailment: AilmentType = AilmentType.NONE
