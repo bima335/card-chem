@@ -151,7 +151,10 @@ func _get_current_section_index() -> int:
 
 func _on_aura_reward_chosen(chosen_aura: AuraCardData) -> void:
 	if AuraManager:
-		AuraManager.equip_aura(chosen_aura)
+		var equipped_successfully: bool = AuraManager.equip_aura(chosen_aura, -1)
+		
+		if not equipped_successfully:
+			push_error("[BattleRewardHandler] Gagal memasang Aura Card!")
 	
 	if SaveManager:
 		SaveManager.unlock_aura(chosen_aura)

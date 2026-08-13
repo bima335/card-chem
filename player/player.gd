@@ -40,9 +40,9 @@ func _ready() -> void:
 		EventBus.dazzle_stacks_changed.connect(_on_dazzle_stacks_changed)
 
 	if AuraManager.has_signal("aura_equipped"):
-		AuraManager.aura_equipped.connect(_on_aura_changed)
+		AuraManager.aura_equipped.connect(_on_aura_equipped_handler)
 	if AuraManager.has_signal("aura_unequipped"):
-		AuraManager.aura_unequipped.connect(_on_aura_changed)
+		AuraManager.aura_unequipped.connect(_on_aura_unequipped_handler)
 
 
 func reset_for_battle() -> void:
@@ -87,6 +87,11 @@ func _on_dazzle_stacks_changed(stacks: int) -> void:
 func _on_aura_changed(_aura: AuraCardData = null) -> void:
 	clamp_tokens_to_max()
 
+func _on_aura_equipped_handler(_aura: AuraCardData, _slot_index: int) -> void:
+	clamp_tokens_to_max()
+
+func _on_aura_unequipped_handler(_slot_index: int) -> void:
+	clamp_tokens_to_max()
 
 func get_max_oxygen() -> int:
 	return MAX_TOKEN + AuraManager.get_max_token_oxygen_modifier()
