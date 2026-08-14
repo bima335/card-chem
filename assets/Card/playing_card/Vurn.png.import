@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bd50l0v5ggbn7"
-path="res://.godot/imported/CN.png-02f4d360229b46f0cc0c640b622d6bff.ctex"
+uid="uid://dc5rk3ryewuof"
+path="res://.godot/imported/Vurn.png-c37193b2a866313517f7376161af201f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Card/playing_card/CN.png"
-dest_files=["res://.godot/imported/CN.png-02f4d360229b46f0cc0c640b622d6bff.ctex"]
+source_file="res://assets/Card/playing_card/Vurn.png"
+dest_files=["res://.godot/imported/Vurn.png-c37193b2a866313517f7376161af201f.ctex"]
 
 [params]
 

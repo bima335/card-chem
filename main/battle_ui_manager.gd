@@ -265,11 +265,22 @@ func update_blessings_display() -> void:
 			
 		for child in slot_node.get_children():
 			child.queue_free()
+
 		if i < active_blessings.size():
 			var blessing_data: BlessingData = active_blessings[i]
 			var blessing_ui: BlessingUIItem = blessing_item_scene.instantiate() as BlessingUIItem
-			blessing_ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			
 			slot_node.add_child(blessing_ui)
+			
+			blessing_ui.custom_minimum_size = Vector2(60, 60)
+			blessing_ui.set_anchors_preset(Control.PRESET_CENTER)
+			blessing_ui.offset_left = -30.0
+			blessing_ui.offset_top = -30.0
+			blessing_ui.offset_right = 30.0
+			blessing_ui.offset_bottom = 30.0
+			blessing_ui.grow_horizontal = Control.GROW_DIRECTION_BOTH
+			blessing_ui.grow_vertical = Control.GROW_DIRECTION_BOTH
+			
 			blessing_ui.setup(blessing_data)
 
 func _connect_gold_signals() -> void:

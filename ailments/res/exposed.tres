@@ -8,4 +8,6 @@ script = ExtResource("1_7xq4s")
 ailment = 11
 status_icon = ExtResource("2_j0qd1")
 modulate = Color(0, 0.2898716, 0.34058237, 1)
+decrease_on_turn_end = false
+use_stacks_for_display = true
 metadata/_custom_type_script = "uid://ck4m1qolca0es"

@@ -2,7 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_x6yus"]
 [ext_resource type="Script" uid="uid://b5wewrec7faac" path="res://enemy/gold/enemy_gold.gd" id="2_gmwh6"]
+[ext_resource type="Resource" uid="uid://8n7bqwu36rhk" path="res://ailments/res/greed.tres" id="3_e1c7o"]
 
 [node name="EnemyGold" unique_id=181012001 instance=ExtResource("1_x6yus")]
 script = ExtResource("2_gmwh6")
+greed_resouce = ExtResource("3_e1c7o")
 stats = null

@@ -417,21 +417,21 @@ theme_override_constants/separation = 8
 alignment = 1
 
 [node name="BlessingSlot0" type="TextureRect" parent="UI/TopRightHUD/BlessingWrapper/BlessingContainer" unique_id=199001]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 texture = ExtResource("41_blessing_slot")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="BlessingSlot1" type="TextureRect" parent="UI/TopRightHUD/BlessingWrapper/BlessingContainer" unique_id=199002]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 texture = ExtResource("41_blessing_slot")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="BlessingSlot2" type="TextureRect" parent="UI/TopRightHUD/BlessingWrapper/BlessingContainer" unique_id=199003]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 texture = ExtResource("41_blessing_slot")
 expand_mode = 1

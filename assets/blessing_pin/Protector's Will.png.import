@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6b560c8muka5"
-path="res://.godot/imported/NO.png-d3569bc0da445880598c9f6c36002566.ctex"
+uid="uid://uwk67fdx2a4t"
+path="res://.godot/imported/Protector's Will.png-09b1059c1ee0c5f3044d06fc15023127.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Card/playing_card/NO.png"
-dest_files=["res://.godot/imported/NO.png-d3569bc0da445880598c9f6c36002566.ctex"]
+source_file="res://assets/blessing_pin/Protector's Will.png"
+dest_files=["res://.godot/imported/Protector's Will.png-09b1059c1ee0c5f3044d06fc15023127.ctex"]
 
 [params]
 

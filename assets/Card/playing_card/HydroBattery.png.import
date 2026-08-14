@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdpqqghe2e0n5"
-path="res://.godot/imported/Hydrogen Peroxide.png-702806ad07d344244a47aed8a7a0b695.ctex"
+uid="uid://b4asbevknpkpx"
+path="res://.godot/imported/HydroBattery.png-27808cabbcdb980e950ccde43dd6d322.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Card/playing_card/Hydrogen Peroxide.png"
-dest_files=["res://.godot/imported/Hydrogen Peroxide.png-702806ad07d344244a47aed8a7a0b695.ctex"]
+source_file="res://assets/Card/playing_card/HydroBattery.png"
+dest_files=["res://.godot/imported/HydroBattery.png-27808cabbcdb980e950ccde43dd6d322.ctex"]
 
 [params]
 

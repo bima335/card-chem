@@ -35,10 +35,10 @@ func _ready() -> void:
 	_connect_signals()
 	#BlessingManager.equip_blessing(default_blessing)
 	#AuraManager.equip_aura(default_aura_1)
-	AuraManager.equip_aura(aura_1, 0)
-	AuraManager.equip_aura(aura_2, 1)
-	
-	BlessingManager.equip_blessing(blessing_1)
+	#AuraManager.equip_aura(aura_1, 0)
+	#AuraManager.equip_aura(aura_2, 1)
+	#
+	#BlessingManager.equip_blessing(blessing_1)
 	#BlessingManager.equip_blessing(blessing_2)
 	#BlessingManager.equip_blessing(blessing_3)
 	

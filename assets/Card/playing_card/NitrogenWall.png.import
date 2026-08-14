@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cv5d0fojvivx0"
-path="res://.godot/imported/N2O.png-e89cc271b3a543117ee84fbd15822e9f.ctex"
+uid="uid://8ykoy82ue52n"
+path="res://.godot/imported/NitrogenWall.png-daf1d77c6bf2b9565acbf3065a700b36.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Card/playing_card/N2O.png"
-dest_files=["res://.godot/imported/N2O.png-e89cc271b3a543117ee84fbd15822e9f.ctex"]
+source_file="res://assets/Card/playing_card/NitrogenWall.png"
+dest_files=["res://.godot/imported/NitrogenWall.png-daf1d77c6bf2b9565acbf3065a700b36.ctex"]
 
 [params]
 

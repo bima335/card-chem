@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkg18t64eaqu3"
-path="res://.godot/imported/H2O.png-44da3f143bbc207a1a1a0fedf86d9155.ctex"
+uid="uid://b7m4y35swto0f"
+path="res://.godot/imported/NitrousOxide.png-971fbc00afa13d7bea472c09b0fb248b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Card/playing_card/H2O.png"
-dest_files=["res://.godot/imported/H2O.png-44da3f143bbc207a1a1a0fedf86d9155.ctex"]
+source_file="res://assets/Card/playing_card/NitrousOxide.png"
+dest_files=["res://.godot/imported/NitrousOxide.png-971fbc00afa13d7bea472c09b0fb248b.ctex"]
 
 [params]
 

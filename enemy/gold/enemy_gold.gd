@@ -2,6 +2,8 @@ class_name EnemyGold
 extends EnemyBase
 
 var greed_stacks: int = 0
+@export var greed_resouce: StatusAilment
+var is_enraged: bool = _is_in_enrage_phase()
 
 func _ready() -> void:
 	super._ready()
@@ -9,23 +11,35 @@ func _ready() -> void:
 		return
 	EventBus.player_dealt_damage.connect(_on_player_dealt_damage)
 
-func execute_move(action: EnemyAction) -> void:
-	if is_stunned:
-		end_turn_process()
-		return
-
-	var is_enraged: bool = _is_in_enrage_phase()
-	var is_odd_round: bool = (GameManager.current_round % 2 != 0)
-
-	if not is_enraged and is_odd_round:
-		_execute_hoard()
+func determine_next_move() -> EnemyAction:
+	var action = EnemyAction.new()
+	action.type = EnemyAction.ActionType.ATTACK
+	if GameManager.current_round %2 == 0:
+		action.amount = 13
 	else:
-		_execute_payout_strike()
+		_execute_hoard()
+	return action
 
-	end_turn_process()
+
+#func execute_move(action: EnemyAction) -> void:
+	#if is_stunned:
+		#end_turn_process()
+		#return
+#
+	#var is_enraged: bool = _is_in_enrage_phase()
+	#var is_odd_round: bool = (GameManager.current_round % 2 != 0)
+#
+	#if not is_enraged and is_odd_round:
+		#_execute_hoard()
+	#else:
+		#_execute_payout_strike()
+#
+	#end_turn_process()
 
 func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 	super.take_damage(amount, is_direct_attack)
+	_is_in_enrage_phase()
+	print(_is_in_enrage_phase())
 
 func die() -> void:
 	_apply_victory_reward()
@@ -40,11 +54,18 @@ func _execute_hoard() -> void:
 		GameManager.shop_coins -= steal_amount
 		EventBus.gold_changed.emit(GameManager.shop_coins)
 
-	if remaining_steal > 0:
+	if current_coins < 7:
 		EventBus.player_damage_requested.emit(5, self)
+		EventBus.gold_changed.emit(0)
 
 	if not _is_in_enrage_phase():
+		if greed_resouce != null and not active_statuses.has(StatusAilment.AilmentType.GREED):
+			active_statuses[StatusAilment.AilmentType.GREED] = {
+				"duration": 999,
+				"resource": greed_resouce
+		}
 		greed_stacks += 1
+		print("Add greed stacks")
 
 func _execute_payout_strike() -> void:
 	var total_damage: int = 7 + (4 * greed_stacks)

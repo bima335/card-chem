@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c33nm7vufkhbo"
-path="res://.godot/imported/CO2.png-91ae245fc6f8ec7e06b43f42848d6eda.ctex"
+uid="uid://vp8jprsg1w5a"
+path="res://.godot/imported/Combust.png-121d71974f1a81e6b6b15e0b9db78287.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Card/playing_card/CO2.png"
-dest_files=["res://.godot/imported/CO2.png-91ae245fc6f8ec7e06b43f42848d6eda.ctex"]
+source_file="res://assets/Card/playing_card/Combust.png"
+dest_files=["res://.godot/imported/Combust.png-121d71974f1a81e6b6b15e0b9db78287.ctex"]
 
 [params]
 
