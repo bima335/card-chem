@@ -140,13 +140,6 @@ offset_right = 1918.0
 offset_bottom = 1081.0
 texture = ExtResource("19_unxtc")
 
-[node name="PanelLog" type="TextureRect" parent="UI" unique_id=1705203816]
-offset_left = 10.0
-offset_top = 310.0
-offset_right = 391.0
-offset_bottom = 631.0
-texture = ExtResource("20_usmio")
-
 [node name="HealthBar" type="VBoxContainer" parent="UI" unique_id=802559503]
 offset_left = 58.0
 offset_top = 1013.0
@@ -182,6 +175,13 @@ script = ExtResource("23_iew0u")
 layout_mode = 2
 alignment = 1
 
+[node name="Hearth" type="TextureRect" parent="UI" unique_id=243099145]
+offset_left = 280.0
+offset_top = 970.0
+offset_right = 327.0
+offset_bottom = 1016.0
+texture = ExtResource("32_oveg7")
+
 [node name="HealthBarAngka" type="Label" parent="UI" unique_id=1844871540]
 offset_left = 329.0
 offset_top = 975.0
@@ -192,6 +192,29 @@ theme_override_font_sizes/font_size = 25
 text = "80/100 (+20 shield)"
 script = ExtResource("26_ukrt6")
 
+[node name="GoldIcon" type="TextureRect" parent="UI" unique_id=2126915016]
+offset_left = 129.0
+offset_top = 967.0
+offset_right = 177.0
+offset_bottom = 1022.0
+texture = ExtResource("31_e72vb")
+
+[node name="PanelLog" type="TextureRect" parent="UI" unique_id=1705203816]
+offset_left = 10.0
+offset_top = 310.0
+offset_right = 391.0
+offset_bottom = 631.0
+texture = ExtResource("20_usmio")
+
+[node name="DeckVisual" type="TextureButton" parent="UI" unique_id=1314374451]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -168.0
+offset_right = 168.0
+grow_vertical = 0
+texture_normal = ExtResource("22_yme4k")
+
 [node name="GoldValue" type="Label" parent="UI" unique_id=372004685]
 offset_left = 178.0
 offset_top = 969.0
@@ -200,15 +223,6 @@ offset_bottom = 1007.0
 theme_override_fonts/font = ExtResource("25_lwejg")
 theme_override_font_sizes/font_size = 31
 text = "200"
-
-[node name="DeckVisual" type="TextureButton" parent="UI" unique_id=1314374451]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -64.0
-offset_right = 48.0
-grow_vertical = 0
-texture_normal = ExtResource("22_yme4k")
 
 [node name="DiscardVisual" type="TextureButton" parent="UI" unique_id=946672430]
 anchors_preset = 3
@@ -237,20 +251,6 @@ offset_top = 921.0
 offset_right = 269.0
 offset_bottom = 974.0
 texture = ExtResource("30_ts2vl")
-
-[node name="GoldIcon" type="TextureRect" parent="UI" unique_id=2126915016]
-offset_left = 129.0
-offset_top = 967.0
-offset_right = 177.0
-offset_bottom = 1022.0
-texture = ExtResource("31_e72vb")
-
-[node name="Hearth" type="TextureRect" parent="UI" unique_id=243099145]
-offset_left = 280.0
-offset_top = 970.0
-offset_right = 327.0
-offset_bottom = 1016.0
-texture = ExtResource("32_oveg7")
 
 [node name="LayoutAuraBoss" type="TextureRect" parent="UI" unique_id=91231908]
 offset_left = 1509.0

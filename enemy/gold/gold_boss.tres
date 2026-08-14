@@ -3,13 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://dgtg4sk12kirn" path="res://enemy/gold/enemy_gold.tscn" id="1_cw8u6"]
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_nwaa4"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_21053"]
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="4_xnmrm"]
+[ext_resource type="Texture2D" uid="uid://h8usxryp11c4" path="res://assets/Character/eliteboss/Boss.Gold/gold_ingame.png" id="4_cw8u6"]
 
 [resource]
 script = ExtResource("2_21053")
 enemy_name = "Gold Boss"
 max_hp = 250
-texture = ExtResource("4_xnmrm")
+texture = ExtResource("4_cw8u6")
 tag = 2
 custom_enemy_scene = ExtResource("1_cw8u6")
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

@@ -1,0 +1,627 @@
+[gd_scene format=3 uid="uid://c4bqe5xfv3dhv"]
+
+[ext_resource type="Script" uid="uid://ccrl2qrkcpt5v" path="res://shop/shop_manager.gd" id="1_n6cst"]
+[ext_resource type="Texture2D" uid="uid://dqx2k3caf8ivr" path="res://assets/backgrounds/layer_paling_bawah_the_lab.png" id="1_wdt34"]
+[ext_resource type="Texture2D" uid="uid://do8ifaisydr4q" path="res://assets/shop/Gelas_Labb.png" id="2_cf2ep"]
+[ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="3_cardui"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="3_vhf6s"]
+[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="4_jis7i"]
+[ext_resource type="Resource" uid="uid://otourkerimal" path="res://card/resources/atk/water.tres" id="4_vlf3m"]
+[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="5_vlf3m"]
+[ext_resource type="Script" uid="uid://bu5meodq28pis" path="res://card/coat/coat_data.gd" id="7_hwuqm"]
+[ext_resource type="Resource" uid="uid://swqbgfd71dg2" path="res://card/coat/res/clone.tres" id="8_buuxn"]
+[ext_resource type="Resource" uid="uid://1rhiulfq30o5" path="res://card/resources/trigger/o_ignite.tres" id="8_dsopo"]
+[ext_resource type="Resource" uid="uid://c5ci8mxy0ctqv" path="res://card/coat/res/catalyst.tres" id="9_l27h7"]
+[ext_resource type="Resource" uid="uid://80ix8x1j6gsa" path="res://blessing/res/cover.tres" id="9_tp2tx"]
+[ext_resource type="Resource" uid="uid://cr2ntadcnepak" path="res://blessing/res/protector.tres" id="10_cvmxc"]
+[ext_resource type="Resource" uid="uid://clq08c2g3jetx" path="res://blessing/res/recycle.tres" id="10_qwuve"]
+[ext_resource type="Resource" uid="uid://bnxqvevk8vi6m" path="res://card/coat/res/unstable.tres" id="10_vvo68"]
+[ext_resource type="Resource" uid="uid://k5tpp47jrgwd" path="res://card/coat/res/insulated.tres" id="11_wl3ct"]
+[ext_resource type="Resource" uid="uid://5e146oywkesi" path="res://card/coat/res/coat_purify.tres" id="12_ols6i"]
+[ext_resource type="Resource" uid="uid://c22oy6nl6qgnf" path="res://card/coat/res/crystalized.tres" id="13_dd36f"]
+[ext_resource type="Texture2D" uid="uid://cdi42dnwdsrkq" path="res://assets/HUD/speroavatar.png" id="20_tvudj"]
+[ext_resource type="Script" uid="uid://t467axc5qguh" path="res://main/health_bar.gd" id="21_vqonx"]
+[ext_resource type="Texture2D" uid="uid://cohmwkije4j0a" path="res://assets/HUD/healthbarwadahplayer.png" id="22_oct2v"]
+[ext_resource type="Texture2D" uid="uid://vhfdey5jp05f" path="res://assets/HUD/healthbarisiplayer.png" id="23_f8d3e"]
+[ext_resource type="Script" uid="uid://bgmjei68n4qpw" path="res://main/texture_progress_bar.gd" id="24_fs380"]
+[ext_resource type="Texture2D" uid="uid://bn0jqf08h3sn0" path="res://assets/HUD/shieldhpbarplayer.png" id="25_itbvl"]
+[ext_resource type="Texture2D" uid="uid://43l7p73t0ti" path="res://assets/HUD/iconhealth.png" id="26_t74tl"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="27_ip4db"]
+[ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="28_ns33h"]
+[ext_resource type="Texture2D" uid="uid://dgtgf0v1tjctr" path="res://assets/HUD/iconDeck.png" id="29_ch3b0"]
+[ext_resource type="Texture2D" uid="uid://cvh55t8p7fr1j" path="res://assets/shop/bgpanelBuy.png" id="30_6nb8b"]
+[ext_resource type="Texture2D" uid="uid://vdg2nru6k3xq" path="res://assets/shop/blessingbuy.png" id="31_mughh"]
+[ext_resource type="Texture2D" uid="uid://gv1e2rx10f00" path="res://assets/shop/cardbuy.png" id="32_5m7s2"]
+[ext_resource type="Texture2D" uid="uid://dro41v7n4q6dg" path="res://assets/shop/bgpanelSell.png" id="33_6djfl"]
+[ext_resource type="Texture2D" uid="uid://bd3w07cy1w5w4" path="res://assets/shop/cardsell.png" id="34_d2aug"]
+[ext_resource type="Texture2D" uid="uid://p8olxs1dybwa" path="res://assets/shop/panelhealnobg.png" id="35_afrrm"]
+[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="36_if8wb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6cst"]
+atlas = ExtResource("2_cf2ep")
+region = Rect2(73.38507, 352.72754, 769.9014, 732.6255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cf2ep"]
+atlas = ExtResource("2_cf2ep")
+region = Rect2(933.6311, 700.60657, 271.34668, 379.39343)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gqer"]
+atlas = ExtResource("2_cf2ep")
+region = Rect2(1320.2819, 364.69305, 599.71814, 714.6606)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_57qmd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yf5fn"]
+
+[node name="ShopScene" type="Control" unique_id=969635537]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n6cst")
+card_ui_scene = ExtResource("3_cardui")
+available_cards = Array[ExtResource("3_vhf6s")]([ExtResource("8_dsopo"), ExtResource("5_vlf3m"), ExtResource("4_vlf3m")])
+available_coats = Array[ExtResource("7_hwuqm")]([ExtResource("8_buuxn"), ExtResource("9_l27h7"), ExtResource("10_vvo68"), ExtResource("11_wl3ct"), ExtResource("12_ols6i"), ExtResource("13_dd36f")])
+available_blessings = Array[ExtResource("4_jis7i")]([ExtResource("10_cvmxc"), ExtResource("9_tp2tx"), ExtResource("10_qwuve")])
+
+[node name="Background" type="TextureRect" parent="." unique_id=1788097896]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_wdt34")
+
+[node name="Interactables" type="Control" parent="." unique_id=46762546]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BtnBuy" type="TextureButton" parent="Interactables" unique_id=1453895871]
+texture_filter = 1
+layout_mode = 0
+offset_left = 73.0
+offset_top = 353.0
+offset_right = 842.0
+offset_bottom = 1085.0
+focus_neighbor_left = NodePath("../BtnSell")
+focus_neighbor_right = NodePath("../BtnHeal")
+texture_normal = SubResource("AtlasTexture_n6cst")
+
+[node name="BtnHeal" type="TextureButton" parent="Interactables" unique_id=1769739260]
+texture_filter = 1
+layout_mode = 0
+offset_left = 934.0
+offset_top = 700.0
+offset_right = 1205.0
+offset_bottom = 1079.0
+focus_neighbor_left = NodePath("../BtnBuy")
+focus_neighbor_right = NodePath("../BtnSell")
+texture_normal = SubResource("AtlasTexture_cf2ep")
+
+[node name="BtnSell" type="TextureButton" parent="Interactables" unique_id=1289971775]
+texture_filter = 1
+layout_mode = 0
+offset_left = 1320.0
+offset_top = 365.0
+offset_right = 1919.0
+offset_bottom = 1079.0
+focus_neighbor_left = NodePath("../BtnHeal")
+focus_neighbor_right = NodePath("../BtnBuy")
+texture_normal = SubResource("AtlasTexture_7gqer")
+
+[node name="UI_Overlay" type="CanvasLayer" parent="." unique_id=52073734]
+
+[node name="Character" type="CanvasLayer" parent="UI_Overlay" unique_id=203851735]
+
+[node name="Avatar" type="TextureRect" parent="UI_Overlay/Character" unique_id=36445973]
+offset_top = 3.0
+offset_right = 1920.0
+offset_bottom = 1083.0
+texture = ExtResource("20_tvudj")
+
+[node name="HealthBar" type="VBoxContainer" parent="UI_Overlay/Character" unique_id=841688066]
+offset_left = 58.0
+offset_top = 1013.0
+offset_right = 461.0
+offset_bottom = 1079.0
+script = ExtResource("21_vqonx")
+
+[node name="BarContainer" type="Control" parent="UI_Overlay/Character/HealthBar" unique_id=180382292]
+layout_mode = 2
+
+[node name="HealthbarUnder" type="TextureProgressBar" parent="UI_Overlay/Character/HealthBar/BarContainer" unique_id=1618872585]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 403.0
+offset_bottom = 35.0
+value = 80.0
+texture_under = ExtResource("22_oct2v")
+texture_progress = ExtResource("23_f8d3e")
+script = ExtResource("24_fs380")
+
+[node name="ShieldBar" type="TextureProgressBar" parent="UI_Overlay/Character/HealthBar/BarContainer" unique_id=1306099688]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 4.0
+offset_right = 404.0
+offset_bottom = 35.0
+value = 20.0
+fill_mode = 1
+texture_progress = ExtResource("25_itbvl")
+script = ExtResource("24_fs380")
+
+[node name="StatusContainer" type="HBoxContainer" parent="UI_Overlay/Character/HealthBar" unique_id=132678004]
+layout_mode = 2
+alignment = 1
+
+[node name="Hearth" type="TextureRect" parent="UI_Overlay/Character" unique_id=1733802670]
+offset_left = 280.0
+offset_top = 970.0
+offset_right = 327.0
+offset_bottom = 1016.0
+texture = ExtResource("26_t74tl")
+
+[node name="HealthBarAngka" type="Label" parent="UI_Overlay/Character" unique_id=633804885]
+offset_left = 329.0
+offset_top = 975.0
+offset_right = 495.0
+offset_bottom = 1007.0
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 25
+text = "80/100 (+20 shield)"
+script = ExtResource("21_vqonx")
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 25
+
+[node name="GoldIcon" type="TextureRect" parent="UI_Overlay/Character" unique_id=346080059]
+offset_left = 129.0
+offset_top = 967.0
+offset_right = 177.0
+offset_bottom = 1022.0
+texture = ExtResource("28_ns33h")
+
+[node name="DeckVisual" type="TextureButton" parent="UI_Overlay/Character" unique_id=767901541]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -168.0
+offset_right = 168.0
+grow_vertical = 0
+texture_normal = ExtResource("29_ch3b0")
+
+[node name="DeckBackDrop" type="ColorRect" parent="UI_Overlay" unique_id=1654059965]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.3647059)
+
+[node name="Buy" type="CanvasLayer" parent="UI_Overlay" unique_id=2056565739]
+visible = false
+
+[node name="BuyPanel" type="PanelContainer" parent="UI_Overlay/Buy" unique_id=986527415]
+custom_minimum_size = Vector2(1600, 900)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -887.0
+offset_top = -473.0
+offset_right = 887.0
+offset_bottom = 473.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_g4v7s")
+
+[node name="TextureRect" type="TextureRect" parent="UI_Overlay/Buy/BuyPanel" unique_id=988628058]
+layout_mode = 2
+texture = ExtResource("30_6nb8b")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI_Overlay/Buy/BuyPanel" unique_id=1212077153]
+layout_mode = 2
+
+[node name="MainVBox" type="VBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer" unique_id=1060217489]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 25
+
+[node name="HeaderHBox" type="HBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox" unique_id=2108196850]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox/HeaderHBox" unique_id=1778806617]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "KATALOG SHOP"
+horizontal_alignment = 1
+
+[node name="CardsSection" type="VBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox" unique_id=1205959056]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox/CardsSection" unique_id=780293743]
+layout_mode = 2
+text = "PLAYING CARDS"
+horizontal_alignment = 1
+
+[node name="CardGrid" type="HBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox/CardsSection" unique_id=1958483911]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CoatsSection" type="VBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox" unique_id=718994491]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox/CoatsSection" unique_id=1765463672]
+layout_mode = 2
+text = "EFFECT COATS"
+horizontal_alignment = 1
+
+[node name="CoatGrid" type="HBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox/CoatsSection" unique_id=1955980696]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="BlessingSection" type="VBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox" unique_id=2080129195]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox/BlessingSection" unique_id=78408040]
+layout_mode = 2
+text = "BLESSING PIN"
+horizontal_alignment = 1
+
+[node name="BlessingGrid" type="HBoxContainer" parent="UI_Overlay/Buy/BuyPanel/ScrollContainer/MainVBox/BlessingSection" unique_id=213843540]
+layout_mode = 2
+alignment = 1
+
+[node name="DeckSelectorOverlay" type="PanelContainer" parent="UI_Overlay/Buy/BuyPanel" unique_id=672880296]
+visible = false
+layout_mode = 2
+
+[node name="OverlayVBox" type="VBoxContainer" parent="UI_Overlay/Buy/BuyPanel/DeckSelectorOverlay" unique_id=888765155]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="UI_Overlay/Buy/BuyPanel/DeckSelectorOverlay/OverlayVBox" unique_id=1118312495]
+layout_mode = 2
+text = "Pilih 1 Kartu dari Deck untuk Diberi Effect Coat"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI_Overlay/Buy/BuyPanel/DeckSelectorOverlay/OverlayVBox" unique_id=12520783]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+
+[node name="DeckCardGrid" type="GridContainer" parent="UI_Overlay/Buy/BuyPanel/DeckSelectorOverlay/OverlayVBox/ScrollContainer" unique_id=1782057005]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 6
+
+[node name="BtnCancelDeckSelect" type="Button" parent="UI_Overlay/Buy/BuyPanel/DeckSelectorOverlay/OverlayVBox" unique_id=198535316]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Batal"
+
+[node name="BlessingBuy" type="VBoxContainer" parent="UI_Overlay/Buy" unique_id=164575267]
+offset_left = 1453.0
+offset_top = 218.0
+offset_right = 1758.0
+offset_bottom = 828.0
+
+[node name="TextureRect" type="TextureRect" parent="UI_Overlay/Buy/BlessingBuy" unique_id=87931353]
+layout_mode = 2
+texture = ExtResource("31_mughh")
+
+[node name="TextureRect2" type="TextureRect" parent="UI_Overlay/Buy/BlessingBuy" unique_id=448606074]
+layout_mode = 2
+texture = ExtResource("31_mughh")
+
+[node name="CardBuy" type="HBoxContainer" parent="UI_Overlay/Buy" unique_id=646177887]
+offset_left = 127.0
+offset_top = 231.0
+offset_right = 1377.0
+offset_bottom = 846.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 58
+
+[node name="TextureRect" type="TextureRect" parent="UI_Overlay/Buy/CardBuy" unique_id=1319007518]
+layout_mode = 2
+texture = ExtResource("32_5m7s2")
+
+[node name="TextureRect2" type="TextureRect" parent="UI_Overlay/Buy/CardBuy" unique_id=1463999035]
+layout_mode = 2
+texture = ExtResource("32_5m7s2")
+
+[node name="TextureRect3" type="TextureRect" parent="UI_Overlay/Buy/CardBuy" unique_id=1289827290]
+layout_mode = 2
+texture = ExtResource("32_5m7s2")
+
+[node name="GoldTeks" type="Label" parent="UI_Overlay/Buy" unique_id=421418812]
+offset_left = 690.0
+offset_top = 103.0
+offset_right = 783.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "200"
+
+[node name="HealthTeks" type="Label" parent="UI_Overlay/Buy" unique_id=897638438]
+offset_left = 1046.0
+offset_top = 107.0
+offset_right = 1221.0
+offset_bottom = 198.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "80/100"
+
+[node name="Harga1" type="Label" parent="UI_Overlay/Buy" unique_id=1191690940]
+offset_left = 331.0
+offset_top = 761.0
+offset_right = 371.0
+offset_bottom = 828.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 55
+text = "10"
+
+[node name="Harga6" type="Label" parent="UI_Overlay/Buy" unique_id=1468932182]
+offset_left = 445.0
+offset_top = 868.0
+offset_right = 485.0
+offset_bottom = 935.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 55
+text = "5"
+
+[node name="Harga2" type="Label" parent="UI_Overlay/Buy" unique_id=7471487]
+offset_left = 768.0
+offset_top = 761.0
+offset_right = 808.0
+offset_bottom = 828.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 55
+text = "10"
+
+[node name="Harga3" type="Label" parent="UI_Overlay/Buy" unique_id=1214060559]
+offset_left = 1201.0
+offset_top = 761.0
+offset_right = 1241.0
+offset_bottom = 828.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 55
+text = "10"
+
+[node name="Harga4" type="Label" parent="UI_Overlay/Buy" unique_id=1266680610]
+offset_left = 1605.0
+offset_top = 433.0
+offset_right = 1645.0
+offset_bottom = 500.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 55
+text = "10"
+
+[node name="Harga5" type="Label" parent="UI_Overlay/Buy" unique_id=261550381]
+offset_left = 1606.0
+offset_top = 741.0
+offset_right = 1646.0
+offset_bottom = 808.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 55
+text = "10"
+
+[node name="Sell" type="CanvasLayer" parent="UI_Overlay" unique_id=169020985]
+visible = false
+
+[node name="SellPanel" type="PanelContainer" parent="UI_Overlay/Sell" unique_id=1099540122]
+custom_minimum_size = Vector2(1000, 600)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -884.0
+offset_top = -476.0
+offset_right = 884.0
+offset_bottom = 470.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_57qmd")
+
+[node name="TextureRect" type="TextureRect" parent="UI_Overlay/Sell/SellPanel" unique_id=978892873]
+layout_mode = 2
+texture = ExtResource("33_6djfl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI_Overlay/Sell" unique_id=1187455417]
+offset_left = 113.0
+offset_top = 228.0
+offset_right = 491.0
+offset_bottom = 809.0
+theme_override_constants/separation = 59
+
+[node name="TextureRect" type="TextureRect" parent="UI_Overlay/Sell/HBoxContainer" unique_id=1743649667]
+layout_mode = 2
+texture = ExtResource("34_d2aug")
+
+[node name="TextureRect2" type="TextureRect" parent="UI_Overlay/Sell/HBoxContainer" unique_id=69394632]
+layout_mode = 2
+texture = ExtResource("34_d2aug")
+
+[node name="TextureRect3" type="TextureRect" parent="UI_Overlay/Sell/HBoxContainer" unique_id=405592025]
+layout_mode = 2
+texture = ExtResource("34_d2aug")
+
+[node name="TextureRect4" type="TextureRect" parent="UI_Overlay/Sell/HBoxContainer" unique_id=1425791373]
+layout_mode = 2
+texture = ExtResource("34_d2aug")
+
+[node name="GoldTeks" type="Label" parent="UI_Overlay/Sell" unique_id=394757776]
+offset_left = 690.0
+offset_top = 103.0
+offset_right = 783.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "200"
+
+[node name="HJ1" type="Label" parent="UI_Overlay/Sell" unique_id=880635968]
+offset_left = 316.0
+offset_top = 716.0
+offset_right = 357.0
+offset_bottom = 807.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 60
+text = "5"
+
+[node name="HJ2" type="Label" parent="UI_Overlay/Sell" unique_id=1537718589]
+offset_left = 752.0
+offset_top = 712.0
+offset_right = 793.0
+offset_bottom = 803.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 60
+text = "5"
+
+[node name="HJ3" type="Label" parent="UI_Overlay/Sell" unique_id=1156441582]
+offset_left = 1192.0
+offset_top = 713.0
+offset_right = 1233.0
+offset_bottom = 804.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 60
+text = "5"
+
+[node name="HJ4" type="Label" parent="UI_Overlay/Sell" unique_id=1643489018]
+offset_left = 1626.0
+offset_top = 710.0
+offset_right = 1667.0
+offset_bottom = 801.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 60
+text = "5"
+
+[node name="HealthTeks" type="Label" parent="UI_Overlay/Sell" unique_id=509936069]
+offset_left = 1046.0
+offset_top = 107.0
+offset_right = 1221.0
+offset_bottom = 198.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "80/100"
+
+[node name="Heal" type="CanvasLayer" parent="UI_Overlay" unique_id=1298160731]
+visible = false
+
+[node name="HealPanel" type="PanelContainer" parent="UI_Overlay/Heal" unique_id=364886442]
+custom_minimum_size = Vector2(1000, 600)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -884.0
+offset_top = -478.0
+offset_right = 884.0
+offset_bottom = 472.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI_Overlay/Heal/HealPanel" unique_id=20403719]
+layout_mode = 2
+texture = ExtResource("35_afrrm")
+
+[node name="GoldTeks" type="Label" parent="UI_Overlay/Heal" unique_id=1337866082]
+offset_left = 690.0
+offset_top = 103.0
+offset_right = 783.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "200"
+
+[node name="HargaHeal" type="Label" parent="UI_Overlay/Heal" unique_id=447573660]
+offset_left = 954.0
+offset_top = 842.0
+offset_right = 1047.0
+offset_bottom = 933.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "10"
+
+[node name="HargaHeal2" type="Label" parent="UI_Overlay/Heal" unique_id=1278630497]
+offset_left = 863.0
+offset_top = 351.0
+offset_right = 1044.0
+offset_bottom = 442.0
+theme_override_colors/font_color = Color(0.28992122, 1, 0.26402637, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "+25 Hp"
+
+[node name="HealthTeks" type="Label" parent="UI_Overlay/Heal" unique_id=827207065]
+offset_left = 1046.0
+offset_top = 107.0
+offset_right = 1221.0
+offset_bottom = 198.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_ip4db")
+theme_override_font_sizes/font_size = 74
+text = "80/100"
+
+[node name="BtnLeave" type="Button" parent="." unique_id=1437370269]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -1046.0
+offset_right = -30.0
+offset_bottom = -1006.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yf5fn")
+
+[node name="TextureRect" type="TextureRect" parent="BtnLeave" unique_id=1151583082]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 120.0
+offset_bottom = 41.0
+texture = ExtResource("36_if8wb")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="BtnLeave" unique_id=1588622614]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 9.0
+offset_right = 85.0
+offset_bottom = 32.0
+text = "Keluar"

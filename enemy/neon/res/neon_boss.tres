@@ -3,13 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://dprdx160u3qe7" path="res://enemy/neon/enemy_neon.tscn" id="1_8oomj"]
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_e2o2b"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_0gm30"]
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="4_s1mq7"]
+[ext_resource type="Texture2D" uid="uid://cekpf7nchlf52" path="res://assets/Character/eliteboss/Boss.Neon/neon ingame no bg.png" id="4_8oomj"]
 
 [resource]
 script = ExtResource("2_0gm30")
 enemy_name = "Neon Boss"
 max_hp = 170
-texture = ExtResource("4_s1mq7")
+texture = ExtResource("4_8oomj")
 tag = 2
 custom_enemy_scene = ExtResource("1_8oomj")
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

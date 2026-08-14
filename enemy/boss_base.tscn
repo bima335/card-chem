@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://fbrbho6qcf54"]
+
+[ext_resource type="Script" uid="uid://wkmjj7vv3crw" path="res://enemy/boss_base.gd" id="1_yorll"]
+[ext_resource type="Texture2D" uid="uid://43l7p73t0ti" path="res://assets/HUD/iconhealth.png" id="3_kidad"]
+[ext_resource type="Texture2D" uid="uid://c6xh3hd20kobx" path="res://assets/HUD/wadahbossHP.png" id="3_xaj3i"]
+[ext_resource type="Texture2D" uid="uid://bwjnnk13cj58l" path="res://assets/HUD/isiHPBoss.png" id="4_o1425"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4sx6r"]
+size = Vector2(341, 357.5)
+
+[node name="EnemyBase" type="Node2D" unique_id=181012001]
+script = ExtResource("1_yorll")
+
+[node name="SelectionAura" type="Sprite2D" parent="." unique_id=884095824]
+visible = false
+modulate = Color(0.69803923, 0, 0.11764706, 0.5882353)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1550852511]
+
+[node name="ClickArea" type="Area2D" parent="." unique_id=579431467]
+position = Vector2(0, -2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickArea" unique_id=2122125421]
+position = Vector2(0, 41)
+shape = SubResource("RectangleShape2D_4sx6r")
+
+[node name="HealthBarEnemy" type="VBoxContainer" parent="." unique_id=609430867]
+offset_left = -169.0
+offset_top = -226.0
+offset_right = 171.0
+offset_bottom = -186.0
+
+[node name="StatusContainer" type="HBoxContainer" parent="HealthBarEnemy" unique_id=1091294929]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+
+[node name="HP" type="Control" parent="HealthBarEnemy" unique_id=1718908573]
+layout_mode = 2
+
+[node name="Heart" type="TextureRect" parent="HealthBarEnemy/HP" unique_id=1444514037]
+layout_mode = 0
+offset_left = 448.0
+offset_top = -23.0
+offset_right = 483.0
+offset_bottom = 11.0
+texture = ExtResource("3_kidad")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="HealthBarEnemy/HP" unique_id=1100651849]
+layout_mode = 0
+offset_left = 484.0
+offset_top = -19.0
+offset_right = 546.0
+offset_bottom = 4.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "250/250"
+
+[node name="NamaEnemy" type="Label" parent="HealthBarEnemy/HP" unique_id=371620692]
+layout_mode = 0
+offset_left = -194.0
+offset_top = -15.0
+offset_right = -62.0
+offset_bottom = 8.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "Ferrum"
+
+[node name="HPBoss" type="TextureProgressBar" parent="HealthBarEnemy/HP" unique_id=7709914]
+layout_mode = 0
+offset_left = -238.0
+offset_top = 11.0
+offset_right = 582.0
+offset_bottom = 51.0
+value = 100.0
+texture_under = ExtResource("3_xaj3i")
+texture_progress = ExtResource("4_o1425")
