@@ -5,7 +5,7 @@ extends Node
 
 @export_group("UI Elements")
 @export var hand_container: HBoxContainer
-@export var end_turn_button: Button
+@export var end_turn_button: TextureButton
 @export var deck_visual: TextureButton
 @export var discard_visual: TextureButton
 @export var close_deck_button: Button
@@ -45,6 +45,9 @@ extends Node
 @export var panel_title_label: Label
 @export var card_grid: GridContainer
 
+
+var _end_turn_tween: Tween
+
 @export_category("Gold")
 @export var gold_label: Label
 
@@ -56,7 +59,8 @@ func _ready() -> void:
 	
 	if EventBus.has_signal("blessing_list_changed"):
 		EventBus.blessing_list_changed.connect(update_blessings_display)
-		
+	
+	_setup_end_turn_button()
 	_connect_aura_signals()
 	_connect_gold_signals()
 	update_gold_display(GameManager.shop_coins)
@@ -78,36 +82,48 @@ func _on_aura_changed(_aura_data: AuraCardData, _slot_index: int) -> void:
 func _on_aura_changed_slot(_slot_index: int) -> void:
 	update_aura_display()
 
-
 func update_aura_display() -> void:
 	if not aura_container:
 		return
 
-	for child in aura_container.get_children():
-		child.queue_free()
+	var slots = aura_container.get_children()
 
 	for slot_index in range(AuraManager.MAX_AURA_SLOTS):
-		var aura_data: AuraCardData = AuraManager.equipped_auras[slot_index] if slot_index < AuraManager.equipped_auras.size() else null
+		if slot_index >= slots.size():
+			continue
+
+		var current_slot: Control = slots[slot_index]
 		
+		# Bersihkan UI kartu lama di dalam slot tanpa menghapus node slot itu sendiri
+		for child in current_slot.get_children():
+			child.queue_free()
+
+		var aura_data: AuraCardData = AuraManager.equipped_auras[slot_index] if slot_index < AuraManager.equipped_auras.size() else null
+
 		if aura_data != null and aura_ui_scene != null:
-			var aura_ui = aura_ui_scene.instantiate() as AuraCardUI
-			aura_container.add_child(aura_ui)
+			var aura_ui: AuraCardUI = aura_ui_scene.instantiate() as AuraCardUI
+			aura_ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			aura_ui.offset_left = -6.0 
+			aura_ui.offset_right = -8.0
+			aura_ui.offset_top = -0
+			aura_ui.offset_bottom = -7.0
+			aura_ui.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			aura_ui.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			current_slot.add_child(aura_ui)
 			aura_ui.setup(aura_data)
-			aura_ui.custom_minimum_size = Vector2(136, 200)
-		else:
-			_show_aura_placeholder(slot_index)
 
 
 func _show_aura_placeholder(slot_index: int) -> void:
-	var placeholder_panel = PanelContainer.new()
-	placeholder_panel.custom_minimum_size = Vector2(136, 200)
+	var placeholder_panel: PanelContainer = PanelContainer.new()
+	placeholder_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	placeholder_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	
-	var placeholder_label = Label.new()
-	placeholder_label.text = "EMPTY AURA " + str(slot_index + 1)
+	var placeholder_label: Label = Label.new()
+	placeholder_label.text = "SLOT " + str(slot_index + 1)
 	placeholder_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	placeholder_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	placeholder_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	placeholder_label.modulate = Color(1, 1, 1, 0.4)
+	placeholder_label.modulate = Color(1.0, 1.0, 1.0, 0.4)
 	
 	placeholder_panel.add_child(placeholder_label)
 	aura_container.add_child(placeholder_panel)
@@ -239,17 +255,22 @@ func update_blessings_display() -> void:
 	if not blessing_container or not blessing_item_scene:
 		return
 
-	for child in blessing_container.get_children():
-		child.queue_free()
+	var slots: Array[Node] = blessing_container.get_children()
+	var active_blessings: Array[BlessingData] = BlessingManager.active_blessings
 
-	var active_blessings = BlessingManager.active_blessings
-	var count = mini(active_blessings.size(), BlessingManager.MAX_SLOTS)
-
-	for i in range(count):
-		var blessing_data = active_blessings[i]
-		var blessing_ui = blessing_item_scene.instantiate() as BlessingUIItem
-		blessing_container.add_child(blessing_ui)
-		blessing_ui.setup(blessing_data)
+	for i in range(slots.size()):
+		var slot_node: Control = slots[i] as Control
+		if not slot_node:
+			continue
+			
+		for child in slot_node.get_children():
+			child.queue_free()
+		if i < active_blessings.size():
+			var blessing_data: BlessingData = active_blessings[i]
+			var blessing_ui: BlessingUIItem = blessing_item_scene.instantiate() as BlessingUIItem
+			blessing_ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			slot_node.add_child(blessing_ui)
+			blessing_ui.setup(blessing_data)
 
 func _connect_gold_signals() -> void:
 	if EventBus.has_signal("gold_changed"):
@@ -262,3 +283,44 @@ func _on_gold_changed(total_gold: int) -> void:
 func update_gold_display(amount: int) -> void:
 	if gold_label:
 		gold_label.text = str(amount)
+
+func _setup_end_turn_button() -> void:
+	if not end_turn_button:
+		return
+	
+	_generate_click_mask(end_turn_button)
+	
+	end_turn_button.resized.connect(_update_end_turn_pivot)
+	_update_end_turn_pivot()
+	
+	end_turn_button.mouse_entered.connect(_on_end_turn_button_mouse_entered)
+	end_turn_button.mouse_exited.connect(_on_end_turn_button_mouse_exited)
+
+func _generate_click_mask(button: TextureButton) -> void:
+	if not button.texture_normal:
+		return
+	
+	var texture_image: Image = button.texture_normal.get_image()
+	if not texture_image:
+		return
+		
+	var bitmap: BitMap = BitMap.new()
+	bitmap.create_from_image_alpha(texture_image, 0.1)
+	button.texture_click_mask = bitmap
+
+func _update_end_turn_pivot() -> void:
+	end_turn_button.pivot_offset = end_turn_button.size / 2.0
+
+func _on_end_turn_button_mouse_entered() -> void:
+	if _end_turn_tween and _end_turn_tween.is_valid():
+		_end_turn_tween.kill()
+		
+	_end_turn_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	_end_turn_tween.tween_property(end_turn_button, "rotation_degrees", end_turn_button.rotation_degrees - 45.0, 0.25)
+
+func _on_end_turn_button_mouse_exited() -> void:
+	if _end_turn_tween and _end_turn_tween.is_valid():
+		_end_turn_tween.kill()
+		
+	_end_turn_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	_end_turn_tween.tween_property(end_turn_button, "rotation_degrees", 0.0, 0.4)

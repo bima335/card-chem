@@ -23,12 +23,25 @@ var current_target: EnemyBase = null
 var active_effect_choice: CoatData = null
 var is_selecting_effect_target: bool = false
 var accumulated_gold: int = 0
+@export var aura_1: AuraCardData
+@export var aura_2: AuraCardData
+
+@export var blessing_1: BlessingData
+@export var blessing_2: BlessingData
+@export var blessing_3: BlessingData
 
 func _ready() -> void:
 	SoundManager.play_bgm("battle_theme")
 	_connect_signals()
 	#BlessingManager.equip_blessing(default_blessing)
 	#AuraManager.equip_aura(default_aura_1)
+	AuraManager.equip_aura(aura_1, 0)
+	AuraManager.equip_aura(aura_2, 1)
+	
+	BlessingManager.equip_blessing(blessing_1)
+	#BlessingManager.equip_blessing(blessing_2)
+	#BlessingManager.equip_blessing(blessing_3)
+	
 	accumulated_gold = 0
 	GameManager.reset_round()
 	is_first_turn = true

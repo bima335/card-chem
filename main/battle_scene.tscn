@@ -5,11 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
+[ext_resource type="Resource" uid="uid://ci1iahhwxt7sg" path="res://aura/res/neon_illuminate.tres" id="4_yun0f"]
+[ext_resource type="Resource" uid="uid://bkb5r6gv8ufjg" path="res://aura/res/plasma_amplifier.tres" id="5_0ci4p"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
+[ext_resource type="Resource" uid="uid://dwjyvk25i5hbl" path="res://blessing/res/over_accidic.tres" id="5_yme4k"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
+[ext_resource type="Resource" uid="uid://bq5ls8alaxbbo" path="res://blessing/res/toxic.tres" id="7_yme4k"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
+[ext_resource type="Resource" uid="uid://byajmsgsturl4" path="res://blessing/res/resonance.tres" id="8_iow6o"]
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
@@ -39,13 +44,18 @@
 [ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="36_p5m33"]
 [ext_resource type="PackedScene" uid="uid://dyaaa2mkebw73" path="res://ui/battle_log/battle_log_ui.tscn" id="37_d7b84"]
 [ext_resource type="Texture2D" uid="uid://2xyjw222so2" path="res://assets/HUD/tombolendround.png" id="37_lt6r5"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5m33"]
+[ext_resource type="Texture2D" uid="uid://y7tnpvmgxe4f" path="res://assets/HUD/layoutaurabosssatuan.png" id="40_single_slot"]
+[ext_resource type="Texture2D" uid="uid://lkta4xaqr4nb" path="res://assets/HUD/layoutblessingsatuan.png" id="41_blessing_slot"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn")])
+aura_1 = ExtResource("4_yun0f")
+aura_2 = ExtResource("5_0ci4p")
+blessing_1 = ExtResource("5_yme4k")
+blessing_2 = ExtResource("7_yme4k")
+blessing_3 = ExtResource("8_iow6o")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -70,7 +80,7 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid", "gold_label")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid", "gold_label")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
@@ -78,8 +88,9 @@ end_turn_button = NodePath("../../UI/EndTurnButton")
 deck_visual = NodePath("../../UI/StatGroup/DeckVisual")
 discard_visual = NodePath("../../UI/StatGroup/DiscardVisual")
 close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
-blessing_container = NodePath("../../UI/TopRightHUD/BlessingContainer")
+blessing_container = NodePath("../../UI/TopRightHUD/BlessingWrapper/BlessingContainer")
 blessing_item_scene = ExtResource("12_6ojnn")
+aura_container = NodePath("../../UI/TopRightHUD/AuraWrapper/CardSlots")
 aura_ui_scene = ExtResource("14_dairb")
 player_hp_bar = NodePath("../../UI/StatGroup/PlayerHPBar")
 player_hp_label = NodePath("../../UI/StatGroup/Label")
@@ -129,33 +140,24 @@ texture = ExtResource("24_uakwd")
 
 [node name="StatGroup" type="Control" parent="UI" unique_id=947168470]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="UI/StatGroup" unique_id=1441573184]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 179.0
-offset_top = 958.0
-offset_right = 219.0
-offset_bottom = 981.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -300.0
+offset_right = 500.0
+grow_vertical = 0
 
 [node name="PlayerHPBar" type="TextureProgressBar" parent="UI/StatGroup" unique_id=1408518611]
 custom_minimum_size = Vector2(240, 40)
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 97.0
-offset_top = 1002.0
+offset_top = -78.0
 offset_right = 476.0
-offset_bottom = 1042.0
-size_flags_horizontal = 2
-size_flags_vertical = 8
+offset_bottom = -38.0
+grow_vertical = 0
 nine_patch_stretch = true
 stretch_margin_left = 10
 stretch_margin_top = 5
@@ -164,72 +166,103 @@ stretch_margin_bottom = 5
 texture_under = ExtResource("28_wadah")
 texture_progress = ExtResource("29_isi")
 
+[node name="Label" type="Label" parent="UI/StatGroup" unique_id=1441573184]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 179.0
+offset_top = -122.0
+offset_right = 219.0
+offset_bottom = -99.0
+grow_vertical = 0
+
 [node name="StatVisual" type="TextureButton" parent="UI/StatGroup" unique_id=122638433]
-layout_mode = 0
-offset_left = 33.0
-offset_top = 811.0
-offset_right = 89.0
-offset_bottom = 872.0
-size_flags_horizontal = 4
-offset_transform_enabled = true
-offset_transform_position = Vector2(-10, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = -269.0
+offset_right = 79.0
+offset_bottom = -208.0
+grow_vertical = 0
 texture_normal = ExtResource("25_yme4k")
 stretch_mode = 5
 
 [node name="DiscardVisual" type="TextureButton" parent="UI/StatGroup" unique_id=946672430]
 modulate = Color(0.41124472, 0.00016865015, 0.43268502, 1)
-layout_mode = 0
-offset_left = 30.0
-offset_top = 864.0
-offset_right = 97.0
-offset_bottom = 924.0
-size_flags_horizontal = 4
-offset_transform_enabled = true
-offset_transform_position = Vector2(-10, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -216.0
+offset_right = 87.0
+offset_bottom = -156.0
+grow_vertical = 0
 texture_normal = ExtResource("26_4n26w")
 stretch_mode = 5
 
 [node name="DeckVisual" type="TextureButton" parent="UI/StatGroup" unique_id=1314374451]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 1.0
-offset_top = 910.0
+offset_top = -170.0
 offset_right = 169.0
-offset_bottom = 1078.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
+offset_bottom = -2.0
+grow_vertical = 0
 texture_normal = ExtResource("27_wsa3t")
 stretch_mode = 5
 
 [node name="Name" type="TextureRect" parent="UI/StatGroup" unique_id=1792769740]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 128.0
-offset_top = 938.0
+offset_top = -142.0
 offset_right = 257.0
-offset_bottom = 982.0
+offset_bottom = -98.0
+grow_vertical = 0
 texture = ExtResource("34_xu2u0")
 
 [node name="HPIcon" type="TextureRect" parent="UI/StatGroup" unique_id=1248485028]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 142.0
-offset_top = 966.0
+offset_top = -114.0
 offset_right = 189.0
-offset_bottom = 1012.0
+offset_bottom = -68.0
+grow_vertical = 0
 texture = ExtResource("35_d7b84")
 
 [node name="GoldIcon" type="TextureRect" parent="UI/StatGroup" unique_id=1028521227]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 302.0
-offset_top = 960.0
+offset_top = -120.0
 offset_right = 350.0
-offset_bottom = 1015.0
+offset_bottom = -65.0
+grow_vertical = 0
 texture = ExtResource("36_p5m33")
 
 [node name="GoldLabel" type="Label" parent="UI/StatGroup" unique_id=1523654921]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 360.0
-offset_top = 976.0
+offset_top = -104.0
 offset_right = 400.0
-offset_bottom = 999.0
+offset_bottom = -81.0
+grow_vertical = 0
 
 [node name="HandContainer" type="HBoxContainer" parent="UI" unique_id=700329193]
 anchors_preset = 7
@@ -265,7 +298,7 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="EndTurnButton" type="Button" parent="UI" unique_id=1374644199]
+[node name="EndTurnButton" type="TextureButton" parent="UI" unique_id=1656380516]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -275,8 +308,8 @@ offset_left = -355.0
 offset_top = -336.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_p5m33")
-icon = ExtResource("37_lt6r5")
+texture_normal = ExtResource("37_lt6r5")
+stretch_mode = 5
 
 [node name="TokenContainer" type="VBoxContainer" parent="UI" unique_id=1305011282]
 offset_left = 20.0
@@ -367,27 +400,64 @@ theme_override_constants/separation = 6
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -220.0
+offset_left = -440.0
 offset_top = 20.0
 offset_right = -20.0
-offset_bottom = 220.0
+offset_bottom = 240.0
 grow_horizontal = 0
-theme_override_constants/separation = 15
+theme_override_constants/separation = 39
+alignment = 2
 
-[node name="BlessingContainer" type="VBoxContainer" parent="UI/TopRightHUD" unique_id=408278705]
+[node name="BlessingWrapper" type="MarginContainer" parent="UI/TopRightHUD" unique_id=118934521]
 layout_mode = 2
-theme_override_constants/separation = 10
 
-[node name="AuraContainer" type="HBoxContainer" parent="UI/TopRightHUD" unique_id=2066166155]
-custom_minimum_size = Vector2(280, 200)
+[node name="BlessingContainer" type="VBoxContainer" parent="UI/TopRightHUD/BlessingWrapper" unique_id=408278705]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
+alignment = 1
 
-[node name="AuraPlaceholder" type="Label" parent="UI/TopRightHUD/AuraContainer" unique_id=1914423894]
+[node name="BlessingSlot0" type="TextureRect" parent="UI/TopRightHUD/BlessingWrapper/BlessingContainer" unique_id=199001]
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
-text = "Aura Card"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("41_blessing_slot")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BlessingSlot1" type="TextureRect" parent="UI/TopRightHUD/BlessingWrapper/BlessingContainer" unique_id=199002]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("41_blessing_slot")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BlessingSlot2" type="TextureRect" parent="UI/TopRightHUD/BlessingWrapper/BlessingContainer" unique_id=199003]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("41_blessing_slot")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AuraWrapper" type="MarginContainer" parent="UI/TopRightHUD" unique_id=1315462190]
+layout_mode = 2
+
+[node name="CardSlots" type="HBoxContainer" parent="UI/TopRightHUD/AuraWrapper" unique_id=157383065]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="AuraSlot0" type="TextureRect" parent="UI/TopRightHUD/AuraWrapper/CardSlots" unique_id=150111221]
+custom_minimum_size = Vector2(140, 200)
+layout_mode = 2
+texture = ExtResource("40_single_slot")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AuraSlot1" type="TextureRect" parent="UI/TopRightHUD/AuraWrapper/CardSlots" unique_id=150111222]
+custom_minimum_size = Vector2(140, 200)
+layout_mode = 2
+texture = ExtResource("40_single_slot")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="DeckBackDrop" type="ColorRect" parent="UI" unique_id=1123639773]
 visible = false
