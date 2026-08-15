@@ -87,11 +87,11 @@ func _prepare_starting_deck() -> void:
 
 func _build_default_starting_deck() -> void:
 	var deck_composition: Dictionary = {
-		CARD_CARBON_SHIELD: 2,
+		#CARD_CARBON_SHIELD: 2,
 		CARD_NITRIC_OXIDE: 1,
 		CARD_OXYGEN_GAS: 1,
-		CARD_HYDROGEN_PEROXIDE: 4,
-		CARD_NITROGEN_GAS: 2
+		#CARD_HYDROGEN_PEROXIDE: 4,
+		#CARD_NITROGEN_GAS: 2
 	}
 	
 	for card_resource: CardData in deck_composition:

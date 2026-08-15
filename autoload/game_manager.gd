@@ -10,7 +10,7 @@ var history_path: Array[Vector2i] = []
 var player_max_hp: int = 100
 var player_current_hp: int = 100
 var active_event_type: MapNodeData.NodeType
-var shop_coins: int = 321
+var shop_coins: int = 0
 var player_deck: Array[CardData] = []
 
 @export var current_section: SectionData = null
@@ -65,7 +65,7 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first
 	current_floor = 0
 	available_paths.clear()
 	history_path.clear()
-	shop_coins = 321
+	shop_coins = 0
 	player_deck.clear()
 	reset_round()
 

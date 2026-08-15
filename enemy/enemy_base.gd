@@ -82,7 +82,6 @@ func start_turn_process() -> void:
 		var burn_damage = 5
 		take_damage(burn_damage, false)
 		EventBus.burn_damage_dealt.emit(burn_damage)
-		add_status_stacks(StatusAilment.AilmentType.BURN, -1)
 
 
 func execute_move(action: EnemyAction) -> void:
@@ -291,15 +290,19 @@ func decrease_status_durations() -> void:
 	var keys_to_remove = []
 	for ailment_id in active_statuses.keys():
 		var status_info = active_statuses[ailment_id]
-		var res: StatusAilment = status_info["resource"]
+		var res: StatusAilment = status_info.get("resource")
 		
-		# Modular: hanya kurangi jika decrease_on_turn_end bernilai true
 		if res != null and not res.decrease_on_turn_end:
 			continue
 			
-		status_info["duration"] -= 1
-		if status_info["duration"] <= 0:
-			keys_to_remove.append(ailment_id)
+		if res != null and res.use_stacks_for_display:
+			status_info["stacks"] -= 1
+			if status_info["stacks"] <= 0:
+				keys_to_remove.append(ailment_id)
+		else:
+			status_info["duration"] -= 1
+			if status_info["duration"] <= 0:
+				keys_to_remove.append(ailment_id)
 			
 	for ailment_id in keys_to_remove:
 		remove_status(ailment_id)
