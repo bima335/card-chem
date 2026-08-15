@@ -6,7 +6,7 @@ var current_floor: int = 0
 var is_map_generated: bool = false
 var available_paths: Array[Vector2i] = []
 var history_path: Array[Vector2i] = []
-
+var is_gold_boss: bool = false
 var player_max_hp: int = 100
 var player_current_hp: int = 100
 var active_event_type: MapNodeData.NodeType

@@ -34,7 +34,6 @@ script = ExtResource("1_xrkvi")
 map_node_scene = ExtResource("2_q2h2y")
 section_wallpapers = Array[Texture2D]([ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("6_1ym7n")])
 sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_71c6l"), ExtResource("7_71c6l"), ExtResource("8_fomgr")])
-is_ujicoba = true
 test_battle_type = 1
 test_enemy = ExtResource("9_71c6l")
 

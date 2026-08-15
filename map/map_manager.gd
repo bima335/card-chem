@@ -38,6 +38,7 @@ var total_sections: int = 0
 var current_view_section: int = 0
 
 func _ready() -> void:
+	GameManager.is_gold_boss = false
 	total_sections = total_floors / 5
 	
 	_apply_debug_starting_section()

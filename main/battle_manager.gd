@@ -360,6 +360,9 @@ func _on_card_selected_for_effect(target_card: CardData) -> void:
 		active_effect_choice = null
 
 func _play_battle_music() -> void:
+	if GameManager.is_gold_boss == true:
+				SoundManager.play_bgm("aurum")
+				return
 	if GameManager.active_event_type != MapNodeData.NodeType.BOSS:
 		SoundManager.play_bgm("battle")
 		return
@@ -388,19 +391,5 @@ func _play_battle_music() -> void:
 
 		_:
 			push_warning("Musik boss belum ditemukan untuk section: " + section_name)
+			
 			SoundManager.play_bgm("battle")
-
-func get_discard_pile() -> Array[CardData]:
-	if deck:
-		return deck.discard_pile
-	return []
-
-
-func get_deck_cards() -> Array[CardData]:
-	if deck:
-		return deck.cards
-	return []
-
-
-func get_accumulated_gold() -> int:
-	return accumulated_gold
