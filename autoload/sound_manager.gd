@@ -21,6 +21,7 @@ var bgm_database: Dictionary = {
 	"main_menu": preload("res://assets/audio/bgm/main_menu.mp3"),
 	"aurum": preload("res://assets/audio/bgm/Aurum_Gold_Env.mp3"),
 	"event": preload("res://assets/audio/bgm/event_node.mp3"),
+	"intro_theme": preload("res://assets/audio/bgm/story.mp3"),
 }
 
 func _ready() -> void:

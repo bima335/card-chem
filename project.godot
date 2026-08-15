@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="card-chem"
-run/main_scene="uid://dceffs3gwfhae"
+run/main_scene="uid://ccj6y3dt7i4mo"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
