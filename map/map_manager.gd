@@ -31,6 +31,7 @@ var total_sections: int = 0
 var current_view_section: int = 0
 
 func _ready() -> void:
+
 	total_sections = total_floors / 5
 	
 	_apply_debug_starting_section()
@@ -154,16 +155,13 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 	GameManager.current_floor += 1
 	GameManager.active_event_type = node_data.type
 	
-	# Update section berdasarkan lantai yang baru dimasuki
+	# CRITICAL FIX: Set section BEFORE scene change
 	GameManager.update_current_section_for_floor(GameManager.current_floor - 1)
 	
 	print("=== NODE SELECTED ===")
 	print("Node Type: ", node_data.type)
 	print("Current Floor: ", GameManager.current_floor)
 	print("Current Section: ", GameManager.current_section.section_name if GameManager.current_section else "NULL")
-
-	if Engine.has_singleton("RecapManager") or get_node_or_null("/root/RecapManager"):
-		RecapManager.record_node_visited(node_data.grid_position, GameManager.current_floor)
 
 	if is_ujicoba and test_enemy != null:
 		print("[TEST MODE] Memulai pertempuran uji coba melawan: ", test_enemy.enemy_name)
@@ -174,7 +172,7 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 	match node_data.type:
 		MapNodeData.NodeType.SHOP:
 			get_tree().change_scene_to_file("res://shop/shop_scene.tscn")
-
+			
 		MapNodeData.NodeType.REST:
 			get_tree().change_scene_to_file("res://event/event_scene.tscn")
 

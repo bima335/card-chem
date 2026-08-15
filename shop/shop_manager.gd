@@ -68,6 +68,10 @@ var pending_sell_price: int = 0
 
 
 func _ready() -> void:
+	# Ensure current_section is set before loading shop
+	if GameManager.current_section == null:
+		GameManager.update_current_section_for_floor(GameManager.current_floor)
+	
 	_load_all_shop_resources()
 	SoundManager.play_bgm("shop")
 	_update_coin_display()
@@ -410,6 +414,12 @@ func _generate_cards_stock() -> void:
 		return
 
 	var current_section: SectionData = GameManager.current_section
+	
+	# CRITICAL: Handle null section with fallback values
+	if current_section == null:
+		push_error("[ShopManager] current_section is null! Using fallback values.")
+		current_section = _create_fallback_section()
+	
 	var chosen_cards: Array[CardData] = []
 	
 	var buff_utility_pool: Array[CardData] = available_cards.filter(
@@ -420,18 +430,33 @@ func _generate_cards_stock() -> void:
 	)
 	
 	if not buff_utility_pool.is_empty():
-		chosen_cards.append(_pick_item_by_rarity(buff_utility_pool, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance))
+		chosen_cards.append(_pick_item_by_rarity(
+			buff_utility_pool, 
+			current_section.cards_common_chance, 
+			current_section.cards_uncommon_chance, 
+			current_section.cards_rare_chance
+		))
 		
 	for i in range(2):
 		var valid_atk_pool = atk_trigger_pool.filter(func(c): return not chosen_cards.has(c))
 		if not valid_atk_pool.is_empty():
-			chosen_cards.append(_pick_item_by_rarity(valid_atk_pool, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance))
+			chosen_cards.append(_pick_item_by_rarity(
+				valid_atk_pool, 
+				current_section.cards_common_chance, 
+				current_section.cards_uncommon_chance, 
+				current_section.cards_rare_chance
+			))
 			
 	while chosen_cards.size() < 5:
 		var remaining_pool = available_cards.filter(func(c): return not chosen_cards.has(c))
 		if remaining_pool.is_empty():
 			break
-		chosen_cards.append(_pick_item_by_rarity(remaining_pool, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance))
+		chosen_cards.append(_pick_item_by_rarity(
+			remaining_pool, 
+			current_section.cards_common_chance, 
+			current_section.cards_uncommon_chance, 
+			current_section.cards_rare_chance
+		))
 
 	for card in chosen_cards:
 		_build_card_slot_ui(card)
@@ -465,6 +490,10 @@ func _generate_coats_stock() -> void:
 		return
 
 	var current_section: SectionData = GameManager.current_section
+	if current_section == null:
+		push_error("[ShopManager] current_section is null! Using fallback for coats.")
+		current_section = _create_fallback_section()
+	
 	var chosen_coats: Array[CoatData] = []
 	var pool: Array[CoatData] = available_coats.duplicate()
 	
@@ -473,7 +502,12 @@ func _generate_coats_stock() -> void:
 		var valid_pool = pool.filter(func(c): return not chosen_coats.has(c))
 		if valid_pool.is_empty():
 			break
-		var picked = _pick_item_by_rarity(valid_pool, current_section.coat_common_chance, current_section.coat_uncommon_chance, current_section.coat_rare_chance)
+		var picked = _pick_item_by_rarity(
+			valid_pool, 
+			current_section.coat_common_chance, 
+			current_section.coat_uncommon_chance, 
+			current_section.coat_rare_chance
+		)
 		chosen_coats.append(picked)
 		_build_coat_slot_ui(picked)
 
@@ -513,6 +547,11 @@ func _generate_blessings_stock() -> void:
 		blessing_grid.add_child(dummy_lbl)
 		return
 
+	var current_section: SectionData = GameManager.current_section
+	if current_section == null:
+		push_error("[ShopManager] current_section is null! Using fallback for blessings.")
+		current_section = _create_fallback_section()
+
 	var valid_blessings = available_blessings.filter(
 		func(b): return not _player_has_blessing(b)
 	)
@@ -523,8 +562,12 @@ func _generate_blessings_stock() -> void:
 		blessing_grid.add_child(empty_lbl)
 		return
 
-	var current_section: SectionData = GameManager.current_section
-	var chosen_blessing = _pick_item_by_rarity(valid_blessings, current_section.blessing_common_chance, current_section.blessing_uncommon_chance, current_section.blessing_rare_chance)
+	var chosen_blessing = _pick_item_by_rarity(
+		valid_blessings, 
+		current_section.blessing_common_chance, 
+		current_section.blessing_uncommon_chance, 
+		current_section.blessing_rare_chance
+	)
 	_build_blessing_slot_ui(chosen_blessing)
 
 
@@ -751,3 +794,16 @@ func _on_heal_confirmed() -> void:
 
 func _on_btn_leave_pressed() -> void:
 	get_tree().change_scene_to_file("res://map/map_scene.tscn")
+
+func _create_fallback_section() -> SectionData:
+	var section = SectionData.new()
+	section.cards_common_chance = 70.0
+	section.cards_uncommon_chance = 25.0
+	section.cards_rare_chance = 5.0
+	section.coat_common_chance = 70.0
+	section.coat_uncommon_chance = 25.0
+	section.coat_rare_chance = 5.0
+	section.blessing_common_chance = 60.0
+	section.blessing_uncommon_chance = 30.0
+	section.blessing_rare_chance = 10.0
+	return section
