@@ -4,7 +4,7 @@ extends Node2D
 @export var stats: EnemyStat 
 @export var max_display_size: Vector2 = Vector2(150.0, 150.0)
 @export var exposed_resource_data: StatusAilment 
-
+@export var default_ui_offset: float = 16.0
 var active_statuses: Dictionary = {}
 
 var current_hp: int
@@ -12,7 +12,9 @@ var current_shield: int = 0
 var is_stunned: bool = false
 var is_targetable: bool = true
 
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var selection_aura: Sprite2D = $SelectionAura
 @onready var click_area: Area2D = $ClickArea
 @onready var collision_shape: CollisionShape2D = $ClickArea/CollisionShape2D
@@ -23,21 +25,13 @@ var is_targetable: bool = true
 var is_selected: bool = false
 var float_tween: Tween
 var base_sprite_y: float
-
+var _sprite_material: ShaderMaterial
 
 func _ready() -> void:
-	if stats:
-		current_hp = stats.max_hp
-		hp_bar.max_value = stats.max_hp
-		hp_bar.value = current_hp
-		_update_hp_text()
-		
-		if sprite and stats.texture:
-			sprite.texture = stats.texture
-			_adjust_sprite_scale()
-			selection_aura.texture = stats.texture
-			selection_aura.scale = sprite.scale * 1.15
-			
+	_init_material()
+	_init_stats()
+	_init_animations()
+	
 	click_area.input_event.connect(_on_click_area_input_event)
 	click_area.mouse_entered.connect(_on_mouse_entered)
 	click_area.mouse_exited.connect(_on_mouse_exited)
@@ -46,11 +40,118 @@ func _ready() -> void:
 	EventBus.enemy_selected.connect(_on_any_enemy_selected)
 	
 	_setup_enemy()
+	play_anim(&"idle")
 
+func _init_stats() -> void:
+	if stats == null:
+		return
+		
+	current_hp = stats.max_hp
+	hp_bar.max_value = stats.max_hp
+	hp_bar.value = current_hp
+	_update_hp_text()
+	
+	if stats.texture:
+		if sprite:
+			sprite.texture = stats.texture
+		if selection_aura:
+			selection_aura.texture = stats.texture
+
+	_apply_dimensions_and_reposition_ui()
+
+func _init_material() -> void:
+	if animated_sprite.material is ShaderMaterial:
+		_sprite_material = animated_sprite.material.duplicate() as ShaderMaterial
+		animated_sprite.material = _sprite_material
+		_set_shader_selected(false)
+
+func _apply_dimensions_and_reposition_ui() -> void:
+	var final_size: Vector2 = _get_active_visual_size()
+	
+	if stats:
+		if stats.override_display_size != Vector2.ZERO:
+			var raw_scale = Vector2(
+				stats.override_display_size.x / maxf(final_size.x, 1.0),
+				stats.override_display_size.y / maxf(final_size.y, 1.0)
+			)
+			_apply_scale_to_visuals(raw_scale)
+			final_size = stats.override_display_size
+		else:
+			_apply_scale_to_visuals(stats.custom_scale)
+			final_size = final_size * stats.custom_scale
+	else:
+		_apply_scale_to_visuals(Vector2.ONE)
+
+	if collision_shape:
+		if collision_shape.shape is RectangleShape2D:
+			(collision_shape.shape as RectangleShape2D).size = final_size
+		else:
+			var rect_shape := RectangleShape2D.new()
+			rect_shape.size = final_size
+			collision_shape.shape = rect_shape
+		
+	if selection_aura and sprite:
+		selection_aura.scale = sprite.scale * 1.15
+
+	var top_boundary_y: float = -(final_size.y * 0.5)
+	var spacing: float = stats.ui_vertical_offset if stats else default_ui_offset
+	
+	if hp_bar:
+		var hp_height: float = hp_bar.size.y
+		hp_bar.position.x = -(hp_bar.size.x * 0.5)
+		hp_bar.position.y = top_boundary_y - spacing - hp_height
+		
+		if status_container:
+			var status_height: float = status_container.size.y
+			status_container.position.x = -(status_container.size.x * 0.5)
+			status_container.position.y = hp_bar.position.y - status_height - 6.0
+
+func _get_active_visual_size() -> Vector2:
+	if animated_sprite and animated_sprite.visible and animated_sprite.sprite_frames:
+		var current_anim = animated_sprite.animation
+		if animated_sprite.sprite_frames.has_animation(current_anim):
+			var tex = animated_sprite.sprite_frames.get_frame_texture(current_anim, animated_sprite.frame)
+			if tex:
+				return tex.get_size()
+				
+	if sprite and sprite.texture:
+		return sprite.texture.get_size()
+		
+	return max_display_size
+
+func _apply_scale_to_visuals(target_scale: Vector2) -> void:
+	if animated_sprite:
+		animated_sprite.scale = target_scale
+	if sprite:
+		sprite.scale = target_scale
+
+func _set_shader_selected(selected: bool) -> void:
+	if _sprite_material:
+		_sprite_material.set_shader_parameter("is_selected", selected)
+
+func _init_animations() -> void:
+	if anim_player == null or stats == null or stats.animation_library == null:
+		return
+		
+	if anim_player.has_animation_library(&""):
+		anim_player.remove_animation_library(&"")
+		
+	anim_player.add_animation_library(&"", stats.animation_library)
+
+
+func play_anim(anim_name: StringName, custom_blend: float = -1.0, custom_speed: float = 1.0, from_end: bool = false) -> bool:
+	if anim_player and anim_player.has_animation(anim_name):
+		anim_player.play(anim_name, custom_blend, custom_speed, from_end)
+		return true
+	return false
+
+
+func play_anim_and_wait(anim_name: StringName) -> void:
+	if play_anim(anim_name):
+		await anim_player.animation_finished
 
 func _setup_enemy() -> void:
 	pass
-
 
 func _update_hp_text() -> void:
 	if hp_label:
@@ -58,7 +159,8 @@ func _update_hp_text() -> void:
 
 
 func _adjust_sprite_scale() -> void:
-	if sprite.texture == null: return
+	if sprite.texture == null:
+		return
 	var original_size: Vector2 = sprite.texture.get_size()
 	var scale_factor: float = min(max_display_size.x / original_size.x, max_display_size.y / original_size.y)
 	sprite.scale = Vector2(scale_factor, scale_factor)
@@ -93,24 +195,45 @@ func execute_move(action: EnemyAction) -> void:
 	if action != null:
 		match action.type:
 			EnemyAction.ActionType.ATTACK:
-				var toxic_stacks = get_status_stacks(StatusAilment.AilmentType.TOXIC)
-				var final_atk = max(0, action.amount - toxic_stacks)
-				EventBus.player_damage_requested.emit(final_atk, self)
+				await _perform_attack_sequence(action)
 			EnemyAction.ActionType.SHIELD:
+				await play_anim_and_wait(&"skill")
 				current_shield += 10
 			EnemyAction.ActionType.HEAL:
+				await play_anim_and_wait(&"skill")
 				current_hp = clampi(current_hp + 15, 0, stats.max_hp)
 
+	play_anim(&"idle")
 	end_turn_process()
 
+func _perform_attack_sequence(action: EnemyAction) -> void:
+	var has_walk_anim: bool = anim_player != null and anim_player.has_animation(&"walk")
+	var original_position: Vector2 = position
+	var step_distance: float = 30.0
+	var step_duration: float = 0.25
+
+	if has_walk_anim:
+		play_anim(&"walk")
+		var advance_tween: Tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		advance_tween.tween_property(self, "position:y", original_position.y + step_distance, step_duration)
+		await advance_tween.finished
+
+	await play_anim_and_wait(&"attack")
+	
+	var toxic_stacks: int = get_status_stacks(StatusAilment.AilmentType.TOXIC)
+	var final_atk: int = max(0, action.amount - toxic_stacks)
+	EventBus.player_damage_requested.emit(final_atk, self)
+
+	if has_walk_anim:
+		var return_tween: Tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+		return_tween.tween_property(self, "position:y", original_position.y, step_duration)
+		await return_tween.finished
 
 func end_turn_process() -> void:
 	decrease_status_durations()
 
-
 func _on_turn_started() -> void:
 	pass
-
 
 func set_targetable(enable: bool) -> void:
 	if is_targetable == enable:
@@ -329,7 +452,6 @@ func _update_status_ui() -> void:
 		
 		var label = Label.new()
 		
-		# Modular display text
 		if resource_data and resource_data.use_stacks_for_display:
 			label.text = str(current_stacks)
 		else:
@@ -345,7 +467,6 @@ func _update_status_ui() -> void:
 		status_container.add_child(icon_rect)
 
 
-# Backward compatibility methods
 func add_exposed_stack(amount: int = 1) -> void:
 	if not has_status(StatusAilment.AilmentType.EXPOSED):
 		apply_status(exposed_resource_data, 999, amount)
@@ -399,27 +520,34 @@ func _on_any_enemy_selected(selected_enemy: EnemyBase) -> void:
 	else:
 		_become_deselected()
 
-
 func _become_selected() -> void:
-	if is_selected: return
+	if is_selected: 
+		return
 	is_selected = true
-	selection_aura.show()
+	_set_shader_selected(true)
+	
 	create_tween().tween_property(self, "scale", Vector2(1.15, 1.15), 0.3).set_trans(Tween.TRANS_BACK)
 	
-	if float_tween and float_tween.is_valid(): float_tween.kill()
+	if float_tween and float_tween.is_valid(): 
+		float_tween.kill()
 	float_tween = create_tween().set_loops()
-	float_tween.tween_property(sprite, "position:y", base_sprite_y - 15.0, 1.0).set_trans(Tween.TRANS_SINE)
-	float_tween.tween_property(sprite, "position:y", base_sprite_y, 1.0).set_trans(Tween.TRANS_SINE)
+	float_tween.tween_property(animated_sprite, "position:y", base_sprite_y - 15.0, 1.0).set_trans(Tween.TRANS_SINE)
+	float_tween.tween_property(animated_sprite, "position:y", base_sprite_y, 1.0).set_trans(Tween.TRANS_SINE)
 
 
 func _become_deselected() -> void:
-	if not is_selected: return
+	if not is_selected: 
+		return
 	is_selected = false
-	selection_aura.hide()
+	_set_shader_selected(false)
+	
 	create_tween().tween_property(self, "scale", Vector2.ONE, 0.2)
-	if float_tween and float_tween.is_valid(): float_tween.kill()
-	create_tween().tween_property(sprite, "position:y", base_sprite_y, 0.2)
+	if float_tween and float_tween.is_valid(): 
+		float_tween.kill()
+	create_tween().tween_property(animated_sprite, "position:y", base_sprite_y, 0.2)
 
 
 func die() -> void:
+	if play_anim(&"death"):
+		await anim_player.animation_finished
 	queue_free()

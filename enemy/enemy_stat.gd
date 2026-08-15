@@ -11,3 +11,9 @@ enum EnemyTag { SMALL, BIG, BOSS, MINION}
 @export var tag: EnemyTag = EnemyTag.SMALL
 @export var gold_out: int = 0
 @export var custom_enemy_scene: PackedScene = null
+@export var animation_library: AnimationLibrary = null
+
+@export_group("Visual Dimensions")
+@export var custom_scale: Vector2 = Vector2.ONE
+@export var override_display_size: Vector2 = Vector2.ZERO
+@export var ui_vertical_offset: float = 16.0

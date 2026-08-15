@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_456vu"]
 [ext_resource type="PackedScene" uid="uid://jtxcjua5i0y8" path="res://enemy/ferrum/enemy_ferrum.tscn" id="1_skp6l"]
+[ext_resource type="AnimationLibrary" uid="uid://if86abuhnri1" path="res://enemy/ferrum/animation/ferrum_boss_anim.res" id="1_tx7h5"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_8ibea"]
 [ext_resource type="Texture2D" uid="uid://c8kgj5ds23akh" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_00.png" id="4_skp6l"]
 
@@ -12,4 +13,5 @@ max_hp = 180
 texture = ExtResource("4_skp6l")
 tag = 2
 custom_enemy_scene = ExtResource("1_skp6l")
+animation_library = ExtResource("1_tx7h5")
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

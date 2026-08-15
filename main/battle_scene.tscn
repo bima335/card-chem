@@ -89,7 +89,7 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid", "gold_label")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "card_grid", "gold_label")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
@@ -117,7 +117,6 @@ token_n_tex = ExtResource("34_token_n")
 token_spacing = 5
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
-panel_title_label = NodePath("")
 card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
 hand_card_spacing = 145.0
 hand_max_hand_width = 850.0
@@ -125,14 +124,13 @@ hand_fan_angle_degrees = 12.0
 hand_arc_height = 45.0
 gold_label = NodePath("../../UI/StatGroup/GoldLabel")
 
-[node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
+[node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_card_grid", "skip_button")]
 script = ExtResource("10_0hkaa")
 card_ui_scene = ExtResource("2_csnlq")
 aura_card_ui_scene = ExtResource("14_dairb")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn"), ExtResource("16_dairb"), ExtResource("5_j5qo7")])
 available_coats = Array[ExtResource("27_j1o3r")]([ExtResource("28_7djar"), ExtResource("29_olllg"), ExtResource("30_a71yv"), ExtResource("31_7i7p3"), ExtResource("32_e61ho"), ExtResource("33_gfdxq")])
 reward_backdrop = NodePath("../../UI/RewardBackdrop")
-reward_title = NodePath("")
 reward_card_grid = NodePath("../../UI/RewardBackdrop/VBoxContainer/RewardCardGrid")
 skip_button = NodePath("../../UI/RewardBackdrop/VBoxContainer/SkipButton")
 

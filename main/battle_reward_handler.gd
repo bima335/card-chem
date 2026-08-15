@@ -48,7 +48,7 @@ func show_reward_screen() -> void:
 
 
 func _setup_normal_reward() -> void:
-	reward_title.text = "VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPilih 1 Kartu Baru:"
+	#reward_title.text = "VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPilih 1 Kartu Baru:"
 	skip_button.show() 
 	skip_button.text = "Lewati Kartu & Kembali ke Peta"
 	
@@ -123,6 +123,10 @@ func _get_rarity_name(rarity_idx: int) -> String:
 
 
 func _setup_boss_reward() -> void:
+	if GameManager.is_gold_boss:
+		_setup_gold_boss_reward()
+		return
+
 	reward_title.text = "BOSS DEFEATED!\n\nPILIH 1 AURA CARD:"
 	skip_button.hide()
 	
@@ -150,6 +154,12 @@ func _setup_boss_reward() -> void:
 		reward_card_grid.add_child(aura_ui)
 		aura_ui.setup(aura_data)
 		aura_ui.aura_selected.connect(_on_aura_reward_chosen)
+
+
+func _setup_gold_boss_reward() -> void:
+	reward_title.text = "GOLD BOSS DEFEATED!\nKamu mendapatkan limpahan koin!\n(Total Koin: %d)" % GameManager.shop_coins
+	skip_button.show()
+	skip_button.text = "Ambil Koin & Lanjut ke Peta"
 
 
 func _pick_weighted_rewards(source_pool: Array, count: int) -> Array:

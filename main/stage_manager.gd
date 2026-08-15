@@ -5,15 +5,17 @@ signal wave_cleared
 signal round_won
 signal enemy_turn_ended
 
+@export_group("Spawn Configuration")
+@export var enemy_base_y: float = 300.0
 @export var enemy_spacing_x: float = 160.0
 @export var curve_steepness: float = 30.0
 @export var player_bottom_margin: float = 180.0
 
+@export_group("Scene References")
 @export var enemy_scene: PackedScene
 
 var player_position: Vector2
 var enemy_position: Array[Vector2] = []
-
 var wave_queue: Array[Array] = []
 
 func _ready() -> void:
@@ -24,17 +26,17 @@ func _ready() -> void:
 	start_next_wave()
 
 func _calculate_stage_positions() -> void:
+	enemy_position.clear()
+	
 	var viewport_size: Vector2 = get_viewport_rect().size
 	var center_x: float = viewport_size.x / 2.0
 	player_position = Vector2(center_x, viewport_size.y - player_bottom_margin)
 	
-	var base_enemy_y: float = 150.0
-	
-	for i in range(5):
-		var x_offset: int = i - 2
-		var pos_x: float = center_x + (x_offset * enemy_spacing_x)
-		var pos_y: float = base_enemy_y + (curve_steepness * pow(x_offset, 2))
-		enemy_position.append(Vector2(pos_x, pos_y))
+	for slot_index in range(5):
+		var slot_offset: int = slot_index - 2
+		var spawn_x: float = center_x + (slot_offset * enemy_spacing_x)
+		var spawn_y: float = enemy_base_y + (curve_steepness * pow(slot_offset, 2))
+		enemy_position.append(Vector2(spawn_x, spawn_y))
 
 func _on_enemy_summon_requested(minion_stat: EnemyStat, amount: int	) -> void:
 	if minion_stat == null or amount <= 0:

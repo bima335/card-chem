@@ -2,8 +2,1486 @@
 
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_7j3ic"]
 [ext_resource type="Script" uid="uid://dek3p2uy70qlw" path="res://enemy/ferrum/enemy_ferrum.gd" id="2_s12ld"]
+[ext_resource type="Texture2D" uid="uid://k5r5tn2u633y" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_00.png" id="3_mx2gj"]
+[ext_resource type="Texture2D" uid="uid://cbhrpjcieyopp" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_01.png" id="4_koecy"]
+[ext_resource type="Texture2D" uid="uid://0o4jwedlydw" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_02.png" id="5_usnv6"]
+[ext_resource type="Texture2D" uid="uid://y63rc28ml84o" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_03.png" id="6_td12d"]
+[ext_resource type="Texture2D" uid="uid://bqlwm6fitfyht" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_04.png" id="7_uee0a"]
+[ext_resource type="Texture2D" uid="uid://bp2hmy2gu01o2" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_05.png" id="8_x3xjn"]
+[ext_resource type="Texture2D" uid="uid://cxg51o3cqhfyk" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_06.png" id="9_02l2v"]
+[ext_resource type="Texture2D" uid="uid://6eceo0tdcgth" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_07.png" id="10_abb64"]
+[ext_resource type="Texture2D" uid="uid://ccil6ktrjjiwp" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_08.png" id="11_eqyoj"]
+[ext_resource type="Texture2D" uid="uid://c6ylj1x4tsqeo" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_09.png" id="12_r5hqm"]
+[ext_resource type="Texture2D" uid="uid://da0ocgxgfu634" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_10.png" id="13_x3j50"]
+[ext_resource type="Texture2D" uid="uid://batqgbcg7474m" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_11.png" id="14_46gm7"]
+[ext_resource type="Texture2D" uid="uid://5uodogf2qmaw" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_12.png" id="15_x44th"]
+[ext_resource type="Texture2D" uid="uid://1pi1u56c2nqm" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_13.png" id="16_vejik"]
+[ext_resource type="Texture2D" uid="uid://ckfovjqfqrxvk" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_14.png" id="17_6w06x"]
+[ext_resource type="Texture2D" uid="uid://nk4kadxfyb2f" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_15.png" id="18_5v02i"]
+[ext_resource type="Texture2D" uid="uid://cwcqt2r3c4sxy" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_16.png" id="19_y7x0f"]
+[ext_resource type="Texture2D" uid="uid://bff81llbw3frl" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_17.png" id="20_0jxtc"]
+[ext_resource type="Texture2D" uid="uid://dr70niye4ixjr" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_18.png" id="21_pjslf"]
+[ext_resource type="Texture2D" uid="uid://bkclamosyq2b3" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-slash_19.png" id="22_el4qy"]
+[ext_resource type="Texture2D" uid="uid://c1cotmmdb2rj2" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_00.png" id="23_kakxd"]
+[ext_resource type="Texture2D" uid="uid://i7t23dyauvl8" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_00.png" id="23_vcsiu"]
+[ext_resource type="Texture2D" uid="uid://c07knlc1bgntc" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_01.png" id="24_4nxmi"]
+[ext_resource type="Texture2D" uid="uid://cbsu21pe1gpvh" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_01.png" id="24_786ba"]
+[ext_resource type="Texture2D" uid="uid://dghk7gcte54f1" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_02.png" id="25_d6cua"]
+[ext_resource type="Texture2D" uid="uid://mhiyho3odarc" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_02.png" id="25_rs1c3"]
+[ext_resource type="Texture2D" uid="uid://bbftwqg3o313" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_03.png" id="26_a435r"]
+[ext_resource type="Texture2D" uid="uid://cte4yfppccjiu" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_03.png" id="26_g0ga2"]
+[ext_resource type="Texture2D" uid="uid://wkwaqyv2ykr2" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_04.png" id="27_1xugl"]
+[ext_resource type="Texture2D" uid="uid://ci13m8vp00awg" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_04.png" id="27_eovbi"]
+[ext_resource type="Texture2D" uid="uid://nwdkr7ebjd6w" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_05.png" id="28_p40vr"]
+[ext_resource type="Texture2D" uid="uid://d4a55t5g1a7vm" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_05.png" id="28_s6vgf"]
+[ext_resource type="Texture2D" uid="uid://lw4p7b6yioam" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_06.png" id="29_62e3m"]
+[ext_resource type="Texture2D" uid="uid://c54dunmjlk6wy" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_06.png" id="29_yo4hf"]
+[ext_resource type="Texture2D" uid="uid://cgqpit62vhhga" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_07.png" id="30_qijm0"]
+[ext_resource type="Texture2D" uid="uid://cm8dnnw7xdj5j" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_07.png" id="30_vhua3"]
+[ext_resource type="Texture2D" uid="uid://c7jp0w5v4ktk" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_08.png" id="31_a36ws"]
+[ext_resource type="Texture2D" uid="uid://3lwf6nf7l0xr" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_08.png" id="31_pgnj1"]
+[ext_resource type="Texture2D" uid="uid://e86wyi8fofne" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_09.png" id="32_dhw0x"]
+[ext_resource type="Texture2D" uid="uid://cyfx85sjxncju" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_09.png" id="32_sqt4b"]
+[ext_resource type="Texture2D" uid="uid://c7dgs5ocfqyh2" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_10.png" id="33_4sny0"]
+[ext_resource type="Texture2D" uid="uid://bfykd5xp0ojv" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_10.png" id="33_o75qk"]
+[ext_resource type="Texture2D" uid="uid://dua8mtld0hy03" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_11.png" id="34_aadwv"]
+[ext_resource type="Texture2D" uid="uid://ueapsuv88jlb" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_11.png" id="34_drs8x"]
+[ext_resource type="Texture2D" uid="uid://tiyned50vlcm" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_12.png" id="35_dmiu5"]
+[ext_resource type="Texture2D" uid="uid://bdpmllmm205oq" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_12.png" id="35_rg4ba"]
+[ext_resource type="Texture2D" uid="uid://cb5ukh4xx6ifr" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_13.png" id="36_4wfd1"]
+[ext_resource type="Texture2D" uid="uid://o0odjr2reqca" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_13.png" id="36_hfmqb"]
+[ext_resource type="Texture2D" uid="uid://caydkfcjbiomy" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_14.png" id="37_1tf6q"]
+[ext_resource type="Texture2D" uid="uid://d0jdn1sgxm3rx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_14.png" id="37_uktwq"]
+[ext_resource type="Texture2D" uid="uid://kjjuv1bxyuk8" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_15.png" id="38_vy33p"]
+[ext_resource type="Texture2D" uid="uid://c0127eahal8bc" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_15.png" id="38_w2vle"]
+[ext_resource type="Texture2D" uid="uid://e3w714ecqgqa" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_16.png" id="39_moe2x"]
+[ext_resource type="Texture2D" uid="uid://ddo88vpw18hu8" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_16.png" id="39_qloue"]
+[ext_resource type="Texture2D" uid="uid://bck7ck6mboddh" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_17.png" id="40_e04yc"]
+[ext_resource type="Texture2D" uid="uid://cdelwv1mvw2wm" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_17.png" id="40_y870s"]
+[ext_resource type="Texture2D" uid="uid://5mnngovsoa8y" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_18.png" id="41_5vi0l"]
+[ext_resource type="Texture2D" uid="uid://bc0jdiphfssqr" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_18.png" id="41_ury67"]
+[ext_resource type="Texture2D" uid="uid://b57m4cffaies3" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-death_19.png" id="42_ijjr2"]
+[ext_resource type="Texture2D" uid="uid://b1nydt3ds8i3r" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_19.png" id="42_vk3bf"]
+[ext_resource type="Texture2D" uid="uid://dtww2g06i7mte" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_00.png" id="43_786ba"]
+[ext_resource type="Texture2D" uid="uid://cy60xrwfnvwhw" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_00.png" id="43_lw3gd"]
+[ext_resource type="Texture2D" uid="uid://c16w6nwy8fh2u" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_20.png" id="43_yf60w"]
+[ext_resource type="Texture2D" uid="uid://7x7a4f5qi1fh" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_01.png" id="44_jlmog"]
+[ext_resource type="Texture2D" uid="uid://cxbnge54edxeo" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_01.png" id="44_rs1c3"]
+[ext_resource type="Texture2D" uid="uid://br6ubs40esyuy" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_21.png" id="44_xbfdx"]
+[ext_resource type="Texture2D" uid="uid://cv7fjjrhwyywn" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_02.png" id="45_a435r"]
+[ext_resource type="Texture2D" uid="uid://1odneopy22t3" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_02.png" id="45_rvrfg"]
+[ext_resource type="Texture2D" uid="uid://csllqqk1lajww" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_22.png" id="45_yhxv7"]
+[ext_resource type="Texture2D" uid="uid://bybo5fgil4fc4" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_03.png" id="46_1xugl"]
+[ext_resource type="Texture2D" uid="uid://dtv7a56oy1ymc" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_03.png" id="46_b47rn"]
+[ext_resource type="Texture2D" uid="uid://jnitv3umjlu3" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_23.png" id="46_en44v"]
+[ext_resource type="Texture2D" uid="uid://c1lmq423brrt4" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_24.png" id="47_bhta8"]
+[ext_resource type="Texture2D" uid="uid://bt5xigmd4l3ia" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_04.png" id="47_p40vr"]
+[ext_resource type="Texture2D" uid="uid://bpudu18l3mmkl" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_04.png" id="47_tio7n"]
+[ext_resource type="Texture2D" uid="uid://ost0oalp1sqg" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_05.png" id="48_62e3m"]
+[ext_resource type="Texture2D" uid="uid://cjdn1xjm2xteb" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_25.png" id="48_fyvpn"]
+[ext_resource type="Texture2D" uid="uid://c4ly87hltkdo3" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_05.png" id="48_tql7s"]
+[ext_resource type="Texture2D" uid="uid://dj4gtevf1lji2" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_06.png" id="49_3y2o0"]
+[ext_resource type="Texture2D" uid="uid://b1xvg7pe5huu" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_26.png" id="49_26tj7"]
+[ext_resource type="Texture2D" uid="uid://bpuhrb12sc0a8" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_06.png" id="49_vhua3"]
+[ext_resource type="Texture2D" uid="uid://b472w01m5bplf" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_27.png" id="50_5h74r"]
+[ext_resource type="Texture2D" uid="uid://c2dn0vomco2eq" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_07.png" id="50_a36ws"]
+[ext_resource type="Texture2D" uid="uid://3iacbbsn2sh3" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_07.png" id="50_dbavi"]
+[ext_resource type="Texture2D" uid="uid://dwtp631dkingc" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_28.png" id="51_5fbth"]
+[ext_resource type="Texture2D" uid="uid://cl3uv38ndixyv" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_08.png" id="51_dhw0x"]
+[ext_resource type="Texture2D" uid="uid://bbprjfpbkspak" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_08.png" id="51_lp5tv"]
+[ext_resource type="Texture2D" uid="uid://dw2xascu31nlf" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_09.png" id="52_4sny0"]
+[ext_resource type="Texture2D" uid="uid://bw3xi6hgkt7nq" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_29.png" id="52_h48cf"]
+[ext_resource type="Texture2D" uid="uid://p7xmgpsgn3pq" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_09.png" id="52_qglcl"]
+[ext_resource type="Texture2D" uid="uid://bgiwsxvdsdsxo" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_10.png" id="53_5qjt6"]
+[ext_resource type="Texture2D" uid="uid://cnify2sygw1nw" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_10.png" id="53_drs8x"]
+[ext_resource type="Texture2D" uid="uid://biy1468lghfg0" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_30.png" id="53_yjmd3"]
+[ext_resource type="Texture2D" uid="uid://engqoe6r7jy8" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_31.png" id="54_p13l0"]
+[ext_resource type="Texture2D" uid="uid://cpvqfa7es2hbq" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_11.png" id="54_rg4ba"]
+[ext_resource type="Texture2D" uid="uid://v4uc7ic0kl8v" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_11.png" id="54_tv06s"]
+[ext_resource type="Texture2D" uid="uid://cud7iuel02pc" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_12.png" id="55_4wfd1"]
+[ext_resource type="Texture2D" uid="uid://dws1iirsiqcbe" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_12.png" id="55_a12g0"]
+[ext_resource type="Texture2D" uid="uid://d2tft2hvd4aw4" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_32.png" id="55_ijjk1"]
+[ext_resource type="Texture2D" uid="uid://bvlvr5pxakcoh" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_13.png" id="56_1tf6q"]
+[ext_resource type="Texture2D" uid="uid://dmlp3nvhblffs" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_33.png" id="56_472y3"]
+[ext_resource type="Texture2D" uid="uid://cuvo88n4u1ufm" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_13.png" id="56_mv8m5"]
+[ext_resource type="Texture2D" uid="uid://cfsgdr4nk3t2o" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_14.png" id="57_c767a"]
+[ext_resource type="Texture2D" uid="uid://ca6d5lweamy1o" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_34.png" id="57_ev4rp"]
+[ext_resource type="Texture2D" uid="uid://d1s6sb11b0uo3" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_14.png" id="57_vy33p"]
+[ext_resource type="Texture2D" uid="uid://2ip5wxm6ycv7" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_15.png" id="58_moe2x"]
+[ext_resource type="Texture2D" uid="uid://cc0pjb5wg0kvk" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_15.png" id="58_qbq6t"]
+[ext_resource type="Texture2D" uid="uid://csd53d0ax6rm1" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_35.png" id="58_u86b6"]
+[ext_resource type="Texture2D" uid="uid://cc1yoxbqulixd" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_16.png" id="59_6ib2e"]
+[ext_resource type="Texture2D" uid="uid://iebhxlqqvw40" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_16.png" id="59_e04yc"]
+[ext_resource type="Texture2D" uid="uid://dfpbxw6ss0ru2" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_36.png" id="59_m6lba"]
+[ext_resource type="Texture2D" uid="uid://chyr4xlc32pg7" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_17.png" id="60_5vi0l"]
+[ext_resource type="Texture2D" uid="uid://bx6y5448jiwwx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_37.png" id="60_73rjn"]
+[ext_resource type="Texture2D" uid="uid://odp77453iox6" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_17.png" id="60_snkqm"]
+[ext_resource type="Texture2D" uid="uid://b3ary7g7yk7ve" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_18.png" id="61_ijjr2"]
+[ext_resource type="Texture2D" uid="uid://bgigqgkovfon3" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_18.png" id="61_oc7yc"]
+[ext_resource type="Texture2D" uid="uid://b53v5eyhwrrgh" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_38.png" id="61_xfda7"]
+[ext_resource type="Texture2D" uid="uid://yhwetkixtks8" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-attack_19.png" id="62_lw3gd"]
+[ext_resource type="Texture2D" uid="uid://c3p82takx5nlu" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-idle_19.png" id="62_pboy6"]
+[ext_resource type="Texture2D" uid="uid://bm6v4iothbobf" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_39.png" id="62_r4msv"]
+[ext_resource type="Texture2D" uid="uid://bwtwm1rn12mr" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_40.png" id="63_4exyg"]
+[ext_resource type="Texture2D" uid="uid://gwp0nuaqrwx7" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_00.png" id="63_8nkmq"]
+[ext_resource type="Texture2D" uid="uid://btsmbkydaof7o" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_00.png" id="63_mchv5"]
+[ext_resource type="Texture2D" uid="uid://5uxv00nagcyb" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_41.png" id="64_6ukvj"]
+[ext_resource type="Texture2D" uid="uid://de54vnfrsdtqw" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_01.png" id="64_am3wy"]
+[ext_resource type="Texture2D" uid="uid://i65cwuuqognq" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_01.png" id="64_annsi"]
+[ext_resource type="Texture2D" uid="uid://c5dud0ycl3kg5" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_02.png" id="65_3i8ti"]
+[ext_resource type="Texture2D" uid="uid://bnubd8xsk8k1g" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_02.png" id="65_dr1sx"]
+[ext_resource type="Texture2D" uid="uid://7m65s73uj1ng" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_42.png" id="65_w0mv0"]
+[ext_resource type="Texture2D" uid="uid://dyk44ad7foa3l" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_03.png" id="66_ahtbk"]
+[ext_resource type="Texture2D" uid="uid://fw1284e57tly" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_03.png" id="66_c6rx0"]
+[ext_resource type="Texture2D" uid="uid://bdxyjht8smk0p" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_43.png" id="66_d73c2"]
+[ext_resource type="Texture2D" uid="uid://cy6bbwl4hha5y" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_44.png" id="67_5vo6f"]
+[ext_resource type="Texture2D" uid="uid://dfra2oqe05pfa" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_04.png" id="67_ngce3"]
+[ext_resource type="Texture2D" uid="uid://d3ypiyre2gmxb" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_04.png" id="67_ouc37"]
+[ext_resource type="Texture2D" uid="uid://56ieruw62vmt" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_45.png" id="68_sya1j"]
+[ext_resource type="Texture2D" uid="uid://b6bruyu6nvcs1" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_05.png" id="68_wb7u1"]
+[ext_resource type="Texture2D" uid="uid://cufwd05ioxnra" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_05.png" id="68_wlaax"]
+[ext_resource type="Texture2D" uid="uid://d3gu51i8yqrgi" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_06.png" id="69_005to"]
+[ext_resource type="Texture2D" uid="uid://dgqbsk0h8mw03" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_06.png" id="69_f2iu4"]
+[ext_resource type="Texture2D" uid="uid://bkss8md78fosi" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_46.png" id="69_neaul"]
+[ext_resource type="Texture2D" uid="uid://by0kq4amfk0ar" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_47.png" id="70_6qote"]
+[ext_resource type="Texture2D" uid="uid://vkvqux7jfj58" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_07.png" id="70_q0jk1"]
+[ext_resource type="Texture2D" uid="uid://bnxpv2jeb2j2f" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_07.png" id="70_ryhro"]
+[ext_resource type="Texture2D" uid="uid://daq5nh3025lsj" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_08.png" id="71_5j0qk"]
+[ext_resource type="Texture2D" uid="uid://ddc2irnref8tj" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_48.png" id="71_8uv3i"]
+[ext_resource type="Texture2D" uid="uid://war3x6pduky4" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_08.png" id="71_g8uwq"]
+[ext_resource type="Texture2D" uid="uid://suypc1ga2oxc" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_09.png" id="72_1s2f3"]
+[ext_resource type="Texture2D" uid="uid://doe1a4jl0iymd" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_49.png" id="72_1124b"]
+[ext_resource type="Texture2D" uid="uid://bbtcd3hgysenn" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_09.png" id="72_jkdmd"]
+[ext_resource type="Texture2D" uid="uid://c1mskfx4qat5j" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_10.png" id="73_i4y66"]
+[ext_resource type="Texture2D" uid="uid://bcjagfabxyle3" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_10.png" id="73_lkaam"]
+[ext_resource type="Texture2D" uid="uid://b008br5oqh0e4" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_50.png" id="73_wfpmk"]
+[ext_resource type="Texture2D" uid="uid://1v53lvg621qu" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_11.png" id="74_1gkvl"]
+[ext_resource type="Texture2D" uid="uid://m5dlfd3xhgr5" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_11.png" id="74_dby24"]
+[ext_resource type="Texture2D" uid="uid://xjbseqon340v" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_51.png" id="74_ehct7"]
+[ext_resource type="Texture2D" uid="uid://d1bg67x7r7bge" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_52.png" id="75_8ci77"]
+[ext_resource type="Texture2D" uid="uid://bmi0ppm14vxqu" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_12.png" id="75_emlx7"]
+[ext_resource type="Texture2D" uid="uid://d2qdomn0tjscb" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_12.png" id="75_ey4xg"]
+[ext_resource type="Texture2D" uid="uid://cbflw1y7eev21" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_13.png" id="76_bf4c7"]
+[ext_resource type="Texture2D" uid="uid://crktsnryut3q" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_53.png" id="76_glwiu"]
+[ext_resource type="Texture2D" uid="uid://b7k8f7deypynj" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_13.png" id="76_pt864"]
+[ext_resource type="Texture2D" uid="uid://c4fibk05itsey" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_54.png" id="77_0n5cd"]
+[ext_resource type="Texture2D" uid="uid://dody5cs2q8hyk" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_14.png" id="77_jc24f"]
+[ext_resource type="Texture2D" uid="uid://bsdypgw7qpisu" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_14.png" id="77_tlf5v"]
+[ext_resource type="Texture2D" uid="uid://v7x03p54vtx2" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_15.png" id="78_rqtyd"]
+[ext_resource type="Texture2D" uid="uid://bnemsk83d8ov5" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_15.png" id="78_tubs2"]
+[ext_resource type="Texture2D" uid="uid://6brbqf7mflhx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_55.png" id="78_y215g"]
+[ext_resource type="Texture2D" uid="uid://puvpa4elln45" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_16.png" id="79_b6uho"]
+[ext_resource type="Texture2D" uid="uid://08nme0ldmjc5" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-death_16.png" id="79_dux0x"]
+[ext_resource type="Texture2D" uid="uid://b5eq7e8wa851f" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_56.png" id="79_vpb44"]
+[ext_resource type="Texture2D" uid="uid://b16bxwvcjnwk0" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_57.png" id="80_26g5i"]
+[ext_resource type="Texture2D" uid="uid://d0hipkvyixtg6" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_17.png" id="80_d72th"]
+[ext_resource type="Texture2D" uid="uid://bs3mh30jlkgk8" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_00.png" id="80_is8vs"]
+[ext_resource type="Texture2D" uid="uid://chy7yppr5l2ej" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_18.png" id="81_8nkmq"]
+[ext_resource type="Texture2D" uid="uid://kyixoclh70ii" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_58.png" id="81_ckud7"]
+[ext_resource type="Texture2D" uid="uid://cxixlbrsx3h34" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_01.png" id="81_r7sa0"]
+[ext_resource type="Texture2D" uid="uid://dljdxq8xjj8tj" path="res://assets/Character/enemy_A/A.Ferrum/Ekspor/A_Ferrum-walk_19.png" id="82_am3wy"]
+[ext_resource type="Texture2D" uid="uid://cygw80vi4gijm" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_59.png" id="82_aym5g"]
+[ext_resource type="Texture2D" uid="uid://y18upi10sxth" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_02.png" id="82_od7qi"]
+[ext_resource type="Texture2D" uid="uid://dpofkipymkbj" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_60.png" id="83_m7j81"]
+[ext_resource type="Texture2D" uid="uid://jmti10u0kqg4" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_03.png" id="83_otst5"]
+[ext_resource type="Texture2D" uid="uid://b12xkhbbgfo5j" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_04.png" id="84_2rhls"]
+[ext_resource type="Texture2D" uid="uid://ce4hlg6lenhy8" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_61.png" id="84_6y48q"]
+[ext_resource type="Texture2D" uid="uid://55xs2a3r1nem" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_62.png" id="85_4v1sg"]
+[ext_resource type="Texture2D" uid="uid://cw5p2nhbmdrl5" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_05.png" id="85_ixuuy"]
+[ext_resource type="Texture2D" uid="uid://hj6lej40vgm8" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_63.png" id="86_lxanj"]
+[ext_resource type="Texture2D" uid="uid://bp7y4dfpdss4g" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_06.png" id="86_u4pns"]
+[ext_resource type="Texture2D" uid="uid://c0c2qcccpoebw" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_07.png" id="87_euium"]
+[ext_resource type="Texture2D" uid="uid://cbu7vkkaljpby" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_64.png" id="87_uqu8l"]
+[ext_resource type="Texture2D" uid="uid://bvl2f4hd1h2sx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_65.png" id="88_jfeni"]
+[ext_resource type="Texture2D" uid="uid://bm8borpb7ht4p" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_08.png" id="88_k3cla"]
+[ext_resource type="Texture2D" uid="uid://dw11ervm1jse5" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_09.png" id="89_n5bvb"]
+[ext_resource type="Texture2D" uid="uid://cwrd1f67q3a03" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_66.png" id="89_p7gxy"]
+[ext_resource type="Texture2D" uid="uid://74k34sl80vgp" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_10.png" id="90_jekmj"]
+[ext_resource type="Texture2D" uid="uid://crdve0vxp6cuv" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_67.png" id="90_s03mj"]
+[ext_resource type="Texture2D" uid="uid://dqf4xd7m7fwtt" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_11.png" id="91_1f2xw"]
+[ext_resource type="Texture2D" uid="uid://753qonaf07ot" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_68.png" id="91_rukgw"]
+[ext_resource type="Texture2D" uid="uid://c8oda14013e24" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_12.png" id="92_cwy4b"]
+[ext_resource type="Texture2D" uid="uid://bwtwkjx8ft3ns" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_69.png" id="92_hiad2"]
+[ext_resource type="Texture2D" uid="uid://co5pnnxxkrwxj" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_70.png" id="93_ow5n6"]
+[ext_resource type="Texture2D" uid="uid://dfqlrpw6xrd1k" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_13.png" id="93_uss8n"]
+[ext_resource type="Texture2D" uid="uid://47e6gjerl34k" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_71.png" id="94_0hgsx"]
+[ext_resource type="Texture2D" uid="uid://psjr2wnbgygp" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_14.png" id="94_j1mh4"]
+[ext_resource type="Texture2D" uid="uid://c2gnj5emos2t7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_72.png" id="95_lv1oq"]
+[ext_resource type="Texture2D" uid="uid://cx4h0f1380c4b" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_15.png" id="95_nu1lf"]
+[ext_resource type="Texture2D" uid="uid://cjads14odc4vn" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_73.png" id="96_4eclg"]
+[ext_resource type="Texture2D" uid="uid://dp5upprcpcvcy" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_16.png" id="96_kfgic"]
+[ext_resource type="Texture2D" uid="uid://c4k7w5w7fk81r" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_17.png" id="97_1dhcb"]
+[ext_resource type="Texture2D" uid="uid://cul7ba5f0eocj" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_74.png" id="97_av46o"]
+[ext_resource type="Texture2D" uid="uid://cfeoexuqm73yp" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_75.png" id="98_op5ju"]
+[ext_resource type="Texture2D" uid="uid://cbguxm3ugldvy" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_18.png" id="98_wxgoc"]
+[ext_resource type="Texture2D" uid="uid://c7w62axux8tr5" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-idle_19.png" id="99_4au11"]
+[ext_resource type="Texture2D" uid="uid://bai228kbplpsm" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_76.png" id="99_bkc1o"]
+[ext_resource type="Texture2D" uid="uid://dgg3nwglh8gq3" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_00.png" id="100_owo6r"]
+[ext_resource type="Texture2D" uid="uid://d0tdl05gcqge5" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_77.png" id="100_rhyaj"]
+[ext_resource type="Texture2D" uid="uid://brn4e10qs5lyf" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_78.png" id="101_dlkoh"]
+[ext_resource type="Texture2D" uid="uid://eetobmmmbajf" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_01.png" id="101_k5u03"]
+[ext_resource type="Texture2D" uid="uid://c1e44h1cssds7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_79.png" id="102_6eg7d"]
+[ext_resource type="Texture2D" uid="uid://c1penwt67glj6" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_02.png" id="102_ttavn"]
+[ext_resource type="Texture2D" uid="uid://djamwxfkeuyob" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_03.png" id="103_8mqc0"]
+[ext_resource type="Texture2D" uid="uid://dcnput34250go" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_80.png" id="103_36x0g"]
+[ext_resource type="Texture2D" uid="uid://1xgekflhpmdv" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_04.png" id="104_1lot6"]
+[ext_resource type="Texture2D" uid="uid://16atuqx1l5oi" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_81.png" id="104_oiqwf"]
+[ext_resource type="Texture2D" uid="uid://c84khhmiknlcl" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_82.png" id="105_1jrpc"]
+[ext_resource type="Texture2D" uid="uid://cpdv35q36ys26" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_05.png" id="105_otdpb"]
+[ext_resource type="Texture2D" uid="uid://bvrodjn1kltld" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_83.png" id="106_cl5te"]
+[ext_resource type="Texture2D" uid="uid://l445tnmh3aja" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_06.png" id="106_eiyie"]
+[ext_resource type="Texture2D" uid="uid://ddaeqecifvpin" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_84.png" id="107_0jhri"]
+[ext_resource type="Texture2D" uid="uid://dxhltntvxh0wp" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_07.png" id="107_cln0d"]
+[ext_resource type="Texture2D" uid="uid://bfgqxvsebf6lj" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_08.png" id="108_6cbcx"]
+[ext_resource type="Texture2D" uid="uid://csblii2u2i456" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_85.png" id="108_67dbh"]
+[ext_resource type="Texture2D" uid="uid://dhs2c7thpdbar" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_09.png" id="109_4bbyj"]
+[ext_resource type="Texture2D" uid="uid://cx2mjy8c4o44m" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_86.png" id="109_p8iv2"]
+[ext_resource type="Texture2D" uid="uid://bpgt5c28ldfod" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_87.png" id="110_mht1v"]
+[ext_resource type="Texture2D" uid="uid://dh4mgyabpa4wl" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_10.png" id="110_witd4"]
+[ext_resource type="Texture2D" uid="uid://uwindv5gcjhf" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_88.png" id="111_j10nk"]
+[ext_resource type="Texture2D" uid="uid://cgo8ula478gns" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_11.png" id="111_wywrj"]
+[ext_resource type="Texture2D" uid="uid://b03stfjrc2ndr" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_12.png" id="112_56j23"]
+[ext_resource type="Texture2D" uid="uid://dix8afo230f8l" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_89.png" id="112_rey77"]
+[ext_resource type="Texture2D" uid="uid://cffo3ldvm4rxp" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_90.png" id="113_bcps8"]
+[ext_resource type="Texture2D" uid="uid://b2inbyiyevts0" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_13.png" id="113_tkloh"]
+[ext_resource type="Texture2D" uid="uid://bqwqa6btf3vw7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_91.png" id="114_kw0yd"]
+[ext_resource type="Texture2D" uid="uid://cub461htk42qp" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_14.png" id="114_qba5d"]
+[ext_resource type="Texture2D" uid="uid://bgny34g86hu13" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_15.png" id="115_ba834"]
+[ext_resource type="Texture2D" uid="uid://bbs3038n85jps" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_92.png" id="115_rnamn"]
+[ext_resource type="Texture2D" uid="uid://c4w2setbjnxqp" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-attack_93.png" id="116_8qgkg"]
+[ext_resource type="Texture2D" uid="uid://ddqv6c2n2yvyb" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_16.png" id="116_v0qw7"]
+[ext_resource type="Texture2D" uid="uid://fhbaj84meqfr" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_17.png" id="117_0gqkt"]
+[ext_resource type="Texture2D" uid="uid://2dvdxblg6qd2" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_00.png" id="117_b0t78"]
+[ext_resource type="Texture2D" uid="uid://cefnpg0isrbkp" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_01.png" id="118_hlt3o"]
+[ext_resource type="Texture2D" uid="uid://c15y6136y5we3" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_18.png" id="118_lcq8k"]
+[ext_resource type="Texture2D" uid="uid://dmo85js20bf8e" path="res://assets/Character/enemy_B/B.Ferrum/Eksport/B_Ferrum-walk_19.png" id="119_2p8p5"]
+[ext_resource type="Texture2D" uid="uid://ccyl4dsxxsdvg" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_02.png" id="119_7apf6"]
+[ext_resource type="Texture2D" uid="uid://cuiyuchvaycnn" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_03.png" id="120_28kvh"]
+[ext_resource type="Texture2D" uid="uid://dfwq8tor2exi7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_04.png" id="121_k1vta"]
+[ext_resource type="Texture2D" uid="uid://bo6ru6l14r3mi" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_05.png" id="122_vyuve"]
+[ext_resource type="Texture2D" uid="uid://58ghi1ew73qk" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_06.png" id="123_ikdw0"]
+[ext_resource type="Texture2D" uid="uid://sxjkompavdpw" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_07.png" id="124_amk5d"]
+[ext_resource type="Texture2D" uid="uid://bl8msuqat2l6" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_08.png" id="125_dmomn"]
+[ext_resource type="Texture2D" uid="uid://d33k7us4cybur" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_09.png" id="126_3w82b"]
+[ext_resource type="Texture2D" uid="uid://5xu3syf4jas6" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_10.png" id="127_7x7pv"]
+[ext_resource type="Texture2D" uid="uid://c62j185q0in8c" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_11.png" id="128_khw73"]
+[ext_resource type="Texture2D" uid="uid://cn30ur3yhdo43" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_12.png" id="129_druqg"]
+[ext_resource type="Texture2D" uid="uid://bqc7ncitnjo6k" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_13.png" id="130_7j85t"]
+[ext_resource type="Texture2D" uid="uid://6py78bfckykg" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_14.png" id="131_4mlrk"]
+[ext_resource type="Texture2D" uid="uid://bms5qt6viqwyx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_15.png" id="132_ags5v"]
+[ext_resource type="Texture2D" uid="uid://b4l0kivuqw7x7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-death_16.png" id="133_7vyhw"]
+[ext_resource type="Texture2D" uid="uid://c8kgj5ds23akh" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_00.png" id="134_2xd8c"]
+[ext_resource type="Texture2D" uid="uid://dq2xfwmry4873" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_01.png" id="135_mlnnu"]
+[ext_resource type="Texture2D" uid="uid://088l8ni6r3x5" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_02.png" id="136_kxdh0"]
+[ext_resource type="Texture2D" uid="uid://2gvj8dc1eo46" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_03.png" id="137_kxlyh"]
+[ext_resource type="Texture2D" uid="uid://dflqxl0xa5ie2" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_04.png" id="138_4rmja"]
+[ext_resource type="Texture2D" uid="uid://bgtfa4siyq0jh" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_05.png" id="139_kjje4"]
+[ext_resource type="Texture2D" uid="uid://db65opmjinrw3" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_06.png" id="140_1aksp"]
+[ext_resource type="Texture2D" uid="uid://diah7fuu7sdpg" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_07.png" id="141_vdnr0"]
+[ext_resource type="Texture2D" uid="uid://c6mes5gije0v7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_08.png" id="142_cnxxj"]
+[ext_resource type="Texture2D" uid="uid://b0fijt08k6vyk" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_09.png" id="143_2rw7g"]
+[ext_resource type="Texture2D" uid="uid://dpoeorpu512cx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_10.png" id="144_2q87s"]
+[ext_resource type="Texture2D" uid="uid://bbqquvq5a48pq" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_11.png" id="145_av543"]
+[ext_resource type="Texture2D" uid="uid://n4is61pv668s" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_12.png" id="146_2qxox"]
+[ext_resource type="Texture2D" uid="uid://c6v7n62tub8ne" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_13.png" id="147_vcs7p"]
+[ext_resource type="Texture2D" uid="uid://ce7pttpytw8sk" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_14.png" id="148_x3a64"]
+[ext_resource type="Texture2D" uid="uid://d380vu773hobe" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_15.png" id="149_mjswy"]
+[ext_resource type="Texture2D" uid="uid://c4cyvsr4mlilb" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_16.png" id="150_r7nlp"]
+[ext_resource type="Texture2D" uid="uid://djlogirqw1nbg" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_17.png" id="151_2cbmu"]
+[ext_resource type="Texture2D" uid="uid://mum8aj2wr01q" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_18.png" id="152_t33wp"]
+[ext_resource type="Texture2D" uid="uid://1jpneh08wdt5" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-idle_19.png" id="153_0s1cg"]
+[ext_resource type="Texture2D" uid="uid://b3ddvy8xkahhu" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_00.png" id="154_7c0ka"]
+[ext_resource type="Texture2D" uid="uid://duhqw5mk4yw6y" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_01.png" id="155_sb2q3"]
+[ext_resource type="Texture2D" uid="uid://cw61ybc23u6sq" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_02.png" id="156_k7obv"]
+[ext_resource type="Texture2D" uid="uid://bcvj7lqtqhyvo" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_03.png" id="157_e0k01"]
+[ext_resource type="Texture2D" uid="uid://bolxw2qsw24u7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_04.png" id="158_qbti7"]
+[ext_resource type="Texture2D" uid="uid://f53jmjb3fom0" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_05.png" id="159_sqiqj"]
+[ext_resource type="Texture2D" uid="uid://bpcc2mikgdnjb" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_06.png" id="160_ls8td"]
+[ext_resource type="Texture2D" uid="uid://bsl8y4t3liao6" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_07.png" id="161_j8ax6"]
+[ext_resource type="Texture2D" uid="uid://lycqsdtqwnam" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_08.png" id="162_8ahg4"]
+[ext_resource type="Texture2D" uid="uid://cvjomxknomiq2" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_09.png" id="163_l7qfm"]
+[ext_resource type="Texture2D" uid="uid://b3sr0vqyd61m7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_10.png" id="164_gm64h"]
+[ext_resource type="Texture2D" uid="uid://digwjs3atokcx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_11.png" id="165_jqksc"]
+[ext_resource type="Texture2D" uid="uid://4q3o8g6d28as" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_12.png" id="166_un0eh"]
+[ext_resource type="Texture2D" uid="uid://pxm3sy2lvqrv" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_13.png" id="167_s1ngh"]
+[ext_resource type="Texture2D" uid="uid://cfcs1xrvh4ujr" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_14.png" id="168_imyki"]
+[ext_resource type="Texture2D" uid="uid://dec1vdc0ew6" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_15.png" id="169_4irx3"]
+[ext_resource type="Texture2D" uid="uid://bpflbakpncfq3" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_16.png" id="170_pgclu"]
+[ext_resource type="Texture2D" uid="uid://c7q3vkt3vjl4k" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_17.png" id="171_yp7s5"]
+[ext_resource type="Texture2D" uid="uid://cebry633aqbbi" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_18.png" id="172_tpdnj"]
+[ext_resource type="Texture2D" uid="uid://cf1iw6q0xmmp1" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_19.png" id="173_hdsv6"]
+[ext_resource type="Texture2D" uid="uid://cdwdos05jj0ym" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_20.png" id="174_u8qy1"]
+[ext_resource type="Texture2D" uid="uid://bllojcgcwxane" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_21.png" id="175_m3030"]
+[ext_resource type="Texture2D" uid="uid://c38fs5p0rpybu" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_22.png" id="176_yvo6j"]
+[ext_resource type="Texture2D" uid="uid://dutj6w3f5e3sj" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_23.png" id="177_glevo"]
+[ext_resource type="Texture2D" uid="uid://djqbudwnuapu3" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_24.png" id="178_0u1ps"]
+[ext_resource type="Texture2D" uid="uid://cc78p3bthtm0w" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_25.png" id="179_ehpwv"]
+[ext_resource type="Texture2D" uid="uid://d1w72j1mvn5ij" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_26.png" id="180_uips1"]
+[ext_resource type="Texture2D" uid="uid://rn6u8myxa70w" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_27.png" id="181_xtqol"]
+[ext_resource type="Texture2D" uid="uid://b7pejn4wm7q1v" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_28.png" id="182_8o8lw"]
+[ext_resource type="Texture2D" uid="uid://oklikx8u0uye" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_29.png" id="183_xm6tq"]
+[ext_resource type="Texture2D" uid="uid://cuebojn8bqeym" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_30.png" id="184_ienxi"]
+[ext_resource type="Texture2D" uid="uid://dkbuks5xkmp87" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_31.png" id="185_c3emd"]
+[ext_resource type="Texture2D" uid="uid://chgvhg86lj4r0" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_32.png" id="186_7hq6f"]
+[ext_resource type="Texture2D" uid="uid://b3lbc1l6cc0sp" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_33.png" id="187_cxdc6"]
+[ext_resource type="Texture2D" uid="uid://ch60a6en18btw" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_34.png" id="188_818rw"]
+[ext_resource type="Texture2D" uid="uid://dbavs8wq0sayu" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_35.png" id="189_8ke65"]
+[ext_resource type="Texture2D" uid="uid://dwuykai10g8t4" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_36.png" id="190_fpp1o"]
+[ext_resource type="Texture2D" uid="uid://n4e4lclnawnx" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_37.png" id="191_0hw32"]
+[ext_resource type="Texture2D" uid="uid://bo88v4spspqe4" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_38.png" id="192_o7ium"]
+[ext_resource type="Texture2D" uid="uid://cxkhhdy6urkjw" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_39.png" id="193_8qeqm"]
+[ext_resource type="Texture2D" uid="uid://dcg10anvalryt" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_40.png" id="194_g78pa"]
+[ext_resource type="Texture2D" uid="uid://d3qfpugo0kl41" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_41.png" id="195_u5ho3"]
+[ext_resource type="Texture2D" uid="uid://u6mmgbvw3t8w" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_42.png" id="196_fgeoc"]
+[ext_resource type="Texture2D" uid="uid://4c5lbeqafer3" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_43.png" id="197_ei28u"]
+[ext_resource type="Texture2D" uid="uid://be46s87xeohqi" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_44.png" id="198_0xqnv"]
+[ext_resource type="Texture2D" uid="uid://b3b61ucnp0fhd" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_45.png" id="199_g3h6s"]
+[ext_resource type="Texture2D" uid="uid://dhyji3xhou8nh" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_46.png" id="200_qubqo"]
+[ext_resource type="Texture2D" uid="uid://bqkffojhw20gy" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_47.png" id="201_l85v8"]
+[ext_resource type="Texture2D" uid="uid://beqst85olmrsf" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_48.png" id="202_uiffm"]
+[ext_resource type="Texture2D" uid="uid://cxu7shv7inqsn" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_49.png" id="203_61xb7"]
+[ext_resource type="Texture2D" uid="uid://145gle8v8wb3" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_50.png" id="204_7ik74"]
+[ext_resource type="Texture2D" uid="uid://d2xa5pm5q28gr" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_51.png" id="205_5wyd8"]
+[ext_resource type="Texture2D" uid="uid://dy6ihjywdkkad" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_52.png" id="206_j0dv4"]
+[ext_resource type="Texture2D" uid="uid://0fenviwtbaq6" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_53.png" id="207_pq6qi"]
+[ext_resource type="Texture2D" uid="uid://cvak00eyt22lv" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_54.png" id="208_wlw44"]
+[ext_resource type="Texture2D" uid="uid://dlfof6uv3lddc" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_55.png" id="209_d02ta"]
+[ext_resource type="Texture2D" uid="uid://dkln5kak2o7fk" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_56.png" id="210_ak2tm"]
+[ext_resource type="Texture2D" uid="uid://b0he2sas3panf" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_57.png" id="211_hfqie"]
+[ext_resource type="Texture2D" uid="uid://b0ngoqyyh2si7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_58.png" id="212_7mv7e"]
+[ext_resource type="Texture2D" uid="uid://gw8yuo1ia8wg" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_59.png" id="213_t88mj"]
+[ext_resource type="AnimationLibrary" uid="uid://fcax683v15hv" path="res://enemy/ferrum/animation/ferrum_elite_anim.res" id="351_kakxd"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4sx6r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_mx2gj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_koecy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_usnv6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_td12d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_uee0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_x3xjn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_02l2v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_abb64")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_eqyoj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_r5hqm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_x3j50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_46gm7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_x44th")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_vejik")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_6w06x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_5v02i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_y7x0f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_0jxtc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_pjslf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_el4qy")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_kakxd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_4nxmi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_d6cua")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_g0ga2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_eovbi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_s6vgf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_yo4hf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_qijm0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_pgnj1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_sqt4b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_o75qk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_aadwv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_dmiu5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_hfmqb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_uktwq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_w2vle")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_qloue")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_y870s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_ury67")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_vk3bf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_yf60w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_xbfdx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_yhxv7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_en44v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_bhta8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_fyvpn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_26tj7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_5h74r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_5fbth")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_h48cf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_yjmd3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_p13l0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_ijjk1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_472y3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_ev4rp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_u86b6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_m6lba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_73rjn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_xfda7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_r4msv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_4exyg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_6ukvj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_w0mv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_d73c2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_5vo6f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_sya1j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_neaul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_6qote")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_8uv3i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_1124b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_wfpmk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_ehct7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_8ci77")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_glwiu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_0n5cd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_y215g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_vpb44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_26g5i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_ckud7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_aym5g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_m7j81")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_6y48q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_4v1sg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_lxanj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_uqu8l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_jfeni")
+}, {
+"duration": 1.0,
+"texture": ExtResource("89_p7gxy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_s03mj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_rukgw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_hiad2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("93_ow5n6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("94_0hgsx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_lv1oq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_4eclg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("97_av46o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_op5ju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("99_bkc1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("100_rhyaj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("101_dlkoh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("102_6eg7d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("103_36x0g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("104_oiqwf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("105_1jrpc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_cl5te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_0jhri")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_67dbh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_p8iv2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_mht1v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_j10nk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_rey77")
+}, {
+"duration": 1.0,
+"texture": ExtResource("113_bcps8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_kw0yd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_rnamn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_8qgkg")
+}],
+"loop": 0,
+"name": &"boss_attack",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("117_b0t78")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_hlt3o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_7apf6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_28kvh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("121_k1vta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_vyuve")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_ikdw0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_amk5d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("125_dmomn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("126_3w82b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("127_7x7pv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("128_khw73")
+}, {
+"duration": 1.0,
+"texture": ExtResource("129_druqg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("130_7j85t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("131_4mlrk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("132_ags5v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("133_7vyhw")
+}],
+"loop": 0,
+"name": &"boss_death",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("134_2xd8c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("135_mlnnu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("136_kxdh0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("137_kxlyh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("138_4rmja")
+}, {
+"duration": 1.0,
+"texture": ExtResource("139_kjje4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("140_1aksp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("141_vdnr0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("142_cnxxj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("143_2rw7g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("144_2q87s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("145_av543")
+}, {
+"duration": 1.0,
+"texture": ExtResource("146_2qxox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("147_vcs7p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("148_x3a64")
+}, {
+"duration": 1.0,
+"texture": ExtResource("149_mjswy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("150_r7nlp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("151_2cbmu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("152_t33wp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("153_0s1cg")
+}],
+"loop": 0,
+"name": &"boss_idle",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("154_7c0ka")
+}, {
+"duration": 1.0,
+"texture": ExtResource("155_sb2q3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("156_k7obv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("157_e0k01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("158_qbti7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("159_sqiqj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("160_ls8td")
+}, {
+"duration": 1.0,
+"texture": ExtResource("161_j8ax6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("162_8ahg4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("163_l7qfm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("164_gm64h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("165_jqksc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("166_un0eh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("167_s1ngh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("168_imyki")
+}, {
+"duration": 1.0,
+"texture": ExtResource("169_4irx3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("170_pgclu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("171_yp7s5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("172_tpdnj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("173_hdsv6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("174_u8qy1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("175_m3030")
+}, {
+"duration": 1.0,
+"texture": ExtResource("176_yvo6j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("177_glevo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("178_0u1ps")
+}, {
+"duration": 1.0,
+"texture": ExtResource("179_ehpwv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("180_uips1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("181_xtqol")
+}, {
+"duration": 1.0,
+"texture": ExtResource("182_8o8lw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("183_xm6tq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("184_ienxi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("185_c3emd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("186_7hq6f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("187_cxdc6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("188_818rw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("189_8ke65")
+}, {
+"duration": 1.0,
+"texture": ExtResource("190_fpp1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("191_0hw32")
+}, {
+"duration": 1.0,
+"texture": ExtResource("192_o7ium")
+}, {
+"duration": 1.0,
+"texture": ExtResource("193_8qeqm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("194_g78pa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("195_u5ho3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("196_fgeoc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("197_ei28u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("198_0xqnv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("199_g3h6s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("200_qubqo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("201_l85v8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("202_uiffm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("203_61xb7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("204_7ik74")
+}, {
+"duration": 1.0,
+"texture": ExtResource("205_5wyd8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("206_j0dv4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("207_pq6qi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("208_wlw44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("209_d02ta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("210_ak2tm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("211_hfqie")
+}, {
+"duration": 1.0,
+"texture": ExtResource("212_7mv7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("213_t88mj")
+}],
+"loop": 0,
+"name": &"boss_skill",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_vcsiu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_786ba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_rs1c3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_a435r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_1xugl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_p40vr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_62e3m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_vhua3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_a36ws")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_dhw0x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_4sny0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_drs8x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_rg4ba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_4wfd1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_1tf6q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_vy33p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_moe2x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_e04yc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_5vi0l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_ijjr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_el4qy")
+}],
+"loop": 0,
+"name": &"death",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_786ba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_rs1c3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_a435r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_1xugl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_p40vr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_62e3m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_vhua3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_a36ws")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_dhw0x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_4sny0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_drs8x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_rg4ba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_4wfd1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_1tf6q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_vy33p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_moe2x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_e04yc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_5vi0l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_ijjr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_lw3gd")
+}],
+"loop": 0,
+"name": &"e_attack",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("63_8nkmq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_am3wy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_3i8ti")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_ahtbk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_ngce3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_wb7u1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_005to")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_ryhro")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_5j0qk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_1s2f3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_i4y66")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_1gkvl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_emlx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_pt864")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_jc24f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_rqtyd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_dux0x")
+}],
+"loop": 2,
+"name": &"e_death",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("80_is8vs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_r7sa0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_od7qi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_otst5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_2rhls")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_ixuuy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_u4pns")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_euium")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_k3cla")
+}, {
+"duration": 1.0,
+"texture": ExtResource("89_n5bvb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_jekmj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_1f2xw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_cwy4b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("93_uss8n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("94_j1mh4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_nu1lf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_kfgic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("97_1dhcb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_wxgoc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("99_4au11")
+}],
+"loop": 0,
+"name": &"e_idle",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("100_owo6r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("101_k5u03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("102_ttavn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("103_8mqc0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("104_1lot6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("105_otdpb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_eiyie")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_cln0d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_6cbcx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_4bbyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_witd4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_wywrj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_56j23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("113_tkloh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_qba5d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_ba834")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_v0qw7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_0gqkt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_lcq8k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_2p8p5")
+}],
+"loop": 0,
+"name": &"e_walk",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_lw3gd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_jlmog")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_rvrfg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_b47rn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_tio7n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_tql7s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_3y2o0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_dbavi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_lp5tv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_qglcl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_5qjt6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_tv06s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_a12g0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_mv8m5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_c767a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_qbq6t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_6ib2e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_snkqm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_oc7yc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_pboy6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_mx2gj")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 20.0
+}, {
+"frames": [],
+"loop": 1,
+"name": &"new_animation_4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("63_mchv5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_annsi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_dr1sx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_c6rx0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_ouc37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_wlaax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_f2iu4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_q0jk1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_g8uwq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_jkdmd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_lkaam")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_dby24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_ey4xg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_bf4c7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_tlf5v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_tubs2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_b6uho")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_d72th")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_8nkmq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_am3wy")
+}],
+"loop": 0,
+"name": &"walk",
+"speed": 20.0
+}]
 
 [node name="EnemyFerrum" unique_id=181012001 instance=ExtResource("1_7j3ic")]
 script = ExtResource("2_s12ld")
-tier = 0
 stats = null
+
+[node name="Sprite2D" parent="." index="1" unique_id=1550852511]
+visible = false
+
+[node name="AnimatedSprite2D" parent="." index="2" unique_id=1549849388]
+visible = true
+sprite_frames = SubResource("SpriteFrames_4sx6r")
+animation = &"e_attack"
+offset = Vector2(-160, -274)
+
+[node name="AnimationPlayer" parent="." index="3" unique_id=1280754138]
+libraries/ferrum_elite_anim = ExtResource("351_kakxd")
