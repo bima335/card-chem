@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://4rbfsu4bchgp"]
 
 [ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="1_2q423"]
-[ext_resource type="Texture2D" uid="uid://copa3040teryh" path="res://assets/Aura_Card_Ferrum_01.png" id="1_o4re6"]
+[ext_resource type="Texture2D" uid="uid://bbvp2k7aj533y" path="res://assets/Card/aura_boss_card/Ferrum_RustedResilience.png" id="1_o4re6"]
 
 [resource]
 script = ExtResource("1_2q423")

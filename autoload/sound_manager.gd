@@ -12,7 +12,15 @@ var sfx_database: Dictionary = {
 
 var bgm_database: Dictionary = {
 	"battle_theme": preload("res://assets/audio/bgm/Go!_Fight!_Win!.mp3"),
-	"intro_theme": preload("res://assets/audio/bgm/story.mp3"),
+	"battle": preload("res://assets/audio/bgm/battle_general.mp3"),
+	"ferrum": preload("res://assets/audio/bgm/Ferrum_Env.mp3"),
+	"cobalt": preload("res://assets/audio/bgm/Cobalt_Env.mp3"),
+	"neon": preload("res://assets/audio/bgm/Neon_Env.mp3"),
+	"rest": preload("res://assets/audio/bgm/The_Rest.mp3"),
+	"shop": preload("res://assets/audio/bgm/The_Lab.mp3"),
+	"main_menu": preload("res://assets/audio/bgm/main_menu.mp3"),
+	"aurum": preload("res://assets/audio/bgm/Aurum_Gold_Env.mp3"),
+	"event": preload("res://assets/audio/bgm/event_node.mp3"),
 }
 
 func _ready() -> void:

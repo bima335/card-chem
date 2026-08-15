@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b7ksujfeuql47"]
 
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_6loh0"]
-[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_f2g3o"]
+[ext_resource type="Texture2D" uid="uid://jpk4hw3ts4bn" path="res://assets/Card/playing_card/OxygenSpray.png" id="1_k5gjq"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_f2g3o"]
 [ext_resource type="Resource" uid="uid://bjwtqh0esjut0" path="res://ailments/res/oxidation.tres" id="4_k5gjq"]
 
@@ -9,8 +9,8 @@
 script = ExtResource("1_6loh0")
 id = "c_d_01"
 card_name = "Oxygen Spray"
-card_texture = ExtResource("1_f2g3o")
-modulate = Color(0.30588236, 0.50980395, 1, 1)
+description = "Menimbulkan Oxidize pada Musuh"
+card_texture = ExtResource("1_k5gjq")
 card_type = 2
 cost_oxygen = 1
 buy_value = 6

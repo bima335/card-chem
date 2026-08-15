@@ -169,3 +169,9 @@ func _on_enemy_died(_dead_enemy: EnemyBase) -> void:
 		else:
 			wave_cleared.emit()
 			start_next_wave()
+
+func apply_aoe_poison_and_stun(poison_amount: int = 1, stun_amount: int = 1) -> void:
+	var active_enemies: Array[EnemyBase] = get_sorted_active_enemies()
+	for enemy in active_enemies:
+		if is_instance_valid(enemy) and not enemy.is_queued_for_deletion():
+			enemy.apply_poison_and_stun(poison_amount, stun_amount)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://beak3k2b8gw1m"]
 
-[ext_resource type="AudioStream" uid="uid://cf1y3kmmglyse" path="res://assets/audio/bgm/main_menu.mp3" id="1_byjw7"]
+[ext_resource type="Script" uid="uid://boke2xajk1a3" path="res://main/main_menu.gd" id="1_gxvyx"]
 [ext_resource type="Texture2D" uid="uid://bjwv0r7i2wudm" path="res://assets/main_menu/background.png" id="2_nomyo"]
 [ext_resource type="AudioStream" uid="uid://w7pord3upy6a" path="res://assets/audio/sfx/ui/UI_Click_2.wav" id="3_15u4j"]
 [ext_resource type="Texture2D" uid="uid://cmb71q31pcrgb" path="res://assets/main_menu/pngseq/mainmenu0001.png" id="3_afqpu"]
@@ -52,7 +52,6 @@
 [ext_resource type="Texture2D" uid="uid://cg302nu8gby1i" path="res://assets/main_menu/settings.png" id="48_ghkya"]
 [ext_resource type="Texture2D" uid="uid://j3f1le183uq1" path="res://assets/main_menu/credits.png" id="49_drqnu"]
 [ext_resource type="Texture2D" uid="uid://g626odr6srw3" path="res://assets/main_menu/Quit.png" id="50_t6lxg"]
-[ext_resource type="Texture2D" uid="uid://b140b6fpot0qj" path="res://assets/main_menu/copyright.png" id="53_5ttid"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_s2dj8"]
 animations = [{
@@ -183,10 +182,7 @@ animations = [{
 }]
 
 [node name="Main_Menu" type="Node2D" unique_id=60194578]
-
-[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=494538828]
-stream = ExtResource("1_byjw7")
-autoplay = true
+script = ExtResource("1_gxvyx")
 
 [node name="GlobalClickSFX" type="AudioStreamPlayer" parent="." unique_id=1843479523]
 stream = ExtResource("3_15u4j")
@@ -282,13 +278,6 @@ script = ExtResource("46_t5ahn")
 
 [node name="AudioHover" type="AudioStreamPlayer" parent="Quit" unique_id=836072082]
 stream = ExtResource("47_8rujg")
-
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1856111055]
-offset_left = 53.0
-offset_top = 1015.0
-offset_right = 425.0
-offset_bottom = 1078.0
-texture = ExtResource("53_5ttid")
 
 [connection signal="mouse_entered" from="Play" to="Play" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Play" to="Play" method="_on_mouse_exited"]

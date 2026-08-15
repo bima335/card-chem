@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatusAilment" format=3 uid="uid://dcrq5so5inoee"]
+
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="1_e1cdc"]
+[ext_resource type="Texture2D" uid="uid://bw24iiovdpdc" path="res://assets/Tag/tag_Stun.png" id="2_7cpiy"]
+
+[resource]
+script = ExtResource("1_e1cdc")
+ailment = 9
+status_icon = ExtResource("2_7cpiy")
+metadata/_custom_type_script = "uid://ck4m1qolca0es"

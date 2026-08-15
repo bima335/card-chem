@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatusAilment" format=3 uid="uid://u2qskia73v30"]
+
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="1_a8md4"]
+[ext_resource type="Texture2D" uid="uid://b6qy7vgohpxel" path="res://assets/Tag/tag_Destabilize.png" id="2_hmjwu"]
+
+[resource]
+script = ExtResource("1_a8md4")
+ailment = 8
+status_icon = ExtResource("2_hmjwu")
+decrease_on_turn_end = false
+metadata/_custom_type_script = "uid://ck4m1qolca0es"

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://n44iryvkes3k"]
+
+[ext_resource type="Texture2D" uid="uid://dstrphjbya5pt" path="res://assets/Card/playing_card/NitrogenGas.png" id="1_yk6bw"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_n4oja"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="3_na6v1"]
+[ext_resource type="Resource" uid="uid://bhhuddng6j1cw" path="res://ailments/res/toxification.tres" id="4_dql7d"]
+
+[resource]
+script = ExtResource("2_n4oja")
+id = "c_d_02"
+card_name = "NH3 Gas"
+description = "Menimbulkan Oxidize pada Musuh"
+card_texture = ExtResource("1_yk6bw")
+rarity = 1
+card_type = 2
+target_type = 1
+buy_value = 10
+sell_value = 5
+trigger_element = 2
+statuses_to_apply = Array[ExtResource("3_na6v1")]([ExtResource("4_dql7d")])
+toxic_stacks_to_apply = 2
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

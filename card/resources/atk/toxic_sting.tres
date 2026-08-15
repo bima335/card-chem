@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bnqh6qmg42cv5"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_7slcq"]
+[ext_resource type="Texture2D" uid="uid://cw6pmooheo543" path="res://assets/Card/playing_card/ToxicSting.png" id="1_fy5wn"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_0c67q"]
+[ext_resource type="Resource" uid="uid://bhhuddng6j1cw" path="res://ailments/res/toxification.tres" id="4_dk5y7"]
+
+[resource]
+script = ExtResource("1_7slcq")
+id = "c_a_09"
+card_name = "Toxic Sting"
+description = "Memberikan 3 Damage dan 3 Toxic Stack"
+card_texture = ExtResource("1_fy5wn")
+rarity = 1
+cost_hydrogen = 1
+cost_carbon = 1
+cost_nitrogen = 1
+damage_amount = 3
+buy_value = 12
+sell_value = 6
+trigger_element = 2
+statuses_to_apply = Array[ExtResource("2_0c67q")]([ExtResource("4_dk5y7")])
+toxic_stacks_to_apply = 3
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

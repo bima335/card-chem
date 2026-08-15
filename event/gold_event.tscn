@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bd1nckquvt4rq"]
 
 [ext_resource type="Texture2D" uid="uid://ct1xo8h48x77c" path="res://assets/event/goldencpanel.png" id="1_n28i7"]
+[ext_resource type="Script" uid="uid://ppat5fdpa7gm" path="res://event/gold_event.gd" id="1_yd4lm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
 
@@ -13,6 +14,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_yd4lm")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1383912392]
 layout_mode = 1
@@ -45,3 +47,6 @@ offset_top = 867.0
 offset_right = 1198.0
 offset_bottom = 950.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_yf5fn")
+
+[connection signal="pressed" from="TextureRect/FightButton" to="." method="_on_fight_button_pressed"]
+[connection signal="pressed" from="TextureRect/SkipButton" to="." method="_on_skip_button_pressed"]

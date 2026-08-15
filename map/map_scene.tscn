@@ -5,10 +5,10 @@
 [ext_resource type="Script" uid="uid://dncorhl3akjyt" path="res://map/sections/section_data.gd" id="5_ab781"]
 [ext_resource type="Texture2D" uid="uid://5oly4a3ev0cm" path="res://assets/backgrounds/tengah_map_tree.png" id="5_jcvi6"]
 [ext_resource type="Texture2D" uid="uid://b8dcrvgw6kxhe" path="res://assets/backgrounds/top_map_tree.png" id="6_1ym7n"]
-[ext_resource type="Resource" uid="uid://v2hn1utjhfsr" path="res://map/sections/res/section_ferrum.tres" id="6_ubh7o"]
+[ext_resource type="Resource" uid="uid://v2hn1utjhfsr" path="res://map/sections/res/section_ferrum.tres" id="6_71c6l"]
 [ext_resource type="Resource" uid="uid://d0hnw12tuwdo" path="res://map/sections/res/section_cobalt.tres" id="7_71c6l"]
 [ext_resource type="Resource" uid="uid://dauq3gdi8e5f5" path="res://map/sections/res/section_neon.tres" id="8_fomgr"]
-[ext_resource type="Resource" uid="uid://d1ybrvsjelsev" path="res://enemy/neon/res/neon_boss.tres" id="9_71c6l"]
+[ext_resource type="Resource" uid="uid://bqmgedeecc5w4" path="res://enemy/gold/gold_boss.tres" id="8_ubh7o"]
 
 [node name="MapScene" type="Control" unique_id=1082545900]
 layout_mode = 3
@@ -33,9 +33,8 @@ layout_mode = 2
 script = ExtResource("1_xrkvi")
 map_node_scene = ExtResource("2_q2h2y")
 section_wallpapers = Array[Texture2D]([ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("6_1ym7n")])
-sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_ubh7o"), ExtResource("7_71c6l"), ExtResource("8_fomgr")])
-test_enemy = ExtResource("9_71c6l")
-force_first_three_shops = true
+sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_71c6l"), ExtResource("7_71c6l"), ExtResource("8_fomgr")])
+test_enemy = ExtResource("8_ubh7o")
 
 [node name="BtnUp" type="Button" parent="." unique_id=691623035]
 layout_mode = 1

@@ -7,10 +7,10 @@ var is_map_generated: bool = false
 var available_paths: Array[Vector2i] = []
 var history_path: Array[Vector2i] = []
 
-var player_current_hp: int = 1000
-var player_max_hp: int = 1000
+var player_max_hp: int = 100
+var player_current_hp: int = 100
 var active_event_type: MapNodeData.NodeType
-var shop_coins: int = 1000
+var shop_coins: int = 321
 var player_deck: Array[CardData] = []
 
 @export var current_section: SectionData = null
@@ -31,6 +31,12 @@ func setup_enemy_pools(common_global: Array[EnemyStat], elite_global: Array[Enem
 func reset_round() -> void:
 	current_round = 1
 
+func heal_player(amount: int) -> int:
+	var old_hp: int = player_current_hp
+	player_current_hp = clampi(player_current_hp + amount, 0, player_max_hp)
+	
+	var actual_healed: int = player_current_hp - old_hp
+	return actual_healed
 
 func advance_round() -> int:
 	current_round += 1
@@ -41,6 +47,7 @@ func add_shop_coins(amount: int) -> void:
 	if amount <= 0:
 		return
 	shop_coins += amount
+	EventBus.gold_changed.emit(shop_coins)
 
 
 func update_current_section_for_floor(floor_idx: int) -> void:
@@ -58,7 +65,7 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first
 	current_floor = 0
 	available_paths.clear()
 	history_path.clear()
-	shop_coins = 1000
+	shop_coins = 321
 	player_deck.clear()
 	reset_round()
 
@@ -131,3 +138,32 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first
 
 func set_current_section(new_section: SectionData) -> void:
 	current_section = new_section
+
+func start_new_run() -> void:
+	current_wave_data.clear()
+	map_data_matrix.clear()
+	current_floor = 0
+	is_map_generated = false
+	available_paths.clear()
+	history_path.clear()
+
+	active_event_type = MapNodeData.NodeType.BATTLE_NORMAL
+	current_section = null
+
+	player_max_hp = 100
+	player_current_hp = player_max_hp
+
+	shop_coins = 0
+
+	player_deck.clear()
+
+	current_round = 1
+
+	BlessingManager.clear_all_blessings()
+
+	for i in range(AuraManager.MAX_AURA_SLOTS):
+		AuraManager.unequip_aura(i)
+
+	AuraManager.reset_battle_state()
+
+	RecapManager.reset_stats()

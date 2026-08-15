@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dorhcesbm2i7f"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_btl1n"]
+[ext_resource type="Texture2D" uid="uid://yxb2jowrlctw" path="res://assets/Card/playing_card/Burst.png" id="1_nn5su"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_nn5su"]
+
+[resource]
+script = ExtResource("1_btl1n")
+id = "c_a_07"
+card_name = "Burst"
+description = "Memberi 14 Damage"
+card_texture = ExtResource("1_nn5su")
+rarity = 2
+cost_oxygen = 1
+cost_hydrogen = 3
+cost_carbon = 1
+damage_amount = 14
+buy_value = 15
+sell_value = 7
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://doh0k0hvjakiw"]
 
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_khixs"]
+[ext_resource type="Texture2D" uid="uid://by1int0kl4vni" path="res://assets/blessing_pin/TheHelpingHand.png" id="1_khixs"]
 [ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_r0w54"]
 
 [resource]

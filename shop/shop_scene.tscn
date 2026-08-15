@@ -4,21 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://dqx2k3caf8ivr" path="res://assets/backgrounds/layer_paling_bawah_the_lab.png" id="1_wdt34"]
 [ext_resource type="Texture2D" uid="uid://do8ifaisydr4q" path="res://assets/shop/Gelas_Labb.png" id="2_cf2ep"]
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="3_cardui"]
-[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="3_vhf6s"]
-[ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="4_jis7i"]
-[ext_resource type="Resource" uid="uid://otourkerimal" path="res://card/resources/atk/water.tres" id="4_vlf3m"]
-[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="5_vlf3m"]
-[ext_resource type="Script" uid="uid://bu5meodq28pis" path="res://card/coat/coat_data.gd" id="7_hwuqm"]
-[ext_resource type="Resource" uid="uid://swqbgfd71dg2" path="res://card/coat/res/clone.tres" id="8_buuxn"]
-[ext_resource type="Resource" uid="uid://1rhiulfq30o5" path="res://card/resources/trigger/o_ignite.tres" id="8_dsopo"]
-[ext_resource type="Resource" uid="uid://c5ci8mxy0ctqv" path="res://card/coat/res/catalyst.tres" id="9_l27h7"]
-[ext_resource type="Resource" uid="uid://80ix8x1j6gsa" path="res://blessing/res/cover.tres" id="9_tp2tx"]
-[ext_resource type="Resource" uid="uid://cr2ntadcnepak" path="res://blessing/res/protector.tres" id="10_cvmxc"]
-[ext_resource type="Resource" uid="uid://clq08c2g3jetx" path="res://blessing/res/recycle.tres" id="10_qwuve"]
-[ext_resource type="Resource" uid="uid://bnxqvevk8vi6m" path="res://card/coat/res/unstable.tres" id="10_vvo68"]
-[ext_resource type="Resource" uid="uid://k5tpp47jrgwd" path="res://card/coat/res/insulated.tres" id="11_wl3ct"]
-[ext_resource type="Resource" uid="uid://5e146oywkesi" path="res://card/coat/res/coat_purify.tres" id="12_ols6i"]
-[ext_resource type="Resource" uid="uid://c22oy6nl6qgnf" path="res://card/coat/res/crystalized.tres" id="13_dd36f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n6cst"]
 atlas = ExtResource("2_cf2ep")
@@ -41,9 +26,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n6cst")
 card_ui_scene = ExtResource("3_cardui")
-available_cards = Array[ExtResource("3_vhf6s")]([ExtResource("8_dsopo"), ExtResource("5_vlf3m"), ExtResource("4_vlf3m")])
-available_coats = Array[ExtResource("7_hwuqm")]([ExtResource("8_buuxn"), ExtResource("9_l27h7"), ExtResource("10_vvo68"), ExtResource("11_wl3ct"), ExtResource("12_ols6i"), ExtResource("13_dd36f")])
-available_blessings = Array[ExtResource("4_jis7i")]([ExtResource("10_cvmxc"), ExtResource("9_tp2tx"), ExtResource("10_qwuve")])
 
 [node name="Background" type="TextureRect" parent="." unique_id=1788097896]
 texture_filter = 1
@@ -213,18 +195,113 @@ text = "Batal"
 
 [node name="SellPanel" type="PanelContainer" parent="UI_Overlay" unique_id=1099540122]
 visible = false
-custom_minimum_size = Vector2(1000, 600)
+custom_minimum_size = Vector2(1400, 800)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -500.0
-offset_top = -300.0
-offset_right = 500.0
-offset_bottom = 300.0
+offset_left = -700.0
+offset_top = -400.0
+offset_right = 700.0
+offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI_Overlay/SellPanel" unique_id=888733152]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="MainVBox" type="VBoxContainer" parent="UI_Overlay/SellPanel/MarginContainer" unique_id=96816615]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="HeaderHBox" type="HBoxContainer" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox" unique_id=1235112245]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox/HeaderHBox" unique_id=1494492935]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MENU PENJUALAN"
+horizontal_alignment = 1
+
+[node name="BtnCloseSell" type="Button" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox/HeaderHBox" unique_id=1190001316]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "X"
+
+[node name="CategoryTabs" type="HBoxContainer" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox" unique_id=1026778162]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="BtnTabCards" type="Button" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox/CategoryTabs" unique_id=1851934778]
+custom_minimum_size = Vector2(250, 45)
+layout_mode = 2
+text = "Jual Kartu Deck"
+
+[node name="BtnTabBlessings" type="Button" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox/CategoryTabs" unique_id=1335876375]
+custom_minimum_size = Vector2(250, 45)
+layout_mode = 2
+text = "Jual Blessing Pin"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox" unique_id=1192067585]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ContentVBox" type="VBoxContainer" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox/ScrollContainer" unique_id=964629201]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="SellCardGrid" type="GridContainer" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox/ScrollContainer/ContentVBox" unique_id=699067895]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 5
+
+[node name="SellBlessingGrid" type="HBoxContainer" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox/ScrollContainer/ContentVBox" unique_id=424407736]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="EmptyNoticeLabel" type="Label" parent="UI_Overlay/SellPanel/MarginContainer/MainVBox" unique_id=298557895]
+visible = false
+layout_mode = 2
+size_flags_vertical = 6
+text = "Tidak ada item untuk dijual."
+horizontal_alignment = 1
+
+[node name="SellConfirmDialog" type="ConfirmationDialog" parent="UI_Overlay" unique_id=1873069091]
+title = "Konfirmasi Penjualan"
+initial_position = 2
+size = Vector2i(400, 150)
+ok_button_text = "Ya, Jual"
+cancel_button_text = "Batal"
+
+[node name="BuyConfirmDialog" type="ConfirmationDialog" parent="UI_Overlay" unique_id=750910819]
+title = "Konfirmasi Pembelian"
+initial_position = 2
+size = Vector2i(400, 150)
+ok_button_text = "Beli"
+cancel_button_text = "Batal"
+
+[node name="HealConfirmDialog" type="ConfirmationDialog" parent="UI_Overlay" unique_id=83739213]
+title = "Konfirmasi Heal"
+initial_position = 2
+size = Vector2i(400, 150)
+ok_button_text = "Heal"
+cancel_button_text = "Batal"
 
 [node name="BtnLeave" type="Button" parent="." unique_id=1437370269]
 layout_mode = 1

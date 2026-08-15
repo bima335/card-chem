@@ -4,7 +4,16 @@ extends Node2D
 enum TurnState { PLAYER, ENEMY }
 var current_state: TurnState = TurnState.PLAYER
 
+const CARD_CARBON_SHIELD: CardData = preload("uid://b1nye4430c7yv")
+const CARD_NITRIC_OXIDE: CardData = preload("uid://c7egfvnqlhxde")
+const CARD_OXYGEN_GAS: CardData = preload("uid://1rhiulfq30o5")
+const CARD_HYDROGEN_PEROXIDE: CardData = preload("uid://db0cc88e3ktnj")
+const CARD_NITROGEN_GAS: CardData = preload("uid://jjs12ewhi0vm")
+
 @export var available_cards: Array[CardData] 
+
+@export var default_blessing: BlessingData
+#@export var default_aura_1:  AuraCardData
 
 @onready var deck: Deck = $Deck
 @onready var hand: Hand = $Hand
@@ -20,10 +29,24 @@ var current_target: EnemyBase = null
 var active_effect_choice: CoatData = null
 var is_selecting_effect_target: bool = false
 var accumulated_gold: int = 0
+@export var aura_1: AuraCardData
+@export var aura_2: AuraCardData
+
+@export var blessing_1: BlessingData
+@export var blessing_2: BlessingData
+@export var blessing_3: BlessingData
 
 func _ready() -> void:
-	SoundManager.play_bgm("battle_theme")
+	_play_battle_music()
 	_connect_signals()
+	#BlessingManager.equip_blessing(default_blessing)
+	#AuraManager.equip_aura(default_aura_1)
+	#AuraManager.equip_aura(aura_1, 0)
+	#AuraManager.equip_aura(aura_2, 1)
+	#
+	#BlessingManager.equip_blessing(blessing_1)
+	#BlessingManager.equip_blessing(blessing_2)
+	#BlessingManager.equip_blessing(blessing_3)
 	
 	accumulated_gold = 0
 	GameManager.reset_round()
@@ -52,17 +75,30 @@ func _connect_signals() -> void:
 
 func _prepare_starting_deck() -> void:
 	if GameManager.player_deck.is_empty():
-		for i in range(15):
-			if not available_cards.is_empty():
-				GameManager.player_deck.append(available_cards.pick_random())
+		_build_default_starting_deck()
 
 	SaveManager.discover_cards(GameManager.player_deck)
 
 	for card in GameManager.player_deck:
-		var card_copy = card.duplicate(true) as CardData
+		var card_copy: CardData = card.duplicate(true) as CardData
 		deck.add_card(card_copy)
 		
 	_start_player_turn()
+
+func _build_default_starting_deck() -> void:
+	var deck_composition: Dictionary = {
+		CARD_CARBON_SHIELD: 2,
+		CARD_NITRIC_OXIDE: 1,
+		CARD_OXYGEN_GAS: 1,
+		CARD_HYDROGEN_PEROXIDE: 4,
+		CARD_NITROGEN_GAS: 2
+	}
+	
+	for card_resource: CardData in deck_composition:
+		var count: int = deck_composition[card_resource]
+		for i in range(count):
+			GameManager.player_deck.append(card_resource)
+			EventBus.card_obtained.emit(card_resource)
 
 func _on_enemy_turn_completed() -> void:
 	EventBus.round_ended.emit()
@@ -131,8 +167,14 @@ func _play_card_with_target(clicked_ui: CardUI, card_data: CardData, target: Ene
 	
 	if success:
 		hand.remove_card(card_data)
-		deck.add_to_discard(card_data)
+		
+		if _should_exhaust_card(card_data):
+			print("Kartu dengan Coat Purify hancur dan tidak masuk ke Discard Pile!")
+		else:
+			deck.add_to_discard(card_data)
+			
 		clicked_ui.queue_free()
+		ui_manager.arrange_hand()
 	else:
 		ui_manager.reject_play(clicked_ui)
 		clicked_ui.return_to_hand()
@@ -141,6 +183,7 @@ func _manual_discard_card(card_ui: CardUI, card_data: CardData) -> void:
 	hand.remove_card(card_data)
 	deck.add_to_discard(card_data)
 	card_ui.queue_free()
+	ui_manager.arrange_hand()
 	
 	player.add_random_token(1)
 	
@@ -177,22 +220,79 @@ func _play_card(clicked_ui: CardUI, card_data: CardData) -> void:
 	
 	if success:
 		hand.remove_card(card_data)
-		deck.add_to_discard(card_data)
+		
+		if _should_exhaust_card(card_data):
+			print("Kartu dengan Coat Purify hancur dan tidak masuk ke Discard Pile!")
+		else:
+			deck.add_to_discard(card_data)
+			
 		clicked_ui.queue_free()
+		ui_manager.arrange_hand()
 	else:
 		ui_manager.reject_play(clicked_ui)
 
+func _should_exhaust_card(card_data: CardData) -> bool:
+	if card_data.coat_data != null:
+		if card_data.coat_data.coat_type == CoatData.EffectCoatType.PURIFY:
+			return true
+	return false
+
 func _discard_hand_to_deck() -> void:
+	var remaining_cards: Array[CardData] = []
+	var cards_to_discard: Array[CardData] = []
+
 	for card in hand.cards_in_hand:
+		var coat: CoatData = card.coat_data
+		
+		if coat and (coat.coat_type == CoatData.EffectCoatType.CRYSTALIZED or coat.is_retained):
+			remaining_cards.append(card)
+			
+			if coat.retain_shield_bonus > 0:
+				_apply_crystalized_shield(coat.retain_shield_bonus)
+		else:
+			cards_to_discard.append(card)
+
+	for card in cards_to_discard:
 		deck.add_to_discard(card)
-	hand.cards_in_hand.clear()
-	ui_manager.clear_hand_visuals()
+
+	hand.cards_in_hand = remaining_cards
+	hand.hand_updated.emit(hand.cards_in_hand.size(), hand.max_hand_size)
+
+	_update_hand_ui_after_discard(cards_to_discard)
+
+func _apply_crystalized_shield(amount: int) -> void:
+	if player.has_method("add_shield"):
+		player.add_shield(amount)
+	elif player.has_method("gain_shield"):
+		player.gain_shield(amount)
+	elif "shield" in player:
+		player.shield += amount
+		player.stats_updated.emit()
+
+func _update_hand_ui_after_discard(discarded_cards: Array[CardData]) -> void:
+	if ui_manager.has_method("remove_discarded_card_visuals"):
+		ui_manager.remove_discarded_card_visuals(discarded_cards)
+	else:
+		_default_clean_discarded_ui(discarded_cards)
+
+func _default_clean_discarded_ui(discarded_cards: Array[CardData]) -> void:
+	var hand_container: Node = ui_manager.hand_container if "hand_container" in ui_manager else null
+	if not hand_container:
+		return
+
+	for child in hand_container.get_children():
+		if child is CardUI and child.data in discarded_cards:
+			child.queue_free()
+
+	ui_manager.arrange_hand()
 
 func _on_end_turn_pressed() -> void:
 	if current_state != TurnState.PLAYER: return
 	
 	current_state = TurnState.ENEMY
 	ui_manager.end_turn_button.disabled = true
+
+	AuraManager.prepare_next_round_accumulator()
 
 	_deselect_current_enemy()
 	_discard_hand_to_deck()
@@ -221,16 +321,68 @@ func _on_round_won() -> void:
 	ui_manager.end_turn_button.disabled = true
 	if accumulated_gold > 0:
 		GameManager.add_shop_coins(accumulated_gold)
+
+	if GameManager.current_floor >= 15 and GameManager.active_event_type == MapNodeData.NodeType.BOSS:
+		await get_tree().create_timer(1.0).timeout
+		_trigger_victory()
+		return
+
 	await get_tree().create_timer(1.5).timeout
 	reward_handler.show_reward_screen()
+
+
+func _trigger_victory() -> void:
+	get_tree().paused = true
+	var recap_scene = load("res://ui/recap/recap_ui.tscn")
+	if recap_scene:
+		var recap_instance = recap_scene.instantiate() as RecapUI
+		get_tree().root.add_child(recap_instance)
+		recap_instance.setup_recap(true)
+		queue_free()
 
 func _on_effect_target_requested(chosen_coat: CoatData) -> void:
 	active_effect_choice = chosen_coat
 	is_selecting_effect_target = true
-	ui_manager.show_card_viewer(GameManager.player_deck, "PILIH 1 KARTU UNTUK DIBERIKAN COAT: " + chosen_coat.coat_name, true)
+
+	var uncoated_cards = GameManager.player_deck.filter(
+		func(card: CardData): return card.coat_data == null
+	)
+	
+	ui_manager.show_card_viewer(uncoated_cards, "PILIH 1 KARTU UNTUK DIBERIKAN COAT: " + chosen_coat.coat_name, true)
 
 func _on_card_selected_for_effect(target_card: CardData) -> void:
 	if is_selecting_effect_target:
 		is_selecting_effect_target = false
 		reward_handler.apply_effect_to_card(target_card, active_effect_choice)
 		active_effect_choice = null
+
+func _play_battle_music() -> void:
+	if GameManager.active_event_type != MapNodeData.NodeType.BOSS:
+		SoundManager.play_bgm("battle")
+		return
+
+	if GameManager.current_section == null:
+		push_warning("Boss battle tidak memiliki current_section!")
+		SoundManager.play_bgm("battle")
+		return
+
+	var section_name: String = GameManager.current_section.section_name.to_lower()
+
+	print("Boss Section: ", section_name)
+
+	match section_name:
+		"ferrum":
+			SoundManager.play_bgm("ferrum")
+
+		"cobalt":
+			SoundManager.play_bgm("cobalt")
+
+		"neon":
+			SoundManager.play_bgm("neon")
+
+		"aurum":
+			SoundManager.play_bgm("aurum")
+
+		_:
+			push_warning("Musik boss belum ditemukan untuk section: " + section_name)
+			SoundManager.play_bgm("battle")

@@ -11,7 +11,7 @@ var current_phase: int = 1
 var atk_bonus_stack: int = 0
 var player_korosi_stacks_applied: int = 0
 var minion_counter: int = 0
-var is_attacked: bool
+var is_attacked: bool = false
 
 var absorbed_damage: int = 0
 var dazzle_stacks: int = 0
@@ -144,17 +144,17 @@ func determine_next_move() -> EnemyAction:
 	return action
 
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 	if tier == NeonTier.BOSS and not is_targetable:
+		absorb_player_incoming_damage(amount)
 		return
 		
-	if tier == NeonTier.ELITE and is_attacked == false:
+	if tier == NeonTier.ELITE and not is_attacked:
 		is_attacked = true
 		return
 		
-	
-	super.take_damage(amount)
+	super.take_damage(amount, is_direct_attack)
 
 
-func _on_any_enemy_died(dead_enemy: EnemyBase) -> void:
+func _on_any_enemy_died(_dead_enemy: EnemyBase) -> void:
 	pass

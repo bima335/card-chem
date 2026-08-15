@@ -3,6 +3,7 @@ extends Control
 @onready var continue_button: Button = $TextureRect/ContinueButton
 
 func _ready() -> void:
+	SoundManager.play_bgm("event")
 	continue_button.pressed.connect(_on_continue_button_pressed)
 
 func _on_continue_button_pressed() -> void:

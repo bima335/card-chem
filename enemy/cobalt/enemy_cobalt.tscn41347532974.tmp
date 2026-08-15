@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bcxdguiuddv5l"]
+
+[ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_q0tln"]
+[ext_resource type="Script" uid="uid://cnq0tcjwbc3wh" path="res://enemy/cobalt/enemy_cobalt.gd" id="2_aqsis"]
+[ext_resource type="Resource" uid="uid://bhspn8f4djyj4" path="res://enemy/cobalt/res/cobalt_minion.tres" id="3_khlab"]
+[ext_resource type="Resource" uid="uid://dcrq5so5inoee" path="res://ailments/res/stun.tres" id="4_v0xgy"]
+
+[node name="EnemyCobalt" unique_id=181012001 instance=ExtResource("1_q0tln")]
+script = ExtResource("2_aqsis")
+minion_stat = ExtResource("3_khlab")
+stun_ailment = ExtResource("4_v0xgy")
+stats = null

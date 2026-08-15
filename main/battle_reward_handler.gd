@@ -25,7 +25,7 @@ func _ready() -> void:
 		skip_button.pressed.connect(_return_to_map)
 
 func show_reward_screen() -> void:
-	GameManager.shop_coins += 10000
+	GameManager.shop_coins += 321
 	
 	for child in reward_card_grid.get_children():
 		child.queue_free()
@@ -151,7 +151,10 @@ func _get_current_section_index() -> int:
 
 func _on_aura_reward_chosen(chosen_aura: AuraCardData) -> void:
 	if AuraManager:
-		AuraManager.equip_aura(chosen_aura)
+		var equipped_successfully: bool = AuraManager.equip_aura(chosen_aura, -1)
+		
+		if not equipped_successfully:
+			push_error("[BattleRewardHandler] Gagal memasang Aura Card!")
 	
 	if SaveManager:
 		SaveManager.unlock_aura(chosen_aura)
@@ -162,6 +165,7 @@ func _on_reward_card_chosen(chosen_card: CardData) -> void:
 	var new_card = chosen_card.duplicate(true)
 	GameManager.player_deck.append(new_card)
 	SaveManager.discover_card(chosen_card)
+	EventBus.card_obtained.emit(chosen_card)
 	
 	_return_to_map()
 
@@ -175,6 +179,7 @@ func apply_effect_to_card(target_card: CardData, active_coat: CoatData) -> void:
 	if active_coat.coat_type == CoatData.EffectCoatType.CLONE:
 		var cloned_card = target_card.duplicate(true)
 		GameManager.player_deck.append(cloned_card)
+		EventBus.card_obtained.emit(cloned_card)
 
 	SaveManager.discover_coat(active_coat)
 	SaveManager.save_game()

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b1nye4430c7yv"]
 
-[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_li1s3"]
+[ext_resource type="Texture2D" uid="uid://chhumut7ufm8b" path="res://assets/Card/playing_card/CarbonShield.png" id="1_li1s3"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_r53dq"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_li1s3"]
 
@@ -8,8 +8,8 @@
 script = ExtResource("1_r53dq")
 id = "c_b_03"
 card_name = "Carbon Shield"
+description = "+8 Shield Player"
 card_texture = ExtResource("1_li1s3")
-modulate = Color(1, 0.3882353, 1, 1)
 card_type = 1
 target_type = 2
 cost_carbon = 3

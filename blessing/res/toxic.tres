@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://bq5ls8alaxbbo"]
 
 [ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_6fw3l"]
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_80hqa"]
+[ext_resource type="Texture2D" uid="uid://cw2id4ceg3gpr" path="res://assets/blessing_pin/Toxic Chemist.png" id="1_80hqa"]
 
 [resource]
 script = ExtResource("1_6fw3l")

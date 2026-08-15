@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bg3rf8ge3jwvl"]
 
-[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_5fwna"]
+[ext_resource type="Texture2D" uid="uid://bdhgtvu5hrtp5" path="res://assets/Card/playing_card/Roil.png" id="1_5fwna"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_i6ct3"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_5fwna"]
 
@@ -8,8 +8,8 @@
 script = ExtResource("1_i6ct3")
 id = "c_t_03"
 card_name = "Roil"
+description = "Memicu Volatile"
 card_texture = ExtResource("1_5fwna")
-modulate = Color(0.6411053, 3.2608584e-06, 1.8289685e-06, 1)
 rarity = 2
 card_type = 3
 buy_value = 13

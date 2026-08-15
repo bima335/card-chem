@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AuraCardData" format=3 uid="uid://dj5p473cnvohy"]
 
-[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_8jfi8"]
+[ext_resource type="Texture2D" uid="uid://dl2ryx4qq3pwv" path="res://assets/Card/aura_boss_card/Ferrum_CorrodedLimits.png" id="1_8jfi8"]
 [ext_resource type="Script" uid="uid://b100qugnu421l" path="res://aura/aura_card_data.gd" id="2_7gxrd"]
 
 [resource]
