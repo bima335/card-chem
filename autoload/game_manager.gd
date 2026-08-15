@@ -138,3 +138,32 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first
 
 func set_current_section(new_section: SectionData) -> void:
 	current_section = new_section
+
+func start_new_run() -> void:
+	current_wave_data.clear()
+	map_data_matrix.clear()
+	current_floor = 0
+	is_map_generated = false
+	available_paths.clear()
+	history_path.clear()
+
+	active_event_type = MapNodeData.NodeType.BATTLE_NORMAL
+	current_section = null
+
+	player_max_hp = 100
+	player_current_hp = player_max_hp
+
+	shop_coins = 0
+
+	player_deck.clear()
+
+	current_round = 1
+
+	BlessingManager.clear_all_blessings()
+
+	for i in range(AuraManager.MAX_AURA_SLOTS):
+		AuraManager.unequip_aura(i)
+
+	AuraManager.reset_battle_state()
+
+	RecapManager.reset_stats()

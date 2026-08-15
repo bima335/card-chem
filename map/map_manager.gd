@@ -150,9 +150,18 @@ func _draw_map_on_canvas(canvas_max_y: float) -> void:
 func _on_node_selected(node_data: MapNodeData) -> void:
 	GameManager.history_path.append(node_data.grid_position)
 	GameManager.available_paths = node_data.next_connections
+	
 	GameManager.current_floor += 1
 	GameManager.active_event_type = node_data.type
 	
+	# Update section berdasarkan lantai yang baru dimasuki
+	GameManager.update_current_section_for_floor(GameManager.current_floor - 1)
+	
+	print("=== NODE SELECTED ===")
+	print("Node Type: ", node_data.type)
+	print("Current Floor: ", GameManager.current_floor)
+	print("Current Section: ", GameManager.current_section.section_name if GameManager.current_section else "NULL")
+
 	if Engine.has_singleton("RecapManager") or get_node_or_null("/root/RecapManager"):
 		RecapManager.record_node_visited(node_data.grid_position, GameManager.current_floor)
 
@@ -165,14 +174,19 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 	match node_data.type:
 		MapNodeData.NodeType.SHOP:
 			get_tree().change_scene_to_file("res://shop/shop_scene.tscn")
+
 		MapNodeData.NodeType.REST:
 			get_tree().change_scene_to_file("res://event/event_scene.tscn")
+
 		MapNodeData.NodeType.RANDOM_EVENT:
 			get_tree().change_scene_to_file("res://event/random_event_scene.tscn")
-		MapNodeData.NodeType.BATTLE_NORMAL, MapNodeData.NodeType.BATTLE_HARD, MapNodeData.NodeType.BOSS:
+
+		MapNodeData.NodeType.BATTLE_NORMAL, \
+		MapNodeData.NodeType.BATTLE_HARD, \
+		MapNodeData.NodeType.BOSS:
 			GameManager.current_wave_data = node_data.wave_data
 			get_tree().change_scene_to_file("res://main/battle_scene.tscn")
-
+			
 func _on_btn_up_pressed() -> void:
 	if current_view_section < total_sections - 1:
 		current_view_section += 1

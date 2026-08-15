@@ -67,4 +67,6 @@ func _on_play_pressed() -> void:
 
 	await fade_tween.finished
 
+	GameManager.start_new_run()
+
 	get_tree().change_scene_to_file(MAP_SCENE_PATH)
