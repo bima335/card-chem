@@ -4,7 +4,7 @@ extends Node
 @export var card_ui_scene: PackedScene
 
 @export_group("UI Elements")
-@export var hand_container: HBoxContainer
+@export var hand_container: Control
 @export var end_turn_button: TextureButton
 @export var deck_visual: TextureButton
 @export var discard_visual: TextureButton
@@ -19,7 +19,7 @@ extends Node
 @export_group("Player HUD")
 @export var player_hp_bar: TextureProgressBar
 @export var player_hp_label: Label
-@export var player_shield_bar: ProgressBar
+@export var player_shield_bar: TextureProgressBar
 @export var player_shield_label: Label
 @export var token_container: Control
 
@@ -44,6 +44,14 @@ extends Node
 @export var deck_view_panel: PanelContainer
 @export var panel_title_label: Label
 @export var card_grid: GridContainer
+
+@export_group("Hand Fan Layout")
+@export var hand_card_spacing: float = 70.0
+@export var hand_max_hand_width: float = 760.0
+@export var hand_fan_angle_degrees: float = 8.0
+@export var hand_arc_height: float = 30.0
+@export var hand_bottom_margin: float = 10.0
+@export var hand_layout_duration: float = 0.22
 
 
 var _end_turn_tween: Tween
@@ -217,11 +225,79 @@ func hide_deck_viewer() -> void:
 	tween.chain().tween_callback(deck_backdrop.hide)
 
 
+## Menyusun ulang semua CardUI di dalam hand_container jadi formasi kipas:
+## numpuk (overlap), melengkung ke atas di tengah, dan sedikit miring di ujung.
+## Aman dipanggil kapan saja kartu ditambah/dihapus dari tangan.
+func arrange_hand() -> void:
+	if not hand_container:
+		return
+
+	var cards: Array[CardUI] = []
+	for child in hand_container.get_children():
+		if child is CardUI and is_instance_valid(child) and not child.is_queued_for_deletion():
+			cards.append(child)
+
+	var count: int = cards.size()
+	if count == 0:
+		return
+
+	var spacing: float = hand_card_spacing
+	if count > 1:
+		var total_span: float = spacing * (count - 1)
+		if total_span > hand_max_hand_width:
+			spacing = hand_max_hand_width / float(count - 1)
+
+	var container_size: Vector2 = hand_container.size
+	var center_x: float = container_size.x / 2.0
+	var base_y: float = container_size.y - hand_bottom_margin
+
+	for i in range(count):
+		var card: CardUI = cards[i]
+
+		var card_size: Vector2 = card.custom_minimum_size
+		if card_size == Vector2.ZERO:
+			card_size = card.size
+
+		var offset_index: float = i - float(count - 1) / 2.0
+		var normalized: float = 0.0
+		if count > 1:
+			normalized = offset_index / (float(count - 1) / 2.0)
+
+		var target_x: float = center_x + offset_index * spacing - card_size.x / 2.0
+		var target_y: float = base_y - card_size.y - hand_arc_height * (1.0 - normalized * normalized)
+		var target_rotation: float = deg_to_rad(normalized * hand_fan_angle_degrees)
+		var target_position: Vector2 = Vector2(target_x, target_y)
+
+		card.pivot_offset = card_size / 2.0
+		card.hand_position = target_position
+		card.hand_rotation = target_rotation
+		card.hand_z_index = i
+
+		# Jangan ganggu kartu yang lagi di-drag atau lagi animasi kembali ke tangan.
+		if card.is_dragging or card.is_returning:
+			continue
+
+		card.z_index = i
+
+		if card.modulate.a < 0.99:
+			# Kartu baru (belum ke-fade-in) langsung ditaruh di posisi akhir,
+			# supaya animasi "terbang dari deck" (animate_draw_card) menuju titik yang benar.
+			card.position = target_position
+			card.rotation = target_rotation
+		else:
+			var tween: Tween = card.create_tween()
+			tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween.set_parallel(true)
+			tween.tween_property(card, "position", target_position, hand_layout_duration)
+			tween.tween_property(card, "rotation", target_rotation, hand_layout_duration)
+
+
 func animate_draw_card(new_card_data: CardData, on_land_callback: Callable) -> void:
 	var real_card: CardUI = card_ui_scene.instantiate() as CardUI
 	hand_container.add_child(real_card)
 	real_card.setup(new_card_data)
 	real_card.modulate = Color(1, 1, 1, 0)
+	arrange_hand()
 	
 	await get_tree().process_frame
 	

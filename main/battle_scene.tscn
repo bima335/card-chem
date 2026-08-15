@@ -111,6 +111,10 @@ deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
 panel_title_label = NodePath("../../UI/DeckViewPanel/TitleLabel")
 card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
+hand_card_spacing = 145.0
+hand_max_hand_width = 850.0
+hand_fan_angle_degrees = 12.0
+hand_arc_height = 45.0
 gold_label = NodePath("../../UI/StatGroup/GoldLabel")
 
 [node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
@@ -265,25 +269,27 @@ offset_right = 400.0
 offset_bottom = -81.0
 grow_vertical = 0
 
-[node name="HandContainer" type="HBoxContainer" parent="UI" unique_id=700329193]
+[node name="HandContainer" type="Control" parent="UI" unique_id=700329193]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -40.0
-offset_right = 20.0
+offset_left = -550.0
+offset_top = -280.0
+offset_right = 550.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
-[node name="PlayerShieldBar" type="ProgressBar" parent="UI" unique_id=2089301244]
-offset_left = 12.0
-offset_top = 488.0
-offset_right = 128.0
-offset_bottom = 515.0
-step = 1.0
-show_percentage = false
+[node name="PlayerShieldBar" type="TextureProgressBar" parent="UI" unique_id=832812271]
+offset_left = 20.0
+offset_top = 585.0
+offset_right = 136.0
+offset_bottom = 612.0
+fill_mode = 1
 
 [node name="Label" type="Label" parent="UI/PlayerShieldBar" unique_id=793629810]
 layout_mode = 1

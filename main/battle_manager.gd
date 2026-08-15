@@ -174,6 +174,7 @@ func _play_card_with_target(clicked_ui: CardUI, card_data: CardData, target: Ene
 			deck.add_to_discard(card_data)
 			
 		clicked_ui.queue_free()
+		ui_manager.arrange_hand()
 	else:
 		ui_manager.reject_play(clicked_ui)
 		clicked_ui.return_to_hand()
@@ -182,6 +183,7 @@ func _manual_discard_card(card_ui: CardUI, card_data: CardData) -> void:
 	hand.remove_card(card_data)
 	deck.add_to_discard(card_data)
 	card_ui.queue_free()
+	ui_manager.arrange_hand()
 	
 	player.add_random_token(1)
 	
@@ -225,6 +227,7 @@ func _play_card(clicked_ui: CardUI, card_data: CardData) -> void:
 			deck.add_to_discard(card_data)
 			
 		clicked_ui.queue_free()
+		ui_manager.arrange_hand()
 	else:
 		ui_manager.reject_play(clicked_ui)
 
@@ -280,6 +283,8 @@ func _default_clean_discarded_ui(discarded_cards: Array[CardData]) -> void:
 	for child in hand_container.get_children():
 		if child is CardUI and child.data in discarded_cards:
 			child.queue_free()
+
+	ui_manager.arrange_hand()
 
 func _on_end_turn_pressed() -> void:
 	if current_state != TurnState.PLAYER: return
