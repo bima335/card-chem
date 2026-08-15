@@ -5,17 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="3_lwejg"]
-[ext_resource type="Resource" uid="uid://ci1iahhwxt7sg" path="res://aura/res/neon_illuminate.tres" id="4_yun0f"]
-[ext_resource type="Resource" uid="uid://bkb5r6gv8ufjg" path="res://aura/res/plasma_amplifier.tres" id="5_0ci4p"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
-[ext_resource type="Resource" uid="uid://dwjyvk25i5hbl" path="res://blessing/res/over_accidic.tres" id="5_yme4k"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
-[ext_resource type="Resource" uid="uid://bq5ls8alaxbbo" path="res://blessing/res/toxic.tres" id="7_yme4k"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
-[ext_resource type="Resource" uid="uid://byajmsgsturl4" path="res://blessing/res/resonance.tres" id="8_iow6o"]
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
@@ -59,12 +53,6 @@
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_lwejg")])
-aura_1 = ExtResource("4_yun0f")
-aura_2 = ExtResource("5_0ci4p")
-blessing_1 = ExtResource("5_yme4k")
-blessing_2 = ExtResource("7_yme4k")
-blessing_3 = ExtResource("8_iow6o")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -115,6 +103,7 @@ token_h_tex = ExtResource("32_token_h")
 token_o_tex = ExtResource("33_token_o")
 token_n_tex = ExtResource("34_token_n")
 token_spacing = 5
+token_icon_size = null
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
 panel_title_label = NodePath("")
@@ -123,6 +112,8 @@ hand_card_spacing = 145.0
 hand_max_hand_width = 850.0
 hand_fan_angle_degrees = 12.0
 hand_arc_height = 45.0
+hand_bottom_margin = null
+hand_layout_duration = null
 gold_label = NodePath("../../UI/StatGroup/GoldLabel")
 
 [node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
@@ -145,6 +136,11 @@ destabilize_ailment = ExtResource("24_yun0f")
 disintegrate_ailment = ExtResource("25_uakwd")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
+
+[node name="bglayout" type="TextureRect" parent="UI" unique_id=1504076058]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("47_j1o3r")
 
 [node name="Avatar" type="TextureRect" parent="UI" unique_id=1471078765]
 offset_right = 40.0
@@ -452,11 +448,6 @@ theme_override_constants/separation = 6
 [node name="BattleLogUI" parent="UI" unique_id=259505878 instance=ExtResource("37_d7b84")]
 offset_top = 288.0
 offset_bottom = 602.0
-
-[node name="bglayout" type="TextureRect" parent="UI" unique_id=1504076058]
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("47_j1o3r")
 
 [node name="TopRightHUD" type="HBoxContainer" parent="UI" unique_id=1046660355]
 anchors_preset = 1

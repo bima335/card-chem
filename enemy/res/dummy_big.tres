@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_evosy"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_8bfcq"]
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="3_8bfcq"]
+[ext_resource type="Texture2D" uid="uid://dw452avrj2d4" path="res://assets/Character/native/nativeenemy_5.png" id="3_8bfcq"]
 
 [resource]
 script = ExtResource("2_8bfcq")

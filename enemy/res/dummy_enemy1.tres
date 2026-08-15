@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_jn41q"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_3p4tg"]
 [ext_resource type="Resource" uid="uid://s07r4mi84yb0" path="res://enemy/moves/basic_attack.tres" id="2_jk67q"]
-[ext_resource type="Texture2D" uid="uid://dwhejslhcg07g" path="res://assets/asa.jpeg" id="3_3p4tg"]
+[ext_resource type="Texture2D" uid="uid://cbhjhhs5kd4et" path="res://assets/Character/native/nativeenemy_3.png" id="4_jk67q"]
 
 [resource]
 script = ExtResource("2_3p4tg")
 enemy_name = "Dummy Ahh"
 max_hp = 25
-texture = ExtResource("3_3p4tg")
+texture = ExtResource("4_jk67q")
 description = "Teki"
 moveset = Array[ExtResource("1_jn41q")]([ExtResource("2_jk67q")])
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

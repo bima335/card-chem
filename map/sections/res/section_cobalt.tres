@@ -9,10 +9,12 @@
 [ext_resource type="Resource" uid="uid://cfdgokrg7u7t5" path="res://aura/res/crystal_resonance.tres" id="3_krwty"]
 [ext_resource type="Resource" uid="uid://ca3u8s6esuegx" path="res://enemy/cobalt/res/cobalt_elite.tres" id="4_3o66b"]
 [ext_resource type="Resource" uid="uid://cnm4ip8t65wxi" path="res://aura/res/magnetic_pull.tres" id="4_osxi5"]
+[ext_resource type="Texture2D" uid="uid://dcs4qh1hxmb2y" path="res://assets/backgrounds/wallpaper cobalt.png" id="10_15j4l"]
 
 [resource]
 script = ExtResource("2_owjho")
 section_name = "Section Cobalt"
+section_wallpaper = ExtResource("10_15j4l")
 exclusive_common = Array[ExtResource("1_0lfpy")]([ExtResource("3_02txh")])
 exclusive_elite = Array[ExtResource("1_0lfpy")]([ExtResource("4_3o66b")])
 exclusive_boss = Array[ExtResource("1_0lfpy")]([ExtResource("2_rnuc1")])

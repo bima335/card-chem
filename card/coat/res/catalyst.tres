@@ -7,6 +7,7 @@
 script = ExtResource("1_8cd43")
 coat_type = 6
 coat_name = "Catalyst"
+description = "Reduce cost by 1 random token"
 icon = ExtResource("1_ie6xm")
 buy_price = 13
 cost_reduction_amount = 1
