@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://beak3k2b8gw1m"]
 
-[ext_resource type="AudioStream" uid="uid://cf1y3kmmglyse" path="res://assets/audio/bgm/main_menu.mp3" id="1_byjw7"]
+[ext_resource type="Script" uid="uid://boke2xajk1a3" path="res://main/main_menu.gd" id="1_gxvyx"]
 [ext_resource type="Texture2D" uid="uid://bjwv0r7i2wudm" path="res://assets/main_menu/background.png" id="2_nomyo"]
 [ext_resource type="AudioStream" uid="uid://w7pord3upy6a" path="res://assets/audio/sfx/ui/UI_Click_2.wav" id="3_15u4j"]
 [ext_resource type="Texture2D" uid="uid://cmb71q31pcrgb" path="res://assets/main_menu/pngseq/mainmenu0001.png" id="3_afqpu"]
@@ -182,10 +182,7 @@ animations = [{
 }]
 
 [node name="Main_Menu" type="Node2D" unique_id=60194578]
-
-[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=494538828]
-stream = ExtResource("1_byjw7")
-autoplay = true
+script = ExtResource("1_gxvyx")
 
 [node name="GlobalClickSFX" type="AudioStreamPlayer" parent="." unique_id=1843479523]
 stream = ExtResource("3_15u4j")

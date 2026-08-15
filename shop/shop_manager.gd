@@ -69,7 +69,7 @@ var pending_sell_price: int = 0
 
 func _ready() -> void:
 	_load_all_shop_resources()
-	SoundManager.play_bgm("shop_theme")
+	SoundManager.play_bgm("shop")
 	_update_coin_display()
 	_connect_signals()
 

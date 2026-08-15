@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var global_click_sfx: AudioStreamPlayer = $GlobalClickSFX
-@onready var background: TextureRect = $TextureRect
+@onready var background: TextureRect = $bg
 @onready var tombol_list: Array = [
 	$Play,
 	$Collection,
@@ -9,11 +9,15 @@ extends Node2D
 	$Credit,
 	$Quit
 ]
+const MAP_SCENE_PATH := "res://map/map_scene.tscn"
 
 func _ready() -> void:
+	SoundManager.play_bgm("main_menu")
 	background.pivot_offset = background.size / 2
 	background.scale = Vector2(1.2, 1.2)
 	
+	$Play.pressed.connect(_on_play_pressed)
+
 	for btn in tombol_list:
 		btn.modulate.a = 0.0
 		btn.scale = Vector2(0, 0)
@@ -33,3 +37,34 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if global_click_sfx and not global_click_sfx.playing:
 			global_click_sfx.play()
+
+func _on_play_pressed() -> void:
+	if global_click_sfx:
+		global_click_sfx.play()
+
+	# Cegah tombol dipencet berkali-kali
+	for btn in tombol_list:
+		btn.disabled = true
+
+	# Fade out seluruh menu
+	var fade_tween := create_tween()
+	fade_tween.set_parallel(true)
+
+	for btn in tombol_list:
+		fade_tween.tween_property(
+			btn,
+			"modulate:a",
+			0.0,
+			0.25
+		)
+
+	fade_tween.tween_property(
+		background,
+		"modulate:a",
+		0.0,
+		0.35
+	)
+
+	await fade_tween.finished
+
+	get_tree().change_scene_to_file(MAP_SCENE_PATH)

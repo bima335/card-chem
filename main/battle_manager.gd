@@ -37,7 +37,7 @@ var accumulated_gold: int = 0
 @export var blessing_3: BlessingData
 
 func _ready() -> void:
-	SoundManager.play_bgm("battle_theme")
+	_play_battle_music()
 	_connect_signals()
 	#BlessingManager.equip_blessing(default_blessing)
 	#AuraManager.equip_aura(default_aura_1)
@@ -355,3 +355,34 @@ func _on_card_selected_for_effect(target_card: CardData) -> void:
 		is_selecting_effect_target = false
 		reward_handler.apply_effect_to_card(target_card, active_effect_choice)
 		active_effect_choice = null
+
+func _play_battle_music() -> void:
+	if GameManager.active_event_type != MapNodeData.NodeType.BOSS:
+		SoundManager.play_bgm("battle")
+		return
+
+	if GameManager.current_section == null:
+		push_warning("Boss battle tidak memiliki current_section!")
+		SoundManager.play_bgm("battle")
+		return
+
+	var section_name: String = GameManager.current_section.section_name.to_lower()
+
+	print("Boss Section: ", section_name)
+
+	match section_name:
+		"ferrum":
+			SoundManager.play_bgm("ferrum")
+
+		"cobalt":
+			SoundManager.play_bgm("cobalt")
+
+		"neon":
+			SoundManager.play_bgm("neon")
+
+		"aurum":
+			SoundManager.play_bgm("aurum")
+
+		_:
+			push_warning("Musik boss belum ditemukan untuk section: " + section_name)
+			SoundManager.play_bgm("battle")

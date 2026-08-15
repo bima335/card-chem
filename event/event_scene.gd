@@ -8,6 +8,7 @@ extends Control
 const REST_HEAL_AMOUNT: int = 15
 
 func _ready() -> void:
+	SoundManager.play_bgm("event")
 	back_button.pressed.connect(_on_back_pressed)
 	
 	match GameManager.active_event_type:
