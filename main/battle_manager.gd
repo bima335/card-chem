@@ -389,3 +389,18 @@ func _play_battle_music() -> void:
 		_:
 			push_warning("Musik boss belum ditemukan untuk section: " + section_name)
 			SoundManager.play_bgm("battle")
+
+func get_discard_pile() -> Array[CardData]:
+	if deck:
+		return deck.discard_pile
+	return []
+
+
+func get_deck_cards() -> Array[CardData]:
+	if deck:
+		return deck.cards
+	return []
+
+
+func get_accumulated_gold() -> int:
+	return accumulated_gold

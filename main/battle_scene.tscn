@@ -5,17 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
-[ext_resource type="Resource" uid="uid://b7ksujfeuql47" path="res://card/resources/debuff/oxygen_spray.tres" id="3_lwejg"]
-[ext_resource type="Resource" uid="uid://ci1iahhwxt7sg" path="res://aura/res/neon_illuminate.tres" id="4_yun0f"]
-[ext_resource type="Resource" uid="uid://bkb5r6gv8ufjg" path="res://aura/res/plasma_amplifier.tres" id="5_0ci4p"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
-[ext_resource type="Resource" uid="uid://dwjyvk25i5hbl" path="res://blessing/res/over_accidic.tres" id="5_yme4k"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
-[ext_resource type="Resource" uid="uid://bq5ls8alaxbbo" path="res://blessing/res/toxic.tres" id="7_yme4k"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
-[ext_resource type="Resource" uid="uid://byajmsgsturl4" path="res://blessing/res/resonance.tres" id="8_iow6o"]
 [ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
@@ -52,18 +46,25 @@
 [ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="36_p5m33"]
 [ext_resource type="PackedScene" uid="uid://dyaaa2mkebw73" path="res://ui/battle_log/battle_log_ui.tscn" id="37_d7b84"]
 [ext_resource type="Texture2D" uid="uid://2xyjw222so2" path="res://assets/HUD/tombolendround.png" id="37_lt6r5"]
+[ext_resource type="Texture2D" uid="uid://do823icn0py6f" path="res://assets/HUD/shield_healthbar.png" id="38_06b3h"]
 [ext_resource type="Texture2D" uid="uid://y7tnpvmgxe4f" path="res://assets/HUD/layoutaurabosssatuan.png" id="40_single_slot"]
 [ext_resource type="Texture2D" uid="uid://lkta4xaqr4nb" path="res://assets/HUD/layoutblessingsatuan.png" id="41_blessing_slot"]
+[ext_resource type="Texture2D" uid="uid://cw184p3eh4ger" path="res://assets/token/Carbon.png" id="42_7mfaq"]
+[ext_resource type="Texture2D" uid="uid://ditq0oqjdnhfo" path="res://assets/token/Hidrogen.png" id="43_j1o3r"]
+[ext_resource type="Texture2D" uid="uid://c4xhfhuqok67s" path="res://assets/token/Oksigen.png" id="44_7djar"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="44_7mfaq"]
+[ext_resource type="Texture2D" uid="uid://4etllkmdm2cg" path="res://assets/token/Nitrogen.png" id="45_olllg"]
+[ext_resource type="Texture2D" uid="uid://c0g5jct0aqw30" path="res://assets/HUD/bglayout.png" id="47_j1o3r"]
+[ext_resource type="Texture2D" uid="uid://cmvketrgstjx6" path="res://assets/HUD/panel_serbaguna.png" id="50_7djar"]
+[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="51_olllg"]
+[ext_resource type="Texture2D" uid="uid://b3awcm6aq22kn" path="res://assets/HUD/statusplayer.png" id="52_a71yv"]
+[ext_resource type="Texture2D" uid="uid://clm53sedrbusy" path="res://assets/HUD/rewardspanel.png" id="53_7i7p3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
-available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("3_lwejg")])
-aura_1 = ExtResource("4_yun0f")
-aura_2 = ExtResource("5_0ci4p")
-blessing_1 = ExtResource("5_yme4k")
-blessing_2 = ExtResource("7_yme4k")
-blessing_3 = ExtResource("8_iow6o")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
@@ -116,7 +117,7 @@ token_n_tex = ExtResource("34_token_n")
 token_spacing = 5
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
-panel_title_label = NodePath("../../UI/DeckViewPanel/TitleLabel")
+panel_title_label = NodePath("")
 card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
 hand_card_spacing = 145.0
 hand_max_hand_width = 850.0
@@ -131,7 +132,7 @@ aura_card_ui_scene = ExtResource("14_dairb")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn"), ExtResource("16_dairb"), ExtResource("5_j5qo7")])
 available_coats = Array[ExtResource("27_j1o3r")]([ExtResource("28_7djar"), ExtResource("29_olllg"), ExtResource("30_a71yv"), ExtResource("31_7i7p3"), ExtResource("32_e61ho"), ExtResource("33_gfdxq")])
 reward_backdrop = NodePath("../../UI/RewardBackdrop")
-reward_title = NodePath("../../UI/RewardBackdrop/VBoxContainer/TtileLabel")
+reward_title = NodePath("")
 reward_card_grid = NodePath("../../UI/RewardBackdrop/VBoxContainer/RewardCardGrid")
 skip_button = NodePath("../../UI/RewardBackdrop/VBoxContainer/SkipButton")
 
@@ -145,6 +146,11 @@ destabilize_ailment = ExtResource("24_yun0f")
 disintegrate_ailment = ExtResource("25_uakwd")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
+
+[node name="bglayout" type="TextureRect" parent="UI" unique_id=1504076058]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("47_j1o3r")
 
 [node name="Avatar" type="TextureRect" parent="UI" unique_id=1471078765]
 offset_right = 40.0
@@ -184,11 +190,24 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 179.0
-offset_top = -122.0
-offset_right = 219.0
-offset_bottom = -99.0
+offset_left = 197.0
+offset_top = -105.0
+offset_right = 298.0
+offset_bottom = -82.0
 grow_vertical = 0
+
+[node name="DiscardVisual" type="TextureButton" parent="UI/StatGroup" unique_id=946672430]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -216.0
+offset_right = 87.0
+offset_bottom = -156.0
+grow_vertical = 0
+texture_normal = ExtResource("26_4n26w")
+stretch_mode = 5
 
 [node name="StatVisual" type="TextureButton" parent="UI/StatGroup" unique_id=122638433]
 layout_mode = 1
@@ -201,20 +220,6 @@ offset_right = 79.0
 offset_bottom = -208.0
 grow_vertical = 0
 texture_normal = ExtResource("25_yme4k")
-stretch_mode = 5
-
-[node name="DiscardVisual" type="TextureButton" parent="UI/StatGroup" unique_id=946672430]
-modulate = Color(0.41124472, 0.00016865015, 0.43268502, 1)
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -216.0
-offset_right = 87.0
-offset_bottom = -156.0
-grow_vertical = 0
-texture_normal = ExtResource("26_4n26w")
 stretch_mode = 5
 
 [node name="DeckVisual" type="TextureButton" parent="UI/StatGroup" unique_id=1314374451]
@@ -236,9 +241,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 128.0
-offset_top = -142.0
+offset_top = -153.0
 offset_right = 257.0
-offset_bottom = -98.0
+offset_bottom = -109.0
 grow_vertical = 0
 texture = ExtResource("34_xu2u0")
 
@@ -293,11 +298,12 @@ grow_vertical = 0
 mouse_filter = 2
 
 [node name="PlayerShieldBar" type="TextureProgressBar" parent="UI" unique_id=832812271]
-offset_left = 20.0
-offset_top = 585.0
-offset_right = 136.0
-offset_bottom = 612.0
+offset_left = 62.0
+offset_top = 1008.0
+offset_right = 471.0
+offset_bottom = 1035.0
 fill_mode = 1
+texture_progress = ExtResource("38_06b3h")
 
 [node name="Label" type="Label" parent="UI/PlayerShieldBar" unique_id=793629810]
 layout_mode = 1
@@ -307,9 +313,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = -11.5
+offset_top = -74.5
 offset_right = 20.0
-offset_bottom = 11.5
+offset_bottom = -51.5
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -326,17 +332,38 @@ grow_vertical = 0
 texture_normal = ExtResource("37_lt6r5")
 stretch_mode = 5
 
+[node name="Label" type="Label" parent="UI/EndTurnButton" unique_id=320150656]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 153.0
+offset_right = 211.0
+offset_bottom = 230.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("44_7mfaq")
+theme_override_font_sizes/font_size = 30
+text = "End
+Turn"
+
 [node name="TokenContainer" type="VBoxContainer" parent="UI" unique_id=1305011282]
 offset_left = 20.0
-offset_top = 74.0
-offset_right = 320.0
-offset_bottom = 320.0
+offset_top = 34.0
+offset_right = 370.0
+offset_bottom = 280.0
 theme_override_constants/separation = -1
 
 [node name="CWadah" type="TextureRect" parent="UI/TokenContainer" unique_id=1336236963]
 custom_minimum_size = Vector2(350, 60)
 layout_mode = 2
 texture = ExtResource("30_wadah_token")
+expand_mode = 1
+
+[node name="logoC" type="TextureRect" parent="UI/TokenContainer/CWadah" unique_id=838052318]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 10.0
+offset_right = 55.0
+offset_bottom = 52.0
+texture = ExtResource("42_7mfaq")
 expand_mode = 1
 
 [node name="CMargin" type="MarginContainer" parent="UI/TokenContainer/CWadah" unique_id=20018307]
@@ -358,6 +385,15 @@ layout_mode = 2
 texture = ExtResource("30_wadah_token")
 expand_mode = 1
 
+[node name="logoH" type="TextureRect" parent="UI/TokenContainer/HWadah" unique_id=63256322]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 10.0
+offset_right = 54.0
+offset_bottom = 51.0
+texture = ExtResource("43_j1o3r")
+expand_mode = 1
+
 [node name="HMargin" type="MarginContainer" parent="UI/TokenContainer/HWadah" unique_id=413400907]
 layout_mode = 1
 anchors_preset = 15
@@ -375,6 +411,15 @@ theme_override_constants/separation = 6
 custom_minimum_size = Vector2(350, 60)
 layout_mode = 2
 texture = ExtResource("30_wadah_token")
+expand_mode = 1
+
+[node name="logoO" type="TextureRect" parent="UI/TokenContainer/OWadah" unique_id=388955313]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 10.0
+offset_right = 54.0
+offset_bottom = 52.0
+texture = ExtResource("44_7djar")
 expand_mode = 1
 
 [node name="OMargin" type="MarginContainer" parent="UI/TokenContainer/OWadah" unique_id=1384873146]
@@ -396,6 +441,15 @@ layout_mode = 2
 texture = ExtResource("30_wadah_token")
 expand_mode = 1
 
+[node name="logoN" type="TextureRect" parent="UI/TokenContainer/NWadah" unique_id=148635619]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 10.0
+offset_right = 53.0
+offset_bottom = 50.0
+texture = ExtResource("45_olllg")
+expand_mode = 1
+
 [node name="NMargin" type="MarginContainer" parent="UI/TokenContainer/NWadah" unique_id=1840738310]
 layout_mode = 1
 anchors_preset = 15
@@ -410,6 +464,8 @@ layout_mode = 2
 theme_override_constants/separation = 6
 
 [node name="BattleLogUI" parent="UI" unique_id=259505878 instance=ExtResource("37_d7b84")]
+offset_top = 288.0
+offset_bottom = 602.0
 
 [node name="TopRightHUD" type="HBoxContainer" parent="UI" unique_id=1046660355]
 anchors_preset = 1
@@ -497,14 +553,40 @@ offset_right = 750.0
 offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_g4v7s")
+
+[node name="Deckpanel" type="TextureRect" parent="UI/DeckViewPanel" unique_id=1721161816]
+layout_mode = 2
+texture = ExtResource("50_7djar")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/DeckViewPanel" unique_id=191365710]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="Tittle" type="TextureRect" parent="UI/DeckViewPanel/VBoxContainer" unique_id=1350533598]
+layout_mode = 2
+texture = ExtResource("51_olllg")
+
+[node name="tittletext" type="Label" parent="UI/DeckViewPanel/VBoxContainer/Tittle" unique_id=1076514019]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -11.5
+offset_right = 39.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("44_7mfaq")
+theme_override_font_sizes/font_size = 50
+text = "Your Deck"
+
 [node name="ScrollContainer" type="ScrollContainer" parent="UI/DeckViewPanel/VBoxContainer" unique_id=592154474]
-custom_minimum_size = Vector2(1000, 400)
+custom_minimum_size = Vector2(1600, 800)
 layout_mode = 2
 
 [node name="CardGrid" type="GridContainer" parent="UI/DeckViewPanel/VBoxContainer/ScrollContainer" unique_id=1205949729]
@@ -512,13 +594,94 @@ layout_mode = 2
 size_flags_horizontal = 4
 columns = 6
 
-[node name="TitleLabel" type="Label" parent="UI/DeckViewPanel" unique_id=715867543]
+[node name="CloseButton" type="Button" parent="UI/DeckViewPanel" unique_id=992015313]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Close"
+
+[node name="DiscardViewPanel" type="PanelContainer" parent="UI" unique_id=1955223716]
+visible = false
+custom_minimum_size = Vector2(1500, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -400.0
+offset_right = 750.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_g4v7s")
+
+[node name="DiscardPanel" type="TextureRect" parent="UI/DiscardViewPanel" unique_id=1559011069]
+layout_mode = 2
+texture = ExtResource("50_7djar")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DiscardViewPanel" unique_id=1707384684]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
-text = "DECK"
+size_flags_vertical = 4
 
-[node name="CloseButton" type="Button" parent="UI/DeckViewPanel" unique_id=992015313]
+[node name="Tittle" type="TextureRect" parent="UI/DiscardViewPanel/VBoxContainer" unique_id=1607370196]
+layout_mode = 2
+texture = ExtResource("51_olllg")
+
+[node name="tittletext" type="Label" parent="UI/DiscardViewPanel/VBoxContainer/Tittle" unique_id=1850644794]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -11.5
+offset_right = 39.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("44_7mfaq")
+theme_override_font_sizes/font_size = 50
+text = "Your Discard Pile"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/DiscardViewPanel/VBoxContainer" unique_id=222877208]
+custom_minimum_size = Vector2(1600, 800)
+layout_mode = 2
+
+[node name="CardGrid" type="GridContainer" parent="UI/DiscardViewPanel/VBoxContainer/ScrollContainer" unique_id=804146589]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 6
+
+[node name="CloseButton" type="Button" parent="UI/DiscardViewPanel" unique_id=812849302]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Close"
+
+[node name="StatViewPanel" type="PanelContainer" parent="UI" unique_id=1904291167]
+visible = false
+custom_minimum_size = Vector2(1500, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -400.0
+offset_right = 750.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_g4v7s")
+
+[node name="StatPanel" type="TextureRect" parent="UI/StatViewPanel" unique_id=2025759813]
+layout_mode = 2
+texture = ExtResource("52_a71yv")
+
+[node name="CloseButton" type="Button" parent="UI/StatViewPanel" unique_id=283893484]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -532,7 +695,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.022622466, 0.022621531, 0.14014712, 0.75686276)
+color = Color(0, 0, 0, 0.3647059)
 
 [node name="RewardBackdrop" type="ColorRect" parent="UI" unique_id=621223476]
 visible = false
@@ -541,7 +704,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.81960785)
+color = Color(0, 0, 0, 0.3647059)
+
+[node name="rewardpanel" type="TextureRect" parent="UI/RewardBackdrop" unique_id=571783904]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 65.0
+offset_right = 1850.0
+offset_bottom = 1021.0
+texture = ExtResource("53_7i7p3")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/RewardBackdrop" unique_id=798449482]
 layout_mode = 1
@@ -550,17 +721,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = 84.0
+offset_top = -77.5
+offset_right = 126.0
+offset_bottom = -16.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
-
-[node name="TtileLabel" type="Label" parent="UI/RewardBackdrop/VBoxContainer" unique_id=789828]
-layout_mode = 2
-text = "VICTORY"
 
 [node name="RewardCardGrid" type="HBoxContainer" parent="UI/RewardBackdrop/VBoxContainer" unique_id=1619136986]
 layout_mode = 2

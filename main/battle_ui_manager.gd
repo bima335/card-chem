@@ -53,7 +53,6 @@ extends Node
 @export var hand_bottom_margin: float = 10.0
 @export var hand_layout_duration: float = 0.22
 
-
 var _end_turn_tween: Tween
 
 @export_category("Gold")
@@ -63,7 +62,18 @@ signal card_clicked_in_viewer(card_data: CardData)
 
 
 func _ready() -> void:
-	close_deck_button.pressed.connect(hide_deck_viewer)
+	# Pastikan semua button bisa diklik
+	_set_ui_mouse_filters()
+	
+	# Connect buttons
+	if close_deck_button:
+		close_deck_button.pressed.connect(hide_deck_viewer)
+	
+	if discard_visual:
+		discard_visual.pressed.connect(_on_discard_visual_pressed)
+	
+	if deck_visual:
+		deck_visual.pressed.connect(_on_deck_visual_pressed)
 	
 	if EventBus.has_signal("blessing_list_changed"):
 		EventBus.blessing_list_changed.connect(update_blessings_display)
@@ -71,9 +81,44 @@ func _ready() -> void:
 	_setup_end_turn_button()
 	_connect_aura_signals()
 	_connect_gold_signals()
+	
+	# Initial UI updates
 	update_gold_display(GameManager.shop_coins)
 	update_blessings_display()
 	update_aura_display()
+
+
+func _set_ui_mouse_filters() -> void:
+	if end_turn_button:
+		end_turn_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	if deck_visual:
+		deck_visual.mouse_filter = Control.MOUSE_FILTER_STOP
+	if discard_visual:
+		discard_visual.mouse_filter = Control.MOUSE_FILTER_STOP
+	if close_deck_button:
+		close_deck_button.mouse_filter = Control.MOUSE_FILTER_STOP
+
+
+func _on_discard_visual_pressed() -> void:
+	var battle_manager = get_tree().root.find_child("BattleManager", true, false)
+	if battle_manager and battle_manager.has_method("get_discard_pile"):
+		var discard_cards = battle_manager.get_discard_pile()
+		show_card_viewer(discard_cards, "TUMPUKAN BUANGAN", false)
+	else:
+		var deck = get_tree().root.find_child("Deck", true, false)
+		if deck:
+			show_card_viewer(deck.discard_pile, "TUMPUKAN BUANGAN", false)
+
+
+func _on_deck_visual_pressed() -> void:
+	var battle_manager = get_tree().root.find_child("BattleManager", true, false)
+	if battle_manager and battle_manager.has_method("get_deck_cards"):
+		var deck_cards = battle_manager.get_deck_cards()
+		show_card_viewer(deck_cards, "SISA KARTU DECK", false)
+	else:
+		var deck = get_tree().root.find_child("Deck", true, false)
+		if deck:
+			show_card_viewer(deck.cards, "SISA KARTU DECK", false)
 
 
 func _connect_aura_signals() -> void:
@@ -90,6 +135,7 @@ func _on_aura_changed(_aura_data: AuraCardData, _slot_index: int) -> void:
 func _on_aura_changed_slot(_slot_index: int) -> void:
 	update_aura_display()
 
+
 func update_aura_display() -> void:
 	if not aura_container:
 		return
@@ -102,7 +148,6 @@ func update_aura_display() -> void:
 
 		var current_slot: Control = slots[slot_index]
 		
-		# Bersihkan UI kartu lama di dalam slot tanpa menghapus node slot itu sendiri
 		for child in current_slot.get_children():
 			child.queue_free()
 
@@ -113,28 +158,12 @@ func update_aura_display() -> void:
 			aura_ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			aura_ui.offset_left = -6.0 
 			aura_ui.offset_right = -8.0
-			aura_ui.offset_top = -0
+			aura_ui.offset_top = 0
 			aura_ui.offset_bottom = -7.0
 			aura_ui.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			aura_ui.size_flags_vertical = Control.SIZE_EXPAND_FILL
 			current_slot.add_child(aura_ui)
 			aura_ui.setup(aura_data)
-
-
-func _show_aura_placeholder(slot_index: int) -> void:
-	var placeholder_panel: PanelContainer = PanelContainer.new()
-	placeholder_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	placeholder_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	
-	var placeholder_label: Label = Label.new()
-	placeholder_label.text = "SLOT " + str(slot_index + 1)
-	placeholder_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	placeholder_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	placeholder_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	placeholder_label.modulate = Color(1.0, 1.0, 1.0, 0.4)
-	
-	placeholder_panel.add_child(placeholder_label)
-	aura_container.add_child(placeholder_panel)
 
 
 func update_tokens(o: int, h: int, c: int, n: int) -> void:
@@ -351,17 +380,21 @@ func update_blessings_display() -> void:
 			
 			blessing_ui.setup(blessing_data)
 
+
 func _connect_gold_signals() -> void:
 	if EventBus.has_signal("gold_changed"):
 		if not EventBus.gold_changed.is_connected(_on_gold_changed):
 			EventBus.gold_changed.connect(_on_gold_changed)
 
+
 func _on_gold_changed(total_gold: int) -> void:
 	update_gold_display(total_gold)
+
 
 func update_gold_display(amount: int) -> void:
 	if gold_label:
 		gold_label.text = str(amount)
+
 
 func _setup_end_turn_button() -> void:
 	if not end_turn_button:
@@ -375,6 +408,7 @@ func _setup_end_turn_button() -> void:
 	end_turn_button.mouse_entered.connect(_on_end_turn_button_mouse_entered)
 	end_turn_button.mouse_exited.connect(_on_end_turn_button_mouse_exited)
 
+
 func _generate_click_mask(button: TextureButton) -> void:
 	if not button.texture_normal:
 		return
@@ -387,8 +421,10 @@ func _generate_click_mask(button: TextureButton) -> void:
 	bitmap.create_from_image_alpha(texture_image, 0.1)
 	button.texture_click_mask = bitmap
 
+
 func _update_end_turn_pivot() -> void:
 	end_turn_button.pivot_offset = end_turn_button.size / 2.0
+
 
 func _on_end_turn_button_mouse_entered() -> void:
 	if _end_turn_tween and _end_turn_tween.is_valid():

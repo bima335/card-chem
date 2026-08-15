@@ -7,5 +7,6 @@
 script = ExtResource("2_j6a6o")
 aura_id = 7
 name = "Phase Armor"
+description = "setiap ronde genap player akan mendapatkan 1 shield, bisa stack up to 5 shield stack, setiap ronde ganjil dmg kartu player meningkat + 3 bisa di stack di round tersebut."
 icon = ExtResource("1_7uc4d")
 metadata/_custom_type_script = "uid://b100qugnu421l"

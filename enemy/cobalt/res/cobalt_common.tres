@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_3g8be"]
 [ext_resource type="PackedScene" uid="uid://bcxdguiuddv5l" path="res://enemy/cobalt/enemy_cobalt.tscn" id="1_7l6ik"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_6ge3t"]
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="4_6utd6"]
+[ext_resource type="Texture2D" uid="uid://dyho605jm0ao2" path="res://assets/Character/enemy_A/A.cobalt.png" id="4_7l6ik"]
 
 [resource]
 script = ExtResource("2_6ge3t")
 enemy_name = "Cobalt Common"
-texture = ExtResource("4_6utd6")
+texture = ExtResource("4_7l6ik")
 gold_out = 6
 custom_enemy_scene = ExtResource("1_7l6ik")
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

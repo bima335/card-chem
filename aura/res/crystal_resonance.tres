@@ -7,5 +7,6 @@
 script = ExtResource("1_gytgk")
 aura_id = 5
 name = "Crystal Resonance"
+description = "kurangi 30 persen damage yang dihasilkan player, tapi seluruh kartu sekarang bisa blast (3 target)"
 icon = ExtResource("1_3pn6g")
 metadata/_custom_type_script = "uid://b100qugnu421l"

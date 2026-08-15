@@ -7,5 +7,6 @@
 script = ExtResource("1_vysiy")
 aura_id = 4
 name = "Magnetic Pull"
+description = "Di awal setiap ronde , copy efek kartu pertama yang dimainkan player"
 icon = ExtResource("1_233sp")
 metadata/_custom_type_script = "uid://b100qugnu421l"

@@ -7,6 +7,7 @@
 script = ExtResource("1_twtsy")
 coat_type = 4
 coat_name = "Crystalized"
+description = "Retain status. +1 Shield if unused"
 icon = ExtResource("1_qvfq3")
 buy_price = 14
 is_retained = true
