@@ -4,6 +4,12 @@ extends Node2D
 enum TurnState { PLAYER, ENEMY }
 var current_state: TurnState = TurnState.PLAYER
 
+const CARD_CARBON_SHIELD: CardData = preload("uid://b1nye4430c7yv")
+const CARD_NITRIC_OXIDE: CardData = preload("uid://c7egfvnqlhxde")
+const CARD_OXYGEN_GAS: CardData = preload("uid://1rhiulfq30o5")
+const CARD_HYDROGEN_PEROXIDE: CardData = preload("uid://db0cc88e3ktnj")
+const CARD_NITROGEN_GAS: CardData = preload("uid://jjs12ewhi0vm")
+
 @export var available_cards: Array[CardData] 
 
 @export var default_blessing: BlessingData
@@ -69,11 +75,7 @@ func _connect_signals() -> void:
 
 func _prepare_starting_deck() -> void:
 	if GameManager.player_deck.is_empty():
-		for i in range(15):
-			if not available_cards.is_empty():
-				var picked_card: CardData = available_cards.pick_random()
-				GameManager.player_deck.append(picked_card)
-				EventBus.card_obtained.emit(picked_card)
+		_build_default_starting_deck()
 
 	SaveManager.discover_cards(GameManager.player_deck)
 
@@ -82,6 +84,21 @@ func _prepare_starting_deck() -> void:
 		deck.add_card(card_copy)
 		
 	_start_player_turn()
+
+func _build_default_starting_deck() -> void:
+	var deck_composition: Dictionary = {
+		CARD_CARBON_SHIELD: 2,
+		CARD_NITRIC_OXIDE: 1,
+		CARD_OXYGEN_GAS: 1,
+		CARD_HYDROGEN_PEROXIDE: 4,
+		CARD_NITROGEN_GAS: 2
+	}
+	
+	for card_resource: CardData in deck_composition:
+		var count: int = deck_composition[card_resource]
+		for i in range(count):
+			GameManager.player_deck.append(card_resource)
+			EventBus.card_obtained.emit(card_resource)
 
 func _on_enemy_turn_completed() -> void:
 	EventBus.round_ended.emit()

@@ -2,7 +2,7 @@ class_name EnemyGold
 extends EnemyBase
 
 var greed_stacks: int = 0
-@export var greed_resouce: StatusAilment
+@export var greed_resource: StatusAilment
 var is_enraged: bool = _is_in_enrage_phase()
 
 func _ready() -> void:
@@ -59,11 +59,11 @@ func _execute_hoard() -> void:
 		EventBus.gold_changed.emit(0)
 
 	if not _is_in_enrage_phase():
-		if greed_resouce != null and not active_statuses.has(StatusAilment.AilmentType.GREED):
-			active_statuses[StatusAilment.AilmentType.GREED] = {
-				"duration": 999,
-				"resource": greed_resouce
-		}
+		if greed_resource != null:
+			if not has_status(StatusAilment.AilmentType.GREED):
+				apply_status(greed_resource, 1, 1)
+			else:
+				add_status_stacks(StatusAilment.AilmentType.GREED, 1)
 		greed_stacks += 1
 		print("Add greed stacks")
 

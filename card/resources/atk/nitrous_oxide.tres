@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dags46ytnh44j"]
+
+[ext_resource type="Texture2D" uid="uid://b7m4y35swto0f" path="res://assets/Card/playing_card/NitrousOxide.png" id="1_55i8l"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_kumci"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_55i8l"]
+
+[resource]
+script = ExtResource("1_kumci")
+id = "c_a_06"
+card_name = "Nitrous Oxide"
+description = "Memberikan 2 Damage ke Semua Musuh"
+card_texture = ExtResource("1_55i8l")
+target_type = 1
+cost_oxygen = 1
+cost_nitrogen = 2
+damage_amount = 2
+buy_value = 9
+sell_value = 4
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

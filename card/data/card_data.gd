@@ -9,6 +9,7 @@ enum CostType { NONE, CARBON, HYDROGEN, OXYGEN, NITROGEN }
 @export_group("Basic Info")
 @export var id: String = "base_card"
 @export var card_name: String = "Nama Kartu"
+@export_multiline var description: String
 @export var card_texture: Texture2D
 @export var modulate: Color = Color.WHITE
 @export var rarity: Rarity = Rarity.COMMON

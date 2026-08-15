@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_6hrpt")
+ailment = 12
 status_icon = ExtResource("2_abk04")
 modulate = Color(0.7481661, 0.56473494, 0, 1)
 decrease_on_turn_end = false

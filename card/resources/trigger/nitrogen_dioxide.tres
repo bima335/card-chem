@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://llsf6kysyij2"]
 
-[ext_resource type="Texture2D" uid="uid://biavjr2db40yy" path="res://assets/CardBack.png" id="1_dj5eg"]
+[ext_resource type="Texture2D" uid="uid://3cut2nnhmfmg" path="res://assets/Card/playing_card/NitrogenDioxide.png" id="1_dj5eg"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_tj1ho"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_dj5eg"]
 
@@ -8,8 +8,13 @@
 script = ExtResource("1_tj1ho")
 id = "c_t_02"
 card_name = "Nitrogen Dioxide"
+description = "Memberikan 1 Damage dan Memicu Corrosion"
 card_texture = ExtResource("1_dj5eg")
-rarity = 2
 card_type = 3
+cost_oxygen = 2
+cost_nitrogen = 1
+damage_amount = 1
+buy_value = 9
+sell_value = 4
 trigger_element = 3
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

@@ -21,6 +21,7 @@ var return_tween: Tween
 
 @onready var name_label: Label = $TooltipPanel/VBoxContainer/Name
 @onready var cost_label: Label = $TooltipPanel/VBoxContainer/Cost
+@onready var description_label: Label = $TooltipPanel/VBoxContainer/Description
 @onready var tooltip_panel: PanelContainer = $TooltipPanel
 @onready var coat_icon: TextureRect = $CoatIcon
 
@@ -29,7 +30,6 @@ func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
-	
 	_setup_tooltip_text()
 
 
@@ -41,7 +41,7 @@ func setup(card_data: CardData) -> void:
 		
 	if data:
 		modulate = data.modulate
-		_update_coat_visual() # Update tampilan Coat saat setup
+		_update_coat_visual()
 		
 	_setup_tooltip_text()
 
@@ -50,7 +50,6 @@ func _update_coat_visual() -> void:
 	if not coat_icon:
 		return
 
-	# Cek apakah kartu memiliki data coat dan icon
 	if data and data.coat_data and data.coat_data.icon:
 		coat_icon.texture = data.coat_data.icon
 		coat_icon.show()
@@ -65,12 +64,14 @@ func set_visual_color(color_tint: Color) -> void:
 	else:
 		modulate = color_tint
 
+
 func _setup_tooltip_text() -> void:
 	if not data:
 		return
 		
-	var target_name_label = _get_name_label()
-	var target_cost_label = _get_cost_label()
+	var target_name_label: Label = _get_name_label()
+	var target_cost_label: Label = _get_cost_label()
+	var target_desc_label: Label = _get_description_label()
 	
 	if target_name_label:
 		target_name_label.text = data.card_name
@@ -88,6 +89,14 @@ func _setup_tooltip_text() -> void:
 			cost_string = "Gratis!"
 			
 		target_cost_label.text = cost_string.strip_edges()
+
+	if target_desc_label:
+		if not data.description.is_empty():
+			target_desc_label.text = data.description
+			target_desc_label.show()
+		else:
+			target_desc_label.text = ""
+			target_desc_label.hide()
 
 
 func _append_cost_info(parts_array: Array[String], symbol: String, type: CardData.CostType) -> void:
@@ -126,6 +135,14 @@ func _get_cost_label() -> Label:
 		return cost_label
 	if has_node("TooltipPanel/VBoxContainer/Cost"):
 		return get_node("TooltipPanel/VBoxContainer/Cost") as Label
+	return null
+
+
+func _get_description_label() -> Label:
+	if description_label:
+		return description_label
+	if has_node("TooltipPanel/VBoxContainer/Description"):
+		return get_node("TooltipPanel/VBoxContainer/Description") as Label
 	return null
 
 

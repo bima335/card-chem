@@ -8,8 +8,8 @@
 script = ExtResource("1_lf23i")
 id = "c_t_01"
 card_name = "Oxygen Gas"
+description = "Memicu Ignite"
 card_texture = ExtResource("1_ohule")
-modulate = Color(0.9440652, 0.74973965, 0.70732695, 1)
 card_type = 3
 cost_oxygen = 2
 buy_value = 7

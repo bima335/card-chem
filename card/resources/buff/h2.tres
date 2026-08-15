@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dw0m23xpkfdwv"]
 
-[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_6lr5x"]
+[ext_resource type="Texture2D" uid="uid://b4wcn0uhsmpi6" path="res://assets/Card/playing_card/HidrogenGas.png" id="1_6lr5x"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_b7gd3"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="3_spy6f"]
 
@@ -8,6 +8,7 @@
 script = ExtResource("2_b7gd3")
 id = "c_b_01"
 card_name = "Hydrogen Gas"
+description = "Mendapatkan 2 H Token"
 card_texture = ExtResource("1_6lr5x")
 card_type = 1
 target_type = 2

@@ -9,9 +9,6 @@ var active_statuses: Dictionary = {}
 
 var current_hp: int
 var current_shield: int = 0
-var toxic_stacks: int = 0
-var burn_stacks: int = 0
-var exposed_stacks: int = 0
 var is_stunned: bool = false
 var is_targetable: bool = true
 
@@ -81,13 +78,11 @@ func determine_next_move() -> EnemyAction:
 func start_turn_process() -> void:
 	_on_turn_started()
 
-	if burn_stacks > 0:
+	if has_status(StatusAilment.AilmentType.BURN):
 		var burn_damage = 5
 		take_damage(burn_damage, false)
 		EventBus.burn_damage_dealt.emit(burn_damage)
-		burn_stacks = max(0, burn_stacks - 1)
-		if burn_stacks == 0:
-			remove_status(StatusAilment.AilmentType.BURN)
+		add_status_stacks(StatusAilment.AilmentType.BURN, -1)
 
 
 func execute_move(action: EnemyAction) -> void:
@@ -99,6 +94,7 @@ func execute_move(action: EnemyAction) -> void:
 	if action != null:
 		match action.type:
 			EnemyAction.ActionType.ATTACK:
+				var toxic_stacks = get_status_stacks(StatusAilment.AilmentType.TOXIC)
 				var final_atk = max(0, action.amount - toxic_stacks)
 				EventBus.player_damage_requested.emit(final_atk, self)
 			EnemyAction.ActionType.SHIELD:
@@ -167,7 +163,7 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 			remove_status(StatusAilment.AilmentType.BURN)
 			remove_status(StatusAilment.AilmentType.VOLATILE)
 	
-	# Tambahkan multiplier dari stack EXPOSED (1 stack = +15% extra damage)
+	var exposed_stacks = get_status_stacks(StatusAilment.AilmentType.EXPOSED)
 	if exposed_stacks > 0:
 		damage_multiplier += (exposed_stacks * 0.15)
 	
@@ -190,7 +186,6 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 	
 	_on_health_changed(current_hp)
 
-	# Terapkan stack EXPOSED pasca hit damage jika berasal dari direct attack
 	if is_direct_attack:
 		AuraManager.process_neon_illuminate_post_damage(self)
 
@@ -205,28 +200,14 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 		die()
 
 
-func add_exposed_stack(amount: int = 1) -> void:
-	exposed_stacks += amount
-	
-	if exposed_resource_data != null:
-		apply_status(exposed_resource_data, 999)
-	else:
-		if not active_statuses.has(StatusAilment.AilmentType.EXPOSED):
-			active_statuses[StatusAilment.AilmentType.EXPOSED] = {
-				"duration": 999,
-				"resource": null
-			}
-		_update_status_ui()
-
-
 func consume_hit_based_statuses() -> void:
 	if has_status(StatusAilment.AilmentType.DISINTEGRATE):
-		_decrement_status_stack(StatusAilment.AilmentType.DISINTEGRATE)
+		_decrement_status_duration(StatusAilment.AilmentType.DISINTEGRATE)
 	elif has_status(StatusAilment.AilmentType.DESTABILIZE):
-		_decrement_status_stack(StatusAilment.AilmentType.DESTABILIZE)
+		_decrement_status_duration(StatusAilment.AilmentType.DESTABILIZE)
 
 
-func _decrement_status_stack(ailment_type: StatusAilment.AilmentType) -> void:
+func _decrement_status_duration(ailment_type: StatusAilment.AilmentType) -> void:
 	if not active_statuses.has(ailment_type):
 		return
 		
@@ -237,12 +218,6 @@ func _decrement_status_stack(ailment_type: StatusAilment.AilmentType) -> void:
 		_update_status_ui()
 
 
-func get_status_duration(ailment_type: StatusAilment.AilmentType) -> int:
-	if active_statuses.has(ailment_type):
-		return active_statuses[ailment_type]["duration"]
-	return 0
-
-
 func _calculate_custom_damage_reduction() -> float:
 	return 0.0
 
@@ -251,47 +226,7 @@ func _on_health_changed(_new_hp: int) -> void:
 	pass
 
 
-func add_toxic_stack(amount: int, poison_resource: StatusAilment = null, stun_resource: StatusAilment = null, toxic_resource: StatusAilment = null) -> void:
-	toxic_stacks += amount
-	
-	if toxic_resource != null and not active_statuses.has(StatusAilment.AilmentType.TOXIC):
-		active_statuses[StatusAilment.AilmentType.TOXIC] = {
-			"duration": 999,
-			"resource": toxic_resource
-		}
-	
-	if toxic_stacks >= 5:
-		trigger_poison_explosion(poison_resource, stun_resource)
-	else:
-		_update_status_ui()
-
-
-func trigger_poison_explosion(poison_resource: StatusAilment = null, stun_resource: StatusAilment = null) -> void:
-	toxic_stacks = 0
-	remove_status(StatusAilment.AilmentType.TOXIC)
-		
-	EventBus.poison_explosion_triggered.emit(self)
-	
-	var poison_duration_to_add = poison_resource.duration if poison_resource else 1
-	if poison_resource != null:
-		apply_status(poison_resource, poison_duration_to_add)
-	else:
-		var default_poison = StatusAilment.new()
-		default_poison.ailment = StatusAilment.AilmentType.POISON
-		default_poison.duration = 1
-		apply_status(default_poison, poison_duration_to_add)
-
-	var stun_duration_to_add = stun_resource.duration if stun_resource else 1
-	if stun_resource != null:
-		apply_status(stun_resource, stun_duration_to_add)
-	else:
-		var default_stun = StatusAilment.new()
-		default_stun.ailment = StatusAilment.AilmentType.STUN
-		default_stun.duration = 1
-		apply_status(default_stun, stun_duration_to_add)
-
-
-func apply_status(status_data: StatusAilment, duration: int) -> void:
+func apply_status(status_data: StatusAilment, duration: int = 1, initial_stacks: int = 1) -> void:
 	if not is_targetable or status_data == null: 
 		return
 		
@@ -299,15 +234,14 @@ func apply_status(status_data: StatusAilment, duration: int) -> void:
 	
 	if ailment_id == StatusAilment.AilmentType.STUN:
 		is_stunned = true
-		
-	if ailment_id == StatusAilment.AilmentType.BURN:
-		burn_stacks = 3
 
 	if active_statuses.has(ailment_id):
 		active_statuses[ailment_id]["duration"] += duration
+		active_statuses[ailment_id]["stacks"] += initial_stacks
 	else:
 		active_statuses[ailment_id] = {
 			"duration": duration,
+			"stacks": initial_stacks,
 			"resource": status_data
 		}
 		
@@ -315,24 +249,33 @@ func apply_status(status_data: StatusAilment, duration: int) -> void:
 	EventBus.enemy_status_applied.emit(self, ailment_id)
 
 
+func add_status_stacks(ailment_type: StatusAilment.AilmentType, amount: int, default_res: StatusAilment = null) -> void:
+	if not active_statuses.has(ailment_type):
+		if default_res != null:
+			apply_status(default_res, default_res.default_duration, amount)
+		return
+		
+	active_statuses[ailment_type]["stacks"] += amount
+	if active_statuses[ailment_type]["stacks"] <= 0:
+		remove_status(ailment_type)
+	else:
+		_update_status_ui()
+
+
+func get_status_stacks(ailment_type: StatusAilment.AilmentType) -> int:
+	if active_statuses.has(ailment_type):
+		return active_statuses[ailment_type].get("stacks", 0)
+	return 0
+
+
+func get_status_duration(ailment_type: StatusAilment.AilmentType) -> int:
+	if active_statuses.has(ailment_type):
+		return active_statuses[ailment_type].get("duration", 0)
+	return 0
+
+
 func has_status(ailment_type: StatusAilment.AilmentType) -> bool:
 	return active_statuses.has(ailment_type)
-
-
-func has_poison() -> bool:
-	return has_status(StatusAilment.AilmentType.POISON)
-
-
-func apply_poison_and_stun(poison_amount: int = 1, stun_amount: int = 1) -> void:
-	var poison_data = StatusAilment.new()
-	poison_data.ailment = StatusAilment.AilmentType.POISON
-	poison_data.duration = poison_amount
-	apply_status(poison_data, poison_amount)
-
-	var stun_data = StatusAilment.new()
-	stun_data.ailment = StatusAilment.AilmentType.STUN
-	stun_data.duration = stun_amount
-	apply_status(stun_data, stun_amount)
 
 
 func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
@@ -347,13 +290,15 @@ func remove_status(ailment_type: StatusAilment.AilmentType) -> void:
 func decrease_status_durations() -> void:
 	var keys_to_remove = []
 	for ailment_id in active_statuses.keys():
-		# EXPOSED tidak akan pernah berkurang durasi/stack-nya setiap turn end
-		if ailment_id == StatusAilment.AilmentType.TOXIC or ailment_id == StatusAilment.AilmentType.DESTABILIZE or ailment_id == StatusAilment.AilmentType.DISINTEGRATE or ailment_id == StatusAilment.AilmentType.EXPOSED:
+		var status_info = active_statuses[ailment_id]
+		var res: StatusAilment = status_info["resource"]
+		
+		# Modular: hanya kurangi jika decrease_on_turn_end bernilai true
+		if res != null and not res.decrease_on_turn_end:
 			continue
 			
-		active_statuses[ailment_id]["duration"] -= 1
-			
-		if active_statuses[ailment_id]["duration"] <= 0:
+		status_info["duration"] -= 1
+		if status_info["duration"] <= 0:
 			keys_to_remove.append(ailment_id)
 			
 	for ailment_id in keys_to_remove:
@@ -364,12 +309,13 @@ func decrease_status_durations() -> void:
 
 func _update_status_ui() -> void:
 	for child in status_container.get_children():
-		child.free()
+		child.queue_free()
 		
 	for ailment_id in active_statuses.keys():
 		var status_info = active_statuses[ailment_id]
 		var resource_data: StatusAilment = status_info["resource"]
 		var current_duration: int = status_info["duration"]
+		var current_stacks: int = status_info["stacks"]
 		
 		var icon_rect = TextureRect.new()
 		if resource_data:
@@ -378,23 +324,51 @@ func _update_status_ui() -> void:
 		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon_rect.custom_minimum_size = Vector2(30, 30)
 		
-		var duration_label = Label.new()
-		if ailment_id == StatusAilment.AilmentType.TOXIC:
-			duration_label.text = str(toxic_stacks)
-		elif ailment_id == StatusAilment.AilmentType.EXPOSED:
-			duration_label.text = str(exposed_stacks)
+		var label = Label.new()
+		
+		# Modular display text
+		if resource_data and resource_data.use_stacks_for_display:
+			label.text = str(current_stacks)
 		else:
-			duration_label.text = str(current_duration)
+			label.text = str(current_duration)
 
-		duration_label.add_theme_color_override("font_outline_color", Color.BLACK)
-		duration_label.add_theme_constant_override("outline_size", 6)
+		label.add_theme_color_override("font_outline_color", Color.BLACK)
+		label.add_theme_constant_override("outline_size", 6)
+		label.set_anchors_preset(Control.PRESET_FULL_RECT)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 		
-		duration_label.set_anchors_preset(Control.PRESET_FULL_RECT)
-		duration_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		duration_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		
-		icon_rect.add_child(duration_label)
+		icon_rect.add_child(label)
 		status_container.add_child(icon_rect)
+
+
+# Backward compatibility methods
+func add_exposed_stack(amount: int = 1) -> void:
+	if not has_status(StatusAilment.AilmentType.EXPOSED):
+		apply_status(exposed_resource_data, 999, amount)
+	else:
+		add_status_stacks(StatusAilment.AilmentType.EXPOSED, amount)
+
+
+func add_toxic_stack(amount: int, poison_resource: StatusAilment = null, stun_resource: StatusAilment = null, toxic_resource: StatusAilment = null) -> void:
+	if not has_status(StatusAilment.AilmentType.TOXIC):
+		apply_status(toxic_resource, 999, amount)
+	else:
+		add_status_stacks(StatusAilment.AilmentType.TOXIC, amount)
+	
+	if get_status_stacks(StatusAilment.AilmentType.TOXIC) >= 5:
+		trigger_poison_explosion(poison_resource, stun_resource)
+
+
+func trigger_poison_explosion(poison_resource: StatusAilment = null, stun_resource: StatusAilment = null) -> void:
+	remove_status(StatusAilment.AilmentType.TOXIC)
+	EventBus.poison_explosion_triggered.emit(self)
+	
+	var poison_dur = poison_resource.default_duration if poison_resource else 1
+	apply_status(poison_resource, poison_dur)
+
+	var stun_dur = stun_resource.default_duration if stun_resource else 1
+	apply_status(stun_resource, stun_dur)
 
 
 func _on_click_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int):
