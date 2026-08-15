@@ -85,7 +85,7 @@ func determine_next_move() -> EnemyAction:
 			else:
 				action.amount = 0
 		CobaltTier.MINION:
-			action.amount = 0
+			action.amount = 5
 	return action
 
 
