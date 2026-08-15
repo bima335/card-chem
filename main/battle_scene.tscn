@@ -32,12 +32,19 @@
 [ext_resource type="Resource" uid="uid://c635se6h4mthq" path="res://ailments/res/disintegrated.tres" id="25_uakwd"]
 [ext_resource type="Texture2D" uid="uid://qkrieqt724o7" path="res://assets/HUD/iconstatus.png" id="25_yme4k"]
 [ext_resource type="Texture2D" uid="uid://bniumr7o1ajmh" path="res://assets/HUD/icondiscard.png" id="26_4n26w"]
+[ext_resource type="Script" uid="uid://bu5meodq28pis" path="res://card/coat/coat_data.gd" id="27_j1o3r"]
 [ext_resource type="Texture2D" uid="uid://dgtgf0v1tjctr" path="res://assets/HUD/iconDeck.png" id="27_wsa3t"]
+[ext_resource type="Resource" uid="uid://5e146oywkesi" path="res://card/coat/res/coat_purify.tres" id="28_7djar"]
 [ext_resource type="Texture2D" uid="uid://cohmwkije4j0a" path="res://assets/HUD/healthbarwadahplayer.png" id="28_wadah"]
 [ext_resource type="Texture2D" uid="uid://vhfdey5jp05f" path="res://assets/HUD/healthbarisiplayer.png" id="29_isi"]
+[ext_resource type="Resource" uid="uid://c5ci8mxy0ctqv" path="res://card/coat/res/catalyst.tres" id="29_olllg"]
+[ext_resource type="Resource" uid="uid://bnxqvevk8vi6m" path="res://card/coat/res/unstable.tres" id="30_a71yv"]
 [ext_resource type="Texture2D" uid="uid://bb2q074ndhgrc" path="res://assets/HUD/wadahtoken.png" id="30_wadah_token"]
+[ext_resource type="Resource" uid="uid://swqbgfd71dg2" path="res://card/coat/res/clone.tres" id="31_7i7p3"]
 [ext_resource type="Texture2D" uid="uid://dmhrymf7gchy6" path="res://assets/HUD/isitokenC.png" id="31_token_c"]
+[ext_resource type="Resource" uid="uid://k5tpp47jrgwd" path="res://card/coat/res/insulated.tres" id="32_e61ho"]
 [ext_resource type="Texture2D" uid="uid://d5arhd5p07k5" path="res://assets/HUD/isitokenH.png" id="32_token_h"]
+[ext_resource type="Resource" uid="uid://c22oy6nl6qgnf" path="res://card/coat/res/crystalized.tres" id="33_gfdxq"]
 [ext_resource type="Texture2D" uid="uid://cjvb36kmjsgoe" path="res://assets/HUD/isitokenO.png" id="33_token_o"]
 [ext_resource type="Texture2D" uid="uid://di4q5vfxwv2ve" path="res://assets/HUD/isitokenN.png" id="34_token_n"]
 [ext_resource type="Texture2D" uid="uid://tumowwmhun23" path="res://assets/HUD/namaspero.png" id="34_xu2u0"]
@@ -122,6 +129,7 @@ script = ExtResource("10_0hkaa")
 card_ui_scene = ExtResource("2_csnlq")
 aura_card_ui_scene = ExtResource("14_dairb")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn"), ExtResource("16_dairb"), ExtResource("5_j5qo7")])
+available_coats = Array[ExtResource("27_j1o3r")]([ExtResource("28_7djar"), ExtResource("29_olllg"), ExtResource("30_a71yv"), ExtResource("31_7i7p3"), ExtResource("32_e61ho"), ExtResource("33_gfdxq")])
 reward_backdrop = NodePath("../../UI/RewardBackdrop")
 reward_title = NodePath("../../UI/RewardBackdrop/VBoxContainer/TtileLabel")
 reward_card_grid = NodePath("../../UI/RewardBackdrop/VBoxContainer/RewardCardGrid")

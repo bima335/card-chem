@@ -1,6 +1,12 @@
 class_name MapManager
 extends Control
 
+enum TestBattleType {
+	BATTLE_NORMAL = MapNodeData.NodeType.BATTLE_NORMAL,
+	BATTLE_HARD = MapNodeData.NodeType.BATTLE_HARD,
+	BOSS = MapNodeData.NodeType.BOSS
+}
+
 @export var map_node_scene: PackedScene
 @export var section_wallpapers: Array[Texture2D] = [] 
 
@@ -17,6 +23,7 @@ extends Control
 @export_group("Debug / Testing Options")
 @export_range(0, 10, 1) var test_starting_section: int = 0
 @export var is_ujicoba: bool = false
+@export var test_battle_type: TestBattleType = TestBattleType.BATTLE_NORMAL
 @export var test_enemy: EnemyStat
 @export var force_first_three_shops: bool = false
 
@@ -31,7 +38,6 @@ var total_sections: int = 0
 var current_view_section: int = 0
 
 func _ready() -> void:
-
 	total_sections = total_floors / 5
 	
 	_apply_debug_starting_section()
@@ -155,7 +161,6 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 	GameManager.current_floor += 1
 	GameManager.active_event_type = node_data.type
 	
-	# CRITICAL FIX: Set section BEFORE scene change
 	GameManager.update_current_section_for_floor(GameManager.current_floor - 1)
 	
 	print("=== NODE SELECTED ===")
@@ -165,6 +170,9 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 
 	if is_ujicoba and test_enemy != null:
 		print("[TEST MODE] Memulai pertempuran uji coba melawan: ", test_enemy.enemy_name)
+		print("[TEST MODE] Tipe Battle: ", TestBattleType.keys()[test_battle_type])
+		
+		GameManager.active_event_type = test_battle_type as MapNodeData.NodeType
 		GameManager.current_wave_data = [test_enemy]
 		get_tree().change_scene_to_file("res://main/battle_scene.tscn")
 		return

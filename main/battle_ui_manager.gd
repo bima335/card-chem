@@ -224,10 +224,6 @@ func hide_deck_viewer() -> void:
 	tween.chain().tween_callback(deck_view_panel.hide)
 	tween.chain().tween_callback(deck_backdrop.hide)
 
-
-## Menyusun ulang semua CardUI di dalam hand_container jadi formasi kipas:
-## numpuk (overlap), melengkung ke atas di tengah, dan sedikit miring di ujung.
-## Aman dipanggil kapan saja kartu ditambah/dihapus dari tangan.
 func arrange_hand() -> void:
 	if not hand_container:
 		return
@@ -273,15 +269,12 @@ func arrange_hand() -> void:
 		card.hand_rotation = target_rotation
 		card.hand_z_index = i
 
-		# Jangan ganggu kartu yang lagi di-drag atau lagi animasi kembali ke tangan.
 		if card.is_dragging or card.is_returning:
 			continue
 
 		card.z_index = i
 
 		if card.modulate.a < 0.99:
-			# Kartu baru (belum ke-fade-in) langsung ditaruh di posisi akhir,
-			# supaya animasi "terbang dari deck" (animate_draw_card) menuju titik yang benar.
 			card.position = target_position
 			card.rotation = target_rotation
 		else:
@@ -290,7 +283,6 @@ func arrange_hand() -> void:
 			tween.set_parallel(true)
 			tween.tween_property(card, "position", target_position, hand_layout_duration)
 			tween.tween_property(card, "rotation", target_rotation, hand_layout_duration)
-
 
 func animate_draw_card(new_card_data: CardData, on_land_callback: Callable) -> void:
 	var real_card: CardUI = card_ui_scene.instantiate() as CardUI
@@ -404,6 +396,18 @@ func _on_end_turn_button_mouse_entered() -> void:
 		
 	_end_turn_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	_end_turn_tween.tween_property(end_turn_button, "rotation_degrees", end_turn_button.rotation_degrees - 45.0, 0.25)
+
+func set_battle_hud_visible(is_visible: bool) -> void:
+	if hand_container:
+		hand_container.visible = is_visible
+	if end_turn_button:
+		end_turn_button.visible = is_visible
+	if token_container:
+		token_container.visible = is_visible
+	if player_hp_bar:
+		player_hp_bar.get_parent().visible = is_visible
+	if player_shield_bar:
+		player_shield_bar.visible = is_visible
 
 func _on_end_turn_button_mouse_exited() -> void:
 	if _end_turn_tween and _end_turn_tween.is_valid():
