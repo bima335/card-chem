@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://isuns2poeb8o" path="res://cutscene/intro.gd" id="1_15yqv"]
 [ext_resource type="Texture2D" uid="uid://br6sq2o0eyo5y" path="res://assets/introend/background_utama.png" id="1_c4hk2"]
 [ext_resource type="Texture2D" uid="uid://chvh76a13m7ag" path="res://assets/introend/p1i1.png" id="2_cys00"]
-[ext_resource type="AudioStream" uid="uid://3k5v16xboyqq" path="res://assets/audio/bgm/story.mp3" id="2_td1js"]
 [ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="2_xnulq"]
 [ext_resource type="Texture2D" uid="uid://bsf0yd8jg42j" path="res://assets/introend/p2i1.png" id="3_4duyx"]
 [ext_resource type="Texture2D" uid="uid://c5h36i28upjc6" path="res://assets/introend/p3i1.png" id="4_0lpwr"]
@@ -27,10 +26,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_15yqv")
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1519211888]
-stream = ExtResource("2_td1js")
-autoplay = true
 
 [node name="intro1" type="Control" parent="." unique_id=959936490]
 anchors_preset = 0
@@ -86,6 +81,7 @@ offset_bottom = 1080.0
 texture = ExtResource("8_f12eq")
 
 [node name="intro2" type="Control" parent="." unique_id=641711009]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
