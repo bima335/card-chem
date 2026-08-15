@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://ccj6y3dt7i4mo"]
+
+[ext_resource type="Script" uid="uid://cdi7t41wr5kt4" path="res://cutscene/bumper.gd" id="1_2p17k"]
+[ext_resource type="Texture2D" uid="uid://br6sq2o0eyo5y" path="res://assets/introend/background_utama.png" id="2_wjh0k"]
+[ext_resource type="Texture2D" uid="uid://3kkkg1ln3luy" path="res://assets/introend/judul_CHON.png" id="3_1jy7g"]
+
+[node name="Bumper" type="Node2D" unique_id=743362517]
+script = ExtResource("1_2p17k")
+
+[node name="bg" type="TextureRect" parent="." unique_id=8109720]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_wjh0k")
+
+[node name="logo" type="TextureRect" parent="." unique_id=978482614]
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 641.0
+offset_top = 360.0
+offset_right = 1257.0
+offset_bottom = 665.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_1jy7g")
