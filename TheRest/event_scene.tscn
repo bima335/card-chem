@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://lxdl4soey6ax"]
+
+[ext_resource type="Script" uid="uid://cgj6pytv3fvv6" path="res://TheRest/rest_controller.gd" id="1_vdqwl"]
+[ext_resource type="Texture2D" uid="uid://bdc13xvmvi2wc" path="res://assets/backgrounds/The Rest.png" id="2_jhem5"]
+[ext_resource type="Texture2D" uid="uid://dtbdekgh45qvs" path="res://assets/backgrounds/apiunggungtherest.png" id="3_p74k8"]
+[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="4_15p80"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="5_yjl2a"]
+
+[node name="RestScene" type="Control" unique_id=474350476]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vdqwl")
+
+[node name="bg" type="TextureRect" parent="." unique_id=129801046]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_jhem5")
+
+[node name="HealButton" type="TextureButton" parent="." unique_id=1186441540]
+layout_mode = 0
+offset_left = 472.0
+offset_top = 176.0
+offset_right = 1000.0
+offset_bottom = 1006.0
+texture_normal = ExtResource("3_p74k8")
+
+[node name="LeaveButton" type="TextureButton" parent="." unique_id=1391982744]
+layout_mode = 0
+offset_left = 1585.0
+offset_top = 41.0
+offset_right = 1863.0
+offset_bottom = 105.0
+texture_normal = ExtResource("4_15p80")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="LeaveLabel" type="Label" parent="LeaveButton" unique_id=1807899844]
+layout_mode = 0
+offset_left = 77.0
+offset_top = 14.0
+offset_right = 193.0
+offset_bottom = 51.0
+theme_override_fonts/font = ExtResource("5_yjl2a")
+theme_override_font_sizes/font_size = 30
+text = "Leave Rest"
+
+[node name="HPLabel" type="Label" parent="." unique_id=1215300853]
+layout_mode = 0
+offset_left = 281.0
+offset_top = 892.0
+offset_right = 321.0
+offset_bottom = 915.0
+text = "100"
