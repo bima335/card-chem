@@ -39,9 +39,14 @@
 [ext_resource type="Texture2D" uid="uid://bc8lo1qvj8g2b" path="res://assets/HUD/icongold.png" id="36_p5m33"]
 [ext_resource type="PackedScene" uid="uid://dyaaa2mkebw73" path="res://ui/battle_log/battle_log_ui.tscn" id="37_d7b84"]
 [ext_resource type="Texture2D" uid="uid://2xyjw222so2" path="res://assets/HUD/tombolendround.png" id="37_lt6r5"]
+[ext_resource type="Texture2D" uid="uid://do823icn0py6f" path="res://assets/HUD/shield_healthbar.png" id="38_06b3h"]
 [ext_resource type="Texture2D" uid="uid://y7tnpvmgxe4f" path="res://assets/HUD/layoutaurabosssatuan.png" id="40_single_slot"]
 [ext_resource type="Texture2D" uid="uid://lkta4xaqr4nb" path="res://assets/HUD/layoutblessingsatuan.png" id="41_blessing_slot"]
+[ext_resource type="Texture2D" uid="uid://cw184p3eh4ger" path="res://assets/token/Carbon.png" id="42_7mfaq"]
+[ext_resource type="Texture2D" uid="uid://ditq0oqjdnhfo" path="res://assets/token/Hidrogen.png" id="43_j1o3r"]
+[ext_resource type="Texture2D" uid="uid://c4xhfhuqok67s" path="res://assets/token/Oksigen.png" id="44_7djar"]
 [ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="44_7mfaq"]
+[ext_resource type="Texture2D" uid="uid://4etllkmdm2cg" path="res://assets/token/Nitrogen.png" id="45_olllg"]
 [ext_resource type="Texture2D" uid="uid://c0g5jct0aqw30" path="res://assets/HUD/bglayout.png" id="47_j1o3r"]
 [ext_resource type="Texture2D" uid="uid://cmvketrgstjx6" path="res://assets/HUD/panel_serbaguna.png" id="50_7djar"]
 [ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="51_olllg"]
@@ -103,7 +108,6 @@ token_h_tex = ExtResource("32_token_h")
 token_o_tex = ExtResource("33_token_o")
 token_n_tex = ExtResource("34_token_n")
 token_spacing = 5
-token_icon_size = null
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
 panel_title_label = NodePath("")
@@ -112,8 +116,6 @@ hand_card_spacing = 145.0
 hand_max_hand_width = 850.0
 hand_fan_angle_degrees = 12.0
 hand_arc_height = 45.0
-hand_bottom_margin = null
-hand_layout_duration = null
 gold_label = NodePath("../../UI/StatGroup/GoldLabel")
 
 [node name="BattleRewardHandler" type="Node" parent="Subsystems" unique_id=1644784143 node_paths=PackedStringArray("reward_backdrop", "reward_title", "reward_card_grid", "skip_button")]
@@ -187,7 +189,6 @@ offset_bottom = -82.0
 grow_vertical = 0
 
 [node name="DiscardVisual" type="TextureButton" parent="UI/StatGroup" unique_id=946672430]
-modulate = Color(0.41124472, 0.00016865015, 0.43268502, 1)
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -294,6 +295,7 @@ offset_top = 1008.0
 offset_right = 471.0
 offset_bottom = 1035.0
 fill_mode = 1
+texture_progress = ExtResource("38_06b3h")
 
 [node name="Label" type="Label" parent="UI/PlayerShieldBar" unique_id=793629810]
 layout_mode = 1
@@ -351,8 +353,10 @@ expand_mode = 1
 layout_mode = 0
 offset_left = 13.0
 offset_top = 10.0
-offset_right = 53.0
-offset_bottom = 50.0
+offset_right = 55.0
+offset_bottom = 52.0
+texture = ExtResource("42_7mfaq")
+expand_mode = 1
 
 [node name="CMargin" type="MarginContainer" parent="UI/TokenContainer/CWadah" unique_id=20018307]
 layout_mode = 1
@@ -377,8 +381,10 @@ expand_mode = 1
 layout_mode = 0
 offset_left = 13.0
 offset_top = 10.0
-offset_right = 53.0
-offset_bottom = 50.0
+offset_right = 54.0
+offset_bottom = 51.0
+texture = ExtResource("43_j1o3r")
+expand_mode = 1
 
 [node name="HMargin" type="MarginContainer" parent="UI/TokenContainer/HWadah" unique_id=413400907]
 layout_mode = 1
@@ -403,8 +409,10 @@ expand_mode = 1
 layout_mode = 0
 offset_left = 13.0
 offset_top = 10.0
-offset_right = 53.0
-offset_bottom = 50.0
+offset_right = 54.0
+offset_bottom = 52.0
+texture = ExtResource("44_7djar")
+expand_mode = 1
 
 [node name="OMargin" type="MarginContainer" parent="UI/TokenContainer/OWadah" unique_id=1384873146]
 layout_mode = 1
@@ -431,6 +439,8 @@ offset_left = 13.0
 offset_top = 10.0
 offset_right = 53.0
 offset_bottom = 50.0
+texture = ExtResource("45_olllg")
+expand_mode = 1
 
 [node name="NMargin" type="MarginContainer" parent="UI/TokenContainer/NWadah" unique_id=1840738310]
 layout_mode = 1
