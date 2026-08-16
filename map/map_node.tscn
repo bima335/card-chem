@@ -2,22 +2,17 @@
 
 [ext_resource type="Script" uid="uid://bjsm28yyguoga" path="res://map/map_node.gd" id="1_thdk5"]
 [ext_resource type="Texture2D" uid="uid://dwhejslhcg07g" path="res://assets/asa.jpeg" id="2_hlve0"]
-[ext_resource type="Texture2D" uid="uid://dtwxai6hq4bw5" path="res://assets/MapIcon/EnemyA.png" id="3_c1dec"]
-[ext_resource type="Texture2D" uid="uid://w2qq2p762cg" path="res://assets/MapIcon/EnemyB.png" id="4_tdrfg"]
-[ext_resource type="Texture2D" uid="uid://ifgtysn1yst1" path="res://assets/MapIcon/Lab.png" id="5_bpacv"]
-[ext_resource type="Texture2D" uid="uid://mvgjxhgul3mm" path="res://assets/MapIcon/Rest.png" id="6_ntf41"]
-[ext_resource type="Texture2D" uid="uid://imx68yw73wjf" path="res://assets/MapIcon/Boss.png" id="7_7fa63"]
-[ext_resource type="Texture2D" uid="uid://blac0811pc60g" path="res://assets/MapIcon/Random.png" id="8_gx3cc"]
+[ext_resource type="Texture2D" uid="uid://dipb146rod62h" path="res://assets/MapIcon/EnemyA.png" id="3_c1dec"]
+[ext_resource type="Texture2D" uid="uid://c2dpcfvpyt0t3" path="res://assets/MapIcon/EnemyB.png" id="4_tdrfg"]
+[ext_resource type="Texture2D" uid="uid://dm2hbw0entcri" path="res://assets/MapIcon/Lab.png" id="5_bpacv"]
+[ext_resource type="Texture2D" uid="uid://bii64noo8bvoc" path="res://assets/MapIcon/Rest.png" id="6_ntf41"]
+[ext_resource type="Texture2D" uid="uid://bnwli05qvvfup" path="res://assets/MapIcon/Boss.png" id="7_7fa63"]
+[ext_resource type="Texture2D" uid="uid://d0jm1crg5qk0u" path="res://assets/MapIcon/Random.png" id="8_gx3cc"]
 
 [node name="MapNode" type="TextureButton" unique_id=216622706]
-custom_minimum_size = Vector2(10, 10)
-anchors_preset = -1
-anchor_right = 0.0050000004
-anchor_bottom = 0.009000001
-offset_right = 0.39999962
-offset_bottom = 0.27999973
-grow_horizontal = 2
-grow_vertical = 2
+custom_minimum_size = Vector2(90, 90)
+offset_right = 80.4
+offset_bottom = 80.28
 texture_normal = ExtResource("2_hlve0")
 ignore_texture_size = true
 stretch_mode = 5
