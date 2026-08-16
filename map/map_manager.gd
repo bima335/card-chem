@@ -29,6 +29,8 @@ const FLOOR_HEIGHT: float = 1080.0
 @onready var btn_up: Button = $"../../BtnUp"
 @onready var btn_down: Button = $"../../BtnDown"
 
+@export var node_size: float = 200.0 
+
 var current_view_floor: int = 0
 
 
@@ -174,6 +176,16 @@ func _draw_map(canvas_height: float) -> void:
 
 
 func _draw_backgrounds(canvas_height: float) -> void:
+	var base_bg := TextureRect.new()
+	base_bg.position = Vector2(0.0, canvas_height) # Letak tepat di bawah lantai pertama
+	base_bg.size = Vector2(FLOOR_WIDTH, FLOOR_HEIGHT)
+	base_bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	base_bg.stretch_mode = TextureRect.STRETCH_SCALE
+	if section_wallpapers.size() > 0 and section_wallpapers[0] != null:
+		base_bg.texture = section_wallpapers[0]
+	base_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(base_bg)
+
 	for floor_idx in range(total_floors):
 		var bg := TextureRect.new()
 
@@ -193,12 +205,12 @@ func _draw_backgrounds(canvas_height: float) -> void:
 		bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		bg.stretch_mode = TextureRect.STRETCH_SCALE
 
-		if floor_idx < section_wallpapers.size():
-			var texture: Texture2D = section_wallpapers[floor_idx]
-
+		var bg_idx: int = floor_idx + 1
+		if bg_idx < section_wallpapers.size():
+			var texture: Texture2D = section_wallpapers[bg_idx]
 			if texture != null:
 				bg.texture = texture
-
+				
 		bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 		add_child(bg)
@@ -256,6 +268,9 @@ func _draw_connections(
 				)
 
 				var line := Line2D.new()
+				line.joint_mode = Line2D.LINE_JOINT_ROUND
+				line.begin_cap_mode = Line2D.LINE_CAP_ROUND  # Ganti cap_mode menjadi begin_cap_mode
+				line.end_cap_mode = Line2D.LINE_CAP_ROUND    # Tambahkan end_cap_mode
 
 				line.add_point(start_pos)
 				line.add_point(end_pos)
@@ -334,14 +349,10 @@ func _draw_nodes(
 				is_accessible
 			)
 
-			if node_positions.has(
-				node_data.grid_position
-			):
-				visual_node.position = (
-					node_positions[
-						node_data.grid_position
-					]
-				)
+			if node_positions.has(node_data.grid_position):
+				var center_pos: Vector2 = node_positions[node_data.grid_position]
+				# Gunakan variabel node_size yang sudah kita tambahkan tadi
+				visual_node.position = center_pos - Vector2(node_size / 2.0, node_size / 2.0)
 
 			if not visual_node.node_clicked.is_connected(
 				_on_node_selected

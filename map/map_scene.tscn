@@ -1,9 +1,21 @@
 [gd_scene format=3 uid="uid://dceffs3gwfhae"]
 
 [ext_resource type="Script" uid="uid://bkycgeu0v82k" path="res://map/map_manager.gd" id="1_xrkvi"]
+[ext_resource type="PackedScene" uid="uid://duwa2rq4fgcsj" path="res://map/map_node.tscn" id="2_q2h2y"]
+[ext_resource type="Script" uid="uid://dncorhl3akjyt" path="res://map/sections/section_data.gd" id="5_ab781"]
 [ext_resource type="Texture2D" uid="uid://5oly4a3ev0cm" path="res://assets/backgrounds/tengah_map_tree.png" id="5_jcvi6"]
+[ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="5_lgh0d"]
 [ext_resource type="Texture2D" uid="uid://b8dcrvgw6kxhe" path="res://assets/backgrounds/top_map_tree.png" id="6_1ym7n"]
+[ext_resource type="Resource" uid="uid://v2hn1utjhfsr" path="res://map/sections/res/section_ferrum.tres" id="6_71c6l"]
+[ext_resource type="Resource" uid="uid://d1xqe638qj6vx" path="res://enemy/ferrum/res/ferrum_common.tres" id="6_u5ktc"]
+[ext_resource type="Resource" uid="uid://d0hnw12tuwdo" path="res://map/sections/res/section_cobalt.tres" id="7_71c6l"]
+[ext_resource type="Resource" uid="uid://bcjwouj1xdml0" path="res://enemy/cobalt/res/cobalt_common.tres" id="7_lq6j1"]
+[ext_resource type="Resource" uid="uid://cviq8n2dao727" path="res://enemy/neon/res/neon_common.tres" id="8_ekk3v"]
 [ext_resource type="Texture2D" uid="uid://kyeqnk6wojh5" path="res://assets/backgrounds/base_map_tree.png" id="9_base"]
+[ext_resource type="Resource" uid="uid://uqxxw766mt6t" path="res://enemy/ferrum/res/ferrum_elite.tres" id="9_gta4r"]
+[ext_resource type="Resource" uid="uid://ca3u8s6esuegx" path="res://enemy/cobalt/res/cobalt_elite.tres" id="10_3xs7y"]
+[ext_resource type="Resource" uid="uid://bn1innlyfyffv" path="res://enemy/neon/res/neon_elite.tres" id="11_rmjs1"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="15_coqd3"]
 
 [node name="MapScene" type="Control" unique_id=1082545900]
 layout_mode = 3
@@ -28,7 +40,11 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_xrkvi")
-section_wallpapers = Array[Texture2D]([ExtResource("9_base"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("6_1ym7n")])
+map_node_scene = ExtResource("2_q2h2y")
+section_wallpapers = Array[Texture2D]([ExtResource("9_base"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("5_jcvi6"), ExtResource("6_1ym7n")])
+global_common_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("6_u5ktc"), ExtResource("7_lq6j1"), ExtResource("8_ekk3v")])
+global_elite_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("9_gta4r"), ExtResource("10_3xs7y"), ExtResource("11_rmjs1"), null])
+sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_71c6l"), ExtResource("7_71c6l"), ExtResource("6_71c6l")])
 
 [node name="BtnUp" type="Button" parent="." unique_id=691623035]
 layout_mode = 1
@@ -42,6 +58,8 @@ offset_top = 0.44000244
 offset_bottom = 0.47994995
 grow_horizontal = 0
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("15_coqd3")
+theme_override_font_sizes/font_size = 30
 text = "UP"
 
 [node name="BtnDown" type="Button" parent="." unique_id=312079737]
@@ -56,4 +74,6 @@ offset_top = -0.4800415
 offset_bottom = -0.44006348
 grow_horizontal = 0
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("15_coqd3")
+theme_override_font_sizes/font_size = 30
 text = "DOWN"

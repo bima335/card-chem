@@ -97,7 +97,7 @@ func generate_new_adventure(
 			current_floor_nodes_count = 1
 		else:
 			current_floor_nodes_count = randi_range(
-				1,
+				2,
 				nodes_per_floor
 			)
 
@@ -275,26 +275,28 @@ func generate_new_adventure(
 
 				for target_node in next_nodes:
 
-					current_node.next_connections.append(
-						target_node.grid_position
-					)
+					if i < next_nodes.size():
+						current_node.next_connections.append(
+							next_nodes[i].grid_position
+						)
 
 			# -------------------------------------------------
 			# NORMAL 2-3 NODE
 			# -------------------------------------------------
-
 			else:
+				# 1. Connect ke node yang posisinya sama (tambah pengecekan agar tidak crash!)
+				if i < next_nodes.size():
+					current_node.next_connections.append(
+						next_nodes[i].grid_position
+					)
+				else:
+					# Jika current_nodes lebih banyak dari next_nodes, arahkan ke node terakhir next_nodes
+					current_node.next_connections.append(
+						next_nodes[next_nodes.size() - 1].grid_position
+					)
 
-				# Connect ke node yang posisinya sama
-
-				current_node.next_connections.append(
-					next_nodes[i].grid_position
-				)
-
-				# 50% kemungkinan membuat cabang tambahan
-
+				# 2. 50% kemungkinan membuat cabang tambahan
 				if randf() > 0.5:
-
 					var offset: int
 
 					if randf() > 0.5:
@@ -302,26 +304,31 @@ func generate_new_adventure(
 					else:
 						offset = -1
 
+					# Clamp agar tidak melebihi batas ukuran next_nodes
 					var target_index: int = clamp(
 						i + offset,
 						0,
 						next_nodes.size() - 1
 					)
 
-					if target_index != i:
-
+					# Jika i masih dalam batas next_nodes, pastikan target_index berbeda dengan koneksi utama
+					if i < next_nodes.size() and target_index != i:
 						var target_pos: Vector2i = (
 							next_nodes[target_index]
 							.grid_position
 						)
-
-						if not current_node.next_connections.has(
-							target_pos
-						):
-
-							current_node.next_connections.append(
-								target_pos
-							)
+						if not current_node.next_connections.has(target_pos):
+							current_node.next_connections.append(target_pos)
+					
+					# Jika i melebihi batas next_nodes (seperti kasus 3 node ke 2 node),
+					# kita tetap sambungkan ke target_index hasil clamp (yaitu node terakhir di next_nodes)
+					elif i >= next_nodes.size():
+						var target_pos: Vector2i = (
+							next_nodes[target_index]
+							.grid_position
+						)
+						if not current_node.next_connections.has(target_pos):
+							current_node.next_connections.append(target_pos)
 
 	# =========================================================
 	# SELESAI

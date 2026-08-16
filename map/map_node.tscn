@@ -23,3 +23,4 @@ tex_shop = ExtResource("5_bpacv")
 tex_rest = ExtResource("6_ntf41")
 tex_boss = ExtResource("7_7fa63")
 tex_random_event = ExtResource("8_gx3cc")
+node_size = 200.0
