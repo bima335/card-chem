@@ -172,16 +172,24 @@ func execute_move(action: EnemyAction) -> void:
 				var toxic_stacks = get_status_stacks(StatusAilment.AilmentType.TOXIC)
 				var final_atk = max(0, action.amount - toxic_stacks)
 				EventBus.player_damage_requested.emit(final_atk, self)
+				
 			EnemyAction.ActionType.SHIELD:
 				await play_anim_and_wait(&"skill")
 				current_shield += 10
+				
 			EnemyAction.ActionType.HEAL:
 				await play_anim_and_wait(&"skill")
 				current_hp = clampi(current_hp + 15, 0, stats.max_hp)
+				
+			EnemyAction.ActionType.SKILL:
+				await play_anim_and_wait(&"skill")
+				_execute_custom_skill(action)
 
 	play_anim(&"idle")
 	end_turn_process()
 
+func _execute_custom_skill(_action: EnemyAction) -> void:
+	pass
 
 func end_turn_process() -> void:
 	decrease_status_durations()
