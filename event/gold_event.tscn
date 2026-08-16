@@ -2,10 +2,15 @@
 
 [ext_resource type="Texture2D" uid="uid://ct1xo8h48x77c" path="res://assets/event/goldencpanel.png" id="1_n28i7"]
 [ext_resource type="Script" uid="uid://ppat5fdpa7gm" path="res://event/gold_event.gd" id="1_yd4lm"]
+[ext_resource type="Resource" uid="uid://bqmgedeecc5w4" path="res://enemy/gold/gold_boss.tres" id="2_jin6d"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yf5fn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
+font_size = 40
+font_color = Color(0, 0, 0, 1)
 
 [node name="GoldEvent" type="Control" unique_id=583905336]
 layout_mode = 3
@@ -15,6 +20,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yd4lm")
+gold_boss_stat = ExtResource("2_jin6d")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1383912392]
 layout_mode = 1
@@ -48,5 +54,11 @@ offset_right = 1198.0
 offset_bottom = 950.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_yf5fn")
 
-[connection signal="pressed" from="TextureRect/FightButton" to="." method="_on_fight_button_pressed"]
-[connection signal="pressed" from="TextureRect/SkipButton" to="." method="_on_skip_button_pressed"]
+[node name="GoldLabel" type="Label" parent="TextureRect" unique_id=1626773139]
+layout_mode = 0
+offset_left = 1432.0
+offset_top = 607.0
+offset_right = 1544.0
+offset_bottom = 662.0
+text = "GOLD"
+label_settings = SubResource("LabelSettings_g4v7s")

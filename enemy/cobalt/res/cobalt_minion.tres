@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyStat" format=3 uid="uid://bhspn8f4djyj4"]
 
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_n0rih"]
+[ext_resource type="Resource" uid="uid://s07r4mi84yb0" path="res://enemy/moves/basic_attack.tres" id="2_07pfn"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_npro0"]
 [ext_resource type="Texture2D" uid="uid://c0eup1pi3k30g" path="res://assets/Character/enemy_B/Kroco_Cobalt.png" id="3_npro0"]
 
@@ -9,5 +10,8 @@ script = ExtResource("2_npro0")
 enemy_name = "Cobalt Minion"
 max_hp = 12
 texture = ExtResource("3_npro0")
+moveset = Array[ExtResource("1_n0rih")]([ExtResource("2_07pfn")])
 tag = 3
+sprite_scale = Vector2(1.3, 1.3)
+ui_vertical_offset = 32.0
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

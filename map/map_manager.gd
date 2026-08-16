@@ -1,6 +1,12 @@
 class_name MapManager
 extends Control
 
+enum TestBattleType {
+	BATTLE_NORMAL = MapNodeData.NodeType.BATTLE_NORMAL,
+	BATTLE_HARD = MapNodeData.NodeType.BATTLE_HARD,
+	BOSS = MapNodeData.NodeType.BOSS
+}
+
 @export var map_node_scene: PackedScene
 
 @export_group("Map Backgrounds")
@@ -19,6 +25,7 @@ extends Control
 @export_group("Debug / Testing Options")
 @export_range(0, 14, 1) var test_starting_floor: int = 0
 @export var is_ujicoba: bool = false
+@export var test_battle_type: TestBattleType = TestBattleType.BATTLE_NORMAL
 @export var test_enemy: EnemyStat
 @export var force_first_three_shops: bool = false
 
@@ -35,6 +42,7 @@ var current_view_floor: int = 0
 
 
 func _ready() -> void:
+	GameManager.is_gold_boss = false
 	if scroll_container == null:
 		push_error("MapManager: ScrollContainer tidak ditemukan.")
 		return
@@ -383,14 +391,12 @@ func _on_node_selected(
 	)
 
 	if is_ujicoba and test_enemy != null:
-		GameManager.current_wave_data = [
-			test_enemy
-		]
-
-		get_tree().change_scene_to_file(
-			"res://main/battle_scene.tscn"
-		)
-
+		print("[TEST MODE] Memulai pertempuran uji coba melawan: ", test_enemy.enemy_name)
+		#print("[TEST MODE] Tipe Battle: ", TestBattleType.keys()[test_battle_type])
+		
+		GameManager.active_event_type = test_battle_type as MapNodeData.NodeType
+		GameManager.current_wave_data = [test_enemy]
+		get_tree().change_scene_to_file("res://main/battle_scene.tscn")
 		return
 
 	SaveManager.save_game()

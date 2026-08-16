@@ -13,7 +13,7 @@
 
 [resource]
 script = ExtResource("5_c1n0e")
-section_name = "Section Ferrum"
+section_name = "ferrum"
 section_wallpaper = ExtResource("10_xqorw")
 exclusive_common = Array[ExtResource("1_ekav3")]([ExtResource("3_b58mf")])
 exclusive_elite = Array[ExtResource("1_ekav3")]([ExtResource("4_egan1")])

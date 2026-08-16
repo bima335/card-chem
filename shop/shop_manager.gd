@@ -68,7 +68,6 @@ var pending_sell_price: int = 0
 
 
 func _ready() -> void:
-	# Ensure current_section is set before loading shop
 	if GameManager.current_section == null:
 		GameManager.update_current_section_for_floor(GameManager.current_floor)
 	
@@ -76,7 +75,29 @@ func _ready() -> void:
 	SoundManager.play_bgm("shop")
 	_update_coin_display()
 	_connect_signals()
+	
+	_setup_button_juice(btn_buy)
+	_setup_button_juice(btn_heal)
+	_setup_button_juice(btn_sell)
 
+func _setup_button_juice(button: TextureButton) -> void:
+	button.pivot_offset = button.size / 2.0
+
+	button.mouse_entered.connect(func(): _animate_button_scale(button, Vector2(1.08, 1.08), 0.15))
+	button.mouse_exited.connect(func(): _animate_button_scale(button, Vector2.ONE, 0.15))
+	button.button_down.connect(func(): _animate_button_scale(button, Vector2(0.92, 0.92), 0.08))
+	button.button_up.connect(func(): _animate_button_scale(button, Vector2(1.08, 1.08), 0.08))
+
+func _animate_button_scale(button: TextureButton, target_scale: Vector2, duration: float) -> void:
+	if button.has_meta("juice_tween"):
+		var existing_tween: Tween = button.get_meta("juice_tween")
+		if is_instance_valid(existing_tween) and existing_tween.is_valid():
+			existing_tween.kill()
+
+	var tween: Tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(button, "scale", target_scale, duration)
+	
+	button.set_meta("juice_tween", tween)
 
 func _load_all_shop_resources() -> void:
 	available_cards.clear()
@@ -165,11 +186,6 @@ func _update_coin_display() -> void:
 	coin_label.scale = Vector2(1.3, 1.3)
 	tween.tween_property(coin_label, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BOUNCE)
 
-
-# ==============================================================================
-# TOOLTIP GENERATION
-# ==============================================================================
-
 func _get_rarity_name(rarity_idx: int) -> String:
 	match rarity_idx:
 		0: return "Common"
@@ -208,11 +224,6 @@ func _build_blessing_tooltip(blessing: BlessingData) -> String:
 	text += "Rarity: %s\n\n" % _get_rarity_name(int(blessing.rarity))
 	text += blessing.description
 	return text
-
-
-# ==============================================================================
-# SELL LOGIC
-# ==============================================================================
 
 func _on_btn_sell_pressed() -> void:
 	buy_panel.hide()
@@ -361,18 +372,12 @@ func _reset_sell_state() -> void:
 	pending_sell_item = null
 	pending_sell_price = 0
 
-
-# ==============================================================================
-# BUY LOGIC & CONFIRMATION
-# ==============================================================================
-
 func _on_btn_buy_pressed() -> void:
 	sell_panel.hide()
 	if not is_shop_generated:
 		_generate_shop_stock()
 		is_shop_generated = true
 	buy_panel.show()
-
 
 func _generate_shop_stock() -> void:
 	_clear_all_buy_grids()
@@ -414,8 +419,7 @@ func _generate_cards_stock() -> void:
 		return
 
 	var current_section: SectionData = GameManager.current_section
-	
-	# CRITICAL: Handle null section with fallback values
+
 	if current_section == null:
 		push_error("[ShopManager] current_section is null! Using fallback values.")
 		current_section = _create_fallback_section()
@@ -602,11 +606,6 @@ func _build_blessing_slot_ui(blessing: BlessingData) -> void:
 	box.add_child(buy_btn)
 	blessing_grid.add_child(box)
 
-
-# ==============================================================================
-# BUY CONFIRMATION SYSTEM
-# ==============================================================================
-
 func _request_buy_confirmation(item: Resource, price: int, btn: Button, category: BuyCategory) -> void:
 	if GameManager.shop_coins < price:
 		SoundManager.play_sfx("error")
@@ -684,11 +683,6 @@ func _reset_buy_state() -> void:
 	pending_buy_price = 0
 	pending_buy_btn = null
 
-
-# ==============================================================================
-# COAT DECK SELECTOR
-# ==============================================================================
-
 func _open_deck_selector_for_coat() -> void:
 	for child in deck_card_grid.get_children():
 		child.queue_free()
@@ -710,7 +704,6 @@ func _open_deck_selector_for_coat() -> void:
 		card_ui.pressed.connect(_on_card_selected_for_coat.bind(card_data))
 
 	deck_selector_overlay.show()
-
 
 func _on_card_selected_for_coat(target_card: CardData) -> void:
 	if pending_coat == null:

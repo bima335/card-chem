@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyStat" format=3 uid="uid://ca3u8s6esuegx"]
 
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_4yndd"]
+[ext_resource type="AnimationLibrary" uid="uid://k6lvw74edsrr" path="res://enemy/cobalt/animation/cobalt_elite_animation.tres" id="1_n07km"]
 [ext_resource type="PackedScene" uid="uid://bcxdguiuddv5l" path="res://enemy/cobalt/enemy_cobalt.tscn" id="1_opaip"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_y6spl"]
 [ext_resource type="Texture2D" uid="uid://ro6f0kxg8ryp" path="res://assets/Character/enemy_B/B.Cobalt.png" id="4_opaip"]
@@ -12,4 +13,5 @@ max_hp = 70
 texture = ExtResource("4_opaip")
 tag = 1
 custom_enemy_scene = ExtResource("1_opaip")
+animation_library = ExtResource("1_n07km")
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

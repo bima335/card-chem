@@ -7,6 +7,7 @@ var is_enraged: bool = _is_in_enrage_phase()
 
 func _ready() -> void:
 	super._ready()
+	GameManager.is_gold_boss = true
 	if EventBus.player_dealt_damage.is_connected(_on_player_dealt_damage):
 		return
 	EventBus.player_dealt_damage.connect(_on_player_dealt_damage)
