@@ -10,10 +10,11 @@ config_version=5
 
 [application]
 
-config/name="card-chem"
+config/name="Resonantia_CimistaSpero"
+config/version="1.0"
 run/main_scene="uid://ccj6y3dt7i4mo"
 config/features=PackedStringArray("4.7", "Mobile")
-config/icon="res://icon.svg"
+config/icon="uid://hljfxoosc8sw"
 
 [audio]
 

@@ -58,9 +58,15 @@ func update_current_section_for_floor(floor_idx: int) -> void:
 		push_warning("GameManager: Indeks section " + str(section_idx) + " melebihi total sections_data!")
 
 
-func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first_three_shops: bool = false) -> void:
-	if is_map_generated: return
-	
+func generate_new_adventure(
+	total_floors: int,
+	nodes_per_floor: int,
+	force_first_three_shops: bool = false
+) -> void:
+
+	if is_map_generated:
+		return
+
 	map_data_matrix.clear()
 	current_floor = 0
 	available_paths.clear()
@@ -71,68 +77,262 @@ func generate_new_adventure(total_floors: int, nodes_per_floor: int, force_first
 
 	update_current_section_for_floor(0)
 
+	# =========================================================
+	# GENERATE NODE SETIAP FLOOR
+	# =========================================================
+
 	for floor_idx in range(total_floors):
+
 		map_data_matrix[floor_idx] = []
-		
-		var local_floor: int = floor_idx % 5 
-		var current_floor_nodes_count: int = 1 if (local_floor == 3 or local_floor == 4) else nodes_per_floor
-		
+
+		var local_floor: int = floor_idx % 5
+
+		# Floor 3 = REST
+		# Floor 4 = BOSS
+		# Floor lainnya = RANDOM 1-3 NODE
+		var current_floor_nodes_count: int
+
+		if local_floor == 3 or local_floor == 4:
+			current_floor_nodes_count = 1
+		else:
+			current_floor_nodes_count = randi_range(
+				2,
+				nodes_per_floor
+			)
+
+		# =====================================================
+		# SECTION
+		# =====================================================
+
 		var section_idx: int = floor_idx / 5
+
 		var section_for_generation: SectionData = null
+
 		if section_idx < sections_data.size():
 			section_for_generation = sections_data[section_idx]
-		
+
+		# =====================================================
+		# CREATE NODE
+		# =====================================================
+
 		for node_idx in range(current_floor_nodes_count):
-			var node_data = MapNodeData.new()
-			node_data.grid_position = Vector2i(floor_idx, node_idx)
-			
+
+			var node_data := MapNodeData.new()
+
+			node_data.grid_position = Vector2i(
+				floor_idx,
+				node_idx
+			)
+
+			# -------------------------------------------------
+			# TEST SHOP
+			# -------------------------------------------------
+
 			if force_first_three_shops and floor_idx < 3:
-				node_data.type = MapNodeData.NodeType.SHOP
+
+				node_data.type = (
+					MapNodeData.NodeType.SHOP
+				)
+
+			# -------------------------------------------------
+			# REST
+			# -------------------------------------------------
+
 			elif local_floor == 3:
-				node_data.type = MapNodeData.NodeType.REST
+
+				node_data.type = (
+					MapNodeData.NodeType.REST
+				)
+
+			# -------------------------------------------------
+			# BOSS
+			# -------------------------------------------------
+
 			elif local_floor == 4:
-				node_data.type = MapNodeData.NodeType.BOSS
-				node_data.wave_data = WaveGenerator.generate_wave(2, section_for_generation, global_common_enemies, global_elite_enemies)
+
+				node_data.type = (
+					MapNodeData.NodeType.BOSS
+				)
+
+				node_data.wave_data = (
+					WaveGenerator.generate_wave(
+						2,
+						section_for_generation,
+						global_common_enemies,
+						global_elite_enemies
+					)
+				)
+
+			# -------------------------------------------------
+			# FLOOR PERTAMA
+			# -------------------------------------------------
+
 			elif floor_idx == 0:
-				node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
-				node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
+
+				node_data.type = (
+					MapNodeData.NodeType.BATTLE_NORMAL
+				)
+
+				node_data.wave_data = (
+					WaveGenerator.generate_wave(
+						0,
+						section_for_generation,
+						global_common_enemies,
+						global_elite_enemies
+					)
+				)
+
+			# -------------------------------------------------
+			# RANDOM NODE
+			# -------------------------------------------------
+
 			else:
-				var roll = randf()
-				if roll < 0.40: 
-					node_data.type = MapNodeData.NodeType.BATTLE_NORMAL
-					node_data.wave_data = WaveGenerator.generate_wave(0, section_for_generation, global_common_enemies, global_elite_enemies)
-				elif roll < 0.60: 
-					node_data.type = MapNodeData.NodeType.BATTLE_HARD
-					node_data.wave_data = WaveGenerator.generate_wave(1, section_for_generation, global_common_enemies, global_elite_enemies)
+
+				var roll := randf()
+
+				if roll < 0.40:
+
+					node_data.type = (
+						MapNodeData.NodeType.BATTLE_NORMAL
+					)
+
+					node_data.wave_data = (
+						WaveGenerator.generate_wave(
+							0,
+							section_for_generation,
+							global_common_enemies,
+							global_elite_enemies
+						)
+					)
+
+				elif roll < 0.60:
+
+					node_data.type = (
+						MapNodeData.NodeType.BATTLE_HARD
+					)
+
+					node_data.wave_data = (
+						WaveGenerator.generate_wave(
+							1,
+							section_for_generation,
+							global_common_enemies,
+							global_elite_enemies
+						)
+					)
+
 				elif roll < 0.80:
-					node_data.type = MapNodeData.NodeType.RANDOM_EVENT
-				else: 
-					node_data.type = MapNodeData.NodeType.SHOP
-					
-			map_data_matrix[floor_idx].append(node_data)
+
+					node_data.type = (
+						MapNodeData.NodeType.RANDOM_EVENT
+					)
+
+				else:
+
+					node_data.type = (
+						MapNodeData.NodeType.SHOP
+					)
+
+			map_data_matrix[floor_idx].append(
+				node_data
+			)
+
+	# =========================================================
+	# CONNECT NODE
+	# =========================================================
 
 	for floor_idx in range(total_floors - 1):
-		var current_nodes = map_data_matrix[floor_idx]
-		var next_nodes = map_data_matrix[floor_idx + 1]
-		
+
+		var current_nodes: Array = (
+			map_data_matrix[floor_idx]
+		)
+
+		var next_nodes: Array = (
+			map_data_matrix[floor_idx + 1]
+		)
+
 		for i in range(current_nodes.size()):
-			var current_node: MapNodeData = current_nodes[i]
-			
+
+			var current_node: MapNodeData = (
+				current_nodes[i]
+			)
+
+			# -------------------------------------------------
+			# NEXT FLOOR CUMA 1 NODE
+			# -------------------------------------------------
+
 			if next_nodes.size() == 1:
-				current_node.next_connections.append(next_nodes[0].grid_position)
+
+				current_node.next_connections.append(
+					next_nodes[0].grid_position
+				)
+
+			# -------------------------------------------------
+			# CURRENT FLOOR CUMA 1 NODE
+			# -------------------------------------------------
+
 			elif current_nodes.size() == 1:
+
 				for target_node in next_nodes:
-					current_node.next_connections.append(target_node.grid_position)
+
+					if i < next_nodes.size():
+						current_node.next_connections.append(
+							next_nodes[i].grid_position
+						)
+
+			# -------------------------------------------------
+			# NORMAL 2-3 NODE
+			# -------------------------------------------------
 			else:
-				current_node.next_connections.append(next_nodes[i].grid_position)
+				# 1. Connect ke node yang posisinya sama (tambah pengecekan agar tidak crash!)
+				if i < next_nodes.size():
+					current_node.next_connections.append(
+						next_nodes[i].grid_position
+					)
+				else:
+					# Jika current_nodes lebih banyak dari next_nodes, arahkan ke node terakhir next_nodes
+					current_node.next_connections.append(
+						next_nodes[next_nodes.size() - 1].grid_position
+					)
+
+				# 2. 50% kemungkinan membuat cabang tambahan
 				if randf() > 0.5:
-					var offset = 1 if randf() > 0.5 else -1
-					var target_index = clamp(i + offset, 0, next_nodes.size() - 1)
-					if target_index != i:
-						var target_pos = next_nodes[target_index].grid_position
+					var offset: int
+
+					if randf() > 0.5:
+						offset = 1
+					else:
+						offset = -1
+
+					# Clamp agar tidak melebihi batas ukuran next_nodes
+					var target_index: int = clamp(
+						i + offset,
+						0,
+						next_nodes.size() - 1
+					)
+
+					# Jika i masih dalam batas next_nodes, pastikan target_index berbeda dengan koneksi utama
+					if i < next_nodes.size() and target_index != i:
+						var target_pos: Vector2i = (
+							next_nodes[target_index]
+							.grid_position
+						)
 						if not current_node.next_connections.has(target_pos):
 							current_node.next_connections.append(target_pos)
-							
+					
+					# Jika i melebihi batas next_nodes (seperti kasus 3 node ke 2 node),
+					# kita tetap sambungkan ke target_index hasil clamp (yaitu node terakhir di next_nodes)
+					elif i >= next_nodes.size():
+						var target_pos: Vector2i = (
+							next_nodes[target_index]
+							.grid_position
+						)
+						if not current_node.next_connections.has(target_pos):
+							current_node.next_connections.append(target_pos)
+
+	# =========================================================
+	# SELESAI
+	# =========================================================
+
 	is_map_generated = true
 
 
