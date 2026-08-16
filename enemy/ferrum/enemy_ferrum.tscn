@@ -350,7 +350,6 @@
 [ext_resource type="Texture2D" uid="uid://b0he2sas3panf" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_57.png" id="211_hfqie"]
 [ext_resource type="Texture2D" uid="uid://b0ngoqyyh2si7" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_58.png" id="212_7mv7e"]
 [ext_resource type="Texture2D" uid="uid://gw8yuo1ia8wg" path="res://assets/Character/eliteboss/Boss.Ferrum/Eksport/Ferrum_Boss_Ingame-Skill_59.png" id="213_t88mj"]
-[ext_resource type="AnimationLibrary" uid="uid://fcax683v15hv" path="res://enemy/ferrum/animation/ferrum_elite_anim.res" id="351_kakxd"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4sx6r"]
 animations = [{
@@ -1480,8 +1479,5 @@ visible = false
 [node name="AnimatedSprite2D" parent="." index="2" unique_id=1549849388]
 visible = true
 sprite_frames = SubResource("SpriteFrames_4sx6r")
-animation = &"e_attack"
+animation = &"boss_attack"
 offset = Vector2(-160, -274)
-
-[node name="AnimationPlayer" parent="." index="3" unique_id=1280754138]
-libraries/ferrum_elite_anim = ExtResource("351_kakxd")

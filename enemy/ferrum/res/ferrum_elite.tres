@@ -14,4 +14,6 @@ texture = ExtResource("4_xbxlo")
 tag = 1
 custom_enemy_scene = ExtResource("1_pucbv")
 animation_library = ExtResource("1_xbxlo")
+sprite_scale = Vector2(3, 3)
+ui_vertical_offset = 80.0
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

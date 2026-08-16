@@ -12,6 +12,9 @@ extends Node
 @export var blessing_container: VBoxContainer
 @export var blessing_item_scene: PackedScene
 
+@export_group("Boss HUD")
+@export var boss_hp_bar: BossHPBar
+
 @export_group("Aura UI")
 @export var aura_container: Control
 @export var aura_ui_scene: PackedScene
@@ -120,6 +123,9 @@ func _on_deck_visual_pressed() -> void:
 		if deck:
 			show_card_viewer(deck.cards, "SISA KARTU DECK", false)
 
+func register_boss(boss_node: EnemyBase) -> void:
+	if boss_hp_bar:
+		boss_hp_bar.setup_boss(boss_node)
 
 func _connect_aura_signals() -> void:
 	if AuraManager.has_signal("aura_equipped"):
@@ -444,6 +450,8 @@ func set_battle_hud_visible(is_visible: bool) -> void:
 		player_hp_bar.get_parent().visible = is_visible
 	if player_shield_bar:
 		player_shield_bar.visible = is_visible
+	if boss_hp_bar:
+		boss_hp_bar.visible = is_visible and (boss_hp_bar._tracked_boss != null)
 
 func _on_end_turn_button_mouse_exited() -> void:
 	if _end_turn_tween and _end_turn_tween.is_valid():

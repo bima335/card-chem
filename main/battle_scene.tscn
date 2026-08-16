@@ -5,12 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
+[ext_resource type="Texture2D" uid="uid://dcs4qh1hxmb2y" path="res://assets/backgrounds/wallpaper cobalt.png" id="2_y3ceo"]
+[ext_resource type="Texture2D" uid="uid://dhgk7c3si6ru1" path="res://assets/Character/eliteboss/Boss.Coblat/singgasana_cobalt.png" id="3_6w65c"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
 [ext_resource type="Script" uid="uid://dvvk38sutj4ok" path="res://player/player.gd" id="7_k6tid"]
 [ext_resource type="Script" uid="uid://d3nogngdatj86" path="res://main/stage_manager.gd" id="7_ylpik"]
 [ext_resource type="Script" uid="uid://bwwogkt0xbqko" path="res://main/battle_ui_manager.gd" id="8_3aatk"]
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="8_21jdp"]
-[ext_resource type="Texture2D" uid="uid://squeg00ik6p1" path="res://assets/backgrounds/battle_01.png" id="9_ehvsk"]
 [ext_resource type="Script" uid="uid://8iybuve5n63j" path="res://main/battle_reward_handler.gd" id="10_0hkaa"]
 [ext_resource type="Script" uid="uid://bs7n7sd4wequ3" path="res://main/card_resolver.gd" id="11_ehvsk"]
 [ext_resource type="PackedScene" uid="uid://bp16sk8vhc1g3" path="res://ui/blessing/blessing_ui_Item.tscn" id="12_6ojnn"]
@@ -59,6 +60,7 @@
 [ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="51_olllg"]
 [ext_resource type="Texture2D" uid="uid://b3awcm6aq22kn" path="res://assets/HUD/statusplayer.png" id="52_a71yv"]
 [ext_resource type="Texture2D" uid="uid://clm53sedrbusy" path="res://assets/HUD/rewardspanel.png" id="53_7i7p3"]
+[ext_resource type="PackedScene" uid="uid://boadenuq2my22" path="res://ui/boss_hp_bar.tscn" id="60_gfdxq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
 
@@ -71,11 +73,35 @@ texture_filter = 1
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
-texture = ExtResource("9_ehvsk")
+texture = ExtResource("2_y3ceo")
 
-[node name="StageManager" type="Node2D" parent="." unique_id=1219606548]
+[node name="StageManager" type="Node2D" parent="." unique_id=1219606548 node_paths=PackedStringArray("boss_spawn_marker", "boss_cobalt_spawn_point", "throne_texture_rect")]
 script = ExtResource("7_ylpik")
+enemy_base_y = 600.0
+enemy_spacing_x = 300.0
+cobalt_center_gap = 20.0
+boss_spawn_marker = NodePath("BossFerrumSpawnPoint")
+boss_cobalt_spawn_point = NodePath("BossCobaltSpawnPoint")
+throne_texture_rect = NodePath("Singgasana")
 enemy_scene = ExtResource("8_21jdp")
+
+[node name="BossFerrumSpawnPoint" type="Marker2D" parent="StageManager" unique_id=1952363308]
+position = Vector2(960, 790)
+
+[node name="BossCobaltSpawnPoint" type="Marker2D" parent="StageManager" unique_id=1097517023]
+position = Vector2(888, 547)
+
+[node name="Singgasana" type="TextureRect" parent="StageManager" unique_id=899407746]
+custom_minimum_size = Vector2(1920, 1080)
+offset_left = 283.99994
+offset_top = 144.0
+offset_right = 2204.0
+offset_bottom = 1224.0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_6w65c")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_lock_ = true
 
 [node name="Player" type="Node" parent="." unique_id=1595257805 groups=["player"]]
 script = ExtResource("7_k6tid")
@@ -89,7 +115,7 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "card_grid", "gold_label")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "boss_hp_bar", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "card_grid", "gold_label")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
@@ -99,6 +125,7 @@ discard_visual = NodePath("../../UI/StatGroup/DiscardVisual")
 close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
 blessing_container = NodePath("../../UI/TopRightHUD/BlessingWrapper/BlessingContainer")
 blessing_item_scene = ExtResource("12_6ojnn")
+boss_hp_bar = NodePath("../../UI/BossHPBar")
 aura_container = NodePath("../../UI/TopRightHUD/AuraWrapper/CardSlots")
 aura_ui_scene = ExtResource("14_dairb")
 player_hp_bar = NodePath("../../UI/StatGroup/PlayerHPBar")
@@ -736,3 +763,5 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "SKIP"
+
+[node name="BossHPBar" parent="UI" unique_id=963925899 instance=ExtResource("60_gfdxq")]

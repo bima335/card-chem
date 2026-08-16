@@ -1,6 +1,7 @@
 class_name EnemyBase
 extends Node2D
 
+signal health_updated(current: int, max_val: int)
 @export var stats: EnemyStat 
 @export var exposed_resource_data: StatusAilment 
 
@@ -51,6 +52,13 @@ func _init_stats() -> void:
 	hp_bar.value = current_hp
 	_update_hp_text()
 	
+	if stats.tag == EnemyStat.EnemyTag.BOSS:
+		hp_bar.hide()
+		if status_container:
+			var top_edge_y: float = stats.click_area_offset.y - (stats.click_area_size.y * 0.5)
+			status_container.position.x = -(status_container.size.x * 0.5)
+			status_container.position.y = top_edge_y - stats.ui_vertical_offset - status_container.size.y
+	
 	if stats.texture:
 		if sprite:
 			sprite.texture = stats.texture
@@ -58,6 +66,7 @@ func _init_stats() -> void:
 			selection_aura.texture = stats.texture
 
 	_apply_manual_sizing()
+	health_updated.emit(current_hp, stats.max_hp)
 
 
 func _apply_manual_sizing() -> void:
@@ -153,24 +162,24 @@ func start_turn_process() -> void:
 
 func execute_move(action: EnemyAction) -> void:
 	if is_stunned:
-		print(name, " gagal menyerang karena sedang STUN!")
 		end_turn_process()
 		return
 		
 	if action != null:
 		match action.type:
 			EnemyAction.ActionType.ATTACK:
-				play_anim(&"attack")
+				await play_anim_and_wait(&"attack")
 				var toxic_stacks = get_status_stacks(StatusAilment.AilmentType.TOXIC)
 				var final_atk = max(0, action.amount - toxic_stacks)
 				EventBus.player_damage_requested.emit(final_atk, self)
 			EnemyAction.ActionType.SHIELD:
-				play_anim(&"skill")
+				await play_anim_and_wait(&"skill")
 				current_shield += 10
 			EnemyAction.ActionType.HEAL:
-				play_anim(&"skill")
+				await play_anim_and_wait(&"skill")
 				current_hp = clampi(current_hp + 15, 0, stats.max_hp)
 
+	play_anim(&"idle")
 	end_turn_process()
 
 
@@ -254,20 +263,14 @@ func take_damage(amount: int, is_direct_attack: bool = false) -> void:
 	var flash_tween = create_tween()
 	flash_tween.tween_property(active_visual, "modulate", Color.RED, 0.1)
 	flash_tween.tween_property(active_visual, "modulate", Color.WHITE, 0.1)
-	
+	health_updated.emit(current_hp, stats.max_hp)
 	_on_health_changed(current_hp)
 
 	if is_direct_attack:
 		AuraManager.process_neon_illuminate_post_damage(self)
 
 	if current_hp <= 0:
-		var is_boss: bool = false
-		if stats and stats.has_method("is_boss"):
-			is_boss = stats.is_boss
-		elif "BOSS" in name.to_upper():
-			is_boss = true
-		EventBus.enemy_killed.emit(self, is_boss)
-		EventBus.enemy_died.emit(self)
+		set_targetable(false)
 		die()
 
 
@@ -500,6 +503,15 @@ func _become_deselected() -> void:
 
 
 func die() -> void:
-	if play_anim(&"death"):
-		await anim_player.animation_finished
+	var is_boss: bool = false
+	if stats and stats.has_method("is_boss"):
+		is_boss = stats.is_boss
+	elif "BOSS" in name.to_upper():
+		is_boss = true
+
+	EventBus.enemy_killed.emit(self, is_boss)
+	
+	await play_anim_and_wait(&"death")
+	
+	EventBus.enemy_died.emit(self)
 	queue_free()

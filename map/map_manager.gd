@@ -171,7 +171,7 @@ func _on_node_selected(node_data: MapNodeData) -> void:
 
 	if is_ujicoba and test_enemy != null:
 		print("[TEST MODE] Memulai pertempuran uji coba melawan: ", test_enemy.enemy_name)
-		print("[TEST MODE] Tipe Battle: ", TestBattleType.keys()[test_battle_type])
+		#print("[TEST MODE] Tipe Battle: ", TestBattleType.keys()[test_battle_type])
 		
 		GameManager.active_event_type = test_battle_type as MapNodeData.NodeType
 		GameManager.current_wave_data = [test_enemy]

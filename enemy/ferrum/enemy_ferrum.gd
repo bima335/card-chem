@@ -121,7 +121,7 @@ func determine_next_move() -> EnemyAction:
 	return action
 
 func execute_move(action: EnemyAction) -> void:
-	super.execute_move(action)
+	await super.execute_move(action)
 	if action and action.type == EnemyAction.ActionType.ATTACK:
 		player_korosi_stacks_applied += 1
 		EventBus.apply_player_status.emit("KOROSI", 3, 3)
@@ -140,4 +140,4 @@ func die() -> void:
 		if player_node and player_node.has_method("add_tokens"):
 			player_node.add_tokens(1, 0, 0, 0)
 			
-	queue_free()
+	await super.die()
