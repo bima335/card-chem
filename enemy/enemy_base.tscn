@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bjiywruf3x87f" path="res://enemy/enemy_base.gd" id="1_sq8er"]
 [ext_resource type="Resource" uid="uid://gpeaojuau8cy" path="res://enemy/res/base.tres" id="2_4sx6r"]
 [ext_resource type="Shader" uid="uid://c3gocusuc1e6v" path="res://enemy/shaders/enemy_selection.gdshader" id="3_71shp"]
+[ext_resource type="Texture2D" uid="uid://d3akspy35a0jd" path="res://assets/HUD/wadahhpkcoroc.png" id="4_beadm"]
+[ext_resource type="Texture2D" uid="uid://v0btt5q6o1up" path="res://assets/HUD/isihpkroco.png" id="5_kcuha"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_63jj1"]
 shader = ExtResource("3_71shp")
@@ -37,14 +39,14 @@ material = SubResource("ShaderMaterial_63jj1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClickArea" unique_id=2122125421]
 shape = SubResource("RectangleShape2D_4sx6r")
 
-[node name="HPBar" type="ProgressBar" parent="." unique_id=1380941531]
-custom_minimum_size = Vector2(100, 15)
+[node name="HPBar" type="TextureProgressBar" parent="." unique_id=1380941531]
 offset_left = -50.0
 offset_top = -109.0
 offset_right = 50.0
 offset_bottom = -82.0
-step = 1.0
-show_percentage = false
+value = 100.0
+texture_under = ExtResource("4_beadm")
+texture_progress = ExtResource("5_kcuha")
 
 [node name="Label" type="Label" parent="HPBar" unique_id=1201091616]
 layout_mode = 1
