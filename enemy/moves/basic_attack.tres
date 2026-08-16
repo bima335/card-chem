@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_yv3c0")
 action_name = "Basik"
-amount = 2
+amount = 5
 metadata/_custom_type_script = "uid://dth0bkr3nr2v1"

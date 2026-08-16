@@ -12,6 +12,9 @@ extends Node
 @export var blessing_container: VBoxContainer
 @export var blessing_item_scene: PackedScene
 
+@export_group("Boss HUD")
+@export var boss_hp_bar: BossHPBar
+
 @export_group("Aura UI")
 @export var aura_container: Control
 @export var aura_ui_scene: PackedScene
@@ -120,6 +123,9 @@ func _on_deck_visual_pressed() -> void:
 		if deck:
 			show_card_viewer(deck.cards, "SISA KARTU DECK", false)
 
+func register_boss(boss_node: EnemyBase) -> void:
+	if boss_hp_bar:
+		boss_hp_bar.setup_boss(boss_node)
 
 func _connect_aura_signals() -> void:
 	if AuraManager.has_signal("aura_equipped"):
@@ -253,7 +259,6 @@ func hide_deck_viewer() -> void:
 	tween.chain().tween_callback(deck_view_panel.hide)
 	tween.chain().tween_callback(deck_backdrop.hide)
 
-
 func arrange_hand() -> void:
 	if not hand_container:
 		return
@@ -313,7 +318,6 @@ func arrange_hand() -> void:
 			tween.set_parallel(true)
 			tween.tween_property(card, "position", target_position, hand_layout_duration)
 			tween.tween_property(card, "rotation", target_rotation, hand_layout_duration)
-
 
 func animate_draw_card(new_card_data: CardData, on_land_callback: Callable) -> void:
 	var real_card: CardUI = card_ui_scene.instantiate() as CardUI
@@ -435,6 +439,19 @@ func _on_end_turn_button_mouse_entered() -> void:
 	_end_turn_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	_end_turn_tween.tween_property(end_turn_button, "rotation_degrees", end_turn_button.rotation_degrees - 45.0, 0.25)
 
+func set_battle_hud_visible(is_visible: bool) -> void:
+	if hand_container:
+		hand_container.visible = is_visible
+	if end_turn_button:
+		end_turn_button.visible = is_visible
+	if token_container:
+		token_container.visible = is_visible
+	if player_hp_bar:
+		player_hp_bar.get_parent().visible = is_visible
+	if player_shield_bar:
+		player_shield_bar.visible = is_visible
+	if boss_hp_bar:
+		boss_hp_bar.visible = is_visible and (boss_hp_bar._tracked_boss != null)
 
 func _on_end_turn_button_mouse_exited() -> void:
 	if _end_turn_tween and _end_turn_tween.is_valid():
