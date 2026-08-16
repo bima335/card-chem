@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://c1erwa2kcy8d1"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_7ynby"]
+[ext_resource type="Texture2D" uid="uid://c30xbf3grckjs" path="res://assets/Card/playing_card/DamageReducer.png" id="1_ifank"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_ifank"]
+
+[resource]
+script = ExtResource("1_7ynby")
+id = "c_d_03"
+card_name = "Damage Reducer"
+description = "Mengurangi Damage Musuh Sebanyak 5"
+card_texture = ExtResource("1_ifank")
+rarity = 2
+cost_carbon = 2
+cost_nitrogen = 11
+buy_value = 8
+sell_value = 4
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

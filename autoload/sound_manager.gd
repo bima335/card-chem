@@ -12,6 +12,17 @@ var sfx_database: Dictionary = {
 
 var bgm_database: Dictionary = {
 	"battle_theme": preload("res://assets/audio/bgm/Go!_Fight!_Win!.mp3"),
+	"battle": preload("res://assets/audio/bgm/battle_general.mp3"),
+	"ferrum": preload("res://assets/audio/bgm/Ferrum_Env.mp3"),
+	"cobalt": preload("res://assets/audio/bgm/Cobalt_Env.mp3"),
+	"neon": preload("res://assets/audio/bgm/Neon_Env.mp3"),
+	"rest": preload("res://assets/audio/bgm/The_Rest.mp3"),
+	"shop": preload("res://assets/audio/bgm/The_Lab.mp3"),
+	"main_menu": preload("res://assets/audio/bgm/main_menu.mp3"),
+	"aurum": preload("res://assets/audio/bgm/Aurum_Gold_Env.mp3"),
+	"event": preload("res://assets/audio/bgm/event_node.mp3"),
+	"intro_theme": preload("res://assets/audio/bgm/story.mp3"),
+	"end":preload("res://assets/audio/bgm/end.mp3"),
 }
 
 func _ready() -> void:
@@ -23,6 +34,18 @@ func _ready() -> void:
 	bgm_player = AudioStreamPlayer.new()
 	bgm_player.bus = "Music" # Arahkan ke jalur Music yang kita buat di editor
 	add_child(bgm_player)
+
+func set_master_volume(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value))
+
+func set_bgm_volume(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("Music")
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value))
+
+func set_sfx_volume(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("SFX")
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value))
 
 func play_sfx(sound_name: String, pitch_variance: float = 0.0) -> void:
 	if not sfx_database.has(sound_name):
@@ -88,3 +111,12 @@ func stop_bgm(fade_duration: float = 1.0) -> void:
 	tween.tween_property(bgm_player, "volume_db", -40.0, fade_duration)
 	tween.tween_callback(bgm_player.stop)
 	current_bgm_track = ""
+
+func set_master_volume_db(db: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)
+
+func set_bgm_volume_db(db: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), db)
+
+func set_sfx_volume_db(db: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), db)

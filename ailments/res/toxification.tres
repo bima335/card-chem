@@ -7,4 +7,6 @@
 script = ExtResource("1_r63c2")
 ailment = 2
 status_icon = ExtResource("2_hevge")
+decrease_on_turn_end = false
+use_stacks_for_display = true
 metadata/_custom_type_script = "uid://ck4m1qolca0es"

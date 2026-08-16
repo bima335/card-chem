@@ -7,6 +7,7 @@
 script = ExtResource("1_wat81")
 coat_type = 3
 coat_name = "Insulated"
+description = "Prevent card from being drained"
 icon = ExtResource("1_14gsi")
 buy_price = 12
 is_insulated = true

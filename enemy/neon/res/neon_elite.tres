@@ -3,13 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://dprdx160u3qe7" path="res://enemy/neon/enemy_neon.tscn" id="1_6u3c2"]
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_x6rt1"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_71ycg"]
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="4_4t57n"]
+[ext_resource type="Texture2D" uid="uid://5ixc2m8wosjc" path="res://assets/Character/enemy_B/B2.Neon.png" id="4_6u3c2"]
 
 [resource]
 script = ExtResource("2_71ycg")
 enemy_name = "Neon Elite"
 max_hp = 100
-texture = ExtResource("4_4t57n")
+texture = ExtResource("4_6u3c2")
 tag = 1
 custom_enemy_scene = ExtResource("1_6u3c2")
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

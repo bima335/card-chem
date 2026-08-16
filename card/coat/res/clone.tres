@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_42lp1")
 coat_type = 1
-description = "Tambahkan 1 copy dari kartu yang dipilih ke dalam deck."
+description = "Give 1 Copy of card to deck"
 icon = ExtResource("1_y56dj")
 buy_price = 20
 metadata/_custom_type_script = "uid://bu5meodq28pis"

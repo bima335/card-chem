@@ -1,15 +1,15 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bddscd0m87jmu"]
 
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_h6lju"]
-[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_vxc7w"]
+[ext_resource type="Texture2D" uid="uid://8ykoy82ue52n" path="res://assets/Card/playing_card/NitrogenWall.png" id="1_vxc7w"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_vxc7w"]
 
 [resource]
 script = ExtResource("1_h6lju")
 id = "c_b_07"
 card_name = "Nitrogen Wall"
+description = "+12 Shield Player"
 card_texture = ExtResource("1_vxc7w")
-modulate = Color(0, 0.7724675, 0.26214015, 1)
 card_type = 1
 target_type = 2
 cost_carbon = 2

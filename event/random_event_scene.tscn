@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cw3n63hhp6txs" path="res://event/random_event_scene.gd" id="1_e84nf"]
 [ext_resource type="Texture2D" uid="uid://cydiwn0lxelco" path="res://assets/event/eventpanel.png" id="1_wj1br"]
+[ext_resource type="Texture2D" uid="uid://bj3yrnjm7tmhn" path="res://assets/event/battle_general.png" id="2_1nlnm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yf5fn"]
 
@@ -13,6 +14,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e84nf")
+
+[node name="bg" type="TextureRect" parent="." unique_id=1283632524]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_1nlnm")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=2035907032]
 layout_mode = 1

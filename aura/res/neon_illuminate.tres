@@ -7,5 +7,6 @@
 script = ExtResource("1_0y2rq")
 aura_id = 9
 name = "Neon Illuminate"
+description = "Setiap kali enemy kena damage dari player, dapat stack Exposed. Tiap stack menambah 15% damage yang diterima musuh dari seluruh resource player, unlimited stack, bertahan sampai akhir battle."
 icon = ExtResource("1_nivfk")
 metadata/_custom_type_script = "uid://b100qugnu421l"

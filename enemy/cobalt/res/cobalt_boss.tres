@@ -2,14 +2,19 @@
 
 [ext_resource type="Script" uid="uid://dth0bkr3nr2v1" path="res://enemy/enemy_action.gd" id="1_8kdri"]
 [ext_resource type="PackedScene" uid="uid://bcxdguiuddv5l" path="res://enemy/cobalt/enemy_cobalt.tscn" id="1_ll46a"]
+[ext_resource type="AnimationLibrary" uid="uid://bfo86yvj8l2o0" path="res://enemy/cobalt/animation/cobalt_boss_animation.tres" id="1_nhovy"]
 [ext_resource type="Script" uid="uid://brndm7sxcapx3" path="res://enemy/enemy_stat.gd" id="2_e8r1v"]
-[ext_resource type="Texture2D" uid="uid://copa3040teryh" path="res://assets/Aura_Card_Ferrum_01.png" id="4_nhovy"]
+[ext_resource type="Texture2D" uid="uid://4b0aacsisq2f" path="res://assets/Character/eliteboss/Boss.Coblat/Eksport/cobalt ingame-idle_00.png" id="4_ll46a"]
 
 [resource]
 script = ExtResource("2_e8r1v")
 enemy_name = "Cobalt Boss"
 max_hp = 160
-texture = ExtResource("4_nhovy")
+texture = ExtResource("4_ll46a")
 tag = 2
 custom_enemy_scene = ExtResource("1_ll46a")
+animation_library = ExtResource("1_nhovy")
+sprite_scale = Vector2(2, 2)
+click_area_size = Vector2(250, 350)
+click_area_offset = Vector2(70, -50)
 metadata/_custom_type_script = "uid://brndm7sxcapx3"

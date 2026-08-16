@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://c7egfvnqlhxde"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_e7p0k"]
+[ext_resource type="Texture2D" uid="uid://ida6ob612b4t" path="res://assets/Card/playing_card/NitricOxide.png" id="1_mnu7y"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_mnu7y"]
+[ext_resource type="Resource" uid="uid://bjwtqh0esjut0" path="res://ailments/res/oxidation.tres" id="4_lf8jv"]
+
+[resource]
+script = ExtResource("1_e7p0k")
+id = "c_a_03"
+card_name = "Nitric Oxide"
+description = "Memberikan 2 Damage dan Menimbulkan Oxidize"
+card_texture = ExtResource("1_mnu7y")
+rarity = 1
+cost_oxygen = 1
+cost_nitrogen = 1
+damage_amount = 2
+buy_value = 9
+sell_value = 4
+trigger_element = 1
+statuses_to_apply = Array[ExtResource("2_mnu7y")]([ExtResource("4_lf8jv")])
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

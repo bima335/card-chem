@@ -3,6 +3,12 @@ extends Node2D
 
 enum TurnState { PLAYER, ENEMY }
 var current_state: TurnState = TurnState.PLAYER
+@onready var battle_background: TextureRect = $BattleBackground
+const CARD_CARBON_SHIELD: CardData = preload("uid://b1nye4430c7yv")
+const CARD_NITRIC_OXIDE: CardData = preload("uid://c7egfvnqlhxde")
+const CARD_OXYGEN_GAS: CardData = preload("uid://1rhiulfq30o5")
+const CARD_HYDROGEN_PEROXIDE: CardData = preload("uid://db0cc88e3ktnj")
+const CARD_NITROGEN_GAS: CardData = preload("uid://jjs12ewhi0vm")
 
 @export var available_cards: Array[CardData] 
 
@@ -23,12 +29,26 @@ var current_target: EnemyBase = null
 var active_effect_choice: CoatData = null
 var is_selecting_effect_target: bool = false
 var accumulated_gold: int = 0
+@export var aura_1: AuraCardData
+@export var aura_2: AuraCardData
+
+@export var blessing_1: BlessingData
+@export var blessing_2: BlessingData
+@export var blessing_3: BlessingData
 
 func _ready() -> void:
-	SoundManager.play_bgm("battle_theme")
+	_setup_background()
+	_play_battle_music()
 	_connect_signals()
 	#BlessingManager.equip_blessing(default_blessing)
 	#AuraManager.equip_aura(default_aura_1)
+	#AuraManager.equip_aura(aura_1, 0)
+	#AuraManager.equip_aura(aura_2, 1)
+	#
+	#BlessingManager.equip_blessing(blessing_1)
+	#BlessingManager.equip_blessing(blessing_2)
+	#BlessingManager.equip_blessing(blessing_3)
+	
 	accumulated_gold = 0
 	GameManager.reset_round()
 	is_first_turn = true
@@ -54,13 +74,18 @@ func _connect_signals() -> void:
 	
 	reward_handler.effect_target_requested.connect(_on_effect_target_requested)
 
+func _setup_background() -> void:
+	if not battle_background:
+		return
+
+	if GameManager.current_section and GameManager.current_section.section_wallpaper != null:
+		battle_background.texture = GameManager.current_section.section_wallpaper
+	else:
+		push_warning("BattleManager: current_section atau section_wallpaper kosong, mempertahankan texture bawaan.")
+
 func _prepare_starting_deck() -> void:
 	if GameManager.player_deck.is_empty():
-		for i in range(15):
-			if not available_cards.is_empty():
-				var picked_card: CardData = available_cards.pick_random()
-				GameManager.player_deck.append(picked_card)
-				EventBus.card_obtained.emit(picked_card)
+		_build_default_starting_deck()
 
 	SaveManager.discover_cards(GameManager.player_deck)
 
@@ -69,6 +94,21 @@ func _prepare_starting_deck() -> void:
 		deck.add_card(card_copy)
 		
 	_start_player_turn()
+
+func _build_default_starting_deck() -> void:
+	var deck_composition: Dictionary = {
+		CARD_CARBON_SHIELD: 2,
+		CARD_NITRIC_OXIDE: 1,
+		CARD_OXYGEN_GAS: 1,
+		CARD_HYDROGEN_PEROXIDE: 4,
+		CARD_NITROGEN_GAS: 2
+	}
+	
+	for card_resource: CardData in deck_composition:
+		var count: int = deck_composition[card_resource]
+		for i in range(count):
+			GameManager.player_deck.append(card_resource)
+			EventBus.card_obtained.emit(card_resource)
 
 func _on_enemy_turn_completed() -> void:
 	EventBus.round_ended.emit()
@@ -144,6 +184,7 @@ func _play_card_with_target(clicked_ui: CardUI, card_data: CardData, target: Ene
 			deck.add_to_discard(card_data)
 			
 		clicked_ui.queue_free()
+		ui_manager.arrange_hand()
 	else:
 		ui_manager.reject_play(clicked_ui)
 		clicked_ui.return_to_hand()
@@ -152,6 +193,7 @@ func _manual_discard_card(card_ui: CardUI, card_data: CardData) -> void:
 	hand.remove_card(card_data)
 	deck.add_to_discard(card_data)
 	card_ui.queue_free()
+	ui_manager.arrange_hand()
 	
 	player.add_random_token(1)
 	
@@ -195,6 +237,7 @@ func _play_card(clicked_ui: CardUI, card_data: CardData) -> void:
 			deck.add_to_discard(card_data)
 			
 		clicked_ui.queue_free()
+		ui_manager.arrange_hand()
 	else:
 		ui_manager.reject_play(clicked_ui)
 
@@ -251,6 +294,8 @@ func _default_clean_discarded_ui(discarded_cards: Array[CardData]) -> void:
 		if child is CardUI and child.data in discarded_cards:
 			child.queue_free()
 
+	ui_manager.arrange_hand()
+
 func _on_end_turn_pressed() -> void:
 	if current_state != TurnState.PLAYER: return
 	
@@ -293,10 +338,16 @@ func _on_round_won() -> void:
 		return
 
 	await get_tree().create_timer(1.5).timeout
+	
+	ui_manager.clear_hand_visuals()
+	ui_manager.set_battle_hud_visible(false)
+	
 	reward_handler.show_reward_screen()
 
-
 func _trigger_victory() -> void:
+
+	SaveManager.reset_run_data()
+	
 	get_tree().paused = true
 	var recap_scene = load("res://ui/recap/recap_ui.tscn")
 	if recap_scene:
@@ -304,6 +355,8 @@ func _trigger_victory() -> void:
 		get_tree().root.add_child(recap_instance)
 		recap_instance.setup_recap(true)
 		queue_free()
+	
+	
 
 func _on_effect_target_requested(chosen_coat: CoatData) -> void:
 	active_effect_choice = chosen_coat
@@ -320,3 +373,68 @@ func _on_card_selected_for_effect(target_card: CardData) -> void:
 		is_selecting_effect_target = false
 		reward_handler.apply_effect_to_card(target_card, active_effect_choice)
 		active_effect_choice = null
+
+func _play_battle_music() -> void:
+	if GameManager.is_gold_boss == true:
+				SoundManager.play_bgm("aurum")
+				return
+	if GameManager.active_event_type != MapNodeData.NodeType.BOSS:
+		SoundManager.play_bgm("battle")
+		return
+
+	if GameManager.current_section == null:
+		push_warning("Boss battle tidak memiliki current_section!")
+		SoundManager.play_bgm("battle")
+		return
+
+	var section_name: String = GameManager.current_section.section_name.to_lower()
+
+	print("Boss Section: ", section_name)
+
+	match section_name:
+		"ferrum":
+			SoundManager.play_bgm("ferrum")
+
+		"cobalt":
+			SoundManager.play_bgm("cobalt")
+
+		"neon":
+			SoundManager.play_bgm("neon")
+
+		"aurum":
+			SoundManager.play_bgm("aurum")
+
+		_:
+			push_warning("Musik boss belum ditemukan untuk section: " + section_name)
+			
+			SoundManager.play_bgm("battle")
+
+func get_discard_pile() -> Array[CardData]:
+	if deck:
+		return deck.discard_pile
+	return []
+
+
+func get_deck_cards() -> Array[CardData]:
+	if deck:
+		return deck.cards
+	return []
+
+
+func get_accumulated_gold() -> int:
+	return accumulated_gold
+
+func _trigger_defeat() -> void:
+
+	SaveManager.reset_run_data()
+
+	get_tree().paused = true
+	var recap_scene = load("res://ui/recap/recap_ui.tscn")
+	if recap_scene:
+		var recap_instance = recap_scene.instantiate() as RecapUI
+		get_tree().root.add_child(recap_instance)
+		recap_instance.setup_recap(false) 
+		queue_free()
+		
+	# Hapus data run juga saat kalah
+	

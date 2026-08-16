@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b04snm83epplg"]
+
+[ext_resource type="Texture2D" uid="uid://dc5rk3ryewuof" path="res://assets/Card/playing_card/Vurn.png" id="1_ixhd0"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_eeg45"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="3_xu2pp"]
+[ext_resource type="Resource" uid="uid://u2qskia73v30" path="res://ailments/res/destabilize.tres" id="4_0qeqn"]
+
+[resource]
+script = ExtResource("2_eeg45")
+id = "c_a_08"
+card_name = "Vurn"
+description = "Memberikan 4 Damage dan Destabilize (Corrosion + Oxidize)"
+card_texture = ExtResource("1_ixhd0")
+rarity = 2
+cost_oxygen = 3
+cost_hydrogen = 1
+cost_nitrogen = 1
+damage_amount = 4
+buy_value = 12
+sell_value = 6
+trigger_element = 8
+statuses_to_apply = Array[ExtResource("3_xu2pp")]([ExtResource("4_0qeqn")])
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

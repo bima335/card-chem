@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusAilment" format=3 uid="uid://8n7bqwu36rhk"]
+
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="1_6hrpt"]
+[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="2_abk04"]
+
+[resource]
+script = ExtResource("1_6hrpt")
+ailment = 12
+status_icon = ExtResource("2_abk04")
+modulate = Color(0.7481661, 0.56473494, 0, 1)
+decrease_on_turn_end = false
+use_stacks_for_display = true
+metadata/_custom_type_script = "uid://ck4m1qolca0es"

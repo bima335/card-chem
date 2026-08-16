@@ -20,12 +20,14 @@ const DROP_RATES_PER_SECTION: Array[Dictionary] = [
 	{ 0: 15.0, 1: 45.0, 2: 40.0 }
 ]
 
+
 func _ready() -> void:
 	if skip_button and not skip_button.pressed.is_connected(_return_to_map):
 		skip_button.pressed.connect(_return_to_map)
 
+
 func show_reward_screen() -> void:
-	GameManager.shop_coins += 321
+	#GameManager.shop_coins += 321
 	
 	for child in reward_card_grid.get_children():
 		child.queue_free()
@@ -44,8 +46,9 @@ func show_reward_screen() -> void:
 		
 	reward_backdrop.show()
 
+
 func _setup_normal_reward() -> void:
-	reward_title.text = "VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPilih 1 Kartu Baru:"
+	#reward_title.text = "VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPilih 1 Kartu Baru:"
 	skip_button.show() 
 	skip_button.text = "Lewati Kartu & Kembali ke Peta"
 	
@@ -56,8 +59,9 @@ func _setup_normal_reward() -> void:
 		var card_ui = card_ui_scene.instantiate() as CardUI
 		reward_card_grid.add_child(card_ui)
 		card_ui.setup(card_data)
-		card_ui.is_preview = true 
+		card_ui.is_preview = false 
 		card_ui.pressed.connect(_on_reward_card_chosen.bind(card_data))
+
 
 func _setup_hard_reward() -> void:
 	reward_title.text = "HARD VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPILIH 1 EFFECT COAT UNTUK KARTUMU:"
@@ -71,13 +75,58 @@ func _setup_hard_reward() -> void:
 	var selected_coats = _pick_weighted_rewards(available_coats, 3)
 	
 	for coat in selected_coats:
-		var btn = Button.new()
-		btn.text = coat.coat_name + "\n" + coat.description
-		btn.custom_minimum_size = Vector2(180, 250)
-		btn.pressed.connect(_on_effect_chosen.bind(coat))
-		reward_card_grid.add_child(btn)
+		_build_coat_reward_slot(coat)
+
+
+func _build_coat_reward_slot(coat_data: CoatData) -> void:
+	var box: VBoxContainer = VBoxContainer.new()
+	box.custom_minimum_size = Vector2(160, 200)
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.tooltip_text = _build_coat_tooltip(coat_data)
+	
+	var icon_rect: TextureRect = TextureRect.new()
+	icon_rect.custom_minimum_size = Vector2(150, 220)
+	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon_rect.texture = coat_data.icon
+	icon_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	
+	var name_lbl: Label = Label.new()
+	name_lbl.text = coat_data.coat_name
+	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	
+	var select_btn: Button = Button.new()
+	select_btn.text = "Pilih Coat"
+	select_btn.pressed.connect(_on_effect_chosen.bind(coat_data))
+	
+	box.add_child(icon_rect)
+	box.add_child(name_lbl)
+	box.add_child(select_btn)
+	reward_card_grid.add_child(box)
+
+
+func _build_coat_tooltip(coat: CoatData) -> String:
+	var type_name: String = CoatData.EffectCoatType.keys()[coat.coat_type]
+	var text: String = "%s\n" % coat.coat_name
+	text += "Type: %s\n" % type_name
+	text += "Rarity: %s\n\n" % _get_rarity_name(int(coat.rarity))
+	text += coat.description
+	return text
+
+
+func _get_rarity_name(rarity_idx: int) -> String:
+	match rarity_idx:
+		0: return "Common"
+		1: return "Uncommon"
+		2: return "Rare"
+		_: return "Normal"
+
 
 func _setup_boss_reward() -> void:
+	if GameManager.is_gold_boss:
+		_setup_gold_boss_reward()
+		return
+
 	reward_title.text = "BOSS DEFEATED!\n\nPILIH 1 AURA CARD:"
 	skip_button.hide()
 	
@@ -106,6 +155,13 @@ func _setup_boss_reward() -> void:
 		aura_ui.setup(aura_data)
 		aura_ui.aura_selected.connect(_on_aura_reward_chosen)
 
+
+func _setup_gold_boss_reward() -> void:
+	reward_title.text = "GOLD BOSS DEFEATED!\nKamu mendapatkan limpahan koin!\n(Total Koin: %d)" % GameManager.shop_coins
+	skip_button.show()
+	skip_button.text = "Ambil Koin & Lanjut ke Peta"
+
+
 func _pick_weighted_rewards(source_pool: Array, count: int) -> Array:
 	var selected_items: Array = []
 	var pool_copy: Array = source_pool.duplicate()
@@ -130,6 +186,7 @@ func _pick_weighted_rewards(source_pool: Array, count: int) -> Array:
 		
 	return selected_items
 
+
 func _roll_rarity(rates: Dictionary) -> int:
 	var total_weight: float = 0.0
 	for weight in rates.values():
@@ -145,9 +202,11 @@ func _roll_rarity(rates: Dictionary) -> int:
 			
 	return 0
 
+
 func _get_current_section_index() -> int:
 	var section_idx: int = GameManager.current_floor / 5
 	return clamp(section_idx, 0, DROP_RATES_PER_SECTION.size() - 1)
+
 
 func _on_aura_reward_chosen(chosen_aura: AuraCardData) -> void:
 	if AuraManager:
@@ -161,6 +220,7 @@ func _on_aura_reward_chosen(chosen_aura: AuraCardData) -> void:
 		
 	_return_to_map()
 
+
 func _on_reward_card_chosen(chosen_card: CardData) -> void:
 	var new_card = chosen_card.duplicate(true)
 	GameManager.player_deck.append(new_card)
@@ -169,9 +229,11 @@ func _on_reward_card_chosen(chosen_card: CardData) -> void:
 	
 	_return_to_map()
 
+
 func _on_effect_chosen(chosen_coat: CoatData) -> void:
 	reward_backdrop.hide()
 	effect_target_requested.emit(chosen_coat)
+
 
 func apply_effect_to_card(target_card: CardData, active_coat: CoatData) -> void:
 	target_card.coat_data = active_coat
@@ -185,6 +247,7 @@ func apply_effect_to_card(target_card: CardData, active_coat: CoatData) -> void:
 	SaveManager.save_game()
 			
 	_return_to_map()
+
 
 func _return_to_map() -> void:
 	get_tree().change_scene_to_file("res://map/map_scene.tscn")

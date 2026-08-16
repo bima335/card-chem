@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://yu56dn7brdlt"]
+
+[ext_resource type="Texture2D" uid="uid://vp8jprsg1w5a" path="res://assets/Card/playing_card/Combust.png" id="1_kvy5g"]
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_sn2hs"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_kvy5g"]
+
+[resource]
+script = ExtResource("1_sn2hs")
+id = "c_a_10"
+card_name = "Combust"
+description = "Memberikan 8 Damage ke Semua Musuh"
+card_texture = ExtResource("1_kvy5g")
+rarity = 2
+target_type = 1
+cost_oxygen = 2
+cost_carbon = 2
+cost_nitrogen = 1
+damage_amount = 8
+buy_value = 14
+sell_value = 7
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

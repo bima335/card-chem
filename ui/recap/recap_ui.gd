@@ -1,4 +1,3 @@
-# recap_ui.gd
 class_name RecapUI
 extends Control
 
@@ -24,8 +23,13 @@ extends Control
 @onready var card_played: Label = $CardPlayed
 @onready var blessing_got: Label = $BlessingGot
 
+@onready var back_to_main_menu_button: Button = $BackToMainMenuButton
+
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	back_to_main_menu_button.pressed.connect(_on_back_to_main_menu_button_pressed)
 
 
 func setup_recap(is_victory: bool) -> void:
@@ -66,6 +70,18 @@ func _populate_statistics() -> void:
 	blessing_got.text = str(RecapManager.total_blessings_obtained)
 
 
-func _on_continue_button_pressed() -> void:
+func _on_back_to_main_menu_button_pressed() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://main_menu.tscn")
+	
+	SoundManager.play_bgm("main_menu")
+	
+	SaveManager.load_game() 
+
+	get_tree().change_scene_to_file("res://main/main_menu.tscn")
+
+func _on_new_run_button_pressed() -> void:
+	get_tree().paused = false
+	
+	GameManager.start_new_run()
+	
+	get_tree().change_scene_to_file("res://map/map_scene.tscn")

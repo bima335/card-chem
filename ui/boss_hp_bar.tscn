@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://boadenuq2my22"]
+
+[ext_resource type="Script" uid="uid://0ij0r6k8o2mx" path="res://ui/boss_hp_bar.gd" id="1_0nhbb"]
+[ext_resource type="Texture2D" uid="uid://d32trxd70m2w4" path="res://assets/HUD/healthbarwadahenemyboss.png" id="1_psjxd"]
+[ext_resource type="Texture2D" uid="uid://b85lcvyfy5kkt" path="res://assets/HUD/healthbarisienemyboss.png" id="2_0nhbb"]
+
+[node name="BossHPBar" type="MarginContainer" unique_id=963925899]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -418.5
+offset_right = 418.5
+offset_bottom = 80.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("1_0nhbb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=384963906]
+layout_mode = 2
+
+[node name="HeaderContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1867522727]
+layout_mode = 2
+
+[node name="BossNameLabel" type="Label" parent="VBoxContainer/HeaderContainer" unique_id=1288948051]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HPValueLabel" type="Label" parent="VBoxContainer/HeaderContainer" unique_id=435898684]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="Bar" type="TextureProgressBar" parent="VBoxContainer" unique_id=1688730435]
+unique_name_in_owner = true
+layout_mode = 2
+nine_patch_stretch = true
+texture_under = ExtResource("1_psjxd")
+texture_progress = ExtResource("2_0nhbb")

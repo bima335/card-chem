@@ -2,9 +2,21 @@
 
 [ext_resource type="Script" uid="uid://bjiywruf3x87f" path="res://enemy/enemy_base.gd" id="1_sq8er"]
 [ext_resource type="Resource" uid="uid://gpeaojuau8cy" path="res://enemy/res/base.tres" id="2_4sx6r"]
+[ext_resource type="Shader" uid="uid://c3gocusuc1e6v" path="res://enemy/shaders/enemy_selection.gdshader" id="3_71shp"]
+[ext_resource type="Texture2D" uid="uid://d3akspy35a0jd" path="res://assets/HUD/wadahhpkcoroc.png" id="4_beadm"]
+[ext_resource type="Texture2D" uid="uid://v0btt5q6o1up" path="res://assets/HUD/isihpkroco.png" id="5_kcuha"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_63jj1"]
+shader = ExtResource("3_71shp")
+shader_parameter/is_selected = false
+shader_parameter/outline_color = Color(0.80813736, 3.272891e-06, 7.70092e-07, 1)
+shader_parameter/outline_thickness = 4.00000019
+shader_parameter/pulse_speed = 4.0
+shader_parameter/min_alpha = 0.4
+shader_parameter/max_alpha = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4sx6r"]
-size = Vector2(150, 150)
+size = Vector2(75, 75)
 
 [node name="EnemyBase" type="Node2D" unique_id=181012001]
 script = ExtResource("1_sq8er")
@@ -16,19 +28,25 @@ modulate = Color(0.69803923, 0, 0.11764706, 0.5882353)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1550852511]
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1549849388]
+visible = false
+material = SubResource("ShaderMaterial_63jj1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1280754138]
+
 [node name="ClickArea" type="Area2D" parent="." unique_id=579431467]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClickArea" unique_id=2122125421]
 shape = SubResource("RectangleShape2D_4sx6r")
 
-[node name="HPBar" type="ProgressBar" parent="." unique_id=1380941531]
-custom_minimum_size = Vector2(100, 15)
+[node name="HPBar" type="TextureProgressBar" parent="." unique_id=1380941531]
 offset_left = -50.0
 offset_top = -109.0
 offset_right = 50.0
 offset_bottom = -82.0
-step = 1.0
-show_percentage = false
+value = 100.0
+texture_under = ExtResource("4_beadm")
+texture_progress = ExtResource("5_kcuha")
 
 [node name="Label" type="Label" parent="HPBar" unique_id=1201091616]
 layout_mode = 1

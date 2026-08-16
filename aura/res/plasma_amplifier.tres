@@ -7,5 +7,6 @@
 script = ExtResource("1_vwsiw")
 aura_id = 8
 name = "Plasma Amplifier"
+description = "Setiap memainkan kartu genap. kartu tersebut akan mendapatkan buff tambahan dmg 50 persen di ronde tersebut. Setiap memainkan kartu ganjil, restore 2 token random setelah memainkan kartu pertama player saat ronde tersebut."
 icon = ExtResource("1_v8b3t")
 metadata/_custom_type_script = "uid://b100qugnu421l"

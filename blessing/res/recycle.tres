@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BlessingData" format=3 uid="uid://clq08c2g3jetx"]
 
 [ext_resource type="Script" uid="uid://jgx4rvn7vuk3" path="res://blessing/blessing_data.gd" id="1_786ii"]
-[ext_resource type="Texture2D" uid="uid://c4xrp22k41nn1" path="res://icon.svg" id="1_ls3qn"]
+[ext_resource type="Texture2D" uid="uid://bc5342ou6wb1w" path="res://assets/blessing_pin/Recycle.png" id="1_ls3qn"]
 
 [resource]
 script = ExtResource("1_786ii")

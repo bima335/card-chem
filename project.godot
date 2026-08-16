@@ -10,10 +10,11 @@ config_version=5
 
 [application]
 
-config/name="card-chem"
-run/main_scene="uid://dceffs3gwfhae"
+config/name="Resonantia_CimistaSpero"
+config/version="1.0"
+run/main_scene="uid://ccj6y3dt7i4mo"
 config/features=PackedStringArray("4.7", "Mobile")
-config/icon="res://icon.svg"
+config/icon="uid://hljfxoosc8sw"
 
 [audio]
 
@@ -28,12 +29,15 @@ BlessingManager="*uid://d15kmdy5ipw3x"
 AuraManager="*uid://bqku0emeqha7l"
 SaveManager="*uid://dwyrxfig24u4p"
 RecapManager="*uid://c6r5bxqbjqilv"
+BattleLogManager="*uid://ehle5wev8w8c"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=3
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [physics]
 
@@ -41,5 +45,6 @@ window/size/mode=3
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"

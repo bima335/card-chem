@@ -3,31 +3,44 @@ extends Node
 
 @export var card_ui_scene: PackedScene
 
-# --- REFERENSI UI ---
 @export_group("UI Elements")
-@export var hand_container: HBoxContainer
-@export var end_turn_button: Button
+@export var hand_container: Control
+@export var end_turn_button: TextureButton
 @export var deck_visual: TextureButton
 @export var discard_visual: TextureButton
 @export var close_deck_button: Button
 @export var blessing_container: VBoxContainer
 @export var blessing_item_scene: PackedScene
 
-# --- REFERENSI AURA NEW ---
+@export_group("Boss HUD")
+@export var boss_hp_bar: BossHPBar
+
 @export_group("Aura UI")
 @export var aura_container: Control
 @export var aura_ui_scene: PackedScene
 
 @export_group("Player HUD")
-@export var player_hp_bar: ProgressBar
+@export var player_hp_bar: TextureProgressBar
 @export var player_hp_label: Label
-@export var player_shield_bar: ProgressBar
+@export var player_shield_bar: TextureProgressBar
 @export var player_shield_label: Label
 @export var token_container: Control
-@export var c_label: Label
-@export var h_label: Label
-@export var o_label: Label
-@export var n_label: Label
+
+@export_group("Token Visual Containers")
+@export var c_token_container: HBoxContainer
+@export var h_token_container: HBoxContainer
+@export var o_token_container: HBoxContainer
+@export var n_token_container: HBoxContainer
+
+@export_group("Token Textures")
+@export var token_c_tex: Texture2D
+@export var token_h_tex: Texture2D
+@export var token_o_tex: Texture2D
+@export var token_n_tex: Texture2D
+
+@export_group("Token Layout Settings")
+@export var token_spacing: int = 8
+@export var token_icon_size: Vector2 = Vector2(32, 32)
 
 @export_group("Deck Viewer Panel")
 @export var deck_backdrop: ColorRect
@@ -35,66 +48,157 @@ extends Node
 @export var panel_title_label: Label
 @export var card_grid: GridContainer
 
+@export_group("Hand Fan Layout")
+@export var hand_card_spacing: float = 70.0
+@export var hand_max_hand_width: float = 760.0
+@export var hand_fan_angle_degrees: float = 8.0
+@export var hand_arc_height: float = 30.0
+@export var hand_bottom_margin: float = 10.0
+@export var hand_layout_duration: float = 0.22
+
+var _end_turn_tween: Tween
+
+@export_category("Gold")
+@export var gold_label: Label
+
 signal card_clicked_in_viewer(card_data: CardData)
 
 
 func _ready() -> void:
-	close_deck_button.pressed.connect(hide_deck_viewer)
+	# Pastikan semua button bisa diklik
+	_set_ui_mouse_filters()
+	
+	# Connect buttons
+	if close_deck_button:
+		close_deck_button.pressed.connect(hide_deck_viewer)
+	
+	if discard_visual:
+		discard_visual.pressed.connect(_on_discard_visual_pressed)
+	
+	if deck_visual:
+		deck_visual.pressed.connect(_on_deck_visual_pressed)
 	
 	if EventBus.has_signal("blessing_list_changed"):
 		EventBus.blessing_list_changed.connect(update_blessings_display)
-		
+	
+	_setup_end_turn_button()
 	_connect_aura_signals()
+	_connect_gold_signals()
+	
+	# Initial UI updates
+	update_gold_display(GameManager.shop_coins)
 	update_blessings_display()
-	update_aura_display(AuraManager.active_aura)
+	update_aura_display()
 
+
+func _set_ui_mouse_filters() -> void:
+	if end_turn_button:
+		end_turn_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	if deck_visual:
+		deck_visual.mouse_filter = Control.MOUSE_FILTER_STOP
+	if discard_visual:
+		discard_visual.mouse_filter = Control.MOUSE_FILTER_STOP
+	if close_deck_button:
+		close_deck_button.mouse_filter = Control.MOUSE_FILTER_STOP
+
+
+func _on_discard_visual_pressed() -> void:
+	var battle_manager = get_tree().root.find_child("BattleManager", true, false)
+	if battle_manager and battle_manager.has_method("get_discard_pile"):
+		var discard_cards = battle_manager.get_discard_pile()
+		show_card_viewer(discard_cards, "TUMPUKAN BUANGAN", false)
+	else:
+		var deck = get_tree().root.find_child("Deck", true, false)
+		if deck:
+			show_card_viewer(deck.discard_pile, "TUMPUKAN BUANGAN", false)
+
+
+func _on_deck_visual_pressed() -> void:
+	var battle_manager = get_tree().root.find_child("BattleManager", true, false)
+	if battle_manager and battle_manager.has_method("get_deck_cards"):
+		var deck_cards = battle_manager.get_deck_cards()
+		show_card_viewer(deck_cards, "SISA KARTU DECK", false)
+	else:
+		var deck = get_tree().root.find_child("Deck", true, false)
+		if deck:
+			show_card_viewer(deck.cards, "SISA KARTU DECK", false)
+
+func register_boss(boss_node: EnemyBase) -> void:
+	if boss_hp_bar:
+		boss_hp_bar.setup_boss(boss_node)
 
 func _connect_aura_signals() -> void:
 	if AuraManager.has_signal("aura_equipped"):
 		AuraManager.aura_equipped.connect(_on_aura_changed)
 	if AuraManager.has_signal("aura_unequipped"):
-		AuraManager.aura_unequipped.connect(func(): _on_aura_changed(null))
+		AuraManager.aura_unequipped.connect(_on_aura_changed_slot)
 
 
-func _on_aura_changed(aura_data: AuraCardData) -> void:
-	update_aura_display(aura_data)
+func _on_aura_changed(_aura_data: AuraCardData, _slot_index: int) -> void:
+	update_aura_display()
 
 
-func update_aura_display(aura_data: AuraCardData) -> void:
+func _on_aura_changed_slot(_slot_index: int) -> void:
+	update_aura_display()
+
+
+func update_aura_display() -> void:
 	if not aura_container:
 		return
 
-	for child in aura_container.get_children():
-		child.queue_free()
+	var slots = aura_container.get_children()
 
-	if aura_data != null and aura_ui_scene != null:
-		var aura_ui = aura_ui_scene.instantiate() as AuraCardUI
-		aura_container.add_child(aura_ui)
-		aura_ui.setup(aura_data)
-		aura_ui.custom_minimum_size = Vector2(136, 200)
-	else:
-		_show_aura_placeholder()
+	for slot_index in range(AuraManager.MAX_AURA_SLOTS):
+		if slot_index >= slots.size():
+			continue
 
+		var current_slot: Control = slots[slot_index]
+		
+		for child in current_slot.get_children():
+			child.queue_free()
 
-func _show_aura_placeholder() -> void:
-	var placeholder_label = Label.new()
-	placeholder_label.text = "EMPTY AURA"
-	placeholder_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	placeholder_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	placeholder_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	placeholder_label.modulate = Color(1, 1, 1, 0.4)
-	aura_container.add_child(placeholder_label)
+		var aura_data: AuraCardData = AuraManager.equipped_auras[slot_index] if slot_index < AuraManager.equipped_auras.size() else null
+
+		if aura_data != null and aura_ui_scene != null:
+			var aura_ui: AuraCardUI = aura_ui_scene.instantiate() as AuraCardUI
+			aura_ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			aura_ui.offset_left = -6.0 
+			aura_ui.offset_right = -8.0
+			aura_ui.offset_top = 0
+			aura_ui.offset_bottom = -7.0
+			aura_ui.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			aura_ui.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			current_slot.add_child(aura_ui)
+			aura_ui.setup(aura_data)
 
 
 func update_tokens(o: int, h: int, c: int, n: int) -> void:
-	c_label.text = "Carbon: " + str(c)
-	h_label.text = "Hydrogen: " + str(h)
-	o_label.text = "Oxygen: " + str(o)
-	n_label.text = "Nitrogen: " + str(n)
-	
+	_render_token_icons(c_token_container, token_c_tex, c)
+	_render_token_icons(h_token_container, token_h_tex, h)
+	_render_token_icons(o_token_container, token_o_tex, o)
+	_render_token_icons(n_token_container, token_n_tex, n)
+
 	var tween = create_tween()
-	tween.tween_property(token_container, "scale", Vector2(1.1, 1.1), 0.1)
+	tween.tween_property(token_container, "scale", Vector2(1.05, 1.05), 0.1)
 	tween.tween_property(token_container, "scale", Vector2.ONE, 0.1)
+
+
+func _render_token_icons(container: HBoxContainer, texture: Texture2D, count: int) -> void:
+	if not container or not texture:
+		return
+		
+	container.add_theme_constant_override("separation", token_spacing)
+		
+	for child in container.get_children():
+		child.queue_free()
+		
+	for i in range(count):
+		var icon = TextureRect.new()
+		icon.texture = texture
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.custom_minimum_size = token_icon_size
+		container.add_child(icon)
 
 
 func update_player_stats(hp: int, max_hp: int, shield: int, _damage: int) -> void:
@@ -155,12 +259,72 @@ func hide_deck_viewer() -> void:
 	tween.chain().tween_callback(deck_view_panel.hide)
 	tween.chain().tween_callback(deck_backdrop.hide)
 
+func arrange_hand() -> void:
+	if not hand_container:
+		return
+
+	var cards: Array[CardUI] = []
+	for child in hand_container.get_children():
+		if child is CardUI and is_instance_valid(child) and not child.is_queued_for_deletion():
+			cards.append(child)
+
+	var count: int = cards.size()
+	if count == 0:
+		return
+
+	var spacing: float = hand_card_spacing
+	if count > 1:
+		var total_span: float = spacing * (count - 1)
+		if total_span > hand_max_hand_width:
+			spacing = hand_max_hand_width / float(count - 1)
+
+	var container_size: Vector2 = hand_container.size
+	var center_x: float = container_size.x / 2.0
+	var base_y: float = container_size.y - hand_bottom_margin
+
+	for i in range(count):
+		var card: CardUI = cards[i]
+
+		var card_size: Vector2 = card.custom_minimum_size
+		if card_size == Vector2.ZERO:
+			card_size = card.size
+
+		var offset_index: float = i - float(count - 1) / 2.0
+		var normalized: float = 0.0
+		if count > 1:
+			normalized = offset_index / (float(count - 1) / 2.0)
+
+		var target_x: float = center_x + offset_index * spacing - card_size.x / 2.0
+		var target_y: float = base_y - card_size.y - hand_arc_height * (1.0 - normalized * normalized)
+		var target_rotation: float = deg_to_rad(normalized * hand_fan_angle_degrees)
+		var target_position: Vector2 = Vector2(target_x, target_y)
+
+		card.pivot_offset = card_size / 2.0
+		card.hand_position = target_position
+		card.hand_rotation = target_rotation
+		card.hand_z_index = i
+
+		if card.is_dragging or card.is_returning:
+			continue
+
+		card.z_index = i
+
+		if card.modulate.a < 0.99:
+			card.position = target_position
+			card.rotation = target_rotation
+		else:
+			var tween: Tween = card.create_tween()
+			tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween.set_parallel(true)
+			tween.tween_property(card, "position", target_position, hand_layout_duration)
+			tween.tween_property(card, "rotation", target_rotation, hand_layout_duration)
 
 func animate_draw_card(new_card_data: CardData, on_land_callback: Callable) -> void:
 	var real_card: CardUI = card_ui_scene.instantiate() as CardUI
 	hand_container.add_child(real_card)
 	real_card.setup(new_card_data)
 	real_card.modulate = Color(1, 1, 1, 0)
+	arrange_hand()
 	
 	await get_tree().process_frame
 	
@@ -194,14 +358,104 @@ func update_blessings_display() -> void:
 	if not blessing_container or not blessing_item_scene:
 		return
 
-	for child in blessing_container.get_children():
-		child.queue_free()
+	var slots: Array[Node] = blessing_container.get_children()
+	var active_blessings: Array[BlessingData] = BlessingManager.active_blessings
 
-	var active_blessings = BlessingManager.active_blessings
-	var count = mini(active_blessings.size(), BlessingManager.MAX_SLOTS)
+	for i in range(slots.size()):
+		var slot_node: Control = slots[i] as Control
+		if not slot_node:
+			continue
+			
+		for child in slot_node.get_children():
+			child.queue_free()
 
-	for i in range(count):
-		var blessing_data = active_blessings[i]
-		var blessing_ui = blessing_item_scene.instantiate() as BlessingUIItem
-		blessing_container.add_child(blessing_ui)
-		blessing_ui.setup(blessing_data)
+		if i < active_blessings.size():
+			var blessing_data: BlessingData = active_blessings[i]
+			var blessing_ui: BlessingUIItem = blessing_item_scene.instantiate() as BlessingUIItem
+			
+			slot_node.add_child(blessing_ui)
+			
+			blessing_ui.custom_minimum_size = Vector2(60, 60)
+			blessing_ui.set_anchors_preset(Control.PRESET_CENTER)
+			blessing_ui.offset_left = -30.0
+			blessing_ui.offset_top = -30.0
+			blessing_ui.offset_right = 30.0
+			blessing_ui.offset_bottom = 30.0
+			blessing_ui.grow_horizontal = Control.GROW_DIRECTION_BOTH
+			blessing_ui.grow_vertical = Control.GROW_DIRECTION_BOTH
+			
+			blessing_ui.setup(blessing_data)
+
+
+func _connect_gold_signals() -> void:
+	if EventBus.has_signal("gold_changed"):
+		if not EventBus.gold_changed.is_connected(_on_gold_changed):
+			EventBus.gold_changed.connect(_on_gold_changed)
+
+
+func _on_gold_changed(total_gold: int) -> void:
+	update_gold_display(total_gold)
+
+
+func update_gold_display(amount: int) -> void:
+	if gold_label:
+		gold_label.text = str(amount)
+
+
+func _setup_end_turn_button() -> void:
+	if not end_turn_button:
+		return
+	
+	_generate_click_mask(end_turn_button)
+	
+	end_turn_button.resized.connect(_update_end_turn_pivot)
+	_update_end_turn_pivot()
+	
+	end_turn_button.mouse_entered.connect(_on_end_turn_button_mouse_entered)
+	end_turn_button.mouse_exited.connect(_on_end_turn_button_mouse_exited)
+
+
+func _generate_click_mask(button: TextureButton) -> void:
+	if not button.texture_normal:
+		return
+	
+	var texture_image: Image = button.texture_normal.get_image()
+	if not texture_image:
+		return
+		
+	var bitmap: BitMap = BitMap.new()
+	bitmap.create_from_image_alpha(texture_image, 0.1)
+	button.texture_click_mask = bitmap
+
+
+func _update_end_turn_pivot() -> void:
+	end_turn_button.pivot_offset = end_turn_button.size / 2.0
+
+
+func _on_end_turn_button_mouse_entered() -> void:
+	if _end_turn_tween and _end_turn_tween.is_valid():
+		_end_turn_tween.kill()
+		
+	_end_turn_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	_end_turn_tween.tween_property(end_turn_button, "rotation_degrees", end_turn_button.rotation_degrees - 45.0, 0.25)
+
+func set_battle_hud_visible(is_visible: bool) -> void:
+	if hand_container:
+		hand_container.visible = is_visible
+	if end_turn_button:
+		end_turn_button.visible = is_visible
+	if token_container:
+		token_container.visible = is_visible
+	if player_hp_bar:
+		player_hp_bar.get_parent().visible = is_visible
+	if player_shield_bar:
+		player_shield_bar.visible = is_visible
+	if boss_hp_bar:
+		boss_hp_bar.visible = is_visible and (boss_hp_bar._tracked_boss != null)
+
+func _on_end_turn_button_mouse_exited() -> void:
+	if _end_turn_tween and _end_turn_tween.is_valid():
+		_end_turn_tween.kill()
+		
+	_end_turn_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	_end_turn_tween.tween_property(end_turn_button, "rotation_degrees", 0.0, 0.4)

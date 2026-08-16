@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dvlunjwwh2g45"]
+
+[ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_1ok3a"]
+[ext_resource type="Texture2D" uid="uid://u36ewk7e25lx" path="res://assets/Card/playing_card/CarbonMonoxide.png" id="1_o7hd7"]
+[ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_o7hd7"]
+[ext_resource type="Resource" uid="uid://bhhuddng6j1cw" path="res://ailments/res/toxification.tres" id="4_1lybp"]
+
+[resource]
+script = ExtResource("1_1ok3a")
+id = "c_a_01"
+card_name = "Carbon Monoxide"
+description = "Memberikan 1 Damage dan 1 Stack Toxic"
+card_texture = ExtResource("1_o7hd7")
+rarity = 1
+cost_oxygen = 1
+cost_carbon = 1
+damage_amount = 1
+buy_value = 8
+sell_value = 4
+trigger_element = 2
+statuses_to_apply = Array[ExtResource("2_o7hd7")]([ExtResource("4_1lybp")])
+metadata/_custom_type_script = "uid://cbmfluq6eetn5"

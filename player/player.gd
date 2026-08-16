@@ -197,7 +197,26 @@ func take_damage(amount: int, attacker: EnemyBase = null) -> void:
 	EventBus.player_took_damage.emit(amount)
 	
 	if current_hp <= 0:
-		_trigger_game_over()
+		if attacker is EnemyGold:
+			_handle_gold_boss_defeat()
+		else:
+			_trigger_game_over()
+
+
+func _handle_gold_boss_defeat() -> void:
+	GameManager.player_current_hp = GameManager.player_max_hp
+	current_hp = max_hp
+	
+	GameManager.shop_coins = 0
+	EventBus.gold_changed.emit(0)
+	
+	get_tree().paused = false
+	
+	var battle_scene = owner
+	if battle_scene:
+		battle_scene.queue_free()
+		
+	get_tree().change_scene_to_file("res://map/map.tscn")
 
 
 func _trigger_game_over() -> void:

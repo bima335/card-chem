@@ -7,4 +7,5 @@
 script = ExtResource("1_a8md4")
 ailment = 8
 status_icon = ExtResource("2_hmjwu")
+decrease_on_turn_end = false
 metadata/_custom_type_script = "uid://ck4m1qolca0es"
