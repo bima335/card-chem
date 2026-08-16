@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("2_eeg45")
 id = "c_a_08"
-card_name = "Vurn"
+card_name = "Asam Nitrat (HNO3)"
 description = "Memberikan 4 Damage dan Destabilize (Corrosion + Oxidize)"
 card_texture = ExtResource("1_ixhd0")
 rarity = 2

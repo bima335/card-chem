@@ -8,11 +8,11 @@
 script = ExtResource("1_c7845")
 id = "c_b_06"
 card_name = "Ozone"
-description = "Mendapatkan 3 O Token"
+description = "Mendapatkan 5 O Token"
 card_texture = ExtResource("1_cvxmx")
 card_type = 1
-cost_oxygen = 1
-gain_oxygen = 3
+cost_oxygen = 3
+gain_oxygen = 5
 buy_value = 6
 sell_value = 3
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

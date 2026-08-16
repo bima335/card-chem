@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("1_7slcq")
 id = "c_a_09"
-card_name = "Toxic Sting"
+card_name = "Hidrogen Sianida (HCN)"
 description = "Memberikan 3 Damage dan 3 Toxic Stack"
 card_texture = ExtResource("1_fy5wn")
 rarity = 1

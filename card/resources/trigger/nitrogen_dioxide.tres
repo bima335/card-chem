@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_tj1ho")
 id = "c_t_02"
-card_name = "Nitrogen Dioxide"
+card_name = "Nitrogen Dioksida (NO2)"
 description = "Memberikan 1 Damage dan Memicu Corrosion"
 card_texture = ExtResource("1_dj5eg")
 card_type = 3
