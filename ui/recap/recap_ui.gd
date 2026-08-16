@@ -75,6 +75,8 @@ func _on_back_to_main_menu_button_pressed() -> void:
 	
 	SoundManager.play_bgm("main_menu")
 	
+	SaveManager.load_game() 
+
 	get_tree().change_scene_to_file("res://main/main_menu.tscn")
 
 func _on_new_run_button_pressed() -> void:

@@ -399,6 +399,8 @@ func _on_node_selected(
 		get_tree().change_scene_to_file("res://main/battle_scene.tscn")
 		return
 
+	SaveManager.save_game()
+	
 	match node_data.type:
 
 		MapNodeData.NodeType.SHOP:

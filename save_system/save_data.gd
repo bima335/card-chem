@@ -30,6 +30,17 @@ func to_dict() -> Dictionary:
 
 
 func from_dict(dict: Dictionary) -> void:
+
+	discovered_card_ids = []
+	owned_blessing_ids = []
+	owned_aura_ids = []
+	discovered_coat_ids = []
+	coins = 0
+	current_floor = 0
+	current_hp = 100
+	max_hp = 100
+	player_deck_data = []
+
 	if dict.has("discovered_card_ids"):
 		discovered_card_ids.assign(dict["discovered_card_ids"])
 	if dict.has("owned_blessing_ids"):

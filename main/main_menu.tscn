@@ -50,6 +50,7 @@
 [ext_resource type="AudioStream" uid="uid://ct6midnb6b5cw" path="res://assets/audio/sfx/ui/UI_Click_1.wav" id="47_8rujg"]
 [ext_resource type="Texture2D" uid="uid://ckwnm3lhpykbr" path="res://assets/main_menu/collection.png" id="47_jc87t"]
 [ext_resource type="Texture2D" uid="uid://cg302nu8gby1i" path="res://assets/main_menu/settings.png" id="48_ghkya"]
+[ext_resource type="Texture2D" uid="uid://bpocv6w88qang" path="res://assets/main_menu/continue_button.png" id="49_5ttid"]
 [ext_resource type="Texture2D" uid="uid://j3f1le183uq1" path="res://assets/main_menu/credits.png" id="49_drqnu"]
 [ext_resource type="Texture2D" uid="uid://g626odr6srw3" path="res://assets/main_menu/Quit.png" id="50_t6lxg"]
 
@@ -235,6 +236,18 @@ script = ExtResource("46_t5ahn")
 [node name="AudioHover" type="AudioStreamPlayer" parent="Play" unique_id=2051630863]
 stream = ExtResource("47_8rujg")
 
+[node name="ContinueButton" type="TextureButton" parent="." unique_id=2112825954]
+visible = false
+offset_left = 1284.0
+offset_top = 345.0
+offset_right = 1627.0
+offset_bottom = 456.0
+texture_normal = ExtResource("49_5ttid")
+script = ExtResource("46_t5ahn")
+
+[node name="AudioHover" type="AudioStreamPlayer" parent="ContinueButton" unique_id=2027766254]
+stream = ExtResource("47_8rujg")
+
 [node name="Collection" type="TextureButton" parent="." unique_id=2046452089]
 offset_left = 1382.0
 offset_top = 499.0
@@ -281,6 +294,8 @@ stream = ExtResource("47_8rujg")
 
 [connection signal="mouse_entered" from="Play" to="Play" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Play" to="Play" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="ContinueButton" to="." method="_on_continue_button_mouse_entered"]
+[connection signal="mouse_exited" from="ContinueButton" to="." method="_on_continue_button_mouse_exited"]
 [connection signal="mouse_entered" from="Collection" to="Collection" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Collection" to="Collection" method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="Settings" to="Settings" method="_on_mouse_entered"]
