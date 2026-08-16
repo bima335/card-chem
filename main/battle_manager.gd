@@ -345,6 +345,9 @@ func _on_round_won() -> void:
 	reward_handler.show_reward_screen()
 
 func _trigger_victory() -> void:
+
+	SaveManager.reset_run_data()
+	
 	get_tree().paused = true
 	var recap_scene = load("res://ui/recap/recap_ui.tscn")
 	if recap_scene:
@@ -352,6 +355,8 @@ func _trigger_victory() -> void:
 		get_tree().root.add_child(recap_instance)
 		recap_instance.setup_recap(true)
 		queue_free()
+	
+	
 
 func _on_effect_target_requested(chosen_coat: CoatData) -> void:
 	active_effect_choice = chosen_coat
@@ -403,3 +408,33 @@ func _play_battle_music() -> void:
 			push_warning("Musik boss belum ditemukan untuk section: " + section_name)
 			
 			SoundManager.play_bgm("battle")
+
+func get_discard_pile() -> Array[CardData]:
+	if deck:
+		return deck.discard_pile
+	return []
+
+
+func get_deck_cards() -> Array[CardData]:
+	if deck:
+		return deck.cards
+	return []
+
+
+func get_accumulated_gold() -> int:
+	return accumulated_gold
+
+func _trigger_defeat() -> void:
+
+	SaveManager.reset_run_data()
+
+	get_tree().paused = true
+	var recap_scene = load("res://ui/recap/recap_ui.tscn")
+	if recap_scene:
+		var recap_instance = recap_scene.instantiate() as RecapUI
+		get_tree().root.add_child(recap_instance)
+		recap_instance.setup_recap(false) 
+		queue_free()
+		
+	# Hapus data run juga saat kalah
+	
