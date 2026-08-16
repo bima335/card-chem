@@ -3,7 +3,7 @@ extends Node2D
 
 enum TurnState { PLAYER, ENEMY }
 var current_state: TurnState = TurnState.PLAYER
-
+@onready var battle_background: TextureRect = $BattleBackground
 const CARD_CARBON_SHIELD: CardData = preload("uid://b1nye4430c7yv")
 const CARD_NITRIC_OXIDE: CardData = preload("uid://c7egfvnqlhxde")
 const CARD_OXYGEN_GAS: CardData = preload("uid://1rhiulfq30o5")
@@ -37,6 +37,7 @@ var accumulated_gold: int = 0
 @export var blessing_3: BlessingData
 
 func _ready() -> void:
+	_setup_background()
 	_play_battle_music()
 	_connect_signals()
 	#BlessingManager.equip_blessing(default_blessing)
@@ -72,6 +73,15 @@ func _connect_signals() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
 	
 	reward_handler.effect_target_requested.connect(_on_effect_target_requested)
+
+func _setup_background() -> void:
+	if not battle_background:
+		return
+
+	if GameManager.current_section and GameManager.current_section.section_wallpaper != null:
+		battle_background.texture = GameManager.current_section.section_wallpaper
+	else:
+		push_warning("BattleManager: current_section atau section_wallpaper kosong, mempertahankan texture bawaan.")
 
 func _prepare_starting_deck() -> void:
 	if GameManager.player_deck.is_empty():

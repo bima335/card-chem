@@ -68,7 +68,7 @@
 process_mode = 1
 script = ExtResource("1_m1b1k")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1257120953]
+[node name="BattleBackground" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
 offset_right = 40.0
 offset_bottom = 40.0
