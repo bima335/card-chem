@@ -42,6 +42,7 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
 	_setup_tooltip_text()
+	tooltip_panel.hide() 
 
 
 func setup(card_data: CardData) -> void:
@@ -228,6 +229,9 @@ func _on_mouse_entered() -> void:
 	if is_dragging or is_preview or is_returning:
 		return
 	
+	if hand_position == Vector2.ZERO:
+		return
+
 	SoundManager.play_sfx("card_hover")
 	z_index = 999
 
