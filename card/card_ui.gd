@@ -12,6 +12,7 @@ var data: CardData
 var is_preview: bool = false
 var is_dragging: bool = false
 var is_returning: bool = false
+var drag_preview_ref: TextureRect = null
 
 var drag_offset: Vector2 = Vector2.ZERO
 var home_global_position: Vector2 = Vector2.ZERO
@@ -158,20 +159,43 @@ func _get_description_label() -> Label:
 	return null
 
 func _start_drag() -> void:
-	if is_returning:
+	if not is_inside_tree() or is_queued_for_deletion() or is_returning:
 		return
 
 	if hover_tween and hover_tween.is_valid():
 		hover_tween.kill()
 
-	scale = Vector2.ONE
-	rotation = 0.0
-
+	# Simpan posisi awal
 	home_global_position = global_position
 	drag_offset = get_global_mouse_position() - global_position
+
+	# 1. Buat kartu tiruan (preview) yang akan mengikuti mouse
+	var preview = TextureRect.new()
+	preview.texture = texture_normal       # Pakai gambar kartu yang sama
+	preview.custom_minimum_size = custom_minimum_size
+	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	preview.pivot_offset = size / 2.0
 	
+	# 2. Tempelkan tiruan ke lapisan UI paling atas (CanvasLayer)
+	var ui_root = get_tree().get_first_node_in_group("ui_layer")
+	if ui_root == null:
+		var temp_layer = CanvasLayer.new()
+		temp_layer.layer = 100
+		get_tree().root.add_child(temp_layer)
+		ui_root = temp_layer
+		
+	ui_root.add_child(preview)
+	preview.global_position = get_global_mouse_position() - drag_offset
+	preview.z_index = 999 # Agar selalu di atas segalanya
+	
+	# Simpan referensi tiruan
+	drag_preview_ref = preview
+
+	# 3. Sembunyikan kartu asli di tangan
+	visible = false
 	is_dragging = true
-	z_index = 100
+	z_index = 0
 	if tooltip_panel:
 		tooltip_panel.hide()
 	
@@ -198,11 +222,27 @@ func _stop_drag() -> void:
 		return
 		
 	is_dragging = false
-	z_index = 0
-	drag_ended.emit(self, get_global_mouse_position())
+	
+	var drop_pos = Vector2.ZERO
+	
+	# Hapus kartu tiruan dan ambil posisi terakhirnya
+	if drag_preview_ref != null and is_instance_valid(drag_preview_ref):
+		drop_pos = drag_preview_ref.global_position
+		drag_preview_ref.queue_free()
+		drag_preview_ref = null
+	
+	# Munculkan kembali kartu asli
+	visible = true
+	z_index = hand_z_index
+	
+	drag_ended.emit(self, drop_pos)
 
 
 func return_to_hand() -> void:
+	if not is_instance_valid(self) or is_queued_for_deletion():
+		return
+		
+	is_dragging = false  # Hentikan tracking mouse di _process
 	is_returning = true
 	mouse_filter = MOUSE_FILTER_IGNORE
 	if tooltip_panel:
@@ -211,17 +251,31 @@ func return_to_hand() -> void:
 	if return_tween and return_tween.is_valid():
 		return_tween.kill()
 
+	# 1. Selalu paksa reparent ke hand_container, meskipun dia sudah ada di dalamnya
+	var hand_container = get_tree().get_first_node_in_group("hand_container")
+	if hand_container != null:
+		# PENTING: pindahkan dan set posisi home secara langsung
+		reparent(hand_container, true) 
+		global_position = home_global_position 
+
+	scale = Vector2.ONE
+	rotation = hand_rotation
+
 	return_tween = create_tween().set_parallel(true)
 	return_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	
-	return_tween.tween_property(self, "global_position", home_global_position, 0.18)
 	return_tween.tween_property(self, "scale", Vector2.ONE, 0.18)
 	return_tween.tween_property(self, "rotation", hand_rotation, 0.18)
 
 	return_tween.finished.connect(func():
-		global_position = home_global_position
+		if not is_instance_valid(self) or is_queued_for_deletion():
+			return
+			
 		mouse_filter = MOUSE_FILTER_STOP
 		is_returning = false
+		
+		var battle_ui = get_tree().get_first_node_in_group("battle_ui_manager")
+		if battle_ui and battle_ui.has_method("arrange_hand"):
+			battle_ui.arrange_hand()
 	)
 
 
@@ -305,3 +359,12 @@ func _open_card_viewer() -> void:
 	get_tree().root.add_child(canvas_layer)
 	
 	viewer.setup(data)
+
+func _process(delta: float) -> void:
+	# 1. Update posisi tiruan mengikuti mouse
+	if is_dragging and drag_preview_ref != null and is_instance_valid(drag_preview_ref):
+		drag_preview_ref.global_position = get_global_mouse_position() - drag_offset
+	
+	# 2. DETEKSI GLOBAL: Jika sedang drag dan tombol kiri mouse sudah dilepas
+	if is_dragging and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		_stop_drag()
