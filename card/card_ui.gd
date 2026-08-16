@@ -1,6 +1,10 @@
 class_name CardUI
 extends TextureButton
 
+const CARD_DETAIL_VIEWER_SCENE = preload("res://ui/card_detail_viewer.tscn")
+
+@export var card_viewer_scene: PackedScene
+
 signal drag_started(card_ui: CardUI)
 signal drag_ended(card_ui: CardUI, drop_position: Vector2)
 
@@ -152,18 +156,6 @@ func _get_description_label() -> Label:
 		return get_node("TooltipPanel/VBoxContainer/Description") as Label
 	return null
 
-
-func _on_gui_input(event: InputEvent) -> void:
-	if is_preview or is_returning:
-		return
-
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			_start_drag()
-		else:
-			_stop_drag()
-
-
 func _start_drag() -> void:
 	if is_returning:
 		return
@@ -184,6 +176,21 @@ func _start_drag() -> void:
 	
 	drag_started.emit(self)
 
+func _on_gui_input(event: InputEvent) -> void:
+	if is_preview or is_returning:
+		return
+
+	if event is InputEventMouseButton:
+		# Logika untuk Drag & Drop (Klik Kiri)
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				_start_drag()
+			else:
+				_stop_drag()
+		
+		# Logika untuk Buka Detail Viewer (Klik Kanan)
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			_open_card_viewer()
 
 func _stop_drag() -> void:
 	if not is_dragging:
@@ -279,3 +286,18 @@ func _animate_hover(target_scale: Vector2, target_rotation: float, target_positi
 	hover_tween.tween_property(self, "scale", target_scale, animation_duration)
 	hover_tween.tween_property(self, "rotation", target_rotation, animation_duration)
 	hover_tween.tween_property(self, "position", target_position, animation_duration)
+
+
+func _open_card_viewer() -> void:
+	if data == null: return
+	
+	# Pakai preload langsung (lebih aman, tidak perlu setup Inspector)
+	var viewer = CARD_DETAIL_VIEWER_SCENE.instantiate()
+	
+	# Bungkus dengan CanvasLayer agar selalu di atas segalanya
+	var canvas_layer = CanvasLayer.new()
+	canvas_layer.layer = 100
+	canvas_layer.add_child(viewer)
+	get_tree().root.add_child(canvas_layer)
+	
+	viewer.setup(data)

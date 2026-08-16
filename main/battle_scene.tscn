@@ -765,7 +765,6 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "SKIP"
 
-[node name="BossHPBar" parent="UI" unique_id=963925899 instance=ExtResource("60_gfdxq")]
 [node name="Tittle" type="TextureRect" parent="UI/RewardBackdrop" unique_id=486085043]
 visible = false
 layout_mode = 0
@@ -787,3 +786,5 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("44_7mfaq")
 theme_override_font_sizes/font_size = 50
 text = "Your Discard Pile"
+
+[node name="BossHPBar" parent="UI" unique_id=963925899 instance=ExtResource("60_gfdxq")]

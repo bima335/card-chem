@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://nhqcrgusaucu"]
+
+[ext_resource type="Script" uid="uid://kl3h53e7rosd" path="res://ui/card_detail_viewer.gd" id="1_bnyjj"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="2_jhyok"]
+[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="2_r8ysn"]
+
+[node name="CardDetailViewer" type="Control" unique_id=2131233164 node_paths=PackedStringArray("title_label", "subtitle_label", "cost_label", "description_label", "extra_info_label", "card_texture", "close_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bnyjj")
+title_label = NodePath("Panel/Content/VBoxContainer/TitleLabel")
+subtitle_label = NodePath("Panel/Content/VBoxContainer/SubtitleLabel")
+cost_label = NodePath("Panel/Content/VBoxContainer/CostLabel")
+description_label = NodePath("Panel/Content/VBoxContainer/DescriptionLabel")
+extra_info_label = NodePath("Panel/Content/VBoxContainer/ExtraInfoLabel")
+card_texture = NodePath("Panel/Content/TextureRect")
+close_button = NodePath("CloseButton")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1640678714]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.3647059)
+
+[node name="Panel" type="Panel" parent="." unique_id=261645425]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="Control" parent="Panel" unique_id=1776713570]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Panel/Content" unique_id=124331925]
+custom_minimum_size = Vector2(660, 750)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.5
+offset_top = -409.5
+offset_right = 309.5
+offset_bottom = 388.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Content" unique_id=1343463942]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -637.0
+offset_top = -303.0
+offset_right = -260.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Content/VBoxContainer" unique_id=1275635844]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_jhyok")
+theme_override_font_sizes/font_size = 40
+text = "Judul"
+
+[node name="SubtitleLabel" type="Label" parent="Panel/Content/VBoxContainer" unique_id=228119546]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_jhyok")
+theme_override_font_sizes/font_size = 40
+text = "Subtitle"
+
+[node name="CostLabel" type="Label" parent="Panel/Content/VBoxContainer" unique_id=614589912]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_jhyok")
+theme_override_font_sizes/font_size = 40
+text = "Cost"
+
+[node name="DescriptionLabel" type="Label" parent="Panel/Content/VBoxContainer" unique_id=1717741308]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_jhyok")
+theme_override_font_sizes/font_size = 40
+text = "Deskripsi"
+
+[node name="ExtraInfoLabel" type="Label" parent="Panel/Content/VBoxContainer" unique_id=744508552]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_jhyok")
+theme_override_font_sizes/font_size = 40
+text = "ExtraInfo"
+
+[node name="CloseButton" type="TextureButton" parent="." unique_id=1537708084]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -165.0
+offset_top = 16.0
+offset_right = -17.0
+offset_bottom = 63.0
+grow_horizontal = 0
+texture_normal = ExtResource("2_r8ysn")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="CloseButton" unique_id=1728880581]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -11.5
+offset_right = 21.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Close"
