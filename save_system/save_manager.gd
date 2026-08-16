@@ -317,3 +317,36 @@ func _apply_loaded_data_to_managers() -> void:
 		
 	if AuraManager and AuraManager.has_method("load_player_auras"):
 		AuraManager.load_player_auras(get_unlocked_auras())
+
+static func reset_run_data() -> void:
+	if not FileAccess.file_exists(SAVE_PATH):
+		return
+
+	# 1. Baca file
+	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if not file: return
+	var json_string: String = file.get_as_text()
+	file.close()
+
+	var json = JSON.new()
+	if json.parse(json_string) != OK: return
+	var data_dict: Dictionary = json.data
+	if not (data_dict is Dictionary): return
+
+	# 2. Hapus data run
+	data_dict.erase("coins")
+	data_dict.erase("current_floor")
+	data_dict.erase("current_hp")
+	data_dict.erase("max_hp")
+	data_dict.erase("player_deck_data")
+
+	# 3. Simpan ulang file
+	var new_file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if new_file:
+		var updated_json: String = JSON.stringify(data_dict, "\t")
+		new_file.store_string(updated_json)
+		new_file.close()
+
+
+	SaveManager.current_save.from_dict(data_dict)
+	print("SaveManager: Data run berhasil direset. Memori diperbarui.")

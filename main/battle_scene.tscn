@@ -82,7 +82,7 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid", "gold_label")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "card_grid", "gold_label")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
@@ -110,7 +110,6 @@ token_n_tex = ExtResource("34_token_n")
 token_spacing = 5
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
-panel_title_label = NodePath("")
 card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
 hand_card_spacing = 145.0
 hand_max_hand_width = 850.0
@@ -124,7 +123,7 @@ card_ui_scene = ExtResource("2_csnlq")
 aura_card_ui_scene = ExtResource("14_dairb")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn"), ExtResource("16_dairb"), ExtResource("5_j5qo7")])
 reward_backdrop = NodePath("../../UI/RewardBackdrop")
-reward_title = NodePath("")
+reward_title = NodePath("../../UI/RewardBackdrop/Tittle/tittletext")
 reward_card_grid = NodePath("../../UI/RewardBackdrop/VBoxContainer/RewardCardGrid")
 skip_button = NodePath("../../UI/RewardBackdrop/VBoxContainer/SkipButton")
 
@@ -730,3 +729,25 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "SKIP"
+
+[node name="Tittle" type="TextureRect" parent="UI/RewardBackdrop" unique_id=486085043]
+visible = false
+layout_mode = 0
+texture = ExtResource("51_olllg")
+
+[node name="tittletext" type="Label" parent="UI/RewardBackdrop/Tittle" unique_id=308946950]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -11.5
+offset_right = 39.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("44_7mfaq")
+theme_override_font_sizes/font_size = 50
+text = "Your Discard Pile"

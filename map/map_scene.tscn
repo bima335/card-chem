@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dceffs3gwfhae"]
 
+[ext_resource type="Script" uid="uid://cbo4tyt2q2422" path="res://map/map_scene.gd" id="1_ekk3v"]
 [ext_resource type="Script" uid="uid://bkycgeu0v82k" path="res://map/map_manager.gd" id="1_xrkvi"]
 [ext_resource type="PackedScene" uid="uid://duwa2rq4fgcsj" path="res://map/map_node.tscn" id="2_q2h2y"]
 [ext_resource type="Script" uid="uid://dncorhl3akjyt" path="res://map/sections/section_data.gd" id="5_ab781"]
@@ -16,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://ca3u8s6esuegx" path="res://enemy/cobalt/res/cobalt_elite.tres" id="10_3xs7y"]
 [ext_resource type="Resource" uid="uid://bn1innlyfyffv" path="res://enemy/neon/res/neon_elite.tres" id="11_rmjs1"]
 [ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="15_coqd3"]
+[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="18_gta4r"]
 
 [node name="MapScene" type="Control" unique_id=1082545900]
 layout_mode = 3
@@ -24,6 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ekk3v")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=458417094]
 layout_mode = 1
@@ -77,3 +80,31 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("15_coqd3")
 theme_override_font_sizes/font_size = 30
 text = "DOWN"
+
+[node name="BackButton" type="TextureButton" parent="." unique_id=760347078]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 20.0
+offset_right = 212.0
+offset_bottom = 83.0
+texture_normal = ExtResource("18_gta4r")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="BackButton" unique_id=1701230964]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -24.5
+offset_right = 45.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("15_coqd3")
+theme_override_font_sizes/font_size = 23
+text = "Kembali ke 
+main menu"

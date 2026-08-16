@@ -332,6 +332,9 @@ func _on_round_won() -> void:
 
 
 func _trigger_victory() -> void:
+
+	SaveManager.reset_run_data()
+	
 	get_tree().paused = true
 	var recap_scene = load("res://ui/recap/recap_ui.tscn")
 	if recap_scene:
@@ -339,6 +342,8 @@ func _trigger_victory() -> void:
 		get_tree().root.add_child(recap_instance)
 		recap_instance.setup_recap(true)
 		queue_free()
+	
+	
 
 func _on_effect_target_requested(chosen_coat: CoatData) -> void:
 	active_effect_choice = chosen_coat
@@ -401,3 +406,18 @@ func get_deck_cards() -> Array[CardData]:
 
 func get_accumulated_gold() -> int:
 	return accumulated_gold
+
+func _trigger_defeat() -> void:
+
+	SaveManager.reset_run_data()
+
+	get_tree().paused = true
+	var recap_scene = load("res://ui/recap/recap_ui.tscn")
+	if recap_scene:
+		var recap_instance = recap_scene.instantiate() as RecapUI
+		get_tree().root.add_child(recap_instance)
+		recap_instance.setup_recap(false) 
+		queue_free()
+		
+	# Hapus data run juga saat kalah
+	

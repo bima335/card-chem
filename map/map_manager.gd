@@ -393,6 +393,8 @@ func _on_node_selected(
 
 		return
 
+	SaveManager.save_game()
+	
 	match node_data.type:
 
 		MapNodeData.NodeType.SHOP:
