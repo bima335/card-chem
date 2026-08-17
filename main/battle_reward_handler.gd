@@ -64,8 +64,9 @@ func _setup_normal_reward() -> void:
 
 
 func _setup_hard_reward() -> void:
-	reward_title.text = "HARD VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPILIH 1 EFFECT COAT UNTUK KARTUMU:"
-	skip_button.hide() 
+	#reward_title.text = "HARD VICTORY!\n (Total: " + str(GameManager.shop_coins) + ")\n\nPILIH 1 EFFECT COAT UNTUK KARTUMU:"
+	skip_button.show() 
+	#skip_button.hide() 
 	
 	if available_coats.is_empty():
 		push_error("[BattleRewardHandler] ERROR: available_coats belum diisi di Inspector!")
@@ -127,8 +128,9 @@ func _setup_boss_reward() -> void:
 		_setup_gold_boss_reward()
 		return
 
-	reward_title.text = "BOSS DEFEATED!\n\nPILIH 1 AURA CARD:"
-	skip_button.hide()
+	#reward_title.text = "BOSS DEFEATED!\n\nPILIH 1 AURA CARD:"
+	skip_button.show() 
+	#skip_button.hide()
 	
 	var current_section: SectionData = GameManager.current_section
 	
@@ -202,11 +204,9 @@ func _roll_rarity(rates: Dictionary) -> int:
 			
 	return 0
 
-
 func _get_current_section_index() -> int:
 	var section_idx: int = GameManager.current_floor / 5
 	return clamp(section_idx, 0, DROP_RATES_PER_SECTION.size() - 1)
-
 
 func _on_aura_reward_chosen(chosen_aura: AuraCardData) -> void:
 	if AuraManager:

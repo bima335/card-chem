@@ -32,13 +32,16 @@ var return_tween: Tween
 @onready var tooltip_panel: PanelContainer = $TooltipPanel
 @onready var coat_icon: TextureRect = $CoatIcon
 
-
+var tooltip_tween: Tween
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
+	
+	if tooltip_panel:
+		tooltip_panel.hide()
+		
 	_setup_tooltip_text()
-
 
 func setup(card_data: CardData) -> void:
 	data = card_data
@@ -216,58 +219,80 @@ func return_to_hand() -> void:
 		is_returning = false
 	)
 
-
 func _on_mouse_entered() -> void:
-	if is_dragging or is_preview or is_returning:
+	if is_dragging or is_returning:
 		return
 	
 	SoundManager.play_sfx("card_hover")
 	z_index = 999
 
-	var random_dir: float = 1.0 if randf() > 0.5 else -1.0
-	var target_rot: float = hand_rotation + deg_to_rad(hover_rotation_degrees) * random_dir
-	var target_pos: Vector2 = hand_position + Vector2(0, -hover_lift)
+	if is_preview:
+		_animate_preview_scale(Vector2(1.15, 1.15))
+	else:
+		var random_dir: float = 1.0 if randf() > 0.5 else -1.0
+		var target_rot: float = hand_rotation + deg_to_rad(hover_rotation_degrees) * random_dir
+		var target_pos: Vector2 = hand_position + Vector2(0, -hover_lift)
+		_animate_hover(hover_scale, target_rot, target_pos)
 
-	_animate_hover(hover_scale, target_rot, target_pos)
-
-	if tooltip_panel:
-		tooltip_panel.show()
-		tooltip_panel.reset_size()
-
-		# Tunggu layout UI selesai menghitung ukuran tooltip
-		await get_tree().process_frame
-
-		# Pastikan tooltip tetap di atas card
-		tooltip_panel.z_index = 1000
-
-		var card_center_x: float = global_position.x + (size.x * scale.x / 2.0)
-		var card_top_y: float = global_position.y - (size.y * scale.y / 2.0)
-
-		var target_x: float = card_center_x - (tooltip_panel.size.x / 2.0)
-		var target_y: float = card_top_y - tooltip_panel.size.y - 20.0
-
-		tooltip_panel.global_position = Vector2(target_x, target_y)
-
-		tooltip_panel.modulate = Color(1, 1, 1, 0)
-
-		var tween := create_tween().bind_node(self)
-		tween.tween_property(
-			tooltip_panel,
-			"modulate",
-			Color.WHITE,
-			0.15
-		)
+	_show_tooltip_panel()
 
 
 func _on_mouse_exited() -> void:
-	if is_dragging or is_preview or is_returning:
+	if is_dragging or is_returning:
 		return
 		
-	z_index = hand_z_index
-	_animate_hover(Vector2.ONE, hand_rotation, hand_position)
+	if is_preview:
+		z_index = 0
+		_animate_preview_scale(Vector2.ONE)
+	else:
+		z_index = hand_z_index
+		_animate_hover(Vector2.ONE, hand_rotation, hand_position)
+		
+	_hide_tooltip_panel()
+
+func _animate_preview_scale(target_scale: Vector2) -> void:
+	if hover_tween and hover_tween.is_valid():
+		hover_tween.kill()
+		
+	hover_tween = create_tween().bind_node(self)
+	hover_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	hover_tween.tween_property(self, "scale", target_scale, animation_duration)
+
+func _show_tooltip_panel() -> void:
+	if not tooltip_panel:
+		return
+
+	if tooltip_tween and tooltip_tween.is_valid():
+		tooltip_tween.kill()
+
+	tooltip_panel.modulate.a = 0.0
+	tooltip_panel.show()
+	tooltip_panel.reset_size()
+
+	await get_tree().process_frame
+	if not is_instance_valid(self) or not tooltip_panel.visible:
+		return
+
+	tooltip_panel.z_index = 1000
+
+	var card_center_x: float = global_position.x + (size.x / 2.0)
+	var card_top_y: float = global_position.y - ((size.y * (scale.y - 1.0)) / 2.0)
+
+	var target_x: float = card_center_x - (tooltip_panel.size.x / 2.0)
+	var target_y: float = card_top_y - tooltip_panel.size.y - 20.0
+
+	tooltip_panel.global_position = Vector2(target_x, target_y)
+
+	tooltip_tween = create_tween().bind_node(self)
+	tooltip_tween.tween_property(tooltip_panel, "modulate:a", 1.0, 0.15)
+
+
+func _hide_tooltip_panel() -> void:
+	if tooltip_tween and tooltip_tween.is_valid():
+		tooltip_tween.kill()
+		
 	if tooltip_panel:
 		tooltip_panel.hide()
-
 
 func _animate_hover(target_scale: Vector2, target_rotation: float, target_position: Vector2) -> void:
 	if hover_tween and hover_tween.is_valid():

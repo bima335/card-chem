@@ -741,6 +741,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("60_y3ceo")
+metadata/_edit_lock_ = true
 
 [node name="RewardCardGrid" type="HBoxContainer" parent="UI/RewardBackdrop" unique_id=1619136986]
 layout_mode = 0
@@ -749,7 +750,6 @@ offset_top = 369.0
 offset_right = 1505.0
 offset_bottom = 522.0
 theme_override_constants/separation = 20
-metadata/_edit_lock_ = true
 
 [node name="SkipButton" type="Button" parent="UI/RewardBackdrop" unique_id=1294469247]
 layout_mode = 0
@@ -761,7 +761,6 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6w65c")
 
-[node name="BossHPBar" parent="UI" unique_id=963925899 instance=ExtResource("60_gfdxq")]
 [node name="Tittle" type="TextureRect" parent="UI/RewardBackdrop" unique_id=486085043]
 visible = false
 layout_mode = 0
@@ -783,3 +782,5 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("44_7mfaq")
 theme_override_font_sizes/font_size = 50
 text = "Your Discard Pile"
+
+[node name="BossHPBar" parent="UI" unique_id=963925899 instance=ExtResource("60_gfdxq")]
