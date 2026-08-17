@@ -45,9 +45,9 @@ func _ready() -> void:
 	#AuraManager.equip_aura(aura_1, 0)
 	#AuraManager.equip_aura(aura_2, 1)
 	#
-	#BlessingManager.equip_blessing(blessing_1)
-	#BlessingManager.equip_blessing(blessing_2)
-	#BlessingManager.equip_blessing(blessing_3)
+	BlessingManager.equip_blessing(blessing_1)
+	BlessingManager.equip_blessing(blessing_2)
+	BlessingManager.equip_blessing(blessing_3)
 	
 	accumulated_gold = 0
 	GameManager.reset_round()

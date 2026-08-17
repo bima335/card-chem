@@ -26,6 +26,7 @@ var bgm_database: Dictionary = {
 	"event": preload("res://assets/audio/bgm/event_node.mp3"),
 	"intro_theme": preload("res://assets/audio/bgm/story.mp3"),
 	"end": preload("res://assets/audio/bgm/end.mp3"),
+	"hurt": preload("res://assets/audio/sfx/damage/swipe.wav")
 }
 
 func _ready() -> void:

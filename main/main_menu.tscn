@@ -54,6 +54,7 @@
 [ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="54_15u4j"]
 [ext_resource type="Texture2D" uid="uid://cmvketrgstjx6" path="res://assets/HUD/panel_serbaguna.png" id="54_svkug"]
 [ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="55_udlmi"]
+[ext_resource type="PackedScene" uid="uid://3gwwhm46ivkp" path="res://ui/jurnal/jurnal_ui.tscn" id="56_ol4xx"]
 [ext_resource type="Texture2D" uid="uid://bjlvevsqfgtgo" path="res://assets/HUD/bulet_serbaguna.png" id="56_v6i05"]
 [ext_resource type="Texture2D" uid="uid://boffska3fv82l" path="res://assets/HUD/slider_serbaguna.png" id="57_e5aj7"]
 
@@ -406,20 +407,27 @@ metadata/credits_scroll = false
 
 [node name="CreditsText" type="RichTextLabel" parent="OverlayLayer/CreditsPanel2/ScrollContainer" unique_id=362366388]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
 text = "[center][b]Nama Tim : CHON Sent Us[/b][/center]
 
 [center][b]Anggota:[/b][/center]
-[indent]- Muhammad Faqih Shiam - Artist
+[center][indent]- Muhammad Faqih Shiam - Artist
 - Muhammad Fatih Izzul Haq - Artist
-- Bima Anugerah Prasetyo - Programmer[/indent]
+- Bima Anugerah Prasetyo - Programmer[/indent][/center]
 
 [center][b]Sumber Asset:[/b][/center]
-[indent]- SFX tombol cc by ????[/indent]
+[center][indent]- SFX tombol cc by ????[/indent][/center]
 
 [center][b]Special thanks:[/b][/center]
-[indent]- Kang greg (pembimbing)
+[center][indent]- Kang greg (pembimbing)
 - Pak yudi (pembimbing)
-- Kang imanda (pembimbing)[/indent]"
+- Kang imanda (pembimbing)[/indent][/center]"
+
+[node name="JournalUI" parent="OverlayLayer" unique_id=1310957194 instance=ExtResource("56_ol4xx")]
+visible = false
 
 [node name="CloseButton" type="TextureButton" parent="OverlayLayer" unique_id=1700244676]
 visible = false
