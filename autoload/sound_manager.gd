@@ -1,9 +1,13 @@
 extends Node
 
-const MAX_POOL_SIZE: int = 12 
+const MAX_POOL_SIZE: int = 12
+const BGM_DUCK_AMOUNT_DB: float = 10.0
+var _bgm_is_ducked: bool = false 
 
 var sfx_players: Array[AudioStreamPlayer] = []
 var bgm_player: AudioStreamPlayer
+var voice_player: AudioStreamPlayer
+var _active_voice_playlist: String = ""
 var current_bgm_track: String = ""
 
 var sfx_database: Dictionary = {
@@ -28,6 +32,82 @@ var bgm_database: Dictionary = {
 	"end": preload("res://assets/audio/bgm/end.mp3"),
 }
 
+var voice_database: Dictionary = {
+	"cobalt_intro": preload("res://assets/audio/voiceline/cobalt/Intro_Cobalt.mp3"),
+	"cobalt_end": preload("res://assets/audio/voiceline/cobalt/end_cobalt.mp3"),
+	"ferrum_intro": preload("res://assets/audio/voiceline/ferrum/intro_ferrum.mp3"),
+	"ferrum_end": preload("res://assets/audio/voiceline/ferrum/end_ferrum.mp3"),
+	"aurum_intro": preload("res://assets/audio/voiceline/aurum/intro_aurum.mp3"),
+	"aurum_end": preload("res://assets/audio/voiceline/aurum/end_aurum.mp3"),
+	"neon_intro": preload("res://assets/audio/voiceline/neon/intro_neon.mp3"),
+	"neon_end": preload("res://assets/audio/voiceline/neon/end_neon.mp3"),
+}
+
+var voice_playlists: Dictionary = {
+	"cobalt_main": [
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_01.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_02.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_03.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_04.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_05.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_06.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_07.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_08.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_09.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_10.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_11.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_12.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_13.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_14.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_15.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_16.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_17.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_18.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_19.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_20.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_21.mp3"),
+		preload("res://assets/audio/voiceline/cobalt/main_cobalt_22.mp3"),
+	],
+	"ferrum_main": [
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_01.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_02.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_03.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_04.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_05.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_06.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_07.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_08.mp3"),
+	preload("res://assets/audio/voiceline/ferrum/main_ferrum_09.mp3"),
+	],
+	"aurum_main": [
+	preload("res://assets/audio/voiceline/aurum/main_aurum_01.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_02.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_03.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_04.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_05.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_06.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_07.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_08.mp3"),
+	preload("res://assets/audio/voiceline/aurum/main_aurum_09.mp3")
+	],
+	"neon_main": [
+	preload("res://assets/audio/voiceline/neon/main_neon_01.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_02.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_03.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_04.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_05.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_06.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_07.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_08.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_09.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_10.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_11.mp3"),
+	preload("res://assets/audio/voiceline/neon/main_neon_12.mp3")
+	]
+}
+
+
+
 func _ready() -> void:
 	for i in range(MAX_POOL_SIZE):
 		var player = AudioStreamPlayer.new()
@@ -38,6 +118,10 @@ func _ready() -> void:
 	bgm_player = AudioStreamPlayer.new()
 	bgm_player.bus = "Music"
 	add_child(bgm_player)
+	
+	voice_player = AudioStreamPlayer.new()
+	voice_player.bus = "SFX"
+	add_child(voice_player)
 
 func set_master_volume(value: float) -> void:
 	var bus_idx = AudioServer.get_bus_index("Master")
@@ -103,6 +187,63 @@ func stop_bgm(fade_duration: float = 1.0) -> void:
 	tween.tween_property(bgm_player, "volume_db", -40.0, fade_duration)
 	tween.tween_callback(bgm_player.stop)
 	current_bgm_track = ""
+
+func play_voice_once(track_name: String, on_finished: Callable = Callable()) -> void:
+	if not voice_database.has(track_name):
+		push_warning("SoundManager: Voice '" + track_name + "' tidak ditemukan!")
+		return
+	_active_voice_playlist = ""
+	voice_player.stream = voice_database[track_name]
+	_duck_bgm()
+	voice_player.play()
+	voice_player.finished.connect(_unduck_bgm, CONNECT_ONE_SHOT)
+	if on_finished.is_valid():
+		voice_player.finished.connect(on_finished, CONNECT_ONE_SHOT)
+
+func play_random_voice_playlist(playlist_name: String) -> void:
+	if not voice_playlists.has(playlist_name):
+		push_warning("SoundManager: Voice playlist '" + playlist_name + "' tidak ditemukan!")
+		return
+	_active_voice_playlist = playlist_name
+	if not voice_player.finished.is_connected(_on_voice_finished):
+		voice_player.finished.connect(_on_voice_finished)
+	var tracks: Array = voice_playlists[playlist_name]
+	voice_player.stream = tracks.pick_random()
+	_duck_bgm()
+	voice_player.play()
+
+func _on_voice_finished() -> void:
+	_unduck_bgm()
+	if _active_voice_playlist != "":
+		var delay: float = randf_range(12.0, 20.0)
+		await get_tree().create_timer(delay).timeout
+		if _active_voice_playlist != "":
+			play_random_voice_playlist(_active_voice_playlist)
+
+func stop_voice() -> void:
+	_active_voice_playlist = ""
+	if voice_player.finished.is_connected(_on_voice_finished):
+		voice_player.finished.disconnect(_on_voice_finished)
+	voice_player.stop()
+	_unduck_bgm()
+	
+func _duck_bgm(duration: float = 0.25) -> void:
+	if _bgm_is_ducked:
+		return
+	_bgm_is_ducked = true
+	var bus_idx = AudioServer.get_bus_index("Music")
+	var current_db = AudioServer.get_bus_volume_db(bus_idx)
+	var tween = create_tween()
+	tween.tween_method(func(db): AudioServer.set_bus_volume_db(bus_idx, db), current_db, current_db - BGM_DUCK_AMOUNT_DB, duration)
+
+func _unduck_bgm(duration: float = 0.25) -> void:
+	if not _bgm_is_ducked:
+		return
+	_bgm_is_ducked = false
+	var bus_idx = AudioServer.get_bus_index("Music")
+	var current_db = AudioServer.get_bus_volume_db(bus_idx)
+	var tween = create_tween()
+	tween.tween_method(func(db): AudioServer.set_bus_volume_db(bus_idx, db), current_db, current_db + BGM_DUCK_AMOUNT_DB, duration)
 
 func set_master_volume_db(db: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)

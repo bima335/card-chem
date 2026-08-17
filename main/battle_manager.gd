@@ -55,6 +55,36 @@ func _ready() -> void:
 	player.reset_for_battle()
 	BlessingManager.apply_passive_effects(hand)
 	_prepare_starting_deck()
+	
+	EventBus.enemy_killed.connect(_on_boss_killed_check_voice)
+	
+func _on_boss_killed_check_voice(_enemy: EnemyBase, is_boss: bool) -> void:
+	if not is_boss:
+		return
+
+	if GameManager.is_gold_boss:
+		SoundManager.stop_voice()
+		SoundManager.play_voice_once("aurum_end")
+		return
+
+	if not GameManager.current_section:
+		return
+		
+	var section_name: String = GameManager.current_section.section_name.to_lower()
+	match section_name:
+		"cobalt":
+			SoundManager.stop_voice()
+			SoundManager.play_voice_once("cobalt_end")
+		"ferrum":
+			SoundManager.stop_voice()
+			SoundManager.play_voice_once("ferrum_end")
+		"neon":
+			SoundManager.stop_voice()
+			SoundManager.play_voice_once("neon_end")
+		"aurum":
+			SoundManager.stop_voice()
+			SoundManager.play_voice_once("aurum_end")
+	
 func _connect_signals() -> void:
 	ui_manager.end_turn_button.pressed.connect(_on_end_turn_pressed)
 	ui_manager.deck_visual.pressed.connect(func(): ui_manager.show_card_viewer(deck.cards, "SISA KARTU DECK", is_selecting_effect_target))
@@ -376,8 +406,9 @@ func _on_card_selected_for_effect(target_card: CardData) -> void:
 
 func _play_battle_music() -> void:
 	if GameManager.is_gold_boss == true:
-				SoundManager.play_bgm("aurum")
-				return
+		SoundManager.play_bgm("aurum")
+		_play_aurum_voice()
+		return
 	if GameManager.active_event_type != MapNodeData.NodeType.BOSS:
 		SoundManager.play_bgm("battle")
 		return
@@ -389,25 +420,63 @@ func _play_battle_music() -> void:
 
 	var section_name: String = GameManager.current_section.section_name.to_lower()
 
-	print("Boss Section: ", section_name)
-
 	match section_name:
 		"ferrum":
 			SoundManager.play_bgm("ferrum")
+			_play_ferrum_voice()
 
 		"cobalt":
 			SoundManager.play_bgm("cobalt")
+			_play_cobalt_voice()
 
-		"neon":
+		"section neon":
 			SoundManager.play_bgm("neon")
+			_play_neon_voice()
 
 		"aurum":
 			SoundManager.play_bgm("aurum")
+			_play_aurum_voice()
 
 		_:
 			push_warning("Musik boss belum ditemukan untuk section: " + section_name)
-			
 			SoundManager.play_bgm("battle")
+
+func _play_ferrum_voice() -> void:
+	if not GameManager.ferrum_intro_seen:
+		GameManager.ferrum_intro_seen = true
+		SoundManager.play_voice_once("ferrum_intro", func():
+			SoundManager.play_random_voice_playlist("ferrum_main")
+		)
+	else:
+		SoundManager.play_random_voice_playlist("ferrum_main")
+
+func _play_cobalt_voice() -> void:
+	if not GameManager.cobalt_intro_seen:
+		GameManager.cobalt_intro_seen = true
+		SoundManager.play_voice_once("cobalt_intro", func():
+			SoundManager.play_random_voice_playlist("cobalt_main")
+		)
+	else:
+		SoundManager.play_random_voice_playlist("cobalt_main")
+
+func _play_neon_voice() -> void:
+	if not GameManager.neon_intro_seen:
+		GameManager.neon_intro_seen = true
+		SoundManager.play_voice_once("neon_intro", func():
+			SoundManager.play_random_voice_playlist("neon_main")
+		)
+	else:
+		SoundManager.play_random_voice_playlist("neon_main")
+		
+func _play_aurum_voice() -> void:
+	if not GameManager.aurum_intro_seen:
+		GameManager.aurum_intro_seen = true
+		SoundManager.play_voice_once("aurum_intro", func():
+			SoundManager.play_random_voice_playlist("aurum_main")
+		)
+	else:
+		SoundManager.play_random_voice_playlist("aurum_main")
+
 
 func get_discard_pile() -> Array[CardData]:
 	if deck:
@@ -437,4 +506,6 @@ func _trigger_defeat() -> void:
 		queue_free()
 		
 	# Hapus data run juga saat kalah
-	
+
+func _exit_tree() -> void:
+	SoundManager.stop_voice()

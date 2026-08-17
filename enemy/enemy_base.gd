@@ -512,9 +512,7 @@ func _become_deselected() -> void:
 
 func die() -> void:
 	var is_boss: bool = false
-	if stats and stats.has_method("is_boss"):
-		is_boss = stats.is_boss
-	elif "BOSS" in name.to_upper():
+	if stats and stats.tag == EnemyStat.EnemyTag.BOSS:
 		is_boss = true
 
 	EventBus.enemy_killed.emit(self, is_boss)
