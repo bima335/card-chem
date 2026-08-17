@@ -9,3 +9,25 @@ offset_bottom = 220.0
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("1_wbpxu")
+
+[node name="TooltipPanel" type="PanelContainer" parent="." unique_id=53610780]
+visible = false
+top_level = true
+z_index = 1000
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TooltipPanel" unique_id=813213311]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="TooltipPanel/VBoxContainer" unique_id=1026229093]
+layout_mode = 2
+
+[node name="Description" type="Label" parent="TooltipPanel/VBoxContainer" unique_id=442923461]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+autowrap_mode = 3

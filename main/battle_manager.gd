@@ -8,7 +8,7 @@ const CARD_CARBON_SHIELD: CardData = preload("uid://b1nye4430c7yv")
 const CARD_NITRIC_OXIDE: CardData = preload("uid://c7egfvnqlhxde")
 const CARD_OXYGEN_GAS: CardData = preload("uid://1rhiulfq30o5")
 const CARD_HYDROGEN_PEROXIDE: CardData = preload("uid://db0cc88e3ktnj")
-const CARD_NITROGEN_GAS: CardData = preload("uid://jjs12ewhi0vm")
+const CARD_CARBON_DIOXIDE: CardData = preload("uid://ck43wj6i8k0f0")
 
 @export var available_cards: Array[CardData] 
 
@@ -45,9 +45,9 @@ func _ready() -> void:
 	#AuraManager.equip_aura(aura_1, 0)
 	#AuraManager.equip_aura(aura_2, 1)
 	#
-	#BlessingManager.equip_blessing(blessing_1)
-	#BlessingManager.equip_blessing(blessing_2)
-	#BlessingManager.equip_blessing(blessing_3)
+	BlessingManager.equip_blessing(blessing_1)
+	BlessingManager.equip_blessing(blessing_2)
+	BlessingManager.equip_blessing(blessing_3)
 	
 	accumulated_gold = 0
 	GameManager.reset_round()
@@ -101,7 +101,7 @@ func _build_default_starting_deck() -> void:
 		CARD_NITRIC_OXIDE: 1,
 		CARD_OXYGEN_GAS: 1,
 		CARD_HYDROGEN_PEROXIDE: 4,
-		CARD_NITROGEN_GAS: 2
+		CARD_CARBON_DIOXIDE: 2
 	}
 	
 	for card_resource: CardData in deck_composition:

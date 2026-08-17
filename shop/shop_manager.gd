@@ -9,6 +9,9 @@ const DEFAULT_BLESSING_SELL_PRICE: int = 15
 const HEAL_PRICE: int = 20
 const HEAL_AMOUNT: int = 15
 
+const INITIAL_REROLL_PRICE: int = 4
+const REROLL_PRICE_INCREMENT: int = 4
+
 const CARD_DIRECTORIES: Array[String] = [
 	"res://card/resources/atk",
 	"res://card/resources/buff",
@@ -18,34 +21,63 @@ const CARD_DIRECTORIES: Array[String] = [
 const BLESSING_DIRECTORY: String = "res://blessing/res"
 const COAT_DIRECTORY: String = "res://card/coat/res"
 
+@export_group("UI Slot Scenes")
 @export var card_ui_scene: PackedScene
+@export var card_slot_scene: PackedScene
+@export var coat_slot_scene: PackedScene
+@export var blessing_slot_scene: PackedScene
+
+@export_group("Card UI Dimensions")
+@export var card_slot_size: Vector2 = Vector2(230, 330)
+@export var card_display_size: Vector2 = Vector2(210, 270)
+
+@export_group("Coat UI Dimensions")
+@export var coat_slot_size: Vector2 = Vector2(170, 260)
+@export var coat_icon_size: Vector2 = Vector2(150, 210)
+
+@export_group("Blessing UI Dimensions")
+@export var blessing_slot_size: Vector2 = Vector2(220, 240)
+@export var blessing_icon_size: Vector2 = Vector2(150, 150)
 
 var available_cards: Array[CardData] = []
 var available_coats: Array[CoatData] = []
 var available_blessings: Array[BlessingData] = []
+
+var current_reroll_price: int = INITIAL_REROLL_PRICE
 
 @onready var btn_buy: TextureButton = $Interactables/BtnBuy
 @onready var btn_heal: TextureButton = $Interactables/BtnHeal
 @onready var btn_sell: TextureButton = $Interactables/BtnSell
 @onready var btn_leave: Button = $BtnLeave
 
-@onready var coin_label: Label = $UI_Overlay/CoinContainer/CoinLabel
+@onready var shop_backdrop: ColorRect = $UI_Overlay/ShopBackdrop
 @onready var buy_panel: PanelContainer = $UI_Overlay/BuyPanel
 @onready var sell_panel: PanelContainer = $UI_Overlay/SellPanel
+@onready var heal_panel: PanelContainer = $UI_Overlay/HealPanel
 
-@onready var btn_close_buy: Button = $UI_Overlay/BuyPanel/ScrollContainer/MainVBox/HeaderHBox/BtnCloseBuy
-@onready var card_grid: HBoxContainer = $UI_Overlay/BuyPanel/ScrollContainer/MainVBox/CardsSection/CardGrid
-@onready var coat_grid: HBoxContainer = $UI_Overlay/BuyPanel/ScrollContainer/MainVBox/CoatsSection/CoatGrid
-@onready var blessing_grid: HBoxContainer = $UI_Overlay/BuyPanel/ScrollContainer/MainVBox/BlessingSection/BlessingGrid
+@onready var btn_reroll: Button = $UI_Overlay/BuyPanel/MarginContainer2/RerollButton
+@onready var price_label: Label = $UI_Overlay/BuyPanel/MarginContainer2/RerollButton/PriceLabel
+@onready var gold_label: Label = $UI_Overlay/BuyPanel/MarginContainer2/HBoxContainer/GoldLabel
+@onready var hp_label: Label = $UI_Overlay/BuyPanel/MarginContainer2/HBoxContainer/HPLabel
+
+@onready var sell_gold_label: Label = $UI_Overlay/SellPanel/MarginContainer2/HBoxContainer/SellGoldLabel
+@onready var sell_hp_label: Label = $UI_Overlay/SellPanel/MarginContainer2/HBoxContainer/SellHPLabel
+@onready var sell_card_grid: HBoxContainer = $UI_Overlay/SellPanel/MarginContainer/MainVBox/ScrollContainer/SellCardGrid
+
+@onready var heal_gold_label: Label = $UI_Overlay/HealPanel/MarginContainer2/HBoxContainer/SellGoldLabel
+@onready var heal_hp_label: Label = $UI_Overlay/HealPanel/MarginContainer2/HBoxContainer/SellHPLabel
+@onready var pay_heal_button: Button = $UI_Overlay/HealPanel/MarginContainer2/PayHealButton
+@onready var heal_cost_label: Label = $UI_Overlay/HealPanel/MarginContainer2/PayHealButton/Label
+
+@onready var btn_close_buy: Button = $UI_Overlay/BuyPanel/MarginContainer/MainVBox/HeaderHBox/BtnCloseBuy
+@onready var card_grid: HBoxContainer = $UI_Overlay/BuyPanel/MarginContainer/MainVBox/BodyHBox/LeftCardsSection/CardsScroll/CardGrid
+@onready var coat_grid: HBoxContainer = $UI_Overlay/BuyPanel/MarginContainer/MainVBox/BodyHBox/RightSideVBox/CoatsSection/CoatGrid
+@onready var blessing_grid: HBoxContainer = $UI_Overlay/BuyPanel/MarginContainer/MainVBox/BodyHBox/RightSideVBox/BlessingSection/BlessingGrid
 @onready var deck_selector_overlay: PanelContainer = $UI_Overlay/BuyPanel/DeckSelectorOverlay
 @onready var deck_card_grid: GridContainer = $UI_Overlay/BuyPanel/DeckSelectorOverlay/OverlayVBox/ScrollContainer/DeckCardGrid
 @onready var btn_cancel_deck_select: Button = $UI_Overlay/BuyPanel/DeckSelectorOverlay/OverlayVBox/BtnCancelDeckSelect
 
 @onready var btn_close_sell: Button = $UI_Overlay/SellPanel/MarginContainer/MainVBox/HeaderHBox/BtnCloseSell
-@onready var btn_tab_cards: Button = $UI_Overlay/SellPanel/MarginContainer/MainVBox/CategoryTabs/BtnTabCards
-@onready var btn_tab_blessings: Button = $UI_Overlay/SellPanel/MarginContainer/MainVBox/CategoryTabs/BtnTabBlessings
-@onready var sell_card_grid: GridContainer = $UI_Overlay/SellPanel/MarginContainer/MainVBox/ScrollContainer/ContentVBox/SellCardGrid
-@onready var sell_blessing_grid: HBoxContainer = $UI_Overlay/SellPanel/MarginContainer/MainVBox/ScrollContainer/ContentVBox/SellBlessingGrid
 @onready var empty_notice_label: Label = $UI_Overlay/SellPanel/MarginContainer/MainVBox/EmptyNoticeLabel
 @onready var sell_confirm_dialog: ConfirmationDialog = $UI_Overlay/SellConfirmDialog
 @onready var buy_confirm_dialog: ConfirmationDialog = $UI_Overlay/BuyConfirmDialog
@@ -55,14 +87,13 @@ var is_shop_generated: bool = false
 
 var pending_buy_item: Resource = null
 var pending_buy_price: int = 0
-var pending_buy_btn: Button = null
+var pending_buy_slot: Node = null
 var pending_buy_category: BuyCategory
 
 var pending_coat: CoatData = null
-var pending_coat_slot_button: Button = null
+var pending_coat_slot: Node = null
 var pending_coat_price: int = 0
 
-var current_sell_category: SellCategory = SellCategory.CARDS
 var pending_sell_item: Resource = null
 var pending_sell_price: int = 0
 
@@ -73,20 +104,23 @@ func _ready() -> void:
 	
 	_load_all_shop_resources()
 	SoundManager.play_bgm("shop")
-	_update_coin_display()
 	_connect_signals()
 	
 	_setup_button_juice(btn_buy)
 	_setup_button_juice(btn_heal)
 	_setup_button_juice(btn_sell)
+	
+	_close_all_panels()
+	_update_shop_header_ui()
+
 
 func _setup_button_juice(button: TextureButton) -> void:
 	button.pivot_offset = button.size / 2.0
-
 	button.mouse_entered.connect(func(): _animate_button_scale(button, Vector2(1.08, 1.08), 0.15))
 	button.mouse_exited.connect(func(): _animate_button_scale(button, Vector2.ONE, 0.15))
 	button.button_down.connect(func(): _animate_button_scale(button, Vector2(0.92, 0.92), 0.08))
 	button.button_up.connect(func(): _animate_button_scale(button, Vector2(1.08, 1.08), 0.08))
+
 
 func _animate_button_scale(button: TextureButton, target_scale: Vector2, duration: float) -> void:
 	if button.has_meta("juice_tween"):
@@ -96,8 +130,8 @@ func _animate_button_scale(button: TextureButton, target_scale: Vector2, duratio
 
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(button, "scale", target_scale, duration)
-	
 	button.set_meta("juice_tween", tween)
+
 
 func _load_all_shop_resources() -> void:
 	available_cards.clear()
@@ -108,7 +142,7 @@ func _load_all_shop_resources() -> void:
 				available_cards.append(res)
 
 	available_blessings.clear()
-	var blessings_in_dir: Array[Resource] = _load_resources_from_directory(BLEING_DIRECTORY_RESOLVED())
+	var blessings_in_dir: Array[Resource] = _load_resources_from_directory(BLESSING_DIRECTORY)
 	for res in blessings_in_dir:
 		if res is BlessingData:
 			available_blessings.append(res)
@@ -118,10 +152,6 @@ func _load_all_shop_resources() -> void:
 	for res in coats_in_dir:
 		if res is CoatData:
 			available_coats.append(res)
-
-
-func BLEING_DIRECTORY_RESOLVED() -> String:
-	return BLESSING_DIRECTORY
 
 
 func _load_resources_from_directory(path: String) -> Array[Resource]:
@@ -138,7 +168,6 @@ func _load_resources_from_directory(path: String) -> Array[Resource]:
 	while file_name != "":
 		if not dir.current_is_dir():
 			var clean_file_name: String = file_name.trim_suffix(".remap").trim_suffix(".import")
-			
 			if clean_file_name.ends_with(".tres") or clean_file_name.ends_with(".res"):
 				var full_path: String = path.path_join(clean_file_name)
 				var resource: Resource = load(full_path)
@@ -157,17 +186,22 @@ func _connect_signals() -> void:
 	btn_sell.pressed.connect(_on_btn_sell_pressed)
 	btn_leave.pressed.connect(_on_btn_leave_pressed)
 
+	if shop_backdrop:
+		shop_backdrop.gui_input.connect(_on_backdrop_gui_input)
+
+	if pay_heal_button:
+		pay_heal_button.pressed.connect(_on_pay_heal_button_pressed)
+
+	if btn_reroll:
+		btn_reroll.pressed.connect(_on_btn_reroll_pressed)
+
 	if btn_close_buy:
-		btn_close_buy.pressed.connect(func(): buy_panel.hide())
+		btn_close_buy.pressed.connect(_close_all_panels)
 	if btn_cancel_deck_select:
 		btn_cancel_deck_select.pressed.connect(func(): deck_selector_overlay.hide())
 
 	if btn_close_sell:
-		btn_close_sell.pressed.connect(func(): sell_panel.hide())
-	if btn_tab_cards:
-		btn_tab_cards.pressed.connect(_switch_sell_tab.bind(SellCategory.CARDS))
-	if btn_tab_blessings:
-		btn_tab_blessings.pressed.connect(_switch_sell_tab.bind(SellCategory.BLESSINGS))
+		btn_close_sell.pressed.connect(_close_all_panels)
 
 	if sell_confirm_dialog:
 		sell_confirm_dialog.confirmed.connect(_on_sell_confirmed)
@@ -176,15 +210,66 @@ func _connect_signals() -> void:
 	if buy_confirm_dialog:
 		buy_confirm_dialog.confirmed.connect(_on_buy_confirmed)
 		buy_confirm_dialog.canceled.connect(_on_buy_cancelled)
+
 	if heal_confirm_dialog:
 		heal_confirm_dialog.confirmed.connect(_on_heal_confirmed)
 
 
-func _update_coin_display() -> void:
-	coin_label.text = "Koin: " + str(GameManager.shop_coins)
-	var tween: Tween = create_tween()
-	coin_label.scale = Vector2(1.3, 1.3)
-	tween.tween_property(coin_label, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BOUNCE)
+func _on_backdrop_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
+			_close_all_panels()
+
+
+func _open_panel(panel_to_open: PanelContainer) -> void:
+	buy_panel.hide()
+	sell_panel.hide()
+	heal_panel.hide()
+	
+	_update_shop_header_ui()
+	
+	if shop_backdrop:
+		shop_backdrop.show()
+	
+	panel_to_open.show()
+
+
+func _close_all_panels() -> void:
+	if buy_panel:
+		buy_panel.hide()
+	if sell_panel:
+		sell_panel.hide()
+	if heal_panel:
+		heal_panel.hide()
+	if deck_selector_overlay:
+		deck_selector_overlay.hide()
+	if shop_backdrop:
+		shop_backdrop.hide()
+
+
+func _update_shop_header_ui() -> void:
+	if gold_label:
+		gold_label.text = "%d G" % GameManager.shop_coins
+	if hp_label:
+		hp_label.text = "%d/%d" % [GameManager.player_current_hp, GameManager.player_max_hp]
+		
+	if sell_gold_label:
+		sell_gold_label.text = "%d G" % GameManager.shop_coins
+	if sell_hp_label:
+		sell_hp_label.text = "%d/%d" % [GameManager.player_current_hp, GameManager.player_max_hp]
+		
+	if heal_gold_label:
+		heal_gold_label.text = "%d G" % GameManager.shop_coins
+	if heal_hp_label:
+		heal_hp_label.text = "%d/%d" % [GameManager.player_current_hp, GameManager.player_max_hp]
+		
+	if heal_cost_label:
+		heal_cost_label.text = "%d G" % HEAL_PRICE
+		
+	if price_label:
+		price_label.text = "%d G" % current_reroll_price
+
 
 func _get_rarity_name(rarity_idx: int) -> String:
 	match rarity_idx:
@@ -225,159 +310,33 @@ func _build_blessing_tooltip(blessing: BlessingData) -> String:
 	text += blessing.description
 	return text
 
-func _on_btn_sell_pressed() -> void:
-	buy_panel.hide()
-	sell_panel.show()
-	_switch_sell_tab(SellCategory.CARDS)
 
-
-func _switch_sell_tab(category: SellCategory) -> void:
-	current_sell_category = category
-	btn_tab_cards.disabled = (category == SellCategory.CARDS)
-	btn_tab_blessings.disabled = (category == SellCategory.BLESSINGS)
-	_refresh_sell_view()
-
-
-func _refresh_sell_view() -> void:
-	_clear_sell_grids()
-	empty_notice_label.hide()
-
-	match current_sell_category:
-		SellCategory.CARDS:
-			sell_card_grid.show()
-			sell_blessing_grid.hide()
-			_populate_sell_cards()
-		SellCategory.BLESSINGS:
-			sell_card_grid.hide()
-			sell_blessing_grid.show()
-			_populate_sell_blessings()
-
-
-func _clear_sell_grids() -> void:
-	for child in sell_card_grid.get_children():
-		child.queue_free()
-	for child in sell_blessing_grid.get_children():
-		child.queue_free()
-
-
-func _populate_sell_cards() -> void:
-	var deck_cards: Array[CardData] = GameManager.player_deck
-	if deck_cards.is_empty():
-		empty_notice_label.text = "Deck kamu kosong!"
-		empty_notice_label.show()
-		return
-
-	for card_data in deck_cards:
-		var slot: VBoxContainer = VBoxContainer.new()
-		slot.alignment = BoxContainer.ALIGNMENT_CENTER
-
-		var card_ui: CardUI = card_ui_scene.instantiate() as CardUI
-		slot.add_child(card_ui)
-		card_ui.setup(card_data)
-		card_ui.is_preview = true
-		card_ui.tooltip_text = _build_card_tooltip(card_data)
-
-		var price: int = card_data.sell_value if card_data.sell_value > 0 else DEFAULT_CARD_SELL_PRICE
-		var btn: Button = Button.new()
-		btn.text = "Jual (+" + str(price) + " G)"
-		btn.pressed.connect(_request_sell_confirmation.bind(card_data, price))
-
-		slot.add_child(btn)
-		sell_card_grid.add_child(slot)
-
-
-func _populate_sell_blessings() -> void:
-	var active_blessings: Array[BlessingData] = BlessingManager.active_blessings
-	if active_blessings.is_empty():
-		empty_notice_label.text = "Tidak ada Blessing Pin yang terpasang!"
-		empty_notice_label.show()
-		return
-
-	for blessing in active_blessings:
-		var box: VBoxContainer = VBoxContainer.new()
-		box.custom_minimum_size = Vector2(160, 200)
-		box.alignment = BoxContainer.ALIGNMENT_CENTER
-		box.tooltip_text = _build_blessing_tooltip(blessing)
-
-		var icon_rect: TextureRect = TextureRect.new()
-		icon_rect.custom_minimum_size = Vector2(72, 72)
-		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon_rect.texture = blessing.icon
-		icon_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-
-		var name_lbl: Label = Label.new()
-		name_lbl.text = blessing.name if blessing.name != "" else "Blessing Pin"
-		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-
-		var price: int = blessing.sell_price if blessing.sell_price > 0 else DEFAULT_BLENG_PRICE_FALLBACK(blessing)
-		var btn: Button = Button.new()
-		btn.text = "Jual (+" + str(price) + " G)"
-		btn.pressed.connect(_request_sell_confirmation.bind(blessing, price))
-
-		box.add_child(icon_rect)
-		box.add_child(name_lbl)
-		box.add_child(btn)
-		sell_blessing_grid.add_child(box)
-
-
-func DEFAULT_BLENG_PRICE_FALLBACK(blessing: BlessingData) -> int:
-	if blessing.buy_price > 0:
-		return int(blessing.buy_price * 0.5)
-	return DEFAULT_BLESSING_SELL_PRICE
-
-
-func _request_sell_confirmation(item: Resource, price: int) -> void:
-	pending_sell_item = item
-	pending_sell_price = price
-
-	var item_name: String = ""
-	if item is CardData:
-		item_name = item.card_name
-	elif item is BlessingData:
-		item_name = item.name
-
-	sell_confirm_dialog.dialog_text = "Apakah kamu yakin ingin menjual '%s' seharga %d Koin?" % [item_name, price]
-	sell_confirm_dialog.popup_centered()
-
-
-func _on_sell_confirmed() -> void:
-	if pending_sell_item == null:
-		return
-
-	if pending_sell_item is CardData:
-		var target_card: CardData = pending_sell_item as CardData
-		GameManager.player_deck.erase(target_card)
-		GameManager.add_shop_coins(pending_sell_price)
-		SoundManager.play_sfx("buy_success")
-	elif pending_sell_item is BlessingData:
-		var target_blessing: BlessingData = pending_sell_item as BlessingData
-		var success: bool = BlessingManager.unequip_blessing(target_blessing)
-		if success:
-			GameManager.add_shop_coins(pending_sell_price)
-			SoundManager.play_sfx("buy_success")
-		else:
-			SoundManager.play_sfx("error")
-
-	_reset_sell_state()
-	_update_coin_display()
-	_refresh_sell_view()
-
-
-func _on_sell_cancelled() -> void:
-	_reset_sell_state()
-
-
-func _reset_sell_state() -> void:
-	pending_sell_item = null
-	pending_sell_price = 0
+# ==============================================================================
+# SECTION: BUY SYSTEM & REROLL
+# ==============================================================================
 
 func _on_btn_buy_pressed() -> void:
-	sell_panel.hide()
 	if not is_shop_generated:
 		_generate_shop_stock()
 		is_shop_generated = true
-	buy_panel.show()
+	_open_panel(buy_panel)
+
+
+func _on_btn_reroll_pressed() -> void:
+	if GameManager.shop_coins < current_reroll_price:
+		SoundManager.play_sfx("error")
+		_show_insufficient_coins_feedback(btn_reroll)
+		return
+
+	GameManager.shop_coins -= current_reroll_price
+	EventBus.gold_changed.emit(GameManager.shop_coins)
+	
+	current_reroll_price += REROLL_PRICE_INCREMENT
+	
+	_generate_shop_stock()
+	_update_shop_header_ui()
+	SoundManager.play_sfx("buy_success")
+
 
 func _generate_shop_stock() -> void:
 	_clear_all_buy_grids()
@@ -419,197 +378,146 @@ func _generate_cards_stock() -> void:
 		return
 
 	var current_section: SectionData = GameManager.current_section
-
 	if current_section == null:
-		push_error("[ShopManager] current_section is null! Using fallback values.")
 		current_section = _create_fallback_section()
 	
 	var chosen_cards: Array[CardData] = []
+	var buff_pool: Array[CardData] = available_cards.filter(func(c): return c.card_type == CardData.CardType.BUFF or c.card_type == CardData.CardType.DEBUFF)
+	var atk_pool: Array[CardData] = available_cards.filter(func(c): return c.card_type == CardData.CardType.ATK or c.card_type == CardData.CardType.TRIGGER)
 	
-	var buff_utility_pool: Array[CardData] = available_cards.filter(
-		func(c): return c.card_type == CardData.CardType.BUFF or c.card_type == CardData.CardType.DEBUFF
-	)
-	var atk_trigger_pool: Array[CardData] = available_cards.filter(
-		func(c): return c.card_type == CardData.CardType.ATK or c.card_type == CardData.CardType.TRIGGER
-	)
-	
-	if not buff_utility_pool.is_empty():
-		chosen_cards.append(_pick_item_by_rarity(
-			buff_utility_pool, 
-			current_section.cards_common_chance, 
-			current_section.cards_uncommon_chance, 
-			current_section.cards_rare_chance
-		))
+	if not buff_pool.is_empty():
+		chosen_cards.append(_pick_item_by_rarity(buff_pool, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance))
 		
 	for i in range(2):
-		var valid_atk_pool = atk_trigger_pool.filter(func(c): return not chosen_cards.has(c))
-		if not valid_atk_pool.is_empty():
-			chosen_cards.append(_pick_item_by_rarity(
-				valid_atk_pool, 
-				current_section.cards_common_chance, 
-				current_section.cards_uncommon_chance, 
-				current_section.cards_rare_chance
-			))
+		var valid_atk = atk_pool.filter(func(c): return not chosen_cards.has(c))
+		if not valid_atk.is_empty():
+			chosen_cards.append(_pick_item_by_rarity(valid_atk, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance))
 			
-	while chosen_cards.size() < 5:
-		var remaining_pool = available_cards.filter(func(c): return not chosen_cards.has(c))
-		if remaining_pool.is_empty():
+	while chosen_cards.size() < 3:
+		var remaining = available_cards.filter(func(c): return not chosen_cards.has(c))
+		if remaining.is_empty():
 			break
-		chosen_cards.append(_pick_item_by_rarity(
-			remaining_pool, 
-			current_section.cards_common_chance, 
-			current_section.cards_uncommon_chance, 
-			current_section.cards_rare_chance
-		))
+		chosen_cards.append(_pick_item_by_rarity(remaining, current_section.cards_common_chance, current_section.cards_uncommon_chance, current_section.cards_rare_chance))
 
 	for card in chosen_cards:
-		_build_card_slot_ui(card)
-
-
-func _build_card_slot_ui(card_data: CardData) -> void:
-	var slot_container: VBoxContainer = VBoxContainer.new()
-	slot_container.alignment = BoxContainer.ALIGNMENT_CENTER
-	
-	var card_ui: CardUI = card_ui_scene.instantiate() as CardUI
-	slot_container.add_child(card_ui)
-	card_ui.setup(card_data)
-	card_ui.is_preview = true
-	
-	card_ui.tooltip_text = _build_card_tooltip(card_data)
-	
-	var buy_btn: Button = Button.new()
-	var price: int = card_data.buy_value if card_data.buy_value > 0 else 15
-	buy_btn.text = "Beli (" + str(price) + " Koin)"
-	buy_btn.pressed.connect(_request_buy_confirmation.bind(card_data, price, buy_btn, BuyCategory.CARD))
-	
-	slot_container.add_child(buy_btn)
-	card_grid.add_child(slot_container)
+		var slot: ShopCardSlot = card_slot_scene.instantiate() as ShopCardSlot
+		card_grid.add_child(slot)
+		slot.set_dimensions(card_slot_size, card_display_size)
+		
+		var price: int = card.buy_value if card.buy_value > 0 else 15
+		slot.setup(card, price, card_ui_scene, _build_card_tooltip(card), ShopCardSlot.SlotMode.BUY)
+		slot.action_requested.connect(_on_slot_buy_requested.bind(BuyCategory.CARD))
 
 
 func _generate_coats_stock() -> void:
+	if coat_slot_scene == null:
+		push_error("Error: coat_slot_scene belum di-assign pada ShopManager!")
+		return
+
 	if available_coats.is_empty():
-		var dummy_lbl = Label.new()
+		var dummy_lbl: Label = Label.new()
 		dummy_lbl.text = "Tidak Ada Coat Tersedia"
 		coat_grid.add_child(dummy_lbl)
 		return
 
 	var current_section: SectionData = GameManager.current_section
 	if current_section == null:
-		push_error("[ShopManager] current_section is null! Using fallback for coats.")
 		current_section = _create_fallback_section()
 	
 	var chosen_coats: Array[CoatData] = []
 	var pool: Array[CoatData] = available_coats.duplicate()
-	
 	var count: int = mini(2, pool.size())
+	
 	for i in range(count):
-		var valid_pool = pool.filter(func(c): return not chosen_coats.has(c))
+		var valid_pool: Array[CoatData] = pool.filter(
+			func(c: CoatData) -> bool: return not chosen_coats.has(c)
+		)
 		if valid_pool.is_empty():
 			break
-		var picked = _pick_item_by_rarity(
+			
+		var picked: CoatData = _pick_item_by_rarity(
 			valid_pool, 
 			current_section.coat_common_chance, 
 			current_section.coat_uncommon_chance, 
 			current_section.coat_rare_chance
 		)
+		
+		if picked == null:
+			continue
+			
 		chosen_coats.append(picked)
-		_build_coat_slot_ui(picked)
+		
+		var slot_instance = coat_slot_scene.instantiate()
+		var slot: ShopItemSlot = slot_instance as ShopItemSlot
+		
+		if slot == null:
+			push_error("Error: Root node dari coat_slot_scene bukan ShopItemSlot!")
+			if is_instance_valid(slot_instance):
+				slot_instance.queue_free()
+			continue
 
-
-func _build_coat_slot_ui(coat_data: CoatData) -> void:
-	var box: VBoxContainer = VBoxContainer.new()
-	box.custom_minimum_size = Vector2(160, 200)
-	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	box.tooltip_text = _build_coat_tooltip(coat_data)
-	
-	var icon_rect: TextureRect = TextureRect.new()
-	icon_rect.custom_minimum_size = Vector2(72, 72)
-	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon_rect.texture = coat_data.icon
-	icon_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	
-	var name_lbl: Label = Label.new()
-	name_lbl.text = coat_data.coat_name
-	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	
-	var buy_btn: Button = Button.new()
-	var price: int = coat_data.buy_price if coat_data.buy_price > 0 else 15
-	buy_btn.text = "Beli (" + str(price) + " Koin)"
-	buy_btn.pressed.connect(_request_buy_confirmation.bind(coat_data, price, buy_btn, BuyCategory.COAT))
-	
-	box.add_child(icon_rect)
-	box.add_child(name_lbl)
-	box.add_child(buy_btn)
-	coat_grid.add_child(box)
+		coat_grid.add_child(slot)
+		slot.set_dimensions(coat_slot_size, coat_icon_size)
+		
+		var price: int = picked.buy_price if picked.buy_price > 0 else 15
+		slot.setup(picked, price, picked.icon, _build_coat_tooltip(picked))
+		slot.buy_requested.connect(_on_slot_buy_requested.bind(BuyCategory.COAT))
 
 
 func _generate_blessings_stock() -> void:
+	if blessing_slot_scene == null:
+		push_error("Error: blessing_slot_scene belum di-assign pada ShopManager!")
+		return
+
 	if available_blessings.is_empty():
-		var dummy_lbl = Label.new()
-		dummy_lbl.text = "Tidak Ada Blessing Pin Tersedia"
-		blessing_grid.add_child(dummy_lbl)
+		var dummy_label: Label = Label.new()
+		dummy_label.text = "Tidak Ada Blessing Pin Tersedia"
+		blessing_grid.add_child(dummy_label)
 		return
 
 	var current_section: SectionData = GameManager.current_section
 	if current_section == null:
-		push_error("[ShopManager] current_section is null! Using fallback for blessings.")
 		current_section = _create_fallback_section()
 
-	var valid_blessings = available_blessings.filter(
-		func(b): return not _player_has_blessing(b)
+	var valid_blessings: Array[BlessingData] = available_blessings.filter(
+		func(blessing: BlessingData) -> bool: 
+			return not BlessingManager.has_blessing(blessing.id)
 	)
 
 	if valid_blessings.is_empty():
-		var empty_lbl = Label.new()
-		empty_lbl.text = "Semua Blessing Pin Telah Dimiliki!"
-		blessing_grid.add_child(empty_lbl)
+		var empty_label: Label = Label.new()
+		empty_label.text = "Semua Blessing Pin Telah Dimiliki!"
+		blessing_grid.add_child(empty_label)
 		return
 
-	var chosen_blessing = _pick_item_by_rarity(
-		valid_blessings, 
-		current_section.blessing_common_chance, 
-		current_section.blessing_uncommon_chance, 
+	var chosen_blessing: BlessingData = _pick_item_by_rarity(
+		valid_blessings,
+		current_section.blessing_common_chance,
+		current_section.blessing_uncommon_chance,
 		current_section.blessing_rare_chance
 	)
-	_build_blessing_slot_ui(chosen_blessing)
+
+	var slot_instance = blessing_slot_scene.instantiate()
+	var slot: ShopItemSlot = slot_instance as ShopItemSlot
+	
+	if slot == null:
+		push_error("Error: Root node dari blessing_slot_scene bukan ShopItemSlot!")
+		if is_instance_valid(slot_instance):
+			slot_instance.queue_free()
+		return
+
+	blessing_grid.add_child(slot)
+	slot.set_dimensions(blessing_slot_size, blessing_icon_size)
+
+	var price: int = chosen_blessing.buy_price if chosen_blessing.buy_price > 0 else 25
+	slot.setup(chosen_blessing, price, chosen_blessing.icon, _build_blessing_tooltip(chosen_blessing))
+	slot.buy_requested.connect(_on_slot_buy_requested.bind(BuyCategory.BLESSING))
 
 
-func _player_has_blessing(blessing: BlessingData) -> bool:
-	return BlessingManager.has_blessing(blessing.id)
-
-
-func _build_blessing_slot_ui(blessing: BlessingData) -> void:
-	var box: VBoxContainer = VBoxContainer.new()
-	box.custom_minimum_size = Vector2(160, 200)
-	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	box.tooltip_text = _build_blessing_tooltip(blessing)
-
-	var icon_rect: TextureRect = TextureRect.new()
-	icon_rect.custom_minimum_size = Vector2(72, 72)
-	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon_rect.texture = blessing.icon
-	icon_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-
-	var name_lbl: Label = Label.new()
-	name_lbl.text = blessing.name if blessing.name != "" else "Blessing Pin"
-	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-
-	var buy_btn: Button = Button.new()
-	var price: int = blessing.buy_price if blessing.buy_price > 0 else 25
-	buy_btn.text = "Beli (" + str(price) + " Koin)"
-	buy_btn.pressed.connect(_request_buy_confirmation.bind(blessing, price, buy_btn, BuyCategory.BLESSING))
-
-	box.add_child(icon_rect)
-	box.add_child(name_lbl)
-	box.add_child(buy_btn)
-	blessing_grid.add_child(box)
-
-func _request_buy_confirmation(item: Resource, price: int, btn: Button, category: BuyCategory) -> void:
+func _on_slot_buy_requested(item: Resource, price: int, slot: Node, category: BuyCategory) -> void:
 	if GameManager.shop_coins < price:
 		SoundManager.play_sfx("error")
-		_show_insufficient_coins_feedback(btn)
+		_show_insufficient_coins_feedback(slot)
 		return
 
 	if category == BuyCategory.COAT and GameManager.player_deck.is_empty():
@@ -618,7 +526,7 @@ func _request_buy_confirmation(item: Resource, price: int, btn: Button, category
 
 	pending_buy_item = item
 	pending_buy_price = price
-	pending_buy_btn = btn
+	pending_buy_slot = slot
 	pending_buy_category = category
 
 	var item_name: String = ""
@@ -645,15 +553,14 @@ func _on_buy_confirmed() -> void:
 			GameManager.player_deck.append(new_card)
 			SaveManager.discover_card(card_data)
 			EventBus.card_obtained.emit(card_data)
-			_update_coin_display()
 			SoundManager.play_sfx("buy_success")
-			pending_buy_btn.disabled = true
-			pending_buy_btn.text = "DIBELI"
+			if pending_buy_slot and pending_buy_slot.has_method("mark_as_bought"):
+				pending_buy_slot.mark_as_bought()
 			_reset_buy_state()
 
 		BuyCategory.COAT:
 			pending_coat = pending_buy_item as CoatData
-			pending_coat_slot_button = pending_buy_btn
+			pending_coat_slot = pending_buy_slot
 			pending_coat_price = pending_buy_price
 			_reset_buy_state()
 			_open_deck_selector_for_coat()
@@ -663,15 +570,17 @@ func _on_buy_confirmed() -> void:
 			var success: bool = BlessingManager.equip_blessing(blessing)
 			if success:
 				GameManager.shop_coins -= pending_buy_price
-				_update_coin_display()
 				SaveManager.unlock_blessing(blessing)
 				SoundManager.play_sfx("buy_success")
-				pending_buy_btn.disabled = true
-				pending_buy_btn.text = "DIBELI"
+				if pending_buy_slot and pending_buy_slot.has_method("mark_as_bought"):
+					pending_buy_slot.mark_as_bought()
 			else:
 				SoundManager.play_sfx("error")
-				_show_blessing_failed_feedback(pending_buy_btn)
+				if pending_buy_slot and pending_buy_slot.has_method("show_feedback"):
+					pending_buy_slot.show_feedback("SLOT FULL!")
 			_reset_buy_state()
+
+	_update_shop_header_ui()
 
 
 func _on_buy_cancelled() -> void:
@@ -681,16 +590,14 @@ func _on_buy_cancelled() -> void:
 func _reset_buy_state() -> void:
 	pending_buy_item = null
 	pending_buy_price = 0
-	pending_buy_btn = null
+	pending_buy_slot = null
+
 
 func _open_deck_selector_for_coat() -> void:
 	for child in deck_card_grid.get_children():
 		child.queue_free()
 
-	var available_deck_cards: Array[CardData] = GameManager.player_deck.filter(
-		func(card: CardData): return card.coat_data == null
-	)
-
+	var available_deck_cards: Array[CardData] = GameManager.player_deck.filter(func(card: CardData): return card.coat_data == null)
 	if available_deck_cards.is_empty():
 		SoundManager.play_sfx("error")
 		return
@@ -704,6 +611,7 @@ func _open_deck_selector_for_coat() -> void:
 		card_ui.pressed.connect(_on_card_selected_for_coat.bind(card_data))
 
 	deck_selector_overlay.show()
+
 
 func _on_card_selected_for_coat(target_card: CardData) -> void:
 	if pending_coat == null:
@@ -722,25 +630,119 @@ func _on_card_selected_for_coat(target_card: CardData) -> void:
 	SaveManager.discover_coat(pending_coat)
 	SaveManager.save_game()
 
-	_update_coin_display()
 	SoundManager.play_sfx("buy_success")
 
-	if pending_coat_slot_button:
-		pending_coat_slot_button.disabled = true
-		pending_coat_slot_button.text = "DIBELI"
+	if pending_coat_slot and pending_coat_slot.has_method("mark_as_bought"):
+		pending_coat_slot.mark_as_bought()
 
 	deck_selector_overlay.hide()
 	pending_coat = null
-	pending_coat_slot_button = null
+	pending_coat_slot = null
 	pending_coat_price = 0
+	
+	_update_shop_header_ui()
+
+
+# ==============================================================================
+# SECTION: SELL SYSTEM
+# ==============================================================================
+
+func _on_btn_sell_pressed() -> void:
+	_open_panel(sell_panel)
+	_populate_sell_cards()
+
+
+func _populate_sell_cards() -> void:
+	for child in sell_card_grid.get_children():
+		child.queue_free()
+
+	var deck_cards: Array[CardData] = GameManager.player_deck
+	if deck_cards.is_empty():
+		empty_notice_label.text = "Deck kamu kosong!"
+		empty_notice_label.show()
+		return
+
+	empty_notice_label.hide()
+
+	for card_data in deck_cards:
+		var slot: ShopCardSlot = card_slot_scene.instantiate() as ShopCardSlot
+		sell_card_grid.add_child(slot)
+		slot.set_dimensions(card_slot_size, card_display_size)
+
+		var sell_price: int = card_data.sell_value if card_data.sell_value > 0 else DEFAULT_CARD_SELL_PRICE
+		slot.setup(card_data, sell_price, card_ui_scene, _build_card_tooltip(card_data), ShopCardSlot.SlotMode.SELL)
+		slot.action_requested.connect(_on_slot_sell_requested)
+
+
+func _on_slot_sell_requested(card_data: CardData, price: int, slot: ShopCardSlot) -> void:
+	pending_sell_item = card_data
+	pending_sell_price = price
+	sell_confirm_dialog.dialog_text = "Jual kartu '%s' seharga %d Koin?" % [card_data.card_name, price]
+	sell_confirm_dialog.popup_centered()
+
+
+func _on_sell_confirmed() -> void:
+	if pending_sell_item == null:
+		return
+
+	if pending_sell_item is CardData:
+		var target_card: CardData = pending_sell_item as CardData
+		GameManager.player_deck.erase(target_card)
+		GameManager.add_shop_coins(pending_sell_price)
+		SoundManager.play_sfx("buy_success")
+
+	_reset_sell_state()
+	_populate_sell_cards()
+	_update_shop_header_ui()
+
+
+func _on_sell_cancelled() -> void:
+	_reset_sell_state()
+
+
+func _reset_sell_state() -> void:
+	pending_sell_item = null
+	pending_sell_price = 0
+
+
+# ==============================================================================
+# SECTION: HEAL & UTILITIES
+# ==============================================================================
+
+func _on_btn_heal_pressed() -> void:
+	_open_panel(heal_panel)
+
+
+func _on_pay_heal_button_pressed() -> void:
+	if GameManager.player_current_hp >= GameManager.player_max_hp:
+		SoundManager.play_sfx("error")
+		return
+
+	if GameManager.shop_coins < HEAL_PRICE:
+		SoundManager.play_sfx("error")
+		_show_insufficient_coins_feedback(pay_heal_button)
+		return
+
+	heal_confirm_dialog.dialog_text = "Heal %d HP dengan %d Koin?" % [HEAL_AMOUNT, HEAL_PRICE]
+	heal_confirm_dialog.popup_centered()
+
+
+func _on_heal_confirmed() -> void:
+	if GameManager.shop_coins >= HEAL_PRICE and GameManager.player_current_hp < GameManager.player_max_hp:
+		GameManager.shop_coins -= HEAL_PRICE
+		GameManager.heal_player(HEAL_AMOUNT)
+		SoundManager.play_sfx("heal_success")
+		_update_shop_header_ui()
+	else:
+		SoundManager.play_sfx("error")
 
 
 func _show_insufficient_coins_feedback(target_control: Control) -> void:
-	var orig_color: Color = coin_label.modulate
+	var orig_color: Color = gold_label.modulate if gold_label else Color.WHITE
 	var tween: Tween = create_tween().set_parallel(true)
-	
-	coin_label.modulate = Color.RED
-	tween.tween_property(coin_label, "modulate", orig_color, 0.4)
+	if gold_label:
+		gold_label.modulate = Color.RED
+		tween.tween_property(gold_label, "modulate", orig_color, 0.4)
 	
 	var orig_pos: Vector2 = target_control.position
 	var shake_tween: Tween = create_tween()
@@ -749,44 +751,9 @@ func _show_insufficient_coins_feedback(target_control: Control) -> void:
 	shake_tween.tween_property(target_control, "position", orig_pos, 0.05)
 
 
-func _show_blessing_failed_feedback(target_btn: Button) -> void:
-	var orig_text: String = target_btn.text
-	target_btn.text = "SLOT FULL!"
-	
-	var tween: Tween = create_tween()
-	tween.tween_interval(1.0)
-	tween.tween_callback(func(): 
-		if is_instance_valid(target_btn) and not target_btn.disabled:
-			target_btn.text = orig_text
-	)
-
-
-func _on_btn_heal_pressed() -> void:
-	if GameManager.player_current_hp >= GameManager.player_max_hp:
-		SoundManager.play_sfx("error")
-		return
-
-	if GameManager.shop_coins < HEAL_PRICE:
-		SoundManager.play_sfx("error")
-		_show_insufficient_coins_feedback(btn_heal)
-		return
-
-	heal_confirm_dialog.dialog_text = "Heal %d HP dengan %d coin?" % [HEAL_AMOUNT, HEAL_PRICE]
-	heal_confirm_dialog.popup_centered()
-
-
-func _on_heal_confirmed() -> void:
-	if GameManager.shop_coins >= HEAL_PRICE and GameManager.player_current_hp < GameManager.player_max_hp:
-		GameManager.shop_coins -= HEAL_PRICE
-		GameManager.heal_player(HEAL_AMOUNT)
-		_update_coin_display()
-		SoundManager.play_sfx("heal_success")
-	else:
-		SoundManager.play_sfx("error")
-
-
 func _on_btn_leave_pressed() -> void:
 	get_tree().change_scene_to_file("res://map/map_scene.tscn")
+
 
 func _create_fallback_section() -> SectionData:
 	var section = SectionData.new()

@@ -1,7 +1,7 @@
 class_name EnemyAction
 extends Resource
 
-enum ActionType {ATTACK, BUFF, DEBUFF, SHIELD, HEAL, STAY}
+enum ActionType {ATTACK, BUFF, DEBUFF, SHIELD, HEAL, STAY, SKILL}
 
 ## Nama jurus untuk ditampilkan di UI (misal: "Tebasan Brutal")
 @export var action_name: String = "Serangan Biasa"

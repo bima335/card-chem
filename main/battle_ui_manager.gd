@@ -63,14 +63,14 @@ var _end_turn_tween: Tween
 
 signal card_clicked_in_viewer(card_data: CardData)
 
-
 func _ready() -> void:
-	# Pastikan semua button bisa diklik
 	_set_ui_mouse_filters()
 	
-	# Connect buttons
 	if close_deck_button:
 		close_deck_button.pressed.connect(hide_deck_viewer)
+	
+	if deck_backdrop:
+		deck_backdrop.gui_input.connect(_on_backdrop_gui_input)
 	
 	if discard_visual:
 		discard_visual.pressed.connect(_on_discard_visual_pressed)
@@ -85,11 +85,9 @@ func _ready() -> void:
 	_connect_aura_signals()
 	_connect_gold_signals()
 	
-	# Initial UI updates
 	update_gold_display(GameManager.shop_coins)
 	update_blessings_display()
 	update_aura_display()
-
 
 func _set_ui_mouse_filters() -> void:
 	if end_turn_button:
@@ -100,7 +98,10 @@ func _set_ui_mouse_filters() -> void:
 		discard_visual.mouse_filter = Control.MOUSE_FILTER_STOP
 	if close_deck_button:
 		close_deck_button.mouse_filter = Control.MOUSE_FILTER_STOP
-
+	if deck_backdrop:
+		deck_backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	if deck_view_panel:
+		deck_view_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _on_discard_visual_pressed() -> void:
 	var battle_manager = get_tree().root.find_child("BattleManager", true, false)
@@ -182,24 +183,29 @@ func update_tokens(o: int, h: int, c: int, n: int) -> void:
 	tween.tween_property(token_container, "scale", Vector2(1.05, 1.05), 0.1)
 	tween.tween_property(token_container, "scale", Vector2.ONE, 0.1)
 
-
 func _render_token_icons(container: HBoxContainer, texture: Texture2D, count: int) -> void:
 	if not container or not texture:
 		return
 		
-	container.add_theme_constant_override("separation", token_spacing)
-		
-	for child in container.get_children():
-		child.queue_free()
-		
-	for i in range(count):
-		var icon = TextureRect.new()
-		icon.texture = texture
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.custom_minimum_size = token_icon_size
-		container.add_child(icon)
+	var existing_children: Array[Node] = container.get_children()
+	var current_child_count: int = existing_children.size()
 
+	for i in range(maxi(current_child_count, count)):
+		if i < count:
+			if i < current_child_count:
+				var icon: TextureRect = existing_children[i] as TextureRect
+				icon.texture = texture
+				icon.visible = true
+			else:
+				var icon: TextureRect = TextureRect.new()
+				icon.texture = texture
+				icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				icon.custom_minimum_size = token_icon_size
+				container.add_child(icon)
+		else:
+			if i < current_child_count:
+				existing_children[i].visible = false
 
 func update_player_stats(hp: int, max_hp: int, shield: int, _damage: int) -> void:
 	player_hp_bar.max_value = max_hp
@@ -459,3 +465,9 @@ func _on_end_turn_button_mouse_exited() -> void:
 		
 	_end_turn_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	_end_turn_tween.tween_property(end_turn_button, "rotation_degrees", 0.0, 0.4)
+
+func _on_backdrop_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
+			hide_deck_viewer()

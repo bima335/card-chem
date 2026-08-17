@@ -7,14 +7,15 @@
 [resource]
 script = ExtResource("1_8dgr4")
 id = "c_b_04"
-card_name = "Hydro Battery"
-description = "Mendapatkan 3 H Token"
+card_name = "Metana (CH4)"
+description = "Mendapatkan 7 H Token"
 card_texture = ExtResource("1_bagbq")
 rarity = 1
 card_type = 1
 target_type = 2
+cost_hydrogen = 4
 cost_carbon = 1
-gain_hydrogen = 3
+gain_hydrogen = 7
 buy_value = 7
 sell_value = 3
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

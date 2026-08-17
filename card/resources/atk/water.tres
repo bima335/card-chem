@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_7027x")
 id = "c_a_01"
-card_name = "Water (H2O)"
+card_name = "Air (H2O)"
 description = "Memberikan 1 Damage dan +1 Shield Player"
 card_texture = ExtResource("1_dgq05")
 damage_amount = 2

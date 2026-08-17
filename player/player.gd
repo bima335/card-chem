@@ -153,27 +153,32 @@ func pay_for_card(card: CardData) -> void:
 	nitrogen = clampi(nitrogen - costs["nitrogen"], 0, get_max_chn())
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
 
-
 func add_tokens(c: int, h: int, o: int, n: int) -> void:
+	var old_c: int = carbon
+	var old_h: int = hydrogen
+	var old_o: int = oxygen
+	var old_n: int = nitrogen
+
 	carbon = clampi(carbon + c, 0, get_max_chn())
 	hydrogen = clampi(hydrogen + h, 0, get_max_chn())
 	oxygen = clampi(oxygen + o, 0, get_max_oxygen())
 	nitrogen = clampi(nitrogen + n, 0, get_max_chn())
-	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
 
+	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
+	
+	_notify_tokens_gained({
+		"Carbon": carbon - old_c,
+		"Hydrogen": hydrogen - old_h,
+		"Oxygen": oxygen - old_o,
+		"Nitrogen": nitrogen - old_n
+	})
 
 func gain_tokens(amount: int) -> void:
-	carbon = clampi(carbon + amount, 0, get_max_chn())
-	hydrogen = clampi(hydrogen + amount, 0, get_max_chn())
-	oxygen = clampi(oxygen + amount, 0, get_max_oxygen())
-	nitrogen = clampi(nitrogen + amount, 0, get_max_chn())
-	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
-
+	add_tokens(amount, amount, amount, amount)
 
 func gain_shield(amount: int) -> void:
 	shield += amount
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
-
 
 func take_damage(amount: int, attacker: EnemyBase = null) -> void:
 	var result = AuraManager.process_incoming_player_damage(current_hp, shield, amount, attacker)
@@ -188,12 +193,16 @@ func take_damage(amount: int, attacker: EnemyBase = null) -> void:
 		if actual_damage > 0:
 			shield = 0
 			current_hp -= actual_damage
+			var calculated_intensity: float = clampf(0.3 + (float(actual_damage) / 50.0), 0.3, 0.9)
+			JuiceManager.shake_camera(calculated_intensity, 0.4)
 		else:
 			shield -= final_incoming_damage
+			JuiceManager.shake_camera(0.2, 0.15)
 			
 	current_hp = clampi(current_hp, 0, max_hp)
 	GameManager.player_current_hp = current_hp
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
+	SoundManager.play_sfx("hurt")
 	EventBus.player_took_damage.emit(amount)
 	
 	if current_hp <= 0:
@@ -201,7 +210,6 @@ func take_damage(amount: int, attacker: EnemyBase = null) -> void:
 			_handle_gold_boss_defeat()
 		else:
 			_trigger_game_over()
-
 
 func _handle_gold_boss_defeat() -> void:
 	GameManager.player_current_hp = GameManager.player_max_hp
@@ -237,23 +245,25 @@ func heal(amount: int) -> void:
 	GameManager.player_current_hp = current_hp
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
 
-
 func add_random_token(amount: int = 1) -> void:
 	var token_types = ["carbon", "hydrogen", "oxygen", "nitrogen"]
 	var chosen_token = token_types.pick_random()
 	
-	match chosen_token:
-		"carbon":
-			carbon = clampi(carbon + amount, 0, get_max_chn())
-		"hydrogen":
-			hydrogen = clampi(hydrogen + amount, 0, get_max_chn())
-		"oxygen":
-			oxygen = clampi(oxygen + amount, 0, get_max_oxygen())
-		"nitrogen":
-			nitrogen = clampi(nitrogen + amount, 0, get_max_chn())
-			
-	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
+	var gained_c: int = amount if chosen_token == "carbon" else 0
+	var gained_h: int = amount if chosen_token == "hydrogen" else 0
+	var gained_o: int = amount if chosen_token == "oxygen" else 0
+	var gained_n: int = amount if chosen_token == "nitrogen" else 0
+	
+	add_tokens(gained_c, gained_h, gained_o, gained_n)
 
+func _notify_tokens_gained(diff: Dictionary) -> void:
+	var actual_gains: Dictionary = {}
+	for token_name: String in diff:
+		if diff[token_name] > 0:
+			actual_gains[token_name] = diff[token_name]
+			
+	if not actual_gains.is_empty():
+		EventBus.tokens_gained.emit(actual_gains)
 
 func _on_siphon_token_requested(token_type: String, amount: int) -> void:
 	match token_type:
