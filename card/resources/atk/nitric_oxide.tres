@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("1_e7p0k")
 id = "c_a_03"
-card_name = "Nitric Oxide"
+card_name = "Nitrogen Oksida (NO)"
 description = "Memberikan 2 Damage dan Menimbulkan Oxidize"
 card_texture = ExtResource("1_mnu7y")
 rarity = 1

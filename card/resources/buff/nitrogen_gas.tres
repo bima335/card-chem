@@ -8,11 +8,12 @@
 script = ExtResource("1_3gf87")
 id = "c_b_05"
 card_name = "Nitrogen Gas"
-description = "Mendapatkan 2 N Token"
+description = "Mendapatkan 4 N Token"
 card_texture = ExtResource("1_olimn")
 card_type = 1
 target_type = 2
-gain_nitrogen = 2
+cost_nitrogen = 2
+gain_nitrogen = 4
 buy_value = 5
 sell_value = 2
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

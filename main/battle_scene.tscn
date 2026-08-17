@@ -59,10 +59,13 @@
 [ext_resource type="Texture2D" uid="uid://cmvketrgstjx6" path="res://assets/HUD/panel_serbaguna.png" id="50_7djar"]
 [ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="51_olllg"]
 [ext_resource type="Texture2D" uid="uid://b3awcm6aq22kn" path="res://assets/HUD/statusplayer.png" id="52_a71yv"]
-[ext_resource type="Texture2D" uid="uid://clm53sedrbusy" path="res://assets/HUD/rewardspanel.png" id="53_7i7p3"]
 [ext_resource type="PackedScene" uid="uid://boadenuq2my22" path="res://ui/boss_hp_bar.tscn" id="60_gfdxq"]
+[ext_resource type="Texture2D" uid="uid://4pr0yhl0ghrj" path="res://assets/backgrounds/panelrewards.png" id="60_y3ceo"]
+[ext_resource type="PackedScene" uid="uid://uvhp4kd3qfel" path="res://ui/pause_battle/pause_menu.tscn" id="62_6w65c"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6w65c"]
 
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
@@ -115,7 +118,7 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "card_grid", "gold_label")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid", "gold_label")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
@@ -125,7 +128,6 @@ discard_visual = NodePath("../../UI/StatGroup/DiscardVisual")
 close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
 blessing_container = NodePath("../../UI/TopRightHUD/BlessingWrapper/BlessingContainer")
 blessing_item_scene = ExtResource("12_6ojnn")
-boss_hp_bar = NodePath("../../UI/BossHPBar")
 aura_container = NodePath("../../UI/TopRightHUD/AuraWrapper/CardSlots")
 aura_ui_scene = ExtResource("14_dairb")
 player_hp_bar = NodePath("../../UI/StatGroup/PlayerHPBar")
@@ -144,6 +146,7 @@ token_n_tex = ExtResource("34_token_n")
 token_spacing = 5
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
+panel_title_label = NodePath("../../UI/DeckViewPanel/VBoxContainer/Tittle/tittletext")
 card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
 hand_card_spacing = 145.0
 hand_max_hand_width = 850.0
@@ -158,8 +161,8 @@ aura_card_ui_scene = ExtResource("14_dairb")
 available_cards = Array[ExtResource("2_tuh4c")]([ExtResource("15_6ojnn"), ExtResource("16_dairb"), ExtResource("5_j5qo7")])
 available_coats = Array[ExtResource("27_j1o3r")]([ExtResource("28_7djar"), ExtResource("29_olllg"), ExtResource("30_a71yv"), ExtResource("31_7i7p3"), ExtResource("32_e61ho"), ExtResource("33_gfdxq")])
 reward_backdrop = NodePath("../../UI/RewardBackdrop")
-reward_card_grid = NodePath("../../UI/RewardBackdrop/VBoxContainer/RewardCardGrid")
-skip_button = NodePath("../../UI/RewardBackdrop/VBoxContainer/SkipButton")
+reward_card_grid = NodePath("../../UI/RewardBackdrop/RewardCardGrid")
+skip_button = NodePath("../../UI/RewardBackdrop/SkipButton")
 
 [node name="CardResolver" type="Node" parent="Subsystems" unique_id=1352173905]
 script = ExtResource("11_ehvsk")
@@ -560,6 +563,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="DeckBackDrop" type="ColorRect" parent="UI" unique_id=1123639773]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -569,6 +573,7 @@ color = Color(0, 0, 0, 0.3647059)
 
 [node name="DeckViewPanel" type="PanelContainer" parent="UI" unique_id=704264590]
 visible = false
+z_index = 2
 custom_minimum_size = Vector2(1500, 800)
 anchors_preset = 8
 anchor_left = 0.5
@@ -630,6 +635,7 @@ text = "Close"
 
 [node name="DiscardViewPanel" type="PanelContainer" parent="UI" unique_id=1955223716]
 visible = false
+z_index = 2
 custom_minimum_size = Vector2(1500, 800)
 anchors_preset = 8
 anchor_left = 0.5
@@ -691,6 +697,7 @@ text = "Close"
 
 [node name="StatViewPanel" type="PanelContainer" parent="UI" unique_id=1904291167]
 visible = false
+z_index = 2
 custom_minimum_size = Vector2(1500, 800)
 anchors_preset = 8
 anchor_left = 0.5
@@ -735,37 +742,32 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.3647059)
 
 [node name="rewardpanel" type="TextureRect" parent="UI/RewardBackdrop" unique_id=571783904]
-layout_mode = 0
-offset_left = 65.0
-offset_top = 65.0
-offset_right = 1850.0
-offset_bottom = 1021.0
-texture = ExtResource("53_7i7p3")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/RewardBackdrop" unique_id=798449482]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 84.0
-offset_top = -77.5
-offset_right = 126.0
-offset_bottom = -16.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
+texture = ExtResource("60_y3ceo")
+metadata/_edit_lock_ = true
 
-[node name="RewardCardGrid" type="HBoxContainer" parent="UI/RewardBackdrop/VBoxContainer" unique_id=1619136986]
-layout_mode = 2
+[node name="RewardCardGrid" type="HBoxContainer" parent="UI/RewardBackdrop" unique_id=1619136986]
+layout_mode = 0
+offset_left = 981.0
+offset_top = 369.0
+offset_right = 1505.0
+offset_bottom = 522.0
 theme_override_constants/separation = 20
 
-[node name="SkipButton" type="Button" parent="UI/RewardBackdrop/VBoxContainer" unique_id=1294469247]
-layout_mode = 2
+[node name="SkipButton" type="Button" parent="UI/RewardBackdrop" unique_id=1294469247]
+layout_mode = 0
+offset_left = 951.0
+offset_top = 856.0
+offset_right = 1500.0
+offset_bottom = 940.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
-text = "SKIP"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6w65c")
 
 [node name="Tittle" type="TextureRect" parent="UI/RewardBackdrop" unique_id=486085043]
 visible = false
@@ -790,3 +792,6 @@ theme_override_font_sizes/font_size = 50
 text = "Your Discard Pile"
 
 [node name="BossHPBar" parent="UI" unique_id=963925899 instance=ExtResource("60_gfdxq")]
+
+[node name="PauseMenu" parent="UI" unique_id=953000554 instance=ExtResource("62_6w65c")]
+visible = false

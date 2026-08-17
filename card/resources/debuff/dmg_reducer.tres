@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_7ynby")
 id = "c_d_03"
-card_name = "Damage Reducer"
+card_name = "Karbon Subnitrid (C4N2)"
 description = "Mengurangi Damage Musuh Sebanyak 5"
 card_texture = ExtResource("1_ifank")
 rarity = 2

@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("1_1ok3a")
 id = "c_a_01"
-card_name = "Carbon Monoxide"
+card_name = "Karbon Monoksida (CO)"
 description = "Memberikan 1 Damage dan 1 Stack Toxic"
 card_texture = ExtResource("1_o7hd7")
 rarity = 1

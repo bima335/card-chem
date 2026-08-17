@@ -7,11 +7,12 @@
 [resource]
 script = ExtResource("1_r53dq")
 id = "c_b_03"
-card_name = "Carbon Shield"
+card_name = "Karbon Suboksida"
 description = "+8 Shield Player"
 card_texture = ExtResource("1_li1s3")
 card_type = 1
 target_type = 2
+cost_oxygen = 2
 cost_carbon = 3
 shield_amount = 8
 buy_value = 8
