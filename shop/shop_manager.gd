@@ -50,6 +50,7 @@ var current_reroll_price: int = INITIAL_REROLL_PRICE
 @onready var btn_sell: TextureButton = $Interactables/BtnSell
 @onready var btn_leave: Button = $BtnLeave
 
+@onready var shop_backdrop: ColorRect = $UI_Overlay/ShopBackdrop
 @onready var buy_panel: PanelContainer = $UI_Overlay/BuyPanel
 @onready var sell_panel: PanelContainer = $UI_Overlay/SellPanel
 @onready var heal_panel: PanelContainer = $UI_Overlay/HealPanel
@@ -109,11 +110,9 @@ func _ready() -> void:
 	_setup_button_juice(btn_heal)
 	_setup_button_juice(btn_sell)
 	
-	buy_panel.hide()
-	sell_panel.hide()
-	heal_panel.hide()
-	
+	_close_all_panels()
 	_update_shop_header_ui()
+
 
 func _setup_button_juice(button: TextureButton) -> void:
 	button.pivot_offset = button.size / 2.0
@@ -121,6 +120,7 @@ func _setup_button_juice(button: TextureButton) -> void:
 	button.mouse_exited.connect(func(): _animate_button_scale(button, Vector2.ONE, 0.15))
 	button.button_down.connect(func(): _animate_button_scale(button, Vector2(0.92, 0.92), 0.08))
 	button.button_up.connect(func(): _animate_button_scale(button, Vector2(1.08, 1.08), 0.08))
+
 
 func _animate_button_scale(button: TextureButton, target_scale: Vector2, duration: float) -> void:
 	if button.has_meta("juice_tween"):
@@ -186,6 +186,9 @@ func _connect_signals() -> void:
 	btn_sell.pressed.connect(_on_btn_sell_pressed)
 	btn_leave.pressed.connect(_on_btn_leave_pressed)
 
+	if shop_backdrop:
+		shop_backdrop.gui_input.connect(_on_backdrop_gui_input)
+
 	if pay_heal_button:
 		pay_heal_button.pressed.connect(_on_pay_heal_button_pressed)
 
@@ -193,12 +196,12 @@ func _connect_signals() -> void:
 		btn_reroll.pressed.connect(_on_btn_reroll_pressed)
 
 	if btn_close_buy:
-		btn_close_buy.pressed.connect(func(): buy_panel.hide())
+		btn_close_buy.pressed.connect(_close_all_panels)
 	if btn_cancel_deck_select:
 		btn_cancel_deck_select.pressed.connect(func(): deck_selector_overlay.hide())
 
 	if btn_close_sell:
-		btn_close_sell.pressed.connect(func(): sell_panel.hide())
+		btn_close_sell.pressed.connect(_close_all_panels)
 
 	if sell_confirm_dialog:
 		sell_confirm_dialog.confirmed.connect(_on_sell_confirmed)
@@ -210,6 +213,39 @@ func _connect_signals() -> void:
 
 	if heal_confirm_dialog:
 		heal_confirm_dialog.confirmed.connect(_on_heal_confirmed)
+
+
+func _on_backdrop_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
+			_close_all_panels()
+
+
+func _open_panel(panel_to_open: PanelContainer) -> void:
+	buy_panel.hide()
+	sell_panel.hide()
+	heal_panel.hide()
+	
+	_update_shop_header_ui()
+	
+	if shop_backdrop:
+		shop_backdrop.show()
+	
+	panel_to_open.show()
+
+
+func _close_all_panels() -> void:
+	if buy_panel:
+		buy_panel.hide()
+	if sell_panel:
+		sell_panel.hide()
+	if heal_panel:
+		heal_panel.hide()
+	if deck_selector_overlay:
+		deck_selector_overlay.hide()
+	if shop_backdrop:
+		shop_backdrop.hide()
 
 
 func _update_shop_header_ui() -> void:
@@ -280,13 +316,10 @@ func _build_blessing_tooltip(blessing: BlessingData) -> String:
 # ==============================================================================
 
 func _on_btn_buy_pressed() -> void:
-	sell_panel.hide()
-	heal_panel.hide()
 	if not is_shop_generated:
 		_generate_shop_stock()
 		is_shop_generated = true
-	_update_shop_header_ui()
-	buy_panel.show()
+	_open_panel(buy_panel)
 
 
 func _on_btn_reroll_pressed() -> void:
@@ -615,10 +648,7 @@ func _on_card_selected_for_coat(target_card: CardData) -> void:
 # ==============================================================================
 
 func _on_btn_sell_pressed() -> void:
-	buy_panel.hide()
-	heal_panel.hide()
-	sell_panel.show()
-	_update_shop_header_ui()
+	_open_panel(sell_panel)
 	_populate_sell_cards()
 
 
@@ -680,10 +710,7 @@ func _reset_sell_state() -> void:
 # ==============================================================================
 
 func _on_btn_heal_pressed() -> void:
-	buy_panel.hide()
-	sell_panel.hide()
-	_update_shop_header_ui()
-	heal_panel.show()
+	_open_panel(heal_panel)
 
 
 func _on_pay_heal_button_pressed() -> void:

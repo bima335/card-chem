@@ -17,19 +17,23 @@ var drag_preview_ref: TextureRect = null
 var drag_offset: Vector2 = Vector2.ZERO
 var home_global_position: Vector2 = Vector2.ZERO
 
-# Posisi & rotasi "istirahat" kartu di dalam formasi kipas tangan.
-# Diisi oleh BattleUIManager.arrange_hand(), dipakai sebagai baseline hover/return.
 var hand_position: Vector2 = Vector2.ZERO
 var hand_rotation: float = 0.0
 var hand_z_index: int = 0
 
 var hover_tween: Tween
 var return_tween: Tween
+var drag_pulse_tween: Tween
 
 @export var hover_scale: Vector2 = Vector2(1.15, 1.15)
 @export var hover_rotation_degrees: float = 3.0
 @export var hover_lift: float = 55.0
 @export var animation_duration: float = 0.25
+
+@export_group("Drag Pulse Settings")
+@export var drag_scale_min: Vector2 = Vector2(0.95, 0.95)
+@export var drag_scale_max: Vector2 = Vector2(1.08, 1.08)
+@export var drag_pulse_duration: float = 0.45
 
 @onready var name_label: Label = $TooltipPanel/VBoxContainer/Name
 @onready var cost_label: Label = $TooltipPanel/VBoxContainer/Cost
@@ -38,6 +42,7 @@ var return_tween: Tween
 @onready var coat_icon: TextureRect = $CoatIcon
 
 var tooltip_tween: Tween
+
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
@@ -47,7 +52,7 @@ func _ready() -> void:
 		tooltip_panel.hide()
 		
 	_setup_tooltip_text()
-	tooltip_panel.hide() 
+
 
 func setup(card_data: CardData) -> void:
 	data = card_data
@@ -161,6 +166,7 @@ func _get_description_label() -> Label:
 		return get_node("TooltipPanel/VBoxContainer/Description") as Label
 	return null
 
+
 func _start_drag() -> void:
 	if not is_inside_tree() or is_queued_for_deletion() or is_returning:
 		return
@@ -168,20 +174,17 @@ func _start_drag() -> void:
 	if hover_tween and hover_tween.is_valid():
 		hover_tween.kill()
 
-	# Simpan posisi awal
 	home_global_position = global_position
 	drag_offset = get_global_mouse_position() - global_position
 
-	# 1. Buat kartu tiruan (preview) yang akan mengikuti mouse
-	var preview = TextureRect.new()
-	preview.texture = texture_normal       # Pakai gambar kartu yang sama
+	var preview: TextureRect = TextureRect.new()
+	preview.texture = texture_normal
 	preview.custom_minimum_size = custom_minimum_size
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	preview.pivot_offset = size / 2.0
+	preview.pivot_offset = custom_minimum_size / 2.0
 	
-	# 2. Tempelkan tiruan ke lapisan UI paling atas (CanvasLayer)
-	var ui_root = get_tree().get_first_node_in_group("ui_layer")
+	var ui_root: Node = get_tree().get_first_node_in_group("ui_layer")
 	if ui_root == null:
 		var temp_layer = CanvasLayer.new()
 		temp_layer.layer = 100
@@ -190,12 +193,11 @@ func _start_drag() -> void:
 		
 	ui_root.add_child(preview)
 	preview.global_position = get_global_mouse_position() - drag_offset
-	preview.z_index = 999 # Agar selalu di atas segalanya
+	preview.z_index = 999
 	
-	# Simpan referensi tiruan
 	drag_preview_ref = preview
+	_start_drag_pulse_animation(preview)
 
-	# 3. Sembunyikan kartu asli di tangan
 	visible = false
 	is_dragging = true
 	z_index = 0
@@ -204,21 +206,31 @@ func _start_drag() -> void:
 	
 	drag_started.emit(self)
 
+
+func _start_drag_pulse_animation(target_node: Control) -> void:
+	if drag_pulse_tween and drag_pulse_tween.is_valid():
+		drag_pulse_tween.kill()
+		
+	target_node.scale = drag_scale_min
+	drag_pulse_tween = create_tween().set_loops()
+	drag_pulse_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	drag_pulse_tween.tween_property(target_node, "scale", drag_scale_max, drag_pulse_duration)
+	drag_pulse_tween.tween_property(target_node, "scale", drag_scale_min, drag_pulse_duration)
+
+
 func _on_gui_input(event: InputEvent) -> void:
 	if is_preview or is_returning:
 		return
 
 	if event is InputEventMouseButton:
-		# Logika untuk Drag & Drop (Klik Kiri)
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				_start_drag()
 			else:
 				_stop_drag()
-		
-		# Logika untuk Buka Detail Viewer (Klik Kanan)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			_open_card_viewer()
+
 
 func _stop_drag() -> void:
 	if not is_dragging:
@@ -226,17 +238,18 @@ func _stop_drag() -> void:
 		
 	is_dragging = false
 	
-	var drop_pos = Vector2.ZERO
+	if drag_pulse_tween and drag_pulse_tween.is_valid():
+		drag_pulse_tween.kill()
 	
-	# Hapus kartu tiruan dan ambil posisi terakhirnya
+	var drop_pos: Vector2 = get_global_mouse_position()
+	
 	if drag_preview_ref != null and is_instance_valid(drag_preview_ref):
-		drop_pos = drag_preview_ref.global_position
 		drag_preview_ref.queue_free()
 		drag_preview_ref = null
 	
-	# Munculkan kembali kartu asli
 	visible = true
 	z_index = hand_z_index
+	scale = Vector2.ONE
 	
 	drag_ended.emit(self, drop_pos)
 
@@ -245,7 +258,7 @@ func return_to_hand() -> void:
 	if not is_instance_valid(self) or is_queued_for_deletion():
 		return
 		
-	is_dragging = false  # Hentikan tracking mouse di _process
+	is_dragging = false
 	is_returning = true
 	mouse_filter = MOUSE_FILTER_IGNORE
 	if tooltip_panel:
@@ -254,10 +267,8 @@ func return_to_hand() -> void:
 	if return_tween and return_tween.is_valid():
 		return_tween.kill()
 
-	# 1. Selalu paksa reparent ke hand_container, meskipun dia sudah ada di dalamnya
 	var hand_container = get_tree().get_first_node_in_group("hand_container")
 	if hand_container != null:
-		# PENTING: pindahkan dan set posisi home secara langsung
 		reparent(hand_container, true) 
 		global_position = home_global_position 
 
@@ -280,6 +291,7 @@ func return_to_hand() -> void:
 		if battle_ui and battle_ui.has_method("arrange_hand"):
 			battle_ui.arrange_hand()
 	)
+
 
 func _on_mouse_entered() -> void:
 	if is_dragging or is_returning:
@@ -315,6 +327,7 @@ func _on_mouse_exited() -> void:
 		
 	_hide_tooltip_panel()
 
+
 func _animate_preview_scale(target_scale: Vector2) -> void:
 	if hover_tween and hover_tween.is_valid():
 		hover_tween.kill()
@@ -322,6 +335,7 @@ func _animate_preview_scale(target_scale: Vector2) -> void:
 	hover_tween = create_tween().bind_node(self)
 	hover_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	hover_tween.tween_property(self, "scale", target_scale, animation_duration)
+
 
 func _show_tooltip_panel() -> void:
 	if not tooltip_panel:
@@ -359,6 +373,7 @@ func _hide_tooltip_panel() -> void:
 	if tooltip_panel:
 		tooltip_panel.hide()
 
+
 func _animate_hover(target_scale: Vector2, target_rotation: float, target_position: Vector2) -> void:
 	if hover_tween and hover_tween.is_valid():
 		hover_tween.kill()
@@ -372,24 +387,20 @@ func _animate_hover(target_scale: Vector2, target_rotation: float, target_positi
 
 
 func _open_card_viewer() -> void:
-	if data == null: return
+	if data == null: 
+		return
 	
-	# Pakai preload langsung (lebih aman, tidak perlu setup Inspector)
 	var viewer = CARD_DETAIL_VIEWER_SCENE.instantiate()
-	
-	# Bungkus dengan CanvasLayer agar selalu di atas segalanya
 	var canvas_layer = CanvasLayer.new()
 	canvas_layer.layer = 100
 	canvas_layer.add_child(viewer)
 	get_tree().root.add_child(canvas_layer)
-	
 	viewer.setup(data)
 
-func _process(delta: float) -> void:
-	# 1. Update posisi tiruan mengikuti mouse
+
+func _process(_delta: float) -> void:
 	if is_dragging and drag_preview_ref != null and is_instance_valid(drag_preview_ref):
 		drag_preview_ref.global_position = get_global_mouse_position() - drag_offset
 	
-	# 2. DETEKSI GLOBAL: Jika sedang drag dan tombol kiri mouse sudah dilepas
 	if is_dragging and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		_stop_drag()
