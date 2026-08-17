@@ -3,8 +3,32 @@
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_x6yus"]
 [ext_resource type="Script" uid="uid://b5wewrec7faac" path="res://enemy/gold/enemy_gold.gd" id="2_gmwh6"]
 [ext_resource type="Resource" uid="uid://8n7bqwu36rhk" path="res://ailments/res/greed.tres" id="3_e1c7o"]
+[ext_resource type="Texture2D" uid="uid://h8usxryp11c4" path="res://assets/Character/eliteboss/Boss.Gold/gold_ingame.png" id="4_m2tc6"]
+[ext_resource type="AnimationLibrary" uid="uid://bvd3aehv6rvah" path="res://enemy/gold/animations/gold_boss_anime.res" id="5_4xhi1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5uy6s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_m2tc6")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [node name="EnemyGold" unique_id=181012001 instance=ExtResource("1_x6yus")]
 script = ExtResource("2_gmwh6")
 greed_resource = ExtResource("3_e1c7o")
 stats = null
+
+[node name="Sprite2D" parent="." index="1" unique_id=1550852511]
+visible = false
+
+[node name="AnimatedSprite2D" parent="." index="2" unique_id=1549849388]
+visible = true
+sprite_frames = SubResource("SpriteFrames_5uy6s")
+animation = &"idle"
+
+[node name="AnimationPlayer" parent="." index="3" unique_id=1280754138]
+libraries/gold_boss_anime = ExtResource("5_4xhi1")

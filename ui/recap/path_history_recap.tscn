@@ -26,3 +26,4 @@ tex_shop = ExtResource("4_shop")
 tex_rest = ExtResource("5_rest")
 tex_boss = ExtResource("6_boss")
 tex_random_event = ExtResource("7_random")
+use_dummy_data = false

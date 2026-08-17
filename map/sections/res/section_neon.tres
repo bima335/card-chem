@@ -13,7 +13,7 @@
 
 [resource]
 script = ExtResource("2_c82l8")
-section_name = "Section Neon"
+section_name = "neon"
 section_wallpaper = ExtResource("10_5uy6s")
 exclusive_common = Array[ExtResource("1_egxei")]([ExtResource("3_sap8n")])
 exclusive_elite = Array[ExtResource("1_egxei")]([ExtResource("4_jsvkc")])
