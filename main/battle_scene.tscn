@@ -61,6 +61,7 @@
 [ext_resource type="Texture2D" uid="uid://b3awcm6aq22kn" path="res://assets/HUD/statusplayer.png" id="52_a71yv"]
 [ext_resource type="PackedScene" uid="uid://boadenuq2my22" path="res://ui/boss_hp_bar.tscn" id="60_gfdxq"]
 [ext_resource type="Texture2D" uid="uid://4pr0yhl0ghrj" path="res://assets/backgrounds/panelrewards.png" id="60_y3ceo"]
+[ext_resource type="PackedScene" uid="uid://uvhp4kd3qfel" path="res://ui/pause_battle/pause_menu.tscn" id="62_6w65c"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
 
@@ -788,3 +789,6 @@ theme_override_font_sizes/font_size = 50
 text = "Your Discard Pile"
 
 [node name="BossHPBar" parent="UI" unique_id=963925899 instance=ExtResource("60_gfdxq")]
+
+[node name="PauseMenu" parent="UI" unique_id=953000554 instance=ExtResource("62_6w65c")]
+visible = false
