@@ -7,8 +7,13 @@ custom_minimum_size = Vector2(200, 280)
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("1_fo41u")
+hover_scale = null
+hover_rotation_degrees = null
+hover_lift = null
+animation_duration = null
 
 [node name="TooltipPanel" type="PanelContainer" parent="." unique_id=780808358]
+visible = false
 top_level = true
 z_index = 1000
 layout_mode = 0

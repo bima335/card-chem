@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_kumci")
 id = "c_a_06"
-card_name = "Nitrous Oxide"
+card_name = "Dinitrogen Monoksida (N2O)"
 description = "Memberikan 2 Damage ke Semua Musuh"
 card_texture = ExtResource("1_55i8l")
 target_type = 1

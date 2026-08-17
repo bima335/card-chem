@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_qsg4a")
 id = "c_a_05"
-card_name = "Hydrogen Peroxide"
+card_name = "Hidrogen Peroksida (H2O2)"
 description = "Memberikan 5 Damage"
 card_texture = ExtResource("1_huvyg")
 cost_oxygen = 1

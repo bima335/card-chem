@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("1_hcqk3")
 id = "c_a_04"
-card_name = "Cyanide"
+card_name = "Sianida (CN)"
 description = "Memberikan 2 Damage dan Menimbulkan Corrosion"
 card_texture = ExtResource("1_4pk2u")
 cost_carbon = 1

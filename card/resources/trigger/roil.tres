@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_i6ct3")
 id = "c_t_03"
-card_name = "Roil"
+card_name = "Asam Isosianat (HNCO)"
 description = "Memicu Volatile"
 card_texture = ExtResource("1_5fwna")
 rarity = 2

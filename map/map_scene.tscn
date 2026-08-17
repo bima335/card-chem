@@ -48,6 +48,7 @@ section_wallpapers = Array[Texture2D]([ExtResource("9_base"), ExtResource("5_jcv
 global_common_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("6_u5ktc"), ExtResource("7_lq6j1"), ExtResource("8_ekk3v")])
 global_elite_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("9_gta4r"), ExtResource("10_3xs7y"), ExtResource("11_rmjs1"), null])
 sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_71c6l"), ExtResource("7_71c6l"), ExtResource("6_71c6l")])
+test_enemy = ExtResource("10_3xs7y")
 
 [node name="BtnUp" type="Button" parent="." unique_id=691623035]
 layout_mode = 1

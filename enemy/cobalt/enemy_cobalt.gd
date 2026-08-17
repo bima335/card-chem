@@ -53,47 +53,53 @@ func _on_turn_started() -> void:
 
 
 func _on_round_started(current_round: int) -> void:
-	print("Round dimulai:", current_round)
-	if tier == CobaltTier.ELITE:
-		print("Elit datang")
-	if tier == CobaltTier.MINION:
-		print("Minion datang")
-	print("Minion: ", minion_counter)
-	
 	if current_round % 2 == 0:
 		atk_bonus_stack += 1
 
 
 func _on_round_ended() -> void:
-	print("round ended")
+	pass
 
 
 func determine_next_move() -> EnemyAction:
 	var action = EnemyAction.new()
-	action.type = EnemyAction.ActionType.ATTACK
 	
 	match tier:
 		CobaltTier.COMMON:
+			action.type = EnemyAction.ActionType.ATTACK
 			action.amount = 5 + (2 * atk_bonus_stack)
+			
 		CobaltTier.ELITE:
+			action.type = EnemyAction.ActionType.ATTACK
 			action.amount = 8
+			
 		CobaltTier.BOSS:
 			if GameManager.current_round % 3 == 0 and minion_counter > 0:
+				action.type = EnemyAction.ActionType.ATTACK
 				action.amount = 3 * minion_counter
 			elif not is_stunned and minion_counter < 4:
-				summon_minions(1)
+				action.type = EnemyAction.ActionType.SKILL
+				action.amount = 1
 			else:
+				action.type = EnemyAction.ActionType.ATTACK
 				action.amount = 0
+				
 		CobaltTier.MINION:
+			action.type = EnemyAction.ActionType.ATTACK
 			action.amount = 5
+			
 	return action
 
 
 func execute_move(action: EnemyAction) -> void:
-	super.execute_move(action)
-	if not is_stunned and action and action.type == EnemyAction.ActionType.ATTACK:
+	await super.execute_move(action)
+	if not is_stunned and action and action.type == EnemyAction.ActionType.ATTACK and action.amount > 0:
 		player_korosi_stacks_applied += 1
 		EventBus.apply_player_status.emit("KOROSI", 3, 3)
+
+
+func _execute_custom_skill(action: EnemyAction) -> void:
+	summon_minions(action.amount)
 
 
 func _on_any_enemy_died(dead_enemy: EnemyBase) -> void:

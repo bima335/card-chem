@@ -8,11 +8,12 @@
 [resource]
 script = ExtResource("1_6loh0")
 id = "c_d_01"
-card_name = "Oxygen Spray"
+card_name = "Radikal Hidroperoksil (HO2)"
 description = "Menimbulkan Oxidize pada Musuh"
 card_texture = ExtResource("1_k5gjq")
 card_type = 2
-cost_oxygen = 1
+cost_oxygen = 2
+cost_hydrogen = 1
 buy_value = 6
 sell_value = 3
 statuses_to_apply = Array[ExtResource("2_f2g3o")]([ExtResource("4_k5gjq")])

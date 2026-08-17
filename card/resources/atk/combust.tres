@@ -7,14 +7,14 @@
 [resource]
 script = ExtResource("1_sn2hs")
 id = "c_a_10"
-card_name = "Combust"
+card_name = "Nitril Sianida (CN2O2)"
 description = "Memberikan 8 Damage ke Semua Musuh"
 card_texture = ExtResource("1_kvy5g")
 rarity = 2
 target_type = 1
 cost_oxygen = 2
-cost_carbon = 2
-cost_nitrogen = 1
+cost_carbon = 1
+cost_nitrogen = 2
 damage_amount = 8
 buy_value = 14
 sell_value = 7
