@@ -118,7 +118,7 @@ script = ExtResource("2_hoxqo")
 
 [node name="Subsystems" type="Node" parent="." unique_id=1393369240]
 
-[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "card_grid", "gold_label")]
+[node name="BattleUIManager" type="Node" parent="Subsystems" unique_id=328224064 node_paths=PackedStringArray("hand_container", "end_turn_button", "deck_visual", "discard_visual", "close_deck_button", "blessing_container", "aura_container", "player_hp_bar", "player_hp_label", "player_shield_bar", "player_shield_label", "token_container", "c_token_container", "h_token_container", "o_token_container", "n_token_container", "deck_backdrop", "deck_view_panel", "panel_title_label", "card_grid", "gold_label")]
 script = ExtResource("8_3aatk")
 card_ui_scene = ExtResource("2_csnlq")
 hand_container = NodePath("../../UI/HandContainer")
@@ -128,7 +128,6 @@ discard_visual = NodePath("../../UI/StatGroup/DiscardVisual")
 close_deck_button = NodePath("../../UI/DeckViewPanel/CloseButton")
 blessing_container = NodePath("../../UI/TopRightHUD/BlessingWrapper/BlessingContainer")
 blessing_item_scene = ExtResource("12_6ojnn")
-boss_hp_bar = NodePath("../../UI/BossHPBar")
 aura_container = NodePath("../../UI/TopRightHUD/AuraWrapper/CardSlots")
 aura_ui_scene = ExtResource("14_dairb")
 player_hp_bar = NodePath("../../UI/StatGroup/PlayerHPBar")
@@ -147,6 +146,7 @@ token_n_tex = ExtResource("34_token_n")
 token_spacing = 5
 deck_backdrop = NodePath("../../UI/DeckBackDrop")
 deck_view_panel = NodePath("../../UI/DeckViewPanel")
+panel_title_label = NodePath("../../UI/DeckViewPanel/VBoxContainer/Tittle/tittletext")
 card_grid = NodePath("../../UI/DeckViewPanel/VBoxContainer/ScrollContainer/CardGrid")
 hand_card_spacing = 145.0
 hand_max_hand_width = 850.0
@@ -573,6 +573,7 @@ color = Color(0, 0, 0, 0.3647059)
 
 [node name="DeckViewPanel" type="PanelContainer" parent="UI" unique_id=704264590]
 visible = false
+z_index = 2
 custom_minimum_size = Vector2(1500, 800)
 anchors_preset = 8
 anchor_left = 0.5
@@ -634,6 +635,7 @@ text = "Close"
 
 [node name="DiscardViewPanel" type="PanelContainer" parent="UI" unique_id=1955223716]
 visible = false
+z_index = 2
 custom_minimum_size = Vector2(1500, 800)
 anchors_preset = 8
 anchor_left = 0.5
@@ -695,6 +697,7 @@ text = "Close"
 
 [node name="StatViewPanel" type="PanelContainer" parent="UI" unique_id=1904291167]
 visible = false
+z_index = 2
 custom_minimum_size = Vector2(1500, 800)
 anchors_preset = 8
 anchor_left = 0.5

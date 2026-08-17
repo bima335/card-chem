@@ -107,6 +107,15 @@ texture_normal = SubResource("AtlasTexture_7gqer")
 
 [node name="UI_Overlay" type="CanvasLayer" parent="." unique_id=52073734]
 
+[node name="ColorRect" type="ColorRect" parent="UI_Overlay" unique_id=307159963]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.34117648)
+
 [node name="BuyPanel" type="PanelContainer" parent="UI_Overlay" unique_id=986527415]
 visible = false
 custom_minimum_size = Vector2(1600, 900)
