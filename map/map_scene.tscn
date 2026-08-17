@@ -50,7 +50,6 @@ global_common_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("6_u5ktc"), E
 global_elite_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("9_gta4r"), ExtResource("10_3xs7y"), ExtResource("11_rmjs1"), null])
 sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_71c6l"), ExtResource("7_71c6l"), ExtResource("17_gta4r")])
 test_enemy = ExtResource("10_3xs7y")
-force_first_three_shops = true
 
 [node name="BtnUp" type="Button" parent="." unique_id=691623035]
 layout_mode = 1

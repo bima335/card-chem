@@ -2,8 +2,46 @@
 
 [ext_resource type="PackedScene" uid="uid://q40x1tpxrt47" path="res://enemy/enemy_base.tscn" id="1_w5jle"]
 [ext_resource type="Script" uid="uid://rs88ne5y2ilf" path="res://enemy/neon/enemy_neon.gd" id="2_och3b"]
+[ext_resource type="Texture2D" uid="uid://cekpf7nchlf52" path="res://assets/Character/eliteboss/Boss.Neon/neon ingame no bg.png" id="3_aol44"]
+[ext_resource type="Texture2D" uid="uid://jrukewg8544y" path="res://assets/Character/enemy_B/B.Neon.png" id="4_3df55"]
+[ext_resource type="Texture2D" uid="uid://cprqf0qe5ydh2" path="res://assets/Character/enemy_A/A.Neon.png" id="5_3df55"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gta4r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_aol44")
+}],
+"loop": 0,
+"name": &"b_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_3df55")
+}],
+"loop": 0,
+"name": &"e_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_3df55")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [node name="EnemyNeon" unique_id=181012001 instance=ExtResource("1_w5jle")]
 script = ExtResource("2_och3b")
 minion_stat = null
 stats = null
+
+[node name="Sprite2D" parent="." index="1" unique_id=1550852511]
+visible = false
+
+[node name="AnimatedSprite2D" parent="." index="2" unique_id=1549849388]
+visible = true
+sprite_frames = SubResource("SpriteFrames_gta4r")
+animation = &"e_idle"
