@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://1rhiulfq30o5"]
 
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="1_lf23i"]
-[ext_resource type="Texture2D" uid="uid://d1w6n2rd6eq0i" path="res://assets/CardFront.png" id="1_ohule"]
+[ext_resource type="Texture2D" uid="uid://lmc76o0byj12" path="res://assets/Card/playing_card/OxygenGas.png" id="1_ohule"]
 [ext_resource type="Script" uid="uid://ck4m1qolca0es" path="res://ailments/status_ailment.gd" id="2_ohule"]
 
 [resource]
 script = ExtResource("1_lf23i")
 id = "c_t_01"
-card_name = "Oxygen Gas"
+card_name = "Gas Oksigan (O2)"
 description = "Memicu Ignite"
 card_texture = ExtResource("1_ohule")
 card_type = 3

@@ -7,13 +7,15 @@
 [resource]
 script = ExtResource("1_47are")
 id = "c_b_02"
-card_name = "Carbon Dioxide"
-description = "Mendapatkan 1 C dan 2 O Token"
+card_name = "Carbon Dioksida"
+description = "Mendapatkan 2 C dan 4 O Token"
 card_texture = ExtResource("1_b1uv2")
 card_type = 1
 target_type = 2
-gain_oxygen = 2
-gain_carbon = 1
+cost_oxygen = 2
+cost_carbon = 1
+gain_oxygen = 4
+gain_carbon = 2
 buy_value = 6
 sell_value = 3
 metadata/_custom_type_script = "uid://cbmfluq6eetn5"

@@ -53,6 +53,11 @@
 [ext_resource type="Texture2D" uid="uid://bpocv6w88qang" path="res://assets/main_menu/continue_button.png" id="49_5ttid"]
 [ext_resource type="Texture2D" uid="uid://j3f1le183uq1" path="res://assets/main_menu/credits.png" id="49_drqnu"]
 [ext_resource type="Texture2D" uid="uid://g626odr6srw3" path="res://assets/main_menu/Quit.png" id="50_t6lxg"]
+[ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="54_15u4j"]
+[ext_resource type="Texture2D" uid="uid://cmvketrgstjx6" path="res://assets/HUD/panel_serbaguna.png" id="54_svkug"]
+[ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="55_udlmi"]
+[ext_resource type="Texture2D" uid="uid://bjlvevsqfgtgo" path="res://assets/HUD/bulet_serbaguna.png" id="56_v6i05"]
+[ext_resource type="Texture2D" uid="uid://boffska3fv82l" path="res://assets/HUD/slider_serbaguna.png" id="57_e5aj7"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_s2dj8"]
 animations = [{
@@ -291,6 +296,166 @@ script = ExtResource("46_t5ahn")
 
 [node name="AudioHover" type="AudioStreamPlayer" parent="Quit" unique_id=836072082]
 stream = ExtResource("47_8rujg")
+
+[node name="OverlayLayer" type="CanvasLayer" parent="." unique_id=1046684089]
+layer = 10
+
+[node name="SettingsPanel" type="TextureRect" parent="OverlayLayer" unique_id=1097602440]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 315.0
+offset_top = 130.0
+offset_right = -364.0
+offset_bottom = -218.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("54_svkug")
+expand_mode = 1
+
+[node name="Title" type="Label" parent="OverlayLayer/SettingsPanel" unique_id=2069754134]
+layout_mode = 0
+offset_left = 71.0
+offset_top = 73.0
+offset_right = 1045.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("55_udlmi")
+theme_override_font_sizes/font_size = 50
+text = "Audio and Music
+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OverlayLayer/SettingsPanel" unique_id=305549772]
+layout_mode = 0
+offset_left = 122.0
+offset_top = 165.0
+offset_right = 1096.0
+offset_bottom = 633.0
+theme_override_constants/separation = 30
+
+[node name="Master" type="Label" parent="OverlayLayer/SettingsPanel/VBoxContainer" unique_id=2077815490]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("55_udlmi")
+theme_override_font_sizes/font_size = 30
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="OverlayLayer/SettingsPanel/VBoxContainer" unique_id=1042230895]
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("56_v6i05")
+theme_override_icons/tick = ExtResource("57_e5aj7")
+value = 50.0
+ticks_position = 1
+
+[node name="SFX" type="Label" parent="OverlayLayer/SettingsPanel/VBoxContainer" unique_id=1262231445]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("55_udlmi")
+theme_override_font_sizes/font_size = 30
+text = "SFX Volume"
+
+[node name="SFXSliders" type="HSlider" parent="OverlayLayer/SettingsPanel/VBoxContainer" unique_id=1274651136]
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("56_v6i05")
+theme_override_icons/tick = ExtResource("57_e5aj7")
+value = 50.0
+ticks_position = 1
+
+[node name="BGM" type="Label" parent="OverlayLayer/SettingsPanel/VBoxContainer" unique_id=1973557054]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("55_udlmi")
+theme_override_font_sizes/font_size = 30
+text = "BGM Volume"
+
+[node name="BGMSlider" type="HSlider" parent="OverlayLayer/SettingsPanel/VBoxContainer" unique_id=132090509]
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("56_v6i05")
+theme_override_icons/tick = ExtResource("57_e5aj7")
+value = 50.0
+ticks_position = 1
+
+[node name="CreditsPanel2" type="TextureRect" parent="OverlayLayer" unique_id=652983610]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 315.0
+offset_top = 130.0
+offset_right = -364.0
+offset_bottom = -218.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("54_svkug")
+expand_mode = 1
+
+[node name="Title" type="Label" parent="OverlayLayer/CreditsPanel2" unique_id=1917918909]
+layout_mode = 0
+offset_left = 71.0
+offset_top = 73.0
+offset_right = 1045.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("55_udlmi")
+theme_override_font_sizes/font_size = 50
+text = "Credits"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="OverlayLayer/CreditsPanel2" unique_id=1644576757]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 167.0
+offset_right = 1219.0
+offset_bottom = 695.0
+metadata/credits_scroll = false
+
+[node name="CreditsText" type="RichTextLabel" parent="OverlayLayer/CreditsPanel2/ScrollContainer" unique_id=362366388]
+layout_mode = 2
+text = "[center][b]Nama Tim : CHON Sent Us[/b][/center]
+
+[center][b]Anggota:[/b][/center]
+[indent]- Muhammad Faqih Shiam - Artist
+- Muhammad Fatih Izzul Haq - Artist
+- Bima Anugerah Prasetyo - Programmer[/indent]
+
+[center][b]Sumber Asset:[/b][/center]
+[indent]- SFX tombol cc by ????[/indent]
+
+[center][b]Special thanks:[/b][/center]
+[indent]- Kang greg (pembimbing)
+- Pak yudi (pembimbing)
+- Kang imanda (pembimbing)[/indent]"
+
+[node name="CloseButton" type="TextureButton" parent="OverlayLayer" unique_id=1700244676]
+visible = false
+offset_left = 1276.0
+offset_top = 162.0
+offset_right = 1526.0
+offset_bottom = 229.0
+texture_normal = ExtResource("54_15u4j")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="CloseText" type="Label" parent="OverlayLayer/CloseButton" unique_id=1249550350]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("55_udlmi")
+theme_override_font_sizes/font_size = 30
+text = "Close"
 
 [connection signal="mouse_entered" from="Play" to="Play" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Play" to="Play" method="_on_mouse_exited"]

@@ -35,6 +35,18 @@ func _ready() -> void:
 	bgm_player.bus = "Music" # Arahkan ke jalur Music yang kita buat di editor
 	add_child(bgm_player)
 
+func set_master_volume(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value))
+
+func set_bgm_volume(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("Music")
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value))
+
+func set_sfx_volume(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("SFX")
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value))
+
 func play_sfx(sound_name: String, pitch_variance: float = 0.0) -> void:
 	if not sfx_database.has(sound_name):
 		push_warning("SoundManager: Suara '" + sound_name + "' tidak ditemukan di database!")
@@ -99,3 +111,12 @@ func stop_bgm(fade_duration: float = 1.0) -> void:
 	tween.tween_property(bgm_player, "volume_db", -40.0, fade_duration)
 	tween.tween_callback(bgm_player.stop)
 	current_bgm_track = ""
+
+func set_master_volume_db(db: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)
+
+func set_bgm_volume_db(db: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), db)
+
+func set_sfx_volume_db(db: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), db)

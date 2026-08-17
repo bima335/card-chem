@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_btl1n")
 id = "c_a_07"
-card_name = "Burst"
+card_name = "Radikal Metoksi (CH3O)"
 description = "Memberi 14 Damage"
 card_texture = ExtResource("1_nn5su")
 rarity = 2

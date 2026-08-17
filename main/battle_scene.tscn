@@ -132,8 +132,8 @@ aura_container = NodePath("../../UI/TopRightHUD/AuraWrapper/CardSlots")
 aura_ui_scene = ExtResource("14_dairb")
 player_hp_bar = NodePath("../../UI/StatGroup/PlayerHPBar")
 player_hp_label = NodePath("../../UI/StatGroup/Label")
-player_shield_bar = NodePath("../../UI/PlayerShieldBar")
-player_shield_label = NodePath("../../UI/PlayerShieldBar/Label")
+player_shield_bar = NodePath("../../UI/StatGroup/PlayerShieldBar")
+player_shield_label = NodePath("../../UI/StatGroup/PlayerShieldBar/Label")
 token_container = NodePath("../../UI/TokenContainer")
 c_token_container = NodePath("../../UI/TokenContainer/CWadah/CMargin/CContainer")
 h_token_container = NodePath("../../UI/TokenContainer/HWadah/HMargin/HContainer")
@@ -173,8 +173,10 @@ destabilize_ailment = ExtResource("24_yun0f")
 disintegrate_ailment = ExtResource("25_uakwd")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=169925903]
+metadata/ui_layer = false
 
 [node name="bglayout" type="TextureRect" parent="UI" unique_id=1504076058]
+visible = false
 offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("47_j1o3r")
@@ -228,9 +230,9 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -216.0
-offset_right = 87.0
+offset_left = 7.0
+offset_top = -259.0
+offset_right = 117.0
 offset_bottom = -156.0
 grow_vertical = 0
 texture_normal = ExtResource("26_4n26w")
@@ -241,13 +243,36 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 23.0
-offset_top = -269.0
-offset_right = 79.0
-offset_bottom = -208.0
+offset_left = 26.0
+offset_top = -329.0
+offset_right = 82.0
+offset_bottom = -268.0
 grow_vertical = 0
 texture_normal = ExtResource("25_yme4k")
 stretch_mode = 5
+
+[node name="PlayerShieldBar" type="TextureProgressBar" parent="UI/StatGroup" unique_id=832812271]
+layout_mode = 0
+offset_left = 68.0
+offset_top = 223.0
+offset_right = 471.0
+offset_bottom = 258.0
+fill_mode = 1
+texture_progress = ExtResource("38_06b3h")
+
+[node name="Label" type="Label" parent="UI/StatGroup/PlayerShieldBar" unique_id=793629810]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -74.5
+offset_right = 20.0
+offset_bottom = -51.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="DeckVisual" type="TextureButton" parent="UI/StatGroup" unique_id=1314374451]
 layout_mode = 1
@@ -316,35 +341,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -550.0
+offset_left = -435.0
 offset_top = -280.0
-offset_right = 550.0
+offset_right = 576.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-
-[node name="PlayerShieldBar" type="TextureProgressBar" parent="UI" unique_id=832812271]
-offset_left = 62.0
-offset_top = 1008.0
-offset_right = 471.0
-offset_bottom = 1035.0
-fill_mode = 1
-texture_progress = ExtResource("38_06b3h")
-
-[node name="Label" type="Label" parent="UI/PlayerShieldBar" unique_id=793629810]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -74.5
-offset_right = 20.0
-offset_bottom = -51.5
-grow_horizontal = 2
-grow_vertical = 2
+metadata/hand_container = false
 
 [node name="EndTurnButton" type="TextureButton" parent="UI" unique_id=1656380516]
 anchors_preset = 3
