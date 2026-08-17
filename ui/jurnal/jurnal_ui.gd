@@ -10,6 +10,7 @@ const CARD_UI_SCENE: PackedScene = preload("res://card/card_ui.tscn")
 const COAT_UI_SCENE: PackedScene = preload("res://card/coat/coat_ui.tscn")
 const BLESSING_UI_ITEM_SCENE: PackedScene = preload("res://ui/blessing/blessing_ui_item.tscn")
 const AURA_CARD_UI_SCENE: PackedScene = preload("res://aura/AuraCardUI.tscn")
+const SECRET_END_SCENE_PATH: String = "res://cutscene/secret_end.tscn"
 
 @export var locked_color: Color = Color(0.15, 0.15, 0.15, 0.6)
 @export var unlocked_color: Color = Color.WHITE
@@ -42,11 +43,12 @@ const AURA_CARD_UI_SCENE: PackedScene = preload("res://aura/AuraCardUI.tscn")
 @onready var texture_aura_preview: TextureRect = %TextureRect_AuraPreview
 @onready var label_aura_title: Label = %Label_AuraTitle
 @onready var label_aura_description: RichTextLabel = %Label_AuraDescription
-@onready var label_aura_counter: Label = %Label_AuraCounter
+@onready var button_aura_counter: Button = %Button_AuraCounter
 
 
 func _ready() -> void:
 	tab_container.tab_changed.connect(_on_tab_changed)
+	button_aura_counter.pressed.connect(_on_aura_counter_button_pressed)
 	_setup_playing_cards_tab()
 
 
@@ -152,7 +154,6 @@ func _setup_coats_tab() -> void:
 		var coat_ui: TextureButton = COAT_UI_SCENE.instantiate() as TextureButton
 		grid_container_coats.add_child(coat_ui)
 		
-		# Jika TextureButton memiliki method setup / texture assignment
 		if coat_ui.has_method("setup"):
 			coat_ui.setup(coat_data)
 		else:
@@ -325,13 +326,17 @@ func _format_aura_description(aura_data: AuraCardData) -> String:
 
 
 func _update_aura_counter(owned_count: int) -> void:
-	label_aura_counter.text = "AURA TERKUMPUL\n" + str(owned_count) + "/" + str(TOTAL_AURAS_COUNT)
+	button_aura_counter.text = "AURA TERKUMPUL\n" + str(owned_count) + "/" + str(TOTAL_AURAS_COUNT)
 
 
 func _reset_aura_preview_panel() -> void:
 	texture_aura_preview.texture = null
 	label_aura_title.text = "Pilih Aura"
 	label_aura_description.text = "[i]Klik salah satu aura yang telah didapatkan untuk melihat detailnya.[/i]"
+
+
+func _on_aura_counter_button_pressed() -> void:
+	get_tree().change_scene_to_file(SECRET_END_SCENE_PATH)
 
 
 # --- UTILS ---
