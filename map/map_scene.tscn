@@ -17,7 +17,6 @@
 [ext_resource type="Resource" uid="uid://ca3u8s6esuegx" path="res://enemy/cobalt/res/cobalt_elite.tres" id="10_3xs7y"]
 [ext_resource type="Resource" uid="uid://bn1innlyfyffv" path="res://enemy/neon/res/neon_elite.tres" id="11_rmjs1"]
 [ext_resource type="FontFile" uid="uid://o5xj6h8p1v3y" path="res://assets/Font/CormorantGaramond-SemiBoldItalic.ttf" id="15_coqd3"]
-[ext_resource type="Resource" uid="uid://bhspn8f4djyj4" path="res://enemy/cobalt/res/cobalt_minion.tres" id="16_lq6j1"]
 [ext_resource type="Texture2D" uid="uid://b8qdor3rg3ejh" path="res://assets/HUD/Button_General.png" id="18_gta4r"]
 
 [node name="MapScene" type="Control" unique_id=1082545900]
@@ -49,9 +48,7 @@ section_wallpapers = Array[Texture2D]([ExtResource("9_base"), ExtResource("5_jcv
 global_common_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("6_u5ktc"), ExtResource("7_lq6j1"), ExtResource("8_ekk3v")])
 global_elite_enemies = Array[ExtResource("5_lgh0d")]([ExtResource("9_gta4r"), ExtResource("10_3xs7y"), ExtResource("11_rmjs1"), null])
 sections_data = Array[ExtResource("5_ab781")]([ExtResource("6_71c6l"), ExtResource("7_71c6l"), ExtResource("6_71c6l")])
-test_battle_type = 5
-test_enemy = ExtResource("16_lq6j1")
-force_first_three_shops = true
+test_enemy = ExtResource("10_3xs7y")
 
 [node name="BtnUp" type="Button" parent="." unique_id=691623035]
 layout_mode = 1

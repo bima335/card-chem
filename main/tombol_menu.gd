@@ -1,14 +1,12 @@
 extends TextureButton
 
 @onready var ukuran_asal: Vector2 = scale
-@onready var audio_hover: AudioStreamPlayer = $AudioHover
 
 func _ready() -> void:
 	pivot_offset = size / 2
 
 func _on_mouse_entered() -> void:
-	if audio_hover and not audio_hover.playing:
-		audio_hover.play()
+	SoundManager.play_sfx("ui_hover")
 	
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(self, "scale", ukuran_asal * 1.08, 0.15)

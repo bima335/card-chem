@@ -1,4 +1,5 @@
 extends Node
+
 const MAX_POOL_SIZE: int = 12 
 
 var sfx_players: Array[AudioStreamPlayer] = []
@@ -8,6 +9,8 @@ var current_bgm_track: String = ""
 var sfx_database: Dictionary = {
 	"card_hover": preload("res://assets/audio/sfx/cards/Select/GP_Select_3.wav"),
 	"enemy_select": preload("res://assets/audio/sfx/ui/UI_Select_1.wav"),
+	"ui_click": preload("res://assets/audio/sfx/ui/UI_Click_2.wav"),
+	"ui_hover": preload("res://assets/audio/sfx/ui/UI_Click_1.wav")
 }
 
 var bgm_database: Dictionary = {
@@ -22,7 +25,7 @@ var bgm_database: Dictionary = {
 	"aurum": preload("res://assets/audio/bgm/Aurum_Gold_Env.mp3"),
 	"event": preload("res://assets/audio/bgm/event_node.mp3"),
 	"intro_theme": preload("res://assets/audio/bgm/story.mp3"),
-	"end":preload("res://assets/audio/bgm/end.mp3"),
+	"end": preload("res://assets/audio/bgm/end.mp3"),
 }
 
 func _ready() -> void:
@@ -31,8 +34,9 @@ func _ready() -> void:
 		player.bus = "SFX"
 		add_child(player)
 		sfx_players.append(player)
+		
 	bgm_player = AudioStreamPlayer.new()
-	bgm_player.bus = "Music" # Arahkan ke jalur Music yang kita buat di editor
+	bgm_player.bus = "Music"
 	add_child(bgm_player)
 
 func set_master_volume(value: float) -> void:
@@ -64,12 +68,7 @@ func play_sfx(sound_name: String, pitch_variance: float = 0.0) -> void:
 
 func _play_on_player(player: AudioStreamPlayer, stream: AudioStream, variance: float) -> void:
 	player.stream = stream
-	
-	if variance > 0.0:
-		player.pitch_scale = randf_range(1.0 - variance, 1.0 + variance)
-	else:
-		player.pitch_scale = 1.0
-		
+	player.pitch_scale = randf_range(1.0 - variance, 1.0 + variance) if variance > 0.0 else 1.0
 	player.play()
 
 func play_bgm(track_name: String, fade_duration: float = 1.0) -> void:
@@ -77,35 +76,28 @@ func play_bgm(track_name: String, fade_duration: float = 1.0) -> void:
 		push_warning("SoundManager: BGM '" + track_name + "' tidak ditemukan!")
 		return
 		
-	# Cerdas: Jika musik yang diminta SAMA dengan yang sedang main, biarkan saja!
 	if current_bgm_track == track_name and bgm_player.playing:
 		return 
 		
 	current_bgm_track = track_name
 	var new_stream = bgm_database[track_name]
 	
-	# Transisi Crossfade yang Halus!
 	if bgm_player.playing and fade_duration > 0.0:
 		var tween = create_tween()
-		# 1. Fade out volume ke -40 dB (sangat pelan/senyap)
 		tween.tween_property(bgm_player, "volume_db", -40.0, fade_duration / 2.0)
-		
-		# 2. Ganti kaset setelah senyap
 		tween.tween_callback(func():
 			bgm_player.stream = new_stream
 			bgm_player.play()
 		)
-		
-		# 3. Fade in volume kembali ke 0 dB (normal)
 		tween.tween_property(bgm_player, "volume_db", 0.0, fade_duration / 2.0)
 	else:
-		# Mainkan langsung jika tidak ada musik sebelumnya
 		bgm_player.stream = new_stream
 		bgm_player.volume_db = 0.0
 		bgm_player.play()
 
 func stop_bgm(fade_duration: float = 1.0) -> void:
-	if not bgm_player.playing: return
+	if not bgm_player.playing:
+		return
 	
 	var tween = create_tween()
 	tween.tween_property(bgm_player, "volume_db", -40.0, fade_duration)
@@ -120,3 +112,15 @@ func set_bgm_volume_db(db: float) -> void:
 
 func set_sfx_volume_db(db: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), db)
+
+func set_bus_volume(bus_name: String, linear_value: float) -> void:
+	var bus_index: int = AudioServer.get_bus_index(bus_name)
+	if bus_index == -1:
+		push_warning("SoundManager: Bus audio '%s' tidak ditemukan!" % bus_name)
+		return
+
+	var is_muted: bool = linear_value <= 0.0001
+	AudioServer.set_bus_mute(bus_index, is_muted)
+
+	if not is_muted:
+		AudioServer.set_bus_volume_db(bus_index, linear_to_db(linear_value))
