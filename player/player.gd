@@ -44,13 +44,12 @@ func _ready() -> void:
 	if AuraManager.has_signal("aura_unequipped"):
 		AuraManager.aura_unequipped.connect(_on_aura_unequipped_handler)
 
-
 func reset_for_battle() -> void:
 	shield = 0
-	carbon = 3
-	hydrogen = 3
-	oxygen = 3
-	nitrogen = 3
+	carbon = 1
+	hydrogen = 1
+	oxygen = 1
+	nitrogen = 1
 	is_stunned = false
 	stun_duration = 0
 	active_dazzle_stacks = 0
@@ -59,6 +58,25 @@ func reset_for_battle() -> void:
 	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
 	stats_updated.emit(current_hp, max_hp, shield, base_damage)
 
+func set_tokens_by_round(round_number: int) -> void:
+	var old_c: int = carbon
+	var old_h: int = hydrogen
+	var old_o: int = oxygen
+	var old_n: int = nitrogen
+
+	carbon = clampi(round_number, 0, get_max_chn())
+	hydrogen = clampi(round_number, 0, get_max_chn())
+	oxygen = clampi(round_number, 0, get_max_oxygen())
+	nitrogen = clampi(round_number, 0, get_max_chn())
+
+	coins_updated.emit(oxygen, hydrogen, carbon, nitrogen)
+	
+	_notify_tokens_gained({
+		"Carbon": carbon - old_c,
+		"Hydrogen": hydrogen - old_h,
+		"Oxygen": oxygen - old_o,
+		"Nitrogen": nitrogen - old_n
+	})
 
 func apply_stun(duration: int) -> void:
 	is_stunned = true
