@@ -13,6 +13,7 @@ var aurum_intro_seen: bool = false
 var neon_intro_seen: bool = false
 var player_max_hp: int = 100
 var player_current_hp: int = 100
+var demo_mode_used: bool = false
 var active_event_type: MapNodeData.NodeType
 var shop_coins: int = 110
 var player_deck: Array[CardData] = []
@@ -217,6 +218,8 @@ func start_new_run() -> void:
 
 	player_max_hp = 100
 	player_current_hp = player_max_hp
+
+	demo_mode_used = false
 
 	shop_coins = 0
 
