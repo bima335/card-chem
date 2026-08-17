@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
 [ext_resource type="Script" uid="uid://h5ykgjua7hp2" path="res://main/camera_2d.gd" id="2_icwpv"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
+[ext_resource type="Texture2D" uid="uid://c7aic5jybucu0" path="res://assets/bggld.jpeg" id="2_xtwce"]
 [ext_resource type="Texture2D" uid="uid://dcs4qh1hxmb2y" path="res://assets/backgrounds/wallpaper cobalt.png" id="2_y3ceo"]
 [ext_resource type="Texture2D" uid="uid://dhgk7c3si6ru1" path="res://assets/Character/eliteboss/Boss.Coblat/singgasana_cobalt.png" id="3_6w65c"]
 [ext_resource type="Resource" uid="uid://bg3rf8ge3jwvl" path="res://card/resources/trigger/roil.tres" id="5_j5qo7"]
@@ -71,6 +72,7 @@
 [node name="BattleScene" type="Node2D" unique_id=95146886]
 process_mode = 1
 script = ExtResource("1_m1b1k")
+gold_boss_background = ExtResource("2_xtwce")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1590862587]
 position = Vector2(960, 540)
@@ -78,10 +80,12 @@ script = ExtResource("2_icwpv")
 
 [node name="BattleBackground" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
+custom_minimum_size = Vector2(1920, 1080)
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 texture = ExtResource("2_y3ceo")
+expand_mode = 1
 
 [node name="StageManager" type="Node2D" parent="." unique_id=1219606548 node_paths=PackedStringArray("boss_spawn_marker", "boss_cobalt_spawn_point", "throne_texture_rect")]
 script = ExtResource("7_ylpik")
