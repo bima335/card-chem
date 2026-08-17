@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dvpt57lyqcadh" path="res://ui/recap/recap_ui.gd" id="1_ari5e"]
 [ext_resource type="Texture2D" uid="uid://cf0asp0cjx2tn" path="res://assets/backgrounds/panelvictory.png" id="1_xeiod"]
 [ext_resource type="Texture2D" uid="uid://j2p6mynujcj1" path="res://assets/backgrounds/gameoverpanel.png" id="3_nc0np"]
+[ext_resource type="PackedScene" uid="uid://cclcnhyt47hbv" path="res://ui/recap/path_history_recap.tscn" id="4_u02vm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
 
@@ -181,6 +182,14 @@ offset_top = 928.0
 offset_right = 581.0
 offset_bottom = 1023.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_yf5fn")
+
+[node name="PathHistoryRecap" parent="." unique_id=630491391 instance=ExtResource("4_u02vm")]
+layout_mode = 0
+offset_left = 1021.0
+offset_top = 226.0
+offset_right = 1971.0
+offset_bottom = 426.0
+use_dummy_data = false
 
 [connection signal="pressed" from="BackToMainMenuButton" to="." method="_on_back_to_main_menu_button_pressed"]
 [connection signal="pressed" from="NewRunButton" to="." method="_on_new_run_button_pressed"]

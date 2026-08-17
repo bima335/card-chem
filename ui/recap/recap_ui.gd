@@ -5,7 +5,7 @@ extends Control
 @export var defeat_texture: Texture2D
 
 @onready var background: TextureRect = $Background
-
+@onready var path_history: PathHistoryRecap = $PathHistoryRecap
 @onready var node_count_recap: Label = $NodeCountRecap
 @onready var total_damage_recap: Label = $TotalDamageRecap
 @onready var damage_taken_recap: Label = $DamageTakenRecap
@@ -25,16 +25,14 @@ extends Control
 
 @onready var back_to_main_menu_button: Button = $BackToMainMenuButton
 
-
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	
-	back_to_main_menu_button.pressed.connect(_on_back_to_main_menu_button_pressed)
-
 
 func setup_recap(is_victory: bool) -> void:
 	_update_background(is_victory)
 	_populate_statistics()
+	if path_history:
+		path_history.load_history_from_game_manager()
 
 
 func _update_background(is_victory: bool) -> void:

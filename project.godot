@@ -30,6 +30,7 @@ AuraManager="*uid://bqku0emeqha7l"
 SaveManager="*uid://dwyrxfig24u4p"
 RecapManager="*uid://c6r5bxqbjqilv"
 BattleLogManager="*uid://ehle5wev8w8c"
+JuiceManager="*uid://dmu30ph7el2jy"
 
 [display]
 
