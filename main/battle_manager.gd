@@ -11,7 +11,8 @@ const CARD_HYDROGEN_PEROXIDE: CardData = preload("uid://db0cc88e3ktnj")
 const CARD_CARBON_DIOXIDE: CardData = preload("uid://ck43wj6i8k0f0")
 
 @export var available_cards: Array[CardData] 
-
+@export_group("Backgrounds")
+@export var gold_boss_background: Texture2D
 @export var default_blessing: BlessingData
 #@export var default_aura_1:  AuraCardData
 
@@ -76,6 +77,10 @@ func _connect_signals() -> void:
 
 func _setup_background() -> void:
 	if not battle_background:
+		return
+
+	if GameManager.is_gold_boss and gold_boss_background != null:
+		battle_background.texture = gold_boss_background
 		return
 
 	if GameManager.current_section and GameManager.current_section.section_wallpaper != null:
