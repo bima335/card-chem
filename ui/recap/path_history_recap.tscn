@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cclcnhyt47hbv"]
+
+[ext_resource type="Script" uid="uid://bj4f2mf2yw438" path="res://ui/recap/path_history_recap.gd" id="1_history_script"]
+[ext_resource type="Texture2D" uid="uid://dipb146rod62h" path="res://assets/MapIcon/EnemyA.png" id="2_enemy_a"]
+[ext_resource type="Texture2D" uid="uid://c2dpcfvpyt0t3" path="res://assets/MapIcon/EnemyB.png" id="3_enemy_b"]
+[ext_resource type="Texture2D" uid="uid://dm2hbw0entcri" path="res://assets/MapIcon/Lab.png" id="4_shop"]
+[ext_resource type="Texture2D" uid="uid://bii64noo8bvoc" path="res://assets/MapIcon/Rest.png" id="5_rest"]
+[ext_resource type="Texture2D" uid="uid://bnwli05qvvfup" path="res://assets/MapIcon/Boss.png" id="6_boss"]
+[ext_resource type="Texture2D" uid="uid://d0jm1crg5qk0u" path="res://assets/MapIcon/Random.png" id="7_random"]
+
+[node name="PathHistoryRecap" type="Control" unique_id=630491391]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 950.0
+offset_bottom = 200.0
+script = ExtResource("1_history_script")
+icon_size = Vector2(50, 50)
+horizontal_spacing = 30.0
+row_vertical_spacing = 60.0
+line_color = Color(0.95, 0.78, 0.25, 0.95)
+line_width = 3.5
+arrow_size = 10.0
+tex_battle_normal = ExtResource("2_enemy_a")
+tex_battle_hard = ExtResource("3_enemy_b")
+tex_shop = ExtResource("4_shop")
+tex_rest = ExtResource("5_rest")
+tex_boss = ExtResource("6_boss")
+tex_random_event = ExtResource("7_random")
+use_dummy_data = false

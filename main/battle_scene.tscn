@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c7w10t7tfw8e5" path="res://main/battle_manager.gd" id="1_m1b1k"]
 [ext_resource type="PackedScene" uid="uid://butkj3sd3l5ae" path="res://card/card_ui.tscn" id="2_csnlq"]
 [ext_resource type="Script" uid="uid://0lohpqvi6p7t" path="res://hand/hand.gd" id="2_hoxqo"]
+[ext_resource type="Script" uid="uid://h5ykgjua7hp2" path="res://main/camera_2d.gd" id="2_icwpv"]
 [ext_resource type="Script" uid="uid://cbmfluq6eetn5" path="res://card/data/card_data.gd" id="2_tuh4c"]
 [ext_resource type="Texture2D" uid="uid://dcs4qh1hxmb2y" path="res://assets/backgrounds/wallpaper cobalt.png" id="2_y3ceo"]
 [ext_resource type="Texture2D" uid="uid://dhgk7c3si6ru1" path="res://assets/Character/eliteboss/Boss.Coblat/singgasana_cobalt.png" id="3_6w65c"]
@@ -71,10 +72,14 @@
 process_mode = 1
 script = ExtResource("1_m1b1k")
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1590862587]
+position = Vector2(960, 540)
+script = ExtResource("2_icwpv")
+
 [node name="BattleBackground" type="TextureRect" parent="." unique_id=1257120953]
 texture_filter = 1
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 mouse_filter = 2
 texture = ExtResource("2_y3ceo")
 
