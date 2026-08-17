@@ -121,9 +121,9 @@ func _start_player_turn() -> void:
 	if is_first_turn:
 		is_first_turn = false
 	else:
-		player.gain_tokens(GameManager.current_round)
 		GameManager.advance_round()
 		
+	player.set_tokens_by_round(GameManager.current_round)
 	EventBus.round_started.emit(GameManager.current_round)
 	
 	var cards_to_draw: int = hand.max_hand_size - hand.cards_in_hand.size()
