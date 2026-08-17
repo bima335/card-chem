@@ -410,7 +410,7 @@ func _on_node_selected(
 
 		MapNodeData.NodeType.REST:
 			get_tree().change_scene_to_file(
-				"res://event/event_scene.tscn"
+				"res://TheRest/event_scene.tscn"
 			)
 
 		MapNodeData.NodeType.RANDOM_EVENT:

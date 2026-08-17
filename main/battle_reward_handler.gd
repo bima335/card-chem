@@ -59,7 +59,7 @@ func _setup_normal_reward() -> void:
 		var card_ui = card_ui_scene.instantiate() as CardUI
 		reward_card_grid.add_child(card_ui)
 		card_ui.setup(card_data)
-		card_ui.is_preview = false 
+		card_ui.is_preview = true 
 		card_ui.pressed.connect(_on_reward_card_chosen.bind(card_data))
 
 
