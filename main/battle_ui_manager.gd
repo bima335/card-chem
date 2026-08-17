@@ -183,24 +183,29 @@ func update_tokens(o: int, h: int, c: int, n: int) -> void:
 	tween.tween_property(token_container, "scale", Vector2(1.05, 1.05), 0.1)
 	tween.tween_property(token_container, "scale", Vector2.ONE, 0.1)
 
-
 func _render_token_icons(container: HBoxContainer, texture: Texture2D, count: int) -> void:
 	if not container or not texture:
 		return
 		
-	container.add_theme_constant_override("separation", token_spacing)
-		
-	for child in container.get_children():
-		child.queue_free()
-		
-	for i in range(count):
-		var icon = TextureRect.new()
-		icon.texture = texture
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.custom_minimum_size = token_icon_size
-		container.add_child(icon)
+	var existing_children: Array[Node] = container.get_children()
+	var current_child_count: int = existing_children.size()
 
+	for i in range(maxi(current_child_count, count)):
+		if i < count:
+			if i < current_child_count:
+				var icon: TextureRect = existing_children[i] as TextureRect
+				icon.texture = texture
+				icon.visible = true
+			else:
+				var icon: TextureRect = TextureRect.new()
+				icon.texture = texture
+				icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				icon.custom_minimum_size = token_icon_size
+				container.add_child(icon)
+		else:
+			if i < current_child_count:
+				existing_children[i].visible = false
 
 func update_player_stats(hp: int, max_hp: int, shield: int, _damage: int) -> void:
 	player_hp_bar.max_value = max_hp
